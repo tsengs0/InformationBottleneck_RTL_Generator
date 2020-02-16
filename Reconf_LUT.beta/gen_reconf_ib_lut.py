@@ -23,10 +23,10 @@ def gen_reconf_mux():
 	ConfigIn_file.write("\tcase(addr_in[`IB_ADDR-1:0])\n")
 
 	for i in range(entry_num):
-		ConfigIn_file.write("\t\t`IB_ADDR'd"+str(int(i))+"t_c[`QUAN_SIZE-1:0] <= t_"+str(int(i))+"[`QUAN_SIZE-1:0];\n")
+		ConfigIn_file.write("\t\t`IB_ADDR'd"+str(int(i))+": t_c[`QUAN_SIZE-1:0] <= t_"+str(int(i))+"[`QUAN_SIZE-1:0];\n")
 	ConfigIn_file.write("\tendcase\n")
 	ConfigIn_file.write("end")
 	ConfigIn_file.close()	
 
-gen_reconf_input()
-gen_reconf_mux()
+#gen_reconf_input()
+#gen_reconf_mux()
