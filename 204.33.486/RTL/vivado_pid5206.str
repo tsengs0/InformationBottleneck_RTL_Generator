@@ -1,0 +1,120 @@
+/*
+
+Xilinx Vivado v2019.2 (64-bit) [Major: 2019, Minor: 2]
+SW Build: 2708876 on Wed Nov  6 21:39:14 MST 2019
+IP Build: 2700528 on Thu Nov  7 00:09:20 MST 2019
+
+Process ID (PID): 5206
+License: Customer
+
+Current time: 	Sat Feb 15 21:22:27 JST 2020
+Time zone: 	Japan Standard Time (Asia/Tokyo)
+
+OS: CentOS Linux release 7.4.1708 (Core)
+OS Version: 3.10.0-693.11.6.el7.x86_64
+OS Architecture: amd64
+Available processors (cores): 8
+
+Display: localhost:16.0
+Screen size: 1366x768
+Screen resolution (DPI): 100
+Available screens: 2
+Available disk space: 82 GB
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+
+Java version: 	9.0.4 64-bit
+Java home: 	/home/s1820419/Xilinx/Vivado/2019.2/tps/lnx64/jre9.0.4
+Java executable location: 	/home/s1820419/Xilinx/Vivado/2019.2/tps/lnx64/jre9.0.4/bin/java
+Java initial memory (-Xms): 	128 MB
+Java maximum memory (-Xmx):	 3 GB
+
+
+User name: 	s1820419
+User home directory: /home/s1820419
+User working directory: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /home/s1820419/Xilinx/Vivado
+HDI_APPROOT: /home/s1820419/Xilinx/Vivado/2019.2
+RDI_DATADIR: /home/s1820419/Xilinx/Vivado/2019.2/data
+RDI_BINDIR: /home/s1820419/Xilinx/Vivado/2019.2/bin
+
+Vivado preferences file location: /home/s1820419/.Xilinx/Vivado/2019.2/vivado.xml
+Vivado preferences directory: /home/s1820419/.Xilinx/Vivado/2019.2/
+Vivado layouts directory: /home/s1820419/.Xilinx/Vivado/2019.2/layouts
+PlanAhead jar file location: 	/home/s1820419/Xilinx/Vivado/2019.2/lib/classes/planAhead.jar
+Vivado log file location: 	/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/vivado.log
+Vivado journal file location: 	/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/vivado.jou
+Engine tmp dir: 	./.Xil/Vivado-5206-vpcc
+
+Xilinx Environment Variables
+----------------------------
+XILINX: /home/s1820419/Xilinx/Vivado/2019.2/ids_lite/ISE
+XILINXD_LICENSE_FILE: 1717@ino-www.jaist.ac.jp
+XILINX_DSP: /home/s1820419/Xilinx/Vivado/2019.2/ids_lite/ISE
+XILINX_PLANAHEAD: /home/s1820419/Xilinx/Vivado/2019.2
+XILINX_VITIS: 
+XILINX_VIVADO: /home/s1820419/Xilinx/Vivado/2019.2
+XILINX_VIVADO_HLS: /home/s1820419/Xilinx/Vivado/2019.2
+
+
+GUI allocated memory:	231 MB
+GUI max memory:		3,072 MB
+Engine allocated memory: 5,054 MB
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: start_gui 
+// HMemoryUtils.trashcanNow. Engine heap size: 5,059 MB. GUI used memory: 43 MB. Current time: 2/15/20, 9:22:29 PM JST
+// WARNING: HEventQueue.dispatchEvent() is taking  1001 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1001 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1001 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1001 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1001 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1001 ms.
+selectList(PAResourceQtoS.SyntheticaGettingStartedView_RECENT_PROJECTS, "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.xpr", 0); // r (O, cr)
+// bB (cr):  Open Project : addNotify
+// Opening Vivado Project: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.xpr. Version: Vivado v2019.2 
+// WARNING: HEventQueue.dispatchEvent() is taking  1387 ms.
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// Tcl Message: open_project /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.xpr 
+// TclEventType: MSGMGR_MOVEMSG
+// TclEventType: FILE_SET_NEW
+// HMemoryUtils.trashcanNow. Engine heap size: 5,094 MB. GUI used memory: 47 MB. Current time: 2/15/20, 9:23:34 PM JST
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_CURRENT
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_NEW
+// [GUI Memory]: 108 MB (+111216kb) [00:01:22]
+// [Engine Memory]: 5,105 MB (+5201185kb) [00:01:22]
+// WARNING: HEventQueue.dispatchEvent() is taking  3632 ms.
+// Tcl Message: open_project /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.xpr 
+// Tcl Message: Scanning sources... Finished scanning sources 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/s1820419/Xilinx/Vivado/2019.2/data/ip'. 
+// Project name: IB_LUT; location: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT; part: xc7z020clg484-1
+// Elapsed time: 11 seconds
+dismissDialog("Open Project"); // bB (cr)
+closeMainWindow("IB_LUT - [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.xpr] - Vivado 2019.2"); // cr
+// HOptionPane Warning: 'A background task is running. Please wait until it completes to exit Vivado. If you choose to abort background task and exit immediately, you will lose all unsaved changes to project. (Background Task)'

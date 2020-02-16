@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenRun Id="impl_1" LaunchPart="xc7z020clg484-1" LaunchTime="1581519648">
+  <File Type="PLACE-PRE-SIMILARITY" Name="ib_lut_in2_incremental_reuse_pre_placed.rpt"/>
+  <File Type="BITSTR-BMM" Name="ib_lut_in2_bd.bmm"/>
+  <File Type="BITSTR-MMI" Name="ib_lut_in2.mmi"/>
+  <File Type="PDI-FILE" Name="ib_lut_in2.pdi"/>
+  <File Type="RBD_FILE" Name="ib_lut_in2.rbd"/>
+  <File Type="BG-BGN" Name="ib_lut_in2.bgn"/>
+  <File Type="ROUTE-BLACKBOX-DCP" Name="ib_lut_in2_routed_bb.dcp"/>
+  <File Type="BITSTR-LTX" Name="ib_lut_in2.ltx"/>
+  <File Type="BITSTR-NKY" Name="ib_lut_in2.nky"/>
+  <File Type="POSTROUTE-PHYSOPT-BLACKBOX-DCP" Name="ib_lut_in2_postroute_physopt_bb.dcp"/>
+  <File Type="BITSTR-SYSDEF" Name="ib_lut_in2.sysdef"/>
+  <File Type="BG-BIN" Name="ib_lut_in2.bin"/>
+  <File Type="POSTROUTE-PHYSOPT-DCP" Name="ib_lut_in2_postroute_physopt.dcp"/>
+  <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
+  <File Type="POSTPLACE-PWROPT-DCP" Name="ib_lut_in2_postplace_pwropt.dcp"/>
+  <File Type="RDI-RDI" Name="ib_lut_in2.vdi"/>
+  <File Type="NPI_FILE" Name="ib_lut_in2.npi"/>
+  <File Type="BG-DRC" Name="ib_lut_in2.drc"/>
+  <File Type="ROUTE-ERROR-DCP" Name="ib_lut_in2_routed_error.dcp"/>
+  <File Type="RCFI_FILE" Name="ib_lut_in2.rcfi"/>
+  <File Type="BG-BIT" Name="ib_lut_in2.bit"/>
+  <File Type="OPT-DCP" Name="ib_lut_in2_opt.dcp"/>
+  <File Type="ROUTE-DCP" Name="ib_lut_in2_routed.dcp"/>
+  <File Type="PHYSOPT-DCP" Name="ib_lut_in2_physopt.dcp"/>
+  <File Type="BITSTR-MSK" Name="ib_lut_in2.msk"/>
+  <File Type="CFI_FILE" Name="ib_lut_in2.cfi"/>
+  <File Type="ROUTE-TIMING-PB" Name="ib_lut_in2_timing_summary_routed.pb"/>
+  <File Type="PA-TCL" Name="ib_lut_in2.tcl"/>
+  <File Type="BITSTR-RBT" Name="ib_lut_in2.rbt"/>
+  <File Type="RNPI_FILE" Name="ib_lut_in2.rnpi"/>
+  <File Type="REPORTS-TCL" Name="ib_lut_in2_reports.tcl"/>
+  <File Type="OPT-HWDEF" Name="ib_lut_in2.hwdef"/>
+  <File Type="PWROPT-DCP" Name="ib_lut_in2_pwropt.dcp"/>
+  <File Type="PLACE-DCP" Name="ib_lut_in2_placed.dcp"/>
+  <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
+    <Filter Type="Srcs"/>
+    <File Path="$PPRDIR/../define.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../ib_lut_in2.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="DesignMode" Val="RTL"/>
+      <Option Name="TopModule" Val="ib_lut_in2"/>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">
+    <Filter Type="Constrs"/>
+    <File Path="$PSRCDIR/constrs_1/new/zedboard.xdc">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="ConstrsType" Val="XDC"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="utils" Type="Utils" RelSrcDir="$PSRCDIR/utils_1">
+    <Filter Type="Utils"/>
+    <Config>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <Strategy Version="1" Minor="2">
+    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019"/>
+    <Step Id="init_design"/>
+    <Step Id="opt_design"/>
+    <Step Id="power_opt_design"/>
+    <Step Id="place_design"/>
+    <Step Id="post_place_power_opt_design"/>
+    <Step Id="phys_opt_design" EnableStepBool="1"/>
+    <Step Id="route_design"/>
+    <Step Id="post_route_phys_opt_design"/>
+    <Step Id="write_bitstream"/>
+    <Step Id="write_device_image"/>
+  </Strategy>
+</GenRun>

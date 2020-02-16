@@ -1,0 +1,634 @@
+/*
+
+Xilinx Vivado v2019.2 (64-bit) [Major: 2019, Minor: 2]
+SW Build: 2708876 on Wed Nov  6 21:39:14 MST 2019
+IP Build: 2700528 on Thu Nov  7 00:09:20 MST 2019
+
+Process ID (PID): 1444
+License: Customer
+
+Current time: 	Wed Feb 12 23:54:36 JST 2020
+Time zone: 	Japan Standard Time (Asia/Tokyo)
+
+OS: CentOS Linux release 7.4.1708 (Core)
+OS Version: 3.10.0-693.11.6.el7.x86_64
+OS Architecture: amd64
+Available processors (cores): 8
+
+Display: localhost:13.0
+Screen size: 4016x1024
+Screen resolution (DPI): 100
+Available screens: 1
+Available disk space: 82 GB
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+
+Java version: 	9.0.4 64-bit
+Java home: 	/home/s1820419/Xilinx/Vivado/2019.2/tps/lnx64/jre9.0.4
+Java executable location: 	/home/s1820419/Xilinx/Vivado/2019.2/tps/lnx64/jre9.0.4/bin/java
+Java initial memory (-Xms): 	128 MB
+Java maximum memory (-Xmx):	 3 GB
+
+
+User name: 	s1820419
+User home directory: /home/s1820419
+User working directory: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /home/s1820419/Xilinx/Vivado
+HDI_APPROOT: /home/s1820419/Xilinx/Vivado/2019.2
+RDI_DATADIR: /home/s1820419/Xilinx/Vivado/2019.2/data
+RDI_BINDIR: /home/s1820419/Xilinx/Vivado/2019.2/bin
+
+Vivado preferences file location: /home/s1820419/.Xilinx/Vivado/2019.2/vivado.xml
+Vivado preferences directory: /home/s1820419/.Xilinx/Vivado/2019.2/
+Vivado layouts directory: /home/s1820419/.Xilinx/Vivado/2019.2/layouts
+PlanAhead jar file location: 	/home/s1820419/Xilinx/Vivado/2019.2/lib/classes/planAhead.jar
+Vivado log file location: 	/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/vivado.log
+Vivado journal file location: 	/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/vivado.jou
+Engine tmp dir: 	./.Xil/Vivado-1444-vpcc
+
+Xilinx Environment Variables
+----------------------------
+XILINX: /home/s1820419/Xilinx/Vivado/2019.2/ids_lite/ISE
+XILINXD_LICENSE_FILE: 1717@ino-www.jaist.ac.jp
+XILINX_DSP: /home/s1820419/Xilinx/Vivado/2019.2/ids_lite/ISE
+XILINX_PLANAHEAD: /home/s1820419/Xilinx/Vivado/2019.2
+XILINX_VITIS: 
+XILINX_VIVADO: /home/s1820419/Xilinx/Vivado/2019.2
+XILINX_VIVADO_HLS: /home/s1820419/Xilinx/Vivado/2019.2
+
+
+GUI allocated memory:	186 MB
+GUI max memory:		3,072 MB
+Engine allocated memory: 5,039 MB
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: start_gui 
+// WARNING: HEventQueue.dispatchEvent() is taking  1319 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 5,044 MB. GUI used memory: 44 MB. Current time: 2/12/20, 11:54:38 PM JST
+// WARNING: HEventQueue.dispatchEvent() is taking  1008 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1002 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1002 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1003 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1001 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1008 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1001 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1011 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1003 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1003 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1001 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1004 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1004 ms.
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // af (cr)
+selectMenuItem(PAResourceCommand.PACommandNames_NEW_PROJECT, "New..."); // ai (cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // aa (q, cr)
+// Run Command: PAResourceCommand.PACommandNames_NEW_PROJECT
+// [GUI Memory]: 60 MB (+60514kb) [00:01:39]
+// [Engine Memory]: 5,055 MB (+5149137kb) [00:01:39]
+// [GUI Memory]: 69 MB (+6261kb) [00:01:39]
+// [GUI Memory]: 77 MB (+4218kb) [00:01:40]
+// f (cr): New Project: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1049 ms.
+// Elapsed time: 13 seconds
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// Elapsed time: 11 seconds
+setText(PAResourceOtoP.ProjectNameChooser_PROJECT_NAME, "IB_LUT", true); // ac (Q, f)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton(PAResourceQtoS.SrcChooserPanel_ADD_HDL_AND_NETLIST_FILES_TO_YOUR_PROJECT, "Add Files"); // a (E, f)
+// HMemoryUtils.trashcanNow. Engine heap size: 5,074 MB. GUI used memory: 52 MB. Current time: 2/12/20, 11:56:14 PM JST
+String[] filenames31467 = {"/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/define.v", "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/ib_lut_in2.v"};
+setFileChooser(filenames31467);
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectTab(PAResourceOtoP.PartChooser_TABBED_PANE, (HResource) null, "Boards", 1); // i (T, f)
+selectTable(PAResourceAtoD.BoardChooser_BOARD_TABLE, "ZedBoard Zynq Evaluation and Development Kit ; ZedBoard Zynq Evaluation and Development Kit ; em.avnet.com ; 1.4 ; xc7z020clg484-1 ; 484 ; d ; 200 ; 53200 ; 106400 ; 140 ; 0 ; 220 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 4 ;  ;  ;  ;  ; 0.95 ; 0.95 ; 1.05", 1, "ZedBoard Zynq Evaluation and Development Kit", 0); // d (O, f)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// bB (f):  Create Project : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1038 ms.
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_ADD
+// TclEventType: RUN_CURRENT
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_NEW
+// Tcl Message: create_project IB_LUT /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT -part xc7z020clg484-1 
+// HMemoryUtils.trashcanNow. Engine heap size: 5,102 MB. GUI used memory: 51 MB. Current time: 2/12/20, 11:56:33 PM JST
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified 
+// TclEventType: PROJECT_NEW
+// [GUI Memory]: 84 MB (+3615kb) [00:02:38]
+// WARNING: HEventQueue.dispatchEvent() is taking  6757 ms.
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// Tcl Message: INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/s1820419/Xilinx/Vivado/2019.2/data/ip'. 
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 5,128 MB. GUI used memory: 54 MB. Current time: 2/12/20, 11:56:48 PM JST
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// Tcl Message: create_project: Time (s): cpu = 00:00:15 ; elapsed = 00:00:20 . Memory (MB): peak = 6610.211 ; gain = 42.859 ; free physical = 268 ; free virtual = 19195 
+// TclEventType: BOARD_MODIFIED
+// Tcl Message: set_property board_part em.avnet.com:zed:part0:1.4 [current_project] 
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files -norecurse {/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/define.v /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/ib_lut_in2.v} 
+// Elapsed time: 23 seconds
+selectButton("FINISH", "Finish"); // JButton (j, f)
+// 'g' command handler elapsed time: 72 seconds
+// [GUI Memory]: 111 MB (+23936kb) [00:02:46]
+dismissDialog("Create Project"); // bB (f)
+dismissDialog("New Project"); // f (cr)
+// WARNING: HEventQueue.dispatchEvent() is taking  1286 ms.
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// Tcl Message: update_compile_order -fileset sources_1 
+// HMemoryUtils.trashcanNow. Engine heap size: 5,168 MB. GUI used memory: 56 MB. Current time: 2/12/20, 11:57:04 PM JST
+// Elapsed time: 12 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints]", 3, true); // B (F, cr) - Node
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Project Manager, Add Sources]", 2, false); // u (O, cr)
+// Run Command: PAResourceCommand.PACommandNames_ADD_SOURCES
+// c (cr): Add Sources: addNotify
+selectButton("NEXT", "Next >"); // JButton (j, c)
+selectButton(PAResourceAtoD.ConstraintsChooserPanel_CREATE_FILE, "Create File"); // a (E, c)
+// Tcl Command: 'file mkdir /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/constrs_1'
+// C (cr): Create Constraints File: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1571 ms.
+// Tcl Message: file mkdir /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/constrs_1 
+setText(PAResourceAtoD.CreateConstraintsFilePanel_FILE_NAME, "zedboard", true); // ac (D, C)
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (C)
+dismissDialog("Create Constraints File"); // C (cr)
+selectButton("FINISH", "Finish"); // JButton (j, c)
+// 'h' command handler elapsed time: 12 seconds
+// Tcl Command: 'file mkdir /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/constrs_1/new'
+dismissDialog("Add Sources"); // c (cr)
+// bB (cr):  Add Constraint  : addNotify
+// Tcl Message: file mkdir /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/constrs_1/new 
+// Tcl Message: close [ open /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/constrs_1/new/zedboard.xdc w ] 
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files -fileset constrs_1 /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/constrs_1/new/zedboard.xdc 
+dismissDialog("Add Constraint"); // bB (cr)
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints]", 3); // B (F, cr)
+// PAPropertyPanels.initPanels (zedboard.xdc) elapsed time: 0.3s
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints, constrs_1, zedboard.xdc]", 5, false); // B (F, cr)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints, constrs_1, zedboard.xdc]", 5, false, false, false, false, false, true); // B (F, cr) - Double Click
+typeControlKey((HResource) null, "zedboard.xdc", 'v'); // ch (w, cr)
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 21 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, ib_lut_in2 (ib_lut_in2.v)]", 2, false); // B (F, cr)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, ib_lut_in2 (ib_lut_in2.v)]", 2, false, false, false, false, false, true); // B (F, cr) - Double Click
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, ib_lut_in2 (ib_lut_in2.v)]", 2, false, false, false, false, true, false); // B (F, cr) - Popup Trigger
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // af (ao, cr)
+// HMemoryUtils.trashcanNow. Engine heap size: 5,203 MB. GUI used memory: 60 MB. Current time: 2/12/20, 11:57:54 PM JST
+selectCodeEditor("ib_lut_in2.v", 281, 86); // ch (w, cr)
+// WARNING: HEventQueue.dispatchEvent() is taking  1099 ms.
+// Elapsed time: 15 seconds
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "zedboard.xdc", 1); // i (h, cr)
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "ib_lut_in2.v", 2); // i (h, cr)
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "zedboard.xdc", 1); // i (h, cr)
+// Elapsed time: 14 seconds
+selectCodeEditor("zedboard.xdc", 0, 127); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 0, 127, true, false, true, false, false); // ch (w, cr) - Shift Key - Alt Key
+selectCodeEditor("zedboard.xdc", 1, 133); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 0, 129, true, true, false, false, false); // ch (w, cr) - Shift Key - Control Key
+selectCodeEditor("zedboard.xdc", 295, 132); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 295, 132, true, true, false, false, false); // ch (w, cr) - Shift Key - Control Key
+selectCodeEditor("zedboard.xdc", 300, 145); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 296, 152); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 296, 152, true, false, true, false, false); // ch (w, cr) - Shift Key - Alt Key
+selectCodeEditor("zedboard.xdc", 296, 162); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 296, 159, true, true, false, false, false); // ch (w, cr) - Shift Key - Control Key
+selectCodeEditor("zedboard.xdc", 316, 130); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 316, 130, true, true, false, false, false); // ch (w, cr) - Shift Key - Control Key
+selectCodeEditor("zedboard.xdc", 414, 142); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 325, 129); // ch (w, cr)
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+selectCodeEditor("zedboard.xdc", 324, 145); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 321, 161); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 323, 179); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 294, 189); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 296, 190, true, true, false, false, false); // ch (w, cr) - Shift Key - Control Key
+selectCodeEditor("zedboard.xdc", 315, 188); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 317, 203); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 316, 217); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 318, 236); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 344, 259); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 0, 281); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 0, 281, true, true, false, false, false); // ch (w, cr) - Shift Key - Control Key
+selectCodeEditor("zedboard.xdc", 287, 277); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 287, 277, true, true, false, false, false); // ch (w, cr) - Shift Key - Control Key
+selectCodeEditor("zedboard.xdc", 290, 328); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 287, 323); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 196, 325); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 287, 276); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 287, 276, true, true, false, false, false); // ch (w, cr) - Shift Key - Control Key
+selectCodeEditor("zedboard.xdc", 307, 276); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 309, 295); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 309, 308); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 309, 319); // ch (w, cr)
+selectCodeEditor("zedboard.xdc", 450, 351); // ch (w, cr)
+// TclEventType: FILE_SET_CHANGE
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Implementation, Run Implementation]", 17, false); // u (O, cr)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// f (cr): Launch Runs: addNotify
+selectButton("OptionPane.button", "OK"); // JButton (A, G)
+// WARNING: HEventQueue.dispatchEvent() is taking  1089 ms.
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// bB (cr):  Starting Design Runs : addNotify
+dismissDialog("Launch Runs"); // f (cr)
+// TclEventType: RUN_LAUNCH
+// Tcl Message: launch_runs impl_1 -jobs 8 
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: [Thu Feb 13 00:00:49 2020] Launched synth_1... Run output will be captured here: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.runs/synth_1/runme.log 
+// TclEventType: RUN_MODIFY
+// Tcl Message: [Thu Feb 13 00:00:49 2020] Launched impl_1... Run output will be captured here: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.runs/impl_1/runme.log 
+// 'c' command handler elapsed time: 8 seconds
+dismissDialog("Starting Design Runs"); // bB (cr)
+// TclEventType: RUN_STATUS_CHANGE
+// [GUI Memory]: 118 MB (+2068kb) [00:09:02]
+// Elapsed time: 139 seconds
+selectTab((HResource) null, (HResource) null, "Messages", 1); // aL (aI, cr)
+selectTab((HResource) null, (HResource) null, "Log", 2); // aL (aI, cr)
+selectTab((HResource) null, (HResource) null, "Reports", 3); // aL (aI, cr)
+selectTab((HResource) null, (HResource) null, "Messages", 1); // aL (aI, cr)
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+selectTab((HResource) null, (HResource) null, "Log", 2); // aL (aI, cr)
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// WARNING: HTimer (ExpRunMgr Pending Runs Timer) is taking 570ms to process. Increasing delay to 3000 ms.
+// TclEventType: RUN_STATUS_CHANGE
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 1326 ms. Increasing delay to 3000 ms.
+selectTab((HResource) null, (HResource) null, "Design Runs", 4); // aL (aI, cr)
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// WARNING: HTimer (ExpRunMgr Pending Runs Timer) is taking 621ms to process. Increasing delay to 4000 ms.
+// aj (cr): Implementation Completed: addNotify
+// Elapsed time: 513 seconds
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (aj)
+// Run Command: PAResourceCommand.PACommandNames_GOTO_IMPLEMENTED_DESIGN
+// bB (cr):  Open Implemented Design : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1016 ms.
+// Tcl Message: open_run impl_1 
+// HMemoryUtils.trashcanNow. Engine heap size: 5,275 MB. GUI used memory: 63 MB. Current time: 2/13/20, 12:12:04 AM JST
+// WARNING: HEventQueue.dispatchEvent() is taking  1049 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 5,360 MB. GUI used memory: 63 MB. Current time: 2/13/20, 12:12:19 AM JST
+// HMemoryUtils.trashcanNow. Engine heap size: 5,525 MB. GUI used memory: 63 MB. Current time: 2/13/20, 12:12:34 AM JST
+// [Engine Memory]: 5,570 MB (+274759kb) [00:18:44]
+// HMemoryUtils.trashcanNow. Engine heap size: 5,595 MB. GUI used memory: 63 MB. Current time: 2/13/20, 12:12:54 AM JST
+// TclEventType: FLOORPLAN_MODIFY
+// TclEventType: DESIGN_NEW
+// HMemoryUtils.trashcanNow. Engine heap size: 6,010 MB. GUI used memory: 63 MB. Current time: 2/13/20, 12:13:02 AM JST
+// Xgd.load filename: /home/s1820419/Xilinx/Vivado/2019.2/data/parts/xilinx/zynq/devint/zynq/xc7z020/xc7z020.xgd; ZipEntry: xc7z020_floorplan.xgd elapsed time: 0.5s
+// [Engine Memory]: 6,052 MB (+213165kb) [00:18:55]
+// Xgd.load filename: /home/s1820419/Xilinx/Vivado/2019.2/data/parts/xilinx/zynq/devint/zynq/xc7z020/xc7z020.xgd; ZipEntry: xc7z020_detail.xgd elapsed time: 2s
+// TclEventType: HFED_INIT_ROUTE_STORAGE_COMPLETED
+// RouteApi::loadEngineXgd elapsed time: 3.3s
+// TclEventType: DESIGN_NEW
+// [GUI Memory]: 129 MB (+5307kb) [00:19:02]
+// [GUI Memory]: 137 MB (+1574kb) [00:19:02]
+// Device: addNotify
+// DeviceView Instantiated
+// PAPropertyPanels.initPanels (ib_lut_in2.v) elapsed time: 0.3s
+// WARNING: HEventQueue.dispatchEvent() is taking  3498 ms.
+// Tcl Message: INFO: [Device 21-403] Loading part xc7z020clg484-1 
+// Tcl Message: Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 6921.379 ; gain = 0.000 ; free physical = 1329 ; free virtual = 18957 
+// Tcl Message: INFO: [Netlist 29-17] Analyzing 6 Unisim elements for replacement INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds INFO: [Project 1-479] Netlist was created with Vivado 2019.2 INFO: [Project 1-570] Preparing netlist for logic optimization INFO: [Timing 38-478] Restoring timing data from binary archive. INFO: [Timing 38-479] Binary timing data restore complete. INFO: [Project 1-856] Restoring constraints from binary archive. INFO: [Project 1-853] Binary constraint restore complete. 
+// Tcl Message: Reading XDEF placement. Reading placer database... Reading XDEF routing. 
+// Tcl Message: Read XDEF File: Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.06 . Memory (MB): peak = 7496.254 ; gain = 0.000 ; free physical = 815 ; free virtual = 18443 
+// Tcl Message: Restored from archive | CPU: 0.030000 secs | Memory: 0.044868 MB | 
+// Tcl Message: Finished XDEF File Restore: Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.06 . Memory (MB): peak = 7496.254 ; gain = 0.000 ; free physical = 815 ; free virtual = 18443 Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 7496.254 ; gain = 0.000 ; free physical = 816 ; free virtual = 18444 
+// Tcl Message: INFO: [Project 1-111] Unisim Transformation Summary: No Unisim elements were transformed.  
+// TclEventType: CURR_DESIGN_SET
+// RouteApi: Init Delay Mediator Swing Worker Finished
+// Device view-level: 0.0
+// WARNING: HEventQueue.dispatchEvent() is taking  1135 ms.
+// Tcl Message: open_run: Time (s): cpu = 00:00:32 ; elapsed = 00:01:12 . Memory (MB): peak = 7715.270 ; gain = 1011.461 ; free physical = 758 ; free virtual = 18386 
+// ExpRunCommands.openImplResults elapsed time: 73.9s
+// TclEventType: DRC_ADDED
+// TclEventType: METHODOLOGY_ADDED
+// TclEventType: POWER_UPDATED
+// WARNING: HEventQueue.dispatchEvent() is taking  2062 ms.
+// TclEventType: TIMING_SUMMARY_UPDATED
+// WARNING: HEventQueue.dispatchEvent() is taking  1113 ms.
+// 'dQ' command handler elapsed time: 78 seconds
+// WARNING: HEventQueue.dispatchEvent() is taking  1021 ms.
+// Elapsed time: 79 seconds
+dismissDialog("Open Implemented Design"); // bB (cr)
+// Elapsed time: 25 seconds
+selectGraphicalView(PAResourceOtoP.PAViews_DEVICE, 43582, 408136); // D (I, cr)
+// Device select: 'Tile - CMT_TOP_R_UPPER_B_X8Y31'
+selectView(PAResourceOtoP.PAViews_DEVICE, "Device", 119, 363, 645, 513); // U (i, cr)
+// PAPropertyPanels.initPanels (Tile: CMT_TOP_R_UPPER_B_X8Y31) elapsed time: 0.4s
+// [GUI Memory]: 153 MB (+9410kb) [00:19:36]
+selectGraphicalView(PAResourceOtoP.PAViews_DEVICE, 54825, 408136); // D (I, cr)
+// Device select: 'Tile - CLBLM_L_X2Y32'
+selectView(PAResourceOtoP.PAViews_DEVICE, "Device", 129, 363, 645, 513); // U (i, cr)
+selectGraphicalView(PAResourceOtoP.PAViews_DEVICE, 54825, 408136, false, false, false, false, true); // D (I, cr) - Double Click
+// Device select: 'Tile - CLBLM_L_X2Y32'
+selectView(PAResourceOtoP.PAViews_DEVICE, "Device", 129, 363, 645, 513); // U (i, cr)
+// PAPropertyPanels.initPanels (Clock Region: X0Y0) elapsed time: 0.2s
+// DeviceOracle::getDeviceDataByteArray length(bytes): 116824
+// WARNING: HEventQueue.dispatchEvent() is taking  1315 ms.
+// PAPropertyPanels.initPanels (ib_lut_in2) elapsed time: 0.2s
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[ib_lut_in2]", 0, true); // bD (O, cr) - Node
+// Device view-level: 0.2
+// HMemoryUtils.trashcanNow. Engine heap size: 6,181 MB. GUI used memory: 103 MB. Current time: 2/13/20, 12:13:51 AM JST
+selectTable(RDIResource.PropertyPanels_STATISTICS_TABLE, "LUT ; 12", 0, "12", 1); // t (h, cr)
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[ib_lut_in2, Nets (38)]", 1); // bD (O, cr)
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[ib_lut_in2, Nets (38), t_c]", 2, true); // bD (O, cr) - Node
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[ib_lut_in2, Nets (38), t_c]", 2); // bD (O, cr)
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[ib_lut_in2, Nets (38), t_c, t_c[0]]", 3, false); // bD (O, cr)
+// PAPropertyPanels.initPanels (t_c[0]) elapsed time: 0.2s
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[ib_lut_in2, Nets (38), t_c, t_c[0]]", 3, false, false, false, false, false, true); // bD (O, cr) - Double Click
+collapseTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[ib_lut_in2, Nets (38), t_c]", 2); // bD (O, cr)
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[ib_lut_in2, Nets (38), y1_IBUF]", 7); // bD (O, cr)
+collapseTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[ib_lut_in2, Nets (38), y1_IBUF]", 7); // bD (O, cr)
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[ib_lut_in2, Nets (38), y1_IBUF]", 7); // bD (O, cr)
+collapseTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[ib_lut_in2, Nets (38), y1_IBUF]", 7); // bD (O, cr)
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[ib_lut_in2, Leaf Cells (30)]", 22); // bD (O, cr)
+selectMenu(RDIResource.MainWinMenuMgr_LAYOUT, "Layout"); // aa (q, cr)
+dismissMenu(RDIResource.MainWinMenuMgr_LAYOUT, "Layout"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_VIEW, "View"); // aa (q, cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_VIEW, "View"); // aa (q, cr)
+selectMenu(RDIResource.MainWinMenuMgr_LAYOUT, "Layout"); // aa (q, cr)
+dismissMenu(RDIResource.MainWinMenuMgr_LAYOUT, "Layout"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // aa (q, cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // aa (q, cr)
+selectMenu(RDIResource.MainWinMenuMgr_LAYOUT, "Layout"); // aa (q, cr)
+dismissMenu(RDIResource.MainWinMenuMgr_LAYOUT, "Layout"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // aa (q, cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_REPORTS, "Reports"); // aa (q, cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_REPORTS, "Reports"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_FLOW, "Flow"); // aa (q, cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_FLOW, "Flow"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_FLOORPLANNING, "Floorplanning"); // af (cr)
+selectMenu(PAResourceItoN.MainMenuMgr_IO_PLANNING, "I/O Planning"); // af (cr)
+selectMenu(PAResourceItoN.MainMenuMgr_TIMING, "Timing"); // af (cr)
+selectMenu(PAResourceItoN.MainMenuMgr_IO_PLANNING, "I/O Planning"); // af (cr)
+selectMenu(PAResourceItoN.MainMenuMgr_FLOORPLANNING, "Floorplanning"); // af (cr)
+selectMenu(PAResourceItoN.MainMenuMgr_IO_PLANNING, "I/O Planning"); // af (cr)
+selectMenu(PAResourceItoN.MainMenuMgr_TIMING, "Timing"); // af (cr)
+selectMenuItem(PAResourceCommand.PACommandNames_SCHEMATIC, "Schematic"); // ai (cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+// Run Command: PAResourceCommand.PACommandNames_SCHEMATIC
+// Schematic: addNotify
+// [GUI Memory]: 162 MB (+1265kb) [00:20:37]
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[ib_lut_in2]", 0, true); // bD (O, cr) - Node
+selectMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_FLOORPLANNING, "Floorplanning"); // af (cr)
+selectMenu(PAResourceItoN.MainMenuMgr_IO_PLANNING, "I/O Planning"); // af (cr)
+selectMenu(PAResourceItoN.MainMenuMgr_TIMING, "Timing"); // af (cr)
+selectMenuItem(PAResourceCommand.PACommandNames_SCHEMATIC, "Schematic"); // ai (cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+// Run Command: PAResourceCommand.PACommandNames_SCHEMATIC
+// Schematic: addNotify
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "Schematic", 4); // i (h, cr)
+closeView(PAResourceOtoP.PAViews_SCHEMATIC, "Schematic"); // f
+// WARNING: HEventQueue.dispatchEvent() is taking  2866 ms.
+// Elapsed time: 21 seconds
+selectTab((HResource) null, (HResource) null, "DRC", 6); // aL (aI, cr)
+selectTab((HResource) null, (HResource) null, "Design Runs", 4); // aL (aI, cr)
+selectTab((HResource) null, (HResource) null, "Reports", 3); // aL (aI, cr)
+selectTab((HResource) null, (HResource) null, "Log", 2); // aL (aI, cr)
+selectTab((HResource) null, (HResource) null, "Messages", 1); // aL (aI, cr)
+selectTab((HResource) null, (HResource) null, "Tcl Console", 0); // aL (aI, cr)
+selectTab((HResource) null, (HResource) null, "Power", 5); // aL (aI, cr)
+// Elapsed time: 189 seconds
+selectTab((HResource) null, (HResource) null, "Sources", 0); // aL (aI, cr)
+selectTab(PAResourceEtoH.FileSetView_TABBED_PANE, (HResource) null, "Hierarchy", 0); // i (N, cr)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, ib_lut_in2 (ib_lut_in2.v)]", 2, false); // B (F, cr)
+// Elapsed time: 14 seconds
+selectTab(RDIResource.PropertiesView_TABBED_PANE, (HResource) null, "Properties", 1); // i (c, cr)
+selectTab(RDIResource.PropertiesView_TABBED_PANE, (HResource) null, "General", 0); // i (c, cr)
+// Elapsed time: 14 seconds
+selectTab((HResource) null, (HResource) null, "Netlist", 1); // aL (aI, cr)
+selectTab((HResource) null, (HResource) null, "Sources", 0); // aL (aI, cr)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, ib_lut_in2 (ib_lut_in2.v)]", 2, false, false, false, false, true, false); // B (F, cr) - Popup Trigger
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, ib_lut_in2 (ib_lut_in2.v)]", 2, false); // B (F, cr)
+// Elapsed time: 28 seconds
+selectButton(PAResourceQtoS.SrcFilePropPanels_LIBRARY, (String) null); // t (ch, cr)
+// Z (cr): Set Library: addNotify
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (Z)
+dismissDialog("Set Library"); // Z (cr)
+selectTab(RDIResource.PropertiesView_TABBED_PANE, (HResource) null, "Properties", 1); // i (c, cr)
+selectTab(RDIResource.PropertiesView_TABBED_PANE, (HResource) null, "General", 0); // i (c, cr)
+// Elapsed time: 43 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, ib_lut_in2 (ib_lut_in2.v)]", 2, false); // B (F, cr)
+// Elapsed time: 64 seconds
+collapseTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Open Synthesized Design]", 15); // u (O, cr)
+expandTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Open Synthesized Design]", 15); // u (O, cr)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Implementation, Open Implemented Design, Schematic]", 41, false); // u (O, cr)
+// Run Command: PAResourceCommand.PACommandNames_SCHEMATIC
+// Schematic: addNotify
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Open Synthesized Design, Schematic]", 27, false); // u (O, cr)
+closeView(PAResourceOtoP.PAViews_SCHEMATIC, "Schematic"); // f
+closeView(PAResourceOtoP.PAViews_SCHEMATIC, "Schematic"); // f
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Open Synthesized Design, Schematic]", 27, false); // u (O, cr)
+// bB (cr):  Open Synthesized Design : addNotify
+// Tcl Message: open_run synth_1 -name synth_1 
+// Tcl Message: Design is defaulting to impl run constrset: constrs_1 Design is defaulting to synth run part: xc7z020clg484-1 
+// TclEventType: READ_XDC_FILE_START
+// TclEventType: PLACEDB_MODIFIY_PRE
+// TclEventType: LOC_CONSTRAINT_ADD
+// TclEventType: PLACEDB_MODIFIY_PRE
+// TclEventType: LOC_CONSTRAINT_ADD
+// TclEventType: PLACEDB_MODIFIY_PRE
+// TclEventType: LOC_CONSTRAINT_ADD
+// TclEventType: PLACEDB_MODIFIY_PRE
+// TclEventType: LOC_CONSTRAINT_ADD
+// TclEventType: PLACEDB_MODIFIY_PRE
+// TclEventType: LOC_CONSTRAINT_ADD
+// TclEventType: PLACEDB_MODIFIY_PRE
+// TclEventType: LOC_CONSTRAINT_ADD
+// TclEventType: PLACEDB_MODIFIY_PRE
+// TclEventType: LOC_CONSTRAINT_ADD
+// TclEventType: PLACEDB_MODIFIY_PRE
+// TclEventType: LOC_CONSTRAINT_ADD
+// TclEventType: PLACEDB_MODIFIY_PRE
+// TclEventType: LOC_CONSTRAINT_ADD
+// TclEventType: PLACEDB_MODIFIY_PRE
+// TclEventType: LOC_CONSTRAINT_ADD
+// TclEventType: PLACEDB_MODIFIY_PRE
+// TclEventType: LOC_CONSTRAINT_ADD
+// TclEventType: PLACEDB_MODIFIY_PRE
+// TclEventType: LOC_CONSTRAINT_ADD
+// TclEventType: SIGNAL_MODIFY
+// TclEventType: READ_XDC_FILE_END
+// TclEventType: FLOORPLAN_MODIFY
+// TclEventType: DESIGN_NEW
+// HMemoryUtils.trashcanNow. Engine heap size: 6,215 MB. GUI used memory: 107 MB. Current time: 2/13/20, 12:22:17 AM JST
+// TclEventType: HFED_INIT_ROUTE_STORAGE_COMPLETED
+// TclEventType: DESIGN_NEW
+// Device: addNotify
+// DeviceView Instantiated
+// PAPropertyPanels.initPanels (ib_lut_in2.v) elapsed time: 0.2s
+// WARNING: HEventQueue.dispatchEvent() is taking  4405 ms.
+// TclEventType: CURR_DESIGN_SET
+// Tcl Message: Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 7783.047 ; gain = 0.000 ; free physical = 447 ; free virtual = 18084 
+// Tcl Message: INFO: [Netlist 29-17] Analyzing 6 Unisim elements for replacement INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds INFO: [Project 1-479] Netlist was created with Vivado 2019.2 INFO: [Project 1-570] Preparing netlist for logic optimization 
+// Tcl Message: Parsing XDC File [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/constrs_1/new/zedboard.xdc] 
+// Tcl Message: Finished Parsing XDC File [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/constrs_1/new/zedboard.xdc] 
+// Tcl Message: INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s). 
+// Tcl Message: Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 7814.906 ; gain = 0.000 ; free physical = 385 ; free virtual = 18021 
+// Tcl Message: INFO: [Project 1-111] Unisim Transformation Summary: No Unisim elements were transformed.  
+// Device view-level: 0.0
+// [GUI Memory]: 170 MB (+23kb) [00:28:15]
+// Tcl Message: open_run: Time (s): cpu = 00:00:08 ; elapsed = 00:00:08 . Memory (MB): peak = 7926.277 ; gain = 143.230 ; free physical = 317 ; free virtual = 17953 
+// RouteApi: Init Delay Mediator Swing Worker Finished
+// Run Command: PAResourceCommand.PACommandNames_SCHEMATIC
+// Schematic: addNotify
+// S (cr): Critical Messages: addNotify
+// WARNING: updateGUI() is taking  1081 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1370 ms.
+dismissDialog("Open Synthesized Design"); // bB (cr)
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK"); // f (S)
+dismissDialog("Critical Messages"); // S (cr)
+selectButton(PAResourceItoN.NetlistSchematicView_SHOW_CELLS_IN_THIS_SCHEMATIC, "30 Cells"); // h (f, cr)
+// WARNING: HEventQueue.dispatchEvent() is taking  1421 ms.
+// PAPropertyPanels.initPanels (t_c_OBUF[1]_inst_i_6 (LUT6)) elapsed time: 1.1s
+// WARNING: HEventQueue.dispatchEvent() is taking  1172 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 6,335 MB. GUI used memory: 118 MB. Current time: 2/13/20, 12:22:49 AM JST
+// Elapsed time: 56 seconds
+selectTab((HResource) null, (HResource) null, "Sources", 0); // aL (aI, cr)
+selectTab((HResource) null, (HResource) null, "Netlist", 1); // aL (aI, cr)
+// Elapsed time: 18 seconds
+selectTab(RDIResource.PropertiesView_TABBED_PANE, (HResource) null, "Properties", 1); // i (c, cr)
+selectTab(RDIResource.PropertiesView_TABBED_PANE, (HResource) null, "Power", 2); // i (c, cr)
+selectTab(RDIResource.PropertiesView_TABBED_PANE, (HResource) null, "Nets", 3); // i (c, cr)
+selectTab(RDIResource.PropertiesView_TABBED_PANE, (HResource) null, "Cell Pins", 4); // i (c, cr)
+selectTab(RDIResource.PropertiesView_TABBED_PANE, (HResource) null, "Truth Table", 5); // i (c, cr)
+// Elapsed time: 10 seconds
+selectButton(PAResourceItoN.InstancePropPanels_EDIT_LUT_EQUATION, "Edit LUT Equation..."); // a (i, cr)
+// b (cr): Specify LUT Equation: addNotify
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (b)
+dismissDialog("Specify LUT Equation"); // b (cr)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Implementation, Open Implemented Design, Schematic]", 41, false); // u (O, cr)
+// TclEventType: CURR_DESIGN_SET
+// PAPropertyPanels.initPanels (t_c_OBUF[1]_inst_i_6 (LUT6)) elapsed time: 0.3s
+// Run Command: PAResourceCommand.PACommandNames_SCHEMATIC
+// Schematic: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  2985 ms.
+// Tcl Message: current_design impl_1 
+closeView(PAResourceOtoP.PAViews_SCHEMATIC, "Schematic"); // f
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, ib_lut_in2 (ib_lut_in2.v)]", 2, false); // B (F, cr)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Implementation, Open Implemented Design, Schematic]", 41, false); // u (O, cr)
+// Run Command: PAResourceCommand.PACommandNames_SCHEMATIC
+// Schematic: addNotify
+selectView(PAResourceOtoP.PAViews_SCHEMATIC, "Schematic", 113, 210, 599, 508, false, false, false, true, false); // f (i, cr) - Popup Trigger
+selectMenu(PAResourceItoN.InstanceMenu_FLOORPLANNING, "Floorplanning"); // af (ao, cr)
+selectMenu(PAResourceItoN.InstanceMenu_FLOORPLANNING, "Floorplanning"); // af (ao, cr)
+selectMenu(PAResourceItoN.InstanceMenu_FLOORPLANNING, "Floorplanning"); // af (ao, cr)
+selectMenu(PAResourceItoN.InstanceMenu_FLOORPLANNING, "Floorplanning"); // af (ao, cr)
+selectMenuItem(PAResourceCommand.PACommandNames_DRAW_PBLOCK_MODE, "Draw Pblock"); // ai (cr)
+// Run Command: PAResourceCommand.PACommandNames_DRAW_PBLOCK_MODE
+// Device view-level: 0.0
+closeView(PAResourceOtoP.PAViews_DEVICE, "Device"); // U
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "Schematic", 3); // i (h, cr)
+selectView(PAResourceOtoP.PAViews_SCHEMATIC, "Schematic", 86, 73, 599, 508, false, false, false, true, false); // f (i, cr) - Popup Trigger
+selectMenu(PAResourceItoN.InstanceMenu_FLOORPLANNING, "Floorplanning"); // af (ao, cr)
+selectMenu(PAResourceQtoS.SchMenuAndMouse_EXPAND_CONE, "Expand Cone"); // af (ao, cr)
+selectMenu(PAResourceItoN.NetlistSchMenuAndMouse_EXPAND_COLLAPSE, "Expand/Collapse"); // af (ao, cr)
+selectMenu(PAResourceItoN.NetlistSchMenuAndMouse_VIEW, "View"); // af (ao, cr)
+selectMenu(PAResourceItoN.NetlistSchMenuAndMouse_VIEW, "View"); // af (ao, cr)
+selectMenu(PAResourceItoN.NetlistSchMenuAndMouse_VIEW, "View"); // af (ao, cr)
+selectMenu(PAResourceItoN.NetlistSchMenuAndMouse_EXPAND_COLLAPSE, "Expand/Collapse"); // af (ao, cr)
+selectMenu(PAResourceItoN.NetlistSchMenuAndMouse_VIEW, "View"); // af (ao, cr)
+selectMenuItem(PAResourceQtoS.SchMenuAndMouse_SAVE_AS_PDF_FILE, "Save as PDF File..."); // ai (ao, cr)
+// k (cr): Save as PDF File: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (k)
+// Tcl Command: 'write_schematic -format pdf -orientation portrait /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/schematic.pdf'
+// TclEventType: WRITE_SCHEMATIC
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (k)
+// Tcl Message: write_schematic -format pdf -orientation portrait /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/schematic.pdf 
+// Tcl Message: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/schematic.pdf 
+dismissDialog("Save as PDF File"); // k (cr)
+// Elapsed time: 29 seconds
+selectView(PAResourceOtoP.PAViews_SCHEMATIC, "Schematic", 114, 146, 599, 508, false, false, false, true, false); // f (i, cr) - Popup Trigger
+selectMenu(PAResourceQtoS.SchMenuAndMouse_EXPAND_CONE, "Expand Cone"); // af (ao, cr)
+selectMenu(PAResourceItoN.NetlistSchMenuAndMouse_EXPAND_COLLAPSE, "Expand/Collapse"); // af (ao, cr)
+selectMenu(PAResourceItoN.NetlistSchMenuAndMouse_VIEW, "View"); // af (ao, cr)
+selectMenuItem(PAResourceQtoS.SchMenuAndMouse_SAVE_AS_PDF_FILE, "Save as PDF File..."); // ai (ao, cr)
+// k (cr): Save as PDF File: addNotify
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (k)
+// [GUI Memory]: 183 MB (+3918kb) [00:31:52]
+dismissDialog("Save as PDF File"); // k (cr)
+// Elapsed time: 30 seconds
+selectView(PAResourceOtoP.PAViews_SCHEMATIC, "Schematic", 66, 112, 599, 508, false, false, false, true, false); // f (i, cr) - Popup Trigger
+selectMenu(PAResourceItoN.InstanceMenu_FLOORPLANNING, "Floorplanning"); // af (ao, cr)
+selectMenu(PAResourceQtoS.SchMenuAndMouse_EXPAND_CONE, "Expand Cone"); // af (ao, cr)
+selectMenu(PAResourceItoN.NetlistSchMenuAndMouse_EXPAND_COLLAPSE, "Expand/Collapse"); // af (ao, cr)
+selectMenu(PAResourceItoN.NetlistSchMenuAndMouse_VIEW, "View"); // af (ao, cr)
+selectMenuItem(PAResourceQtoS.SchMenuAndMouse_SAVE_AS_PDF_FILE, "Save as PDF File..."); // ai (ao, cr)
+// k (cr): Save as PDF File: addNotify
+setText(PAResourceQtoS.SaveSchematicDialog_SPECIFY_OUTPUT_PDF_FILE, "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/schematic.pdf"); // ao (an, k)
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (k)
+dismissDialog("Save as PDF File"); // k (cr)
+// Elapsed time: 334 seconds
+selectMenu(PAResourceItoN.MainMenuMgr_REPORTS, "Reports"); // aa (q, cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_REPORTS, "Reports"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // aa (q, cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_REPORTS, "Reports"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_IO, "IO"); // af (cr)
+selectMenu(PAResourceItoN.MainMenuMgr_TIMING, "Timing"); // af (cr)
+selectMenu(PAResourceItoN.MainMenuMgr_TIMING, "Timing"); // af (cr)
+selectMenu(PAResourceItoN.MainMenuMgr_IO, "IO"); // af (cr)
+selectMenu(PAResourceItoN.MainMenuMgr_TIMING, "Timing"); // af (cr)
+selectMenu(PAResourceItoN.MainMenuMgr_TIMING, "Timing"); // af (cr)
+selectMenu(PAResourceItoN.MainMenuMgr_IO, "IO"); // af (cr)
+selectMenu(PAResourceItoN.MainMenuMgr_IO, "IO"); // af (cr)
+selectMenu(PAResourceItoN.MainMenuMgr_TIMING, "Timing"); // af (cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_REPORTS, "Reports"); // aa (q, cr)
+expandTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Implementation, Open Implemented Design]", 30); // u (O, cr)
+collapseTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Implementation, Open Implemented Design]", 30); // u (O, cr)
+collapseTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Implementation, Open Implemented Design]", 30); // u (O, cr)
+expandTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Implementation, Open Implemented Design]", 30); // u (O, cr)
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "Project Summary", 0); // i (h, cr)
+selectTab(PAResourceOtoP.ProjectSummaryUtilizationGadget_PROJECT_SUMMARY_UTILIZATION_GADGET_TABBED, PAResourceOtoP.ProjectSummaryUtilizationGadget_POST_SYNTHESIS, "Post-Synthesis", 0); // b (E, cr)
+selectTab(PAResourceOtoP.ProjectSummaryUtilizationGadget_PROJECT_SUMMARY_UTILIZATION_GADGET_TABBED, PAResourceOtoP.ProjectSummaryUtilizationGadget_POST_IMPLEMENTATION, "Post-Implementation", 1); // b (E, cr)
+selectLabel(PAResourceOtoP.ProjectDashboardView_DASHBOARD, "Dashboard"); // b (E, cr)
+selectButton("Dashboard_Add Gadget", "Add Gadget"); // E (f, cr)
+// a (cr): Configure Gadget: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1235 ms.
+dismissDialog("Configure Gadget"); // a (cr)
+// Elapsed time: 10 seconds
+selectView(PAResourceOtoP.PAViews_PROJECT_SUMMARY, "Project Summary", 134, 48, 599, 508); // v (i, cr)
+// Elapsed time: 12 seconds
+selectLabel(PAResourceOtoP.ProjectDashboardView_DASHBOARD, "Dashboard"); // b (E, cr)
+selectTab(PAResourceOtoP.ProjectDashboardView_TABBED_PANE, PAResourceOtoP.ProjectDashboardView_OVERVIEW, "Overview", 0); // w (v, cr)
+selectTab(PAResourceOtoP.ProjectSummaryUtilizationPanel_PROJECT_SUMMARY_UTILIZATION_PANEL_TABBED, PAResourceOtoP.ProjectSummaryUtilizationPanel_TABLE, "Table", 1); // f (E, cr)
+// HMemoryUtils.trashcanNow. Engine heap size: 6,337 MB. GUI used memory: 117 MB. Current time: 2/13/20, 12:52:50 AM JST
+// Elapsed time: 2559 seconds
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "Schematic", 3); // i (h, cr)
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "ib_lut_in2.v", 2); // i (h, cr)
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "zedboard.xdc", 1); // i (h, cr)
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "Project Summary", 0); // i (h, cr)
+// HMemoryUtils.trashcanNow. Engine heap size: 6,337 MB. GUI used memory: 112 MB. Current time: 2/13/20, 1:22:51 AM JST

@@ -1,0 +1,543 @@
+#-----------------------------------------------------------
+# Vivado v2019.2 (64-bit)
+# SW Build 2708876 on Wed Nov  6 21:39:14 MST 2019
+# IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
+# Start of session at: Sat Feb 15 23:31:11 2020
+# Process ID: 16311
+# Current directory: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL
+# Command line: vivado
+# Log file: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/vivado.log
+# Journal file: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.xpr
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/s1820419/Xilinx/Vivado/2019.2/data/ip'.
+open_project: Time (s): cpu = 00:00:15 ; elapsed = 00:00:07 . Memory (MB): peak = 6621.359 ; gain = 81.891 ; free physical = 1625 ; free virtual = 19385
+update_compile_order -fileset sources_1
+launch_simulation
+Command: launch_simulation 
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File '/home/s1820419/Xilinx/Vivado/2019.2/data/xsim/xsim.ini' copied to run dir:'/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'cnu_ib_lut_ram' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/IB_RAM_blk_mem_gen_0_0.mif'
+INFO: [SIM-utils-43] Exported '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/lut_Iter0_Func0_3.coe'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+xvlog --incr --relax -prj cnu_ib_lut_ram_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.ip_user_files/bd/IB_RAM/ip/IB_RAM_blk_mem_gen_0_0/sim/IB_RAM_blk_mem_gen_0_0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM_blk_mem_gen_0_0
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.ip_user_files/bd/IB_RAM/sim/IB_RAM.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/imports/hdl/IB_RAM_wrapper.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM_wrapper
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v" into library xil_defaultlib
+ERROR: [VRFC 10-3195] cannot open include file 'define.v' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v:22]
+INFO: [VRFC 10-311] analyzing module cnu_ib_lut_ram
+ERROR: [VRFC 10-2865] module 'cnu_ib_lut_ram' ignored due to previous errors [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v:24]
+INFO: [USF-XSim-69] 'compile' step finished in '3' seconds
+INFO: [USF-XSim-99] Step results log file:'/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/xvlog.log'
+ERROR: [USF-XSim-62] 'compile' step failed with error(s). Please check the Tcl console output or '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/xvlog.log' file for more information.
+ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation.
+ERROR: [Common 17-39] 'launch_simulation' failed due to earlier errors.
+launch_simulation
+Command: launch_simulation 
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File '/home/s1820419/Xilinx/Vivado/2019.2/data/xsim/xsim.ini' copied to run dir:'/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'cnu_ib_lut_ram' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/IB_RAM_blk_mem_gen_0_0.mif'
+INFO: [SIM-utils-43] Exported '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/lut_Iter0_Func0_3.coe'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+xvlog --incr --relax -prj cnu_ib_lut_ram_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.ip_user_files/bd/IB_RAM/ip/IB_RAM_blk_mem_gen_0_0/sim/IB_RAM_blk_mem_gen_0_0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM_blk_mem_gen_0_0
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.ip_user_files/bd/IB_RAM/sim/IB_RAM.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/imports/hdl/IB_RAM_wrapper.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM_wrapper
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v" into library xil_defaultlib
+ERROR: [VRFC 10-3195] cannot open include file 'define.v' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v:22]
+INFO: [VRFC 10-311] analyzing module cnu_ib_lut_ram
+ERROR: [VRFC 10-2865] module 'cnu_ib_lut_ram' ignored due to previous errors [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v:24]
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
+INFO: [USF-XSim-99] Step results log file:'/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/xvlog.log'
+ERROR: [USF-XSim-62] 'compile' step failed with error(s). Please check the Tcl console output or '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/xvlog.log' file for more information.
+ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation.
+ERROR: [Common 17-39] 'launch_simulation' failed due to earlier errors.
+export_ip_user_files -of_objects  [get_files /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/define.v] -no_script -reset -force -quiet
+remove_files  /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/define.v
+add_files -norecurse /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/define.v
+update_compile_order -fileset sources_1
+launch_simulation
+Command: launch_simulation 
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File '/home/s1820419/Xilinx/Vivado/2019.2/data/xsim/xsim.ini' copied to run dir:'/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'cnu_ib_lut_ram' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/IB_RAM_blk_mem_gen_0_0.mif'
+INFO: [SIM-utils-43] Exported '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/lut_Iter0_Func0_3.coe'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+xvlog --incr --relax -prj cnu_ib_lut_ram_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.ip_user_files/bd/IB_RAM/ip/IB_RAM_blk_mem_gen_0_0/sim/IB_RAM_blk_mem_gen_0_0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM_blk_mem_gen_0_0
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.ip_user_files/bd/IB_RAM/sim/IB_RAM.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/imports/hdl/IB_RAM_wrapper.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM_wrapper
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cnu_ib_lut_ram
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+xelab -wto bc7896355b3d4b4caaf88166cc137be7 --incr --debug typical --relax --mt 8 -L blk_mem_gen_v8_4_4 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot cnu_ib_lut_ram_behav xil_defaultlib.cnu_ib_lut_ram xil_defaultlib.glbl -log elaborate.log
+Vivado Simulator 2019.2
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: /home/s1820419/Xilinx/Vivado/2019.2/bin/unwrapped/lnx64.o/xelab -wto bc7896355b3d4b4caaf88166cc137be7 --incr --debug typical --relax --mt 8 -L blk_mem_gen_v8_4_4 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot cnu_ib_lut_ram_behav xil_defaultlib.cnu_ib_lut_ram xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+WARNING: [XSIM 43-3431] One or more environment variables have been detected which affect the operation of the C compiler. These are typically not set in standard installations and are not tested by Xilinx, however they may be appropriate for your system, so the flow will attempt to continue.  If errors occur, try running xelab with the "-mt off -v 1" switches to see more information from the C compiler. The following environment variables have been detected:
+    CPATH
+    LIBRARY_PATH
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3091] actual bit length 1024 differs from formal bit length 128 for port 'BRAM_PORTA_0_we' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v:39]
+WARNING: [VRFC 10-3091] actual bit length 1024 differs from formal bit length 128 for port 'BRAM_PORTB_0_we' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v:47]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_output_stage(...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_softecc_outpu...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_mem_module(C_...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_axi_regs_fwd_v8_4(C_DATA...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4(C_FAMILY="zyn...
+Compiling module xil_defaultlib.IB_RAM_blk_mem_gen_0_0
+Compiling module xil_defaultlib.IB_RAM
+Compiling module xil_defaultlib.IB_RAM_wrapper
+Compiling module xil_defaultlib.cnu_ib_lut_ram
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot cnu_ib_lut_ram_behav
+
+****** Webtalk v2019.2 (64-bit)
+  **** SW Build 2708876 on Wed Nov  6 21:39:14 MST 2019
+  **** IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
+    ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+source /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/xsim.dir/cnu_ib_lut_ram_behav/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-186] '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/xsim.dir/cnu_ib_lut_ram_behav/webtalk/usage_statistics_ext_xsim.xml' has been successfully sent to Xilinx on Sun Feb 16 00:11:35 2020. For additional details about this file, please refer to the WebTalk help file at /home/s1820419/Xilinx/Vivado/2019.2/doc/webtalk_introduction.html.
+INFO: [Common 17-206] Exiting Webtalk at Sun Feb 16 00:11:35 2020...
+run_program: Time (s): cpu = 00:00:06 ; elapsed = 00:00:09 . Memory (MB): peak = 6896.418 ; gain = 0.000 ; free physical = 1986 ; free virtual = 19882
+INFO: [USF-XSim-69] 'elaborate' step finished in '9' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "cnu_ib_lut_ram_behav -key {Behavioral:sim_1:Functional:cnu_ib_lut_ram} -tclbatch {cnu_ib_lut_ram.tcl} -protoinst "protoinst_files/IB_RAM.protoinst" -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2019.2
+INFO: [Wavedata 42-565] Reading protoinst file protoinst_files/IB_RAM.protoinst
+Time resolution is 1 ps
+source cnu_ib_lut_ram.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+ Block Memory Generator module loading initial data...
+ Block Memory Generator data initialization complete.
+Block Memory Generator module cnu_ib_lut_ram.u0.IB_RAM_i.blk_mem_gen_0.inst.native_mem_mapped_module.blk_mem_gen_v8_4_4_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
+xsim: Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 6943.215 ; gain = 46.797 ; free physical = 1935 ; free virtual = 19845
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'cnu_ib_lut_ram_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:00:25 ; elapsed = 00:00:30 . Memory (MB): peak = 6943.215 ; gain = 46.797 ; free physical = 1935 ; free virtual = 19845
+update_compile_order -fileset sources_1
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+close_sim: Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 7011.188 ; gain = 0.000 ; free physical = 1938 ; free virtual = 19849
+launch_simulation
+Command: launch_simulation 
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File '/home/s1820419/Xilinx/Vivado/2019.2/data/xsim/xsim.ini' copied to run dir:'/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'cnu_ib_lut_ram' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/IB_RAM_blk_mem_gen_0_0.mif'
+INFO: [SIM-utils-43] Exported '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/lut_Iter0_Func0_3.coe'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+xvlog --incr --relax -prj cnu_ib_lut_ram_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.ip_user_files/bd/IB_RAM/ip/IB_RAM_blk_mem_gen_0_0/sim/IB_RAM_blk_mem_gen_0_0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM_blk_mem_gen_0_0
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.ip_user_files/bd/IB_RAM/sim/IB_RAM.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/imports/hdl/IB_RAM_wrapper.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM_wrapper
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cnu_ib_lut_ram
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+xelab -wto bc7896355b3d4b4caaf88166cc137be7 --incr --debug typical --relax --mt 8 -L blk_mem_gen_v8_4_4 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot cnu_ib_lut_ram_behav xil_defaultlib.cnu_ib_lut_ram xil_defaultlib.glbl -log elaborate.log
+Vivado Simulator 2019.2
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: /home/s1820419/Xilinx/Vivado/2019.2/bin/unwrapped/lnx64.o/xelab -wto bc7896355b3d4b4caaf88166cc137be7 --incr --debug typical --relax --mt 8 -L blk_mem_gen_v8_4_4 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot cnu_ib_lut_ram_behav xil_defaultlib.cnu_ib_lut_ram xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+WARNING: [XSIM 43-3431] One or more environment variables have been detected which affect the operation of the C compiler. These are typically not set in standard installations and are not tested by Xilinx, however they may be appropriate for your system, so the flow will attempt to continue.  If errors occur, try running xelab with the "-mt off -v 1" switches to see more information from the C compiler. The following environment variables have been detected:
+    CPATH
+    LIBRARY_PATH
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3091] actual bit length 1024 differs from formal bit length 128 for port 'BRAM_PORTA_0_we' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v:39]
+WARNING: [VRFC 10-3091] actual bit length 1024 differs from formal bit length 128 for port 'BRAM_PORTB_0_we' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v:47]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_output_stage(...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_softecc_outpu...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_mem_module(C_...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_axi_regs_fwd_v8_4(C_DATA...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4(C_FAMILY="zyn...
+Compiling module xil_defaultlib.IB_RAM_blk_mem_gen_0_0
+Compiling module xil_defaultlib.IB_RAM
+Compiling module xil_defaultlib.IB_RAM_wrapper
+Compiling module xil_defaultlib.cnu_ib_lut_ram
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot cnu_ib_lut_ram_behav
+INFO: [USF-XSim-69] 'elaborate' step finished in '4' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "cnu_ib_lut_ram_behav -key {Behavioral:sim_1:Functional:cnu_ib_lut_ram} -tclbatch {cnu_ib_lut_ram.tcl} -protoinst "protoinst_files/IB_RAM.protoinst" -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2019.2
+INFO: [Wavedata 42-565] Reading protoinst file protoinst_files/IB_RAM.protoinst
+Time resolution is 1 ps
+source cnu_ib_lut_ram.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+ Block Memory Generator module loading initial data...
+ Block Memory Generator data initialization complete.
+Block Memory Generator module cnu_ib_lut_ram.u0.IB_RAM_i.blk_mem_gen_0.inst.native_mem_mapped_module.blk_mem_gen_v8_4_4_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
+xsim: Time (s): cpu = 00:00:04 ; elapsed = 00:00:08 . Memory (MB): peak = 7011.188 ; gain = 0.000 ; free physical = 1906 ; free virtual = 19817
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'cnu_ib_lut_ram_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:00:09 ; elapsed = 00:00:15 . Memory (MB): peak = 7011.188 ; gain = 0.000 ; free physical = 1906 ; free virtual = 19817
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+launch_simulation
+Command: launch_simulation 
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File '/home/s1820419/Xilinx/Vivado/2019.2/data/xsim/xsim.ini' copied to run dir:'/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'cnu_ib_lut_ram' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/IB_RAM_blk_mem_gen_0_0.mif'
+INFO: [SIM-utils-43] Exported '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/lut_Iter0_Func0_3.coe'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+xvlog --incr --relax -prj cnu_ib_lut_ram_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.ip_user_files/bd/IB_RAM/ip/IB_RAM_blk_mem_gen_0_0/sim/IB_RAM_blk_mem_gen_0_0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM_blk_mem_gen_0_0
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.ip_user_files/bd/IB_RAM/sim/IB_RAM.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/imports/hdl/IB_RAM_wrapper.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM_wrapper
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cnu_ib_lut_ram
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+xelab -wto bc7896355b3d4b4caaf88166cc137be7 --incr --debug typical --relax --mt 8 -L blk_mem_gen_v8_4_4 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot cnu_ib_lut_ram_behav xil_defaultlib.cnu_ib_lut_ram xil_defaultlib.glbl -log elaborate.log
+Vivado Simulator 2019.2
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: /home/s1820419/Xilinx/Vivado/2019.2/bin/unwrapped/lnx64.o/xelab -wto bc7896355b3d4b4caaf88166cc137be7 --incr --debug typical --relax --mt 8 -L blk_mem_gen_v8_4_4 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot cnu_ib_lut_ram_behav xil_defaultlib.cnu_ib_lut_ram xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+WARNING: [XSIM 43-3431] One or more environment variables have been detected which affect the operation of the C compiler. These are typically not set in standard installations and are not tested by Xilinx, however they may be appropriate for your system, so the flow will attempt to continue.  If errors occur, try running xelab with the "-mt off -v 1" switches to see more information from the C compiler. The following environment variables have been detected:
+    CPATH
+    LIBRARY_PATH
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3091] actual bit length 1024 differs from formal bit length 128 for port 'BRAM_PORTA_0_we' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v:39]
+WARNING: [VRFC 10-3091] actual bit length 1024 differs from formal bit length 128 for port 'BRAM_PORTB_0_we' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v:47]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_output_stage(...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_softecc_outpu...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_mem_module(C_...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_axi_regs_fwd_v8_4(C_DATA...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4(C_FAMILY="zyn...
+Compiling module xil_defaultlib.IB_RAM_blk_mem_gen_0_0
+Compiling module xil_defaultlib.IB_RAM
+Compiling module xil_defaultlib.IB_RAM_wrapper
+Compiling module xil_defaultlib.cnu_ib_lut_ram
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot cnu_ib_lut_ram_behav
+INFO: [USF-XSim-69] 'elaborate' step finished in '4' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "cnu_ib_lut_ram_behav -key {Behavioral:sim_1:Functional:cnu_ib_lut_ram} -tclbatch {cnu_ib_lut_ram.tcl} -protoinst "protoinst_files/IB_RAM.protoinst" -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2019.2
+INFO: [Wavedata 42-565] Reading protoinst file protoinst_files/IB_RAM.protoinst
+Time resolution is 1 ps
+source cnu_ib_lut_ram.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+ Block Memory Generator module loading initial data...
+ Block Memory Generator data initialization complete.
+Block Memory Generator module cnu_ib_lut_ram.u0.IB_RAM_i.blk_mem_gen_0.inst.native_mem_mapped_module.blk_mem_gen_v8_4_4_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
+xsim: Time (s): cpu = 00:00:03 ; elapsed = 00:00:08 . Memory (MB): peak = 7187.043 ; gain = 0.000 ; free physical = 1904 ; free virtual = 19816
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'cnu_ib_lut_ram_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:00:08 ; elapsed = 00:00:15 . Memory (MB): peak = 7187.043 ; gain = 0.000 ; free physical = 1904 ; free virtual = 19816
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+launch_simulation
+Command: launch_simulation 
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File '/home/s1820419/Xilinx/Vivado/2019.2/data/xsim/xsim.ini' copied to run dir:'/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'cnu_ib_lut_ram' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/IB_RAM_blk_mem_gen_0_0.mif'
+INFO: [SIM-utils-43] Exported '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/lut_Iter0_Func0_3.coe'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+xvlog --incr --relax -prj cnu_ib_lut_ram_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.ip_user_files/bd/IB_RAM/ip/IB_RAM_blk_mem_gen_0_0/sim/IB_RAM_blk_mem_gen_0_0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM_blk_mem_gen_0_0
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.ip_user_files/bd/IB_RAM/sim/IB_RAM.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/imports/hdl/IB_RAM_wrapper.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM_wrapper
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cnu_ib_lut_ram
+INFO: [USF-XSim-69] 'compile' step finished in '3' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+xelab -wto bc7896355b3d4b4caaf88166cc137be7 --incr --debug typical --relax --mt 8 -L blk_mem_gen_v8_4_4 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot cnu_ib_lut_ram_behav xil_defaultlib.cnu_ib_lut_ram xil_defaultlib.glbl -log elaborate.log
+Vivado Simulator 2019.2
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: /home/s1820419/Xilinx/Vivado/2019.2/bin/unwrapped/lnx64.o/xelab -wto bc7896355b3d4b4caaf88166cc137be7 --incr --debug typical --relax --mt 8 -L blk_mem_gen_v8_4_4 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot cnu_ib_lut_ram_behav xil_defaultlib.cnu_ib_lut_ram xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+WARNING: [XSIM 43-3431] One or more environment variables have been detected which affect the operation of the C compiler. These are typically not set in standard installations and are not tested by Xilinx, however they may be appropriate for your system, so the flow will attempt to continue.  If errors occur, try running xelab with the "-mt off -v 1" switches to see more information from the C compiler. The following environment variables have been detected:
+    CPATH
+    LIBRARY_PATH
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3091] actual bit length 1024 differs from formal bit length 128 for port 'BRAM_PORTA_0_we' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v:39]
+WARNING: [VRFC 10-3091] actual bit length 1024 differs from formal bit length 128 for port 'BRAM_PORTB_0_we' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v:47]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_output_stage(...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_softecc_outpu...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_mem_module(C_...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_axi_regs_fwd_v8_4(C_DATA...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4(C_FAMILY="zyn...
+Compiling module xil_defaultlib.IB_RAM_blk_mem_gen_0_0
+Compiling module xil_defaultlib.IB_RAM
+Compiling module xil_defaultlib.IB_RAM_wrapper
+Compiling module xil_defaultlib.cnu_ib_lut_ram
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot cnu_ib_lut_ram_behav
+INFO: [USF-XSim-69] 'elaborate' step finished in '3' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "cnu_ib_lut_ram_behav -key {Behavioral:sim_1:Functional:cnu_ib_lut_ram} -tclbatch {cnu_ib_lut_ram.tcl} -protoinst "protoinst_files/IB_RAM.protoinst" -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2019.2
+INFO: [Wavedata 42-565] Reading protoinst file protoinst_files/IB_RAM.protoinst
+Time resolution is 1 ps
+source cnu_ib_lut_ram.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+ Block Memory Generator module loading initial data...
+ Block Memory Generator data initialization complete.
+Block Memory Generator module cnu_ib_lut_ram.u0.IB_RAM_i.blk_mem_gen_0.inst.native_mem_mapped_module.blk_mem_gen_v8_4_4_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
+xsim: Time (s): cpu = 00:00:03 ; elapsed = 00:00:08 . Memory (MB): peak = 7200.051 ; gain = 0.000 ; free physical = 1887 ; free virtual = 19808
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'cnu_ib_lut_ram_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:00:09 ; elapsed = 00:00:14 . Memory (MB): peak = 7200.051 ; gain = 0.000 ; free physical = 1887 ; free virtual = 19808
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+launch_simulation
+Command: launch_simulation 
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File '/home/s1820419/Xilinx/Vivado/2019.2/data/xsim/xsim.ini' copied to run dir:'/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'cnu_ib_lut_ram' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/IB_RAM_blk_mem_gen_0_0.mif'
+INFO: [SIM-utils-43] Exported '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim/lut_Iter0_Func0_3.coe'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+xvlog --incr --relax -prj cnu_ib_lut_ram_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.ip_user_files/bd/IB_RAM/ip/IB_RAM_blk_mem_gen_0_0/sim/IB_RAM_blk_mem_gen_0_0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM_blk_mem_gen_0_0
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.ip_user_files/bd/IB_RAM/sim/IB_RAM.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/imports/hdl/IB_RAM_wrapper.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IB_RAM_wrapper
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cnu_ib_lut_ram
+INFO: [USF-XSim-69] 'compile' step finished in '3' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+xelab -wto bc7896355b3d4b4caaf88166cc137be7 --incr --debug typical --relax --mt 8 -L blk_mem_gen_v8_4_4 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot cnu_ib_lut_ram_behav xil_defaultlib.cnu_ib_lut_ram xil_defaultlib.glbl -log elaborate.log
+Vivado Simulator 2019.2
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: /home/s1820419/Xilinx/Vivado/2019.2/bin/unwrapped/lnx64.o/xelab -wto bc7896355b3d4b4caaf88166cc137be7 --incr --debug typical --relax --mt 8 -L blk_mem_gen_v8_4_4 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot cnu_ib_lut_ram_behav xil_defaultlib.cnu_ib_lut_ram xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+WARNING: [XSIM 43-3431] One or more environment variables have been detected which affect the operation of the C compiler. These are typically not set in standard installations and are not tested by Xilinx, however they may be appropriate for your system, so the flow will attempt to continue.  If errors occur, try running xelab with the "-mt off -v 1" switches to see more information from the C compiler. The following environment variables have been detected:
+    CPATH
+    LIBRARY_PATH
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3091] actual bit length 1024 differs from formal bit length 128 for port 'BRAM_PORTA_0_we' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v:39]
+WARNING: [VRFC 10-3091] actual bit length 1024 differs from formal bit length 128 for port 'BRAM_PORTB_0_we' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v:47]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_output_stage(...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_softecc_outpu...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_mem_module(C_...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_axi_regs_fwd_v8_4(C_DATA...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4(C_FAMILY="zyn...
+Compiling module xil_defaultlib.IB_RAM_blk_mem_gen_0_0
+Compiling module xil_defaultlib.IB_RAM
+Compiling module xil_defaultlib.IB_RAM_wrapper
+Compiling module xil_defaultlib.cnu_ib_lut_ram
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot cnu_ib_lut_ram_behav
+INFO: [USF-XSim-69] 'elaborate' step finished in '3' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "cnu_ib_lut_ram_behav -key {Behavioral:sim_1:Functional:cnu_ib_lut_ram} -tclbatch {cnu_ib_lut_ram.tcl} -protoinst "protoinst_files/IB_RAM.protoinst" -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2019.2
+INFO: [Wavedata 42-565] Reading protoinst file protoinst_files/IB_RAM.protoinst
+Time resolution is 1 ps
+source cnu_ib_lut_ram.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+ Block Memory Generator module loading initial data...
+ Block Memory Generator data initialization complete.
+Block Memory Generator module cnu_ib_lut_ram.u0.IB_RAM_i.blk_mem_gen_0.inst.native_mem_mapped_module.blk_mem_gen_v8_4_4_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
+xsim: Time (s): cpu = 00:00:04 ; elapsed = 00:00:08 . Memory (MB): peak = 7229.066 ; gain = 0.000 ; free physical = 1771 ; free virtual = 19770
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'cnu_ib_lut_ram_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:00:09 ; elapsed = 00:00:15 . Memory (MB): peak = 7229.066 ; gain = 0.000 ; free physical = 1771 ; free virtual = 19770
+open_bd_design {/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/bd/IB_RAM/IB_RAM.bd}
+Adding component instance block -- xilinx.com:ip:blk_mem_gen:8.4 - blk_mem_gen_0
+Successfully read diagram <IB_RAM> from BD file </home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/bd/IB_RAM/IB_RAM.bd>
+open_bd_design: Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 7296.328 ; gain = 67.262 ; free physical = 1679 ; free virtual = 19677
+WARNING: [IP_Flow 19-4067] Ignoring invalid widget type specified checkbox.Providing a default widget
+WARNING: [IP_Flow 19-4067] Ignoring invalid widget type specified checkbox.Providing a default widget
+open_bd_design {/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/bd/IB_RAM/IB_RAM.bd}
+WARNING: [IP_Flow 19-4067] Ignoring invalid widget type specified checkbox.Providing a default widget
+WARNING: [IP_Flow 19-4067] Ignoring invalid widget type specified checkbox.Providing a default widget
+WARNING: [IP_Flow 19-4067] Ignoring invalid widget type specified checkbox.Providing a default widget
+WARNING: [IP_Flow 19-4067] Ignoring invalid widget type specified checkbox.Providing a default widget
+add_force {/cnu_ib_lut_ram/func_addr[0]} -radix hex {768 0ns}
+add_force {/cnu_ib_lut_ram/func_addr[0]} -radix hex {1152 0ns}
+add_force {/cnu_ib_lut_ram/func_addr[0]} -radix unsigned {1152 220ns}
+run all
+$finish called at time : 500 us : File "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v" Line 85
+open_bd_design {/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/bd/IB_RAM/IB_RAM.bd}
+WARNING: [IP_Flow 19-4067] Ignoring invalid widget type specified checkbox.Providing a default widget
+WARNING: [IP_Flow 19-4067] Ignoring invalid widget type specified checkbox.Providing a default widget
+startgroup
+set_property -dict [list CONFIG.Memory_Type {True_Dual_Port_RAM} CONFIG.Enable_32bit_Address {false} CONFIG.Use_Byte_Write_Enable {false} CONFIG.Byte_Size {9} CONFIG.Assume_Synchronous_Clk {false} CONFIG.Operating_Mode_A {WRITE_FIRST} CONFIG.Operating_Mode_B {WRITE_FIRST} CONFIG.Enable_B {Use_ENB_Pin} CONFIG.Register_PortA_Output_of_Memory_Primitives {true} CONFIG.Register_PortB_Output_of_Memory_Primitives {true} CONFIG.Load_Init_File {false} CONFIG.Coe_File {no_coe_file_loaded} CONFIG.Use_RSTA_Pin {false} CONFIG.Use_RSTB_Pin {false} CONFIG.Port_B_Clock {100} CONFIG.Port_B_Write_Rate {50} CONFIG.Port_B_Enable_Rate {100} CONFIG.use_bram_block {Stand_Alone} CONFIG.EN_SAFETY_CKT {false}] [get_bd_cells blk_mem_gen_0]
+WARNING: [IP_Flow 19-3374] An attempt to modify the value of disabled parameter 'Coe_File' from 'no_coe_file_loaded' to 'no_coe_file_loaded' has been ignored for IP 'blk_mem_gen_0'
+endgroup
+save_bd_design
+Wrote  : </home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/bd/IB_RAM/IB_RAM.bd> 
+Wrote  : </home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/bd/IB_RAM/ui/bd_a9a06778.ui> 
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+exit
+INFO: [Common 17-206] Exiting Vivado at Sun Feb 16 02:00:17 2020...
