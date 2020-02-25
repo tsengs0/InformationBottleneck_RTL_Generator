@@ -29,7 +29,7 @@ eval( EAInclude(ISEJScriptLib) );
 // pre-commands:
 ISETouchFile( "init_design", "begin" );
 ISEStep( "vivado",
-         "-log ib_lut_in2.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source ib_lut_in2.tcl -notrace" );
+         "-log cnu_ib_lut_ram.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source cnu_ib_lut_ram.tcl -notrace" );
 
 
 

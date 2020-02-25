@@ -1,28 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7z020clg484-1" LaunchTime="1581519648">
-  <File Type="RDS-DCP" Name="ib_lut_in2.dcp"/>
-  <File Type="PA-TCL" Name="ib_lut_in2.tcl"/>
-  <File Type="RDS-RDS" Name="ib_lut_in2.vds"/>
-  <File Type="REPORTS-TCL" Name="ib_lut_in2_reports.tcl"/>
+<GenRun Id="synth_1" LaunchPart="xc7k325tffg900-2" LaunchTime="1582561286">
+  <File Type="VDS-TIMING-PB" Name="cnu_ib_lut_ram_timing_summary_synth.pb"/>
+  <File Type="VDS-TIMINGSUMMARY" Name="cnu_ib_lut_ram_timing_summary_synth.rpt"/>
+  <File Type="RDS-DCP" Name="cnu_ib_lut_ram.dcp"/>
+  <File Type="RDS-UTIL-PB" Name="cnu_ib_lut_ram_utilization_synth.pb"/>
+  <File Type="RDS-UTIL" Name="cnu_ib_lut_ram_utilization_synth.rpt"/>
+  <File Type="RDS-PROPCONSTRS" Name="cnu_ib_lut_ram_drc_synth.rpt"/>
+  <File Type="RDS-RDS" Name="cnu_ib_lut_ram.vds"/>
+  <File Type="REPORTS-TCL" Name="cnu_ib_lut_ram_reports.tcl"/>
+  <File Type="PA-TCL" Name="cnu_ib_lut_ram.tcl"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
-    <File Path="$PPRDIR/../define.v">
+    <File Path="$PSRCDIR/sources_1/bd/IB_RAM/IB_RAM.bd">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PPRDIR/../ib_lut_in2.v">
+    <File Path="$PSRCDIR/sources_1/imports/hdl/IB_RAM_wrapper.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PSRCDIR/sources_1/bd/IB_RAM/hdl/IB_RAM_wrapper.v"/>
+        <Attr Name="ImportTime" Val="1581927860"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/cnu_ib_lut_ram.v">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../define.v">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../../python_prj/COE_LUT/Iter_0/lut_Iter0_Func0_3.coe">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
     <Config>
       <Option Name="DesignMode" Val="RTL"/>
-      <Option Name="TopModule" Val="ib_lut_in2"/>
+      <Option Name="TopModule" Val="cnu_ib_lut_ram"/>
       <Option Name="TopAutoSet" Val="TRUE"/>
     </Config>
   </FileSet>
@@ -45,7 +73,10 @@
     </Config>
   </FileSet>
   <Strategy Version="1" Minor="2">
-    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
+    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019">
+      <Desc>Vivado Synthesis Defaults</Desc>
+    </StratHandle>
     <Step Id="synth_design"/>
   </Strategy>
+  <BlockFileSet Type="BlockSrcs" Name="IB_RAM_blk_mem_gen_0_0"/>
 </GenRun>

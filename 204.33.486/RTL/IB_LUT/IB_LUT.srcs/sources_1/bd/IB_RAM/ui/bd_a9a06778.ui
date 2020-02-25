@@ -6,13 +6,13 @@
 preplace port BRAM_PORTA_0 -pg 1 -lvl 0 -x 0 -y 60 -defaultsOSRD
 preplace port BRAM_PORTB_0 -pg 1 -lvl 0 -x 0 -y 80 -defaultsOSRD
 preplace inst blk_mem_gen_0 -pg 1 -lvl 1 -x 150 -y 70 -defaultsOSRD
-preplace netloc BRAM_PORTB_0_1 1 0 1 NJ 80
 preplace netloc BRAM_PORTA_0_1 1 0 1 NJ 60
+preplace netloc BRAM_PORTB_0_1 1 0 1 NJ 80
 levelinfo -pg 1 0 150 290
 pagesize -pg 1 -db -bbox -sgen -170 0 290 140
 ",
    "Color Coded_ScaleFactor":"1.0",
-   "Color Coded_TopLeft":"-533,-198",
+   "Color Coded_TopLeft":"-533,-257",
    "Default View_ScaleFactor":"1.0",
    "Default View_TopLeft":"-177,-231",
    "ExpandedHierarchyInLayout":"",

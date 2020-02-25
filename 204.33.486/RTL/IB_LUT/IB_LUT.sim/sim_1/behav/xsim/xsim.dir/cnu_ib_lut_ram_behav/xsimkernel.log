@@ -1,7 +1,7 @@
-Running: xsim.dir/cnu_ib_lut_ram_behav/xsimk -simmode gui -wdb cnu_ib_lut_ram_behav.wdb -simrunnum 0 -socket 49902
+Running: xsim.dir/cnu_ib_lut_ram_behav/xsimk -simmode gui -wdb cnu_ib_lut_ram_behav.wdb -simrunnum 0 -socket 39787
 Design successfully loaded
-Design Loading Memory Usage: 43400 KB (Peak: 43400 KB)
+Design Loading Memory Usage: 43384 KB (Peak: 43384 KB)
 Design Loading CPU Usage: 20 ms
 Simulation completed
-Simulation Memory Usage: 129500 KB (Peak: 182672 KB)
-Simulation CPU Usage: 230 ms
+Simulation Memory Usage: 129484 KB (Peak: 182656 KB)
+Simulation CPU Usage: 61160 ms

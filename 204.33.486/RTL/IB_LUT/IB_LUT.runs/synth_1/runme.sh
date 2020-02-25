@@ -36,4 +36,4 @@ EAStep()
      fi
 }
 
-EAStep vivado -log ib_lut_in2.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source ib_lut_in2.tcl
+EAStep vivado -log cnu_ib_lut_ram.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source cnu_ib_lut_ram.tcl

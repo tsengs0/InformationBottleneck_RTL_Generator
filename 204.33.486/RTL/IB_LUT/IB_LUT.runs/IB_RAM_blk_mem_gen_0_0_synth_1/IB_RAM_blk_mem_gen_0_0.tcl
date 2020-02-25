@@ -19,7 +19,7 @@ proc create_report { reportName command } {
 }
 set_param project.vivado.isBlockSynthRun true
 set_msg_config -msgmgr_mode ooc_run
-create_project -in_memory -part xc7z020clg484-1
+create_project -in_memory -part xc7k325tffg900-2
 
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
@@ -30,7 +30,7 @@ set_property parent.project_path /home/s1820419/LDPC_MinorResearch/GeneratedDeco
 set_property XPM_LIBRARIES XPM_MEMORY [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
-set_property board_part em.avnet.com:zed:part0:1.4 [current_project]
+set_property board_part xilinx.com:kc705:part0:1.6 [current_project]
 set_property ip_output_repo /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 read_ip -quiet /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/bd/IB_RAM/ip/IB_RAM_blk_mem_gen_0_0/IB_RAM_blk_mem_gen_0_0.xci
@@ -53,7 +53,7 @@ set cached_ip [config_ip_cache -export -no_bom  -dir /home/s1820419/LDPC_MinorRe
 if { $cached_ip eq {} } {
 close [open __synthesis_is_running__ w]
 
-synth_design -top IB_RAM_blk_mem_gen_0_0 -part xc7z020clg484-1 -mode out_of_context
+synth_design -top IB_RAM_blk_mem_gen_0_0 -part xc7k325tffg900-2 -mode out_of_context
 
 #---------------------------------------------------------
 # Generate Checkpoint/Stub/Simulation Files For IP Cache

@@ -1,58 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="impl_1" LaunchPart="xc7z020clg484-1" LaunchTime="1581519648">
-  <File Type="PLACE-PRE-SIMILARITY" Name="ib_lut_in2_incremental_reuse_pre_placed.rpt"/>
-  <File Type="BITSTR-BMM" Name="ib_lut_in2_bd.bmm"/>
-  <File Type="BITSTR-MMI" Name="ib_lut_in2.mmi"/>
-  <File Type="PDI-FILE" Name="ib_lut_in2.pdi"/>
-  <File Type="RBD_FILE" Name="ib_lut_in2.rbd"/>
-  <File Type="BG-BGN" Name="ib_lut_in2.bgn"/>
-  <File Type="ROUTE-BLACKBOX-DCP" Name="ib_lut_in2_routed_bb.dcp"/>
-  <File Type="BITSTR-LTX" Name="ib_lut_in2.ltx"/>
-  <File Type="BITSTR-NKY" Name="ib_lut_in2.nky"/>
-  <File Type="POSTROUTE-PHYSOPT-BLACKBOX-DCP" Name="ib_lut_in2_postroute_physopt_bb.dcp"/>
-  <File Type="BITSTR-SYSDEF" Name="ib_lut_in2.sysdef"/>
-  <File Type="BG-BIN" Name="ib_lut_in2.bin"/>
-  <File Type="POSTROUTE-PHYSOPT-DCP" Name="ib_lut_in2_postroute_physopt.dcp"/>
+<GenRun Id="impl_1" LaunchPart="xc7k325tffg900-2" LaunchTime="1582561286">
   <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
-  <File Type="POSTPLACE-PWROPT-DCP" Name="ib_lut_in2_postplace_pwropt.dcp"/>
-  <File Type="RDI-RDI" Name="ib_lut_in2.vdi"/>
-  <File Type="NPI_FILE" Name="ib_lut_in2.npi"/>
-  <File Type="BG-DRC" Name="ib_lut_in2.drc"/>
-  <File Type="ROUTE-ERROR-DCP" Name="ib_lut_in2_routed_error.dcp"/>
-  <File Type="RCFI_FILE" Name="ib_lut_in2.rcfi"/>
-  <File Type="BG-BIT" Name="ib_lut_in2.bit"/>
-  <File Type="OPT-DCP" Name="ib_lut_in2_opt.dcp"/>
-  <File Type="ROUTE-DCP" Name="ib_lut_in2_routed.dcp"/>
-  <File Type="PHYSOPT-DCP" Name="ib_lut_in2_physopt.dcp"/>
-  <File Type="BITSTR-MSK" Name="ib_lut_in2.msk"/>
-  <File Type="CFI_FILE" Name="ib_lut_in2.cfi"/>
-  <File Type="ROUTE-TIMING-PB" Name="ib_lut_in2_timing_summary_routed.pb"/>
-  <File Type="PA-TCL" Name="ib_lut_in2.tcl"/>
-  <File Type="BITSTR-RBT" Name="ib_lut_in2.rbt"/>
-  <File Type="RNPI_FILE" Name="ib_lut_in2.rnpi"/>
-  <File Type="REPORTS-TCL" Name="ib_lut_in2_reports.tcl"/>
-  <File Type="OPT-HWDEF" Name="ib_lut_in2.hwdef"/>
-  <File Type="PWROPT-DCP" Name="ib_lut_in2_pwropt.dcp"/>
-  <File Type="PLACE-DCP" Name="ib_lut_in2_placed.dcp"/>
+  <File Type="BITSTR-SYSDEF" Name="cnu_ib_lut_ram.sysdef"/>
+  <File Type="BITSTR-LTX" Name="debug_nets.ltx"/>
+  <File Type="BITSTR-LTX" Name="cnu_ib_lut_ram.ltx"/>
+  <File Type="BG-BGN" Name="cnu_ib_lut_ram.bgn"/>
+  <File Type="RBD_FILE" Name="cnu_ib_lut_ram.rbd"/>
+  <File Type="BG-DRC" Name="cnu_ib_lut_ram.drc"/>
+  <File Type="NPI_FILE" Name="cnu_ib_lut_ram.npi"/>
+  <File Type="RNPI_FILE" Name="cnu_ib_lut_ram.rnpi"/>
+  <File Type="CFI_FILE" Name="cnu_ib_lut_ram.cfi"/>
+  <File Type="PDI-FILE" Name="cnu_ib_lut_ram.pdi"/>
+  <File Type="BITSTR-MMI" Name="cnu_ib_lut_ram.mmi"/>
+  <File Type="BITSTR-BMM" Name="cnu_ib_lut_ram_bd.bmm"/>
+  <File Type="BITSTR-NKY" Name="cnu_ib_lut_ram.nky"/>
+  <File Type="BITSTR-RBT" Name="cnu_ib_lut_ram.rbt"/>
+  <File Type="BITSTR-MSK" Name="cnu_ib_lut_ram.msk"/>
+  <File Type="BG-BIN" Name="cnu_ib_lut_ram.bin"/>
+  <File Type="RCFI_FILE" Name="cnu_ib_lut_ram.rcfi"/>
+  <File Type="BG-BIT" Name="cnu_ib_lut_ram.bit"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-RPX" Name="cnu_ib_lut_ram_bus_skew_postroute_physopted.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-PB" Name="cnu_ib_lut_ram_bus_skew_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW" Name="cnu_ib_lut_ram_bus_skew_postroute_physopted.rpt"/>
+  <File Type="RDI-RDI" Name="cnu_ib_lut_ram.vdi"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-RPX" Name="cnu_ib_lut_ram_timing_summary_postroute_physopted.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="cnu_ib_lut_ram_timing_summary_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING" Name="cnu_ib_lut_ram_timing_summary_postroute_physopted.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-BLACKBOX-DCP" Name="cnu_ib_lut_ram_postroute_physopt_bb.dcp"/>
+  <File Type="POSTROUTE-PHYSOPT-DCP" Name="cnu_ib_lut_ram_postroute_physopt.dcp"/>
+  <File Type="ROUTE-BUS-SKEW" Name="cnu_ib_lut_ram_bus_skew_routed.rpt"/>
+  <File Type="ROUTE-CLK" Name="cnu_ib_lut_ram_clock_utilization_routed.rpt"/>
+  <File Type="ROUTE-SIMILARITY" Name="cnu_ib_lut_ram_incremental_reuse_routed.rpt"/>
+  <File Type="ROUTE-TIMING-RPX" Name="cnu_ib_lut_ram_timing_summary_routed.rpx"/>
+  <File Type="ROUTE-TIMING-PB" Name="cnu_ib_lut_ram_timing_summary_routed.pb"/>
+  <File Type="ROUTE-TIMINGSUMMARY" Name="cnu_ib_lut_ram_timing_summary_routed.rpt"/>
+  <File Type="ROUTE-STATUS-PB" Name="cnu_ib_lut_ram_route_status.pb"/>
+  <File Type="ROUTE-STATUS" Name="cnu_ib_lut_ram_route_status.rpt"/>
+  <File Type="ROUTE-PWR-RPX" Name="cnu_ib_lut_ram_power_routed.rpx"/>
+  <File Type="ROUTE-PWR-SUM" Name="cnu_ib_lut_ram_power_summary_routed.pb"/>
+  <File Type="ROUTE-PWR" Name="cnu_ib_lut_ram_power_routed.rpt"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="cnu_ib_lut_ram_methodology_drc_routed.pb"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="cnu_ib_lut_ram_methodology_drc_routed.rpx"/>
+  <File Type="ROUTE-METHODOLOGY-DRC" Name="cnu_ib_lut_ram_methodology_drc_routed.rpt"/>
+  <File Type="ROUTE-DRC-RPX" Name="cnu_ib_lut_ram_drc_routed.rpx"/>
+  <File Type="ROUTE-DRC-PB" Name="cnu_ib_lut_ram_drc_routed.pb"/>
+  <File Type="ROUTE-DRC" Name="cnu_ib_lut_ram_drc_routed.rpt"/>
+  <File Type="ROUTE-BLACKBOX-DCP" Name="cnu_ib_lut_ram_routed_bb.dcp"/>
+  <File Type="ROUTE-DCP" Name="cnu_ib_lut_ram_routed.dcp"/>
+  <File Type="ROUTE-ERROR-DCP" Name="cnu_ib_lut_ram_routed_error.dcp"/>
+  <File Type="PHYSOPT-TIMING" Name="cnu_ib_lut_ram_timing_summary_physopted.rpt"/>
+  <File Type="PHYSOPT-DRC" Name="cnu_ib_lut_ram_drc_physopted.rpt"/>
+  <File Type="PHYSOPT-DCP" Name="cnu_ib_lut_ram_physopt.dcp"/>
+  <File Type="POSTPLACE-PWROPT-TIMING" Name="cnu_ib_lut_ram_timing_summary_postplace_pwropted.rpt"/>
+  <File Type="POSTPLACE-PWROPT-DCP" Name="cnu_ib_lut_ram_postplace_pwropt.dcp"/>
+  <File Type="PLACE-TIMING" Name="cnu_ib_lut_ram_timing_summary_placed.rpt"/>
+  <File Type="PLACE-PRE-SIMILARITY" Name="cnu_ib_lut_ram_incremental_reuse_pre_placed.rpt"/>
+  <File Type="PLACE-SIMILARITY" Name="cnu_ib_lut_ram_incremental_reuse_placed.rpt"/>
+  <File Type="PLACE-CTRL" Name="cnu_ib_lut_ram_control_sets_placed.rpt"/>
+  <File Type="PLACE-UTIL-PB" Name="cnu_ib_lut_ram_utilization_placed.pb"/>
+  <File Type="PLACE-UTIL" Name="cnu_ib_lut_ram_utilization_placed.rpt"/>
+  <File Type="PLACE-CLK" Name="cnu_ib_lut_ram_clock_utilization_placed.rpt"/>
+  <File Type="PLACE-IO" Name="cnu_ib_lut_ram_io_placed.rpt"/>
+  <File Type="PLACE-DCP" Name="cnu_ib_lut_ram_placed.dcp"/>
+  <File Type="PWROPT-TIMING" Name="cnu_ib_lut_ram_timing_summary_pwropted.rpt"/>
+  <File Type="PWROPT-DRC" Name="cnu_ib_lut_ram_drc_pwropted.rpt"/>
+  <File Type="PWROPT-DCP" Name="cnu_ib_lut_ram_pwropt.dcp"/>
+  <File Type="OPT-TIMING" Name="cnu_ib_lut_ram_timing_summary_opted.rpt"/>
+  <File Type="OPT-HWDEF" Name="cnu_ib_lut_ram.hwdef"/>
+  <File Type="OPT-METHODOLOGY-DRC" Name="cnu_ib_lut_ram_methodology_drc_opted.rpt"/>
+  <File Type="OPT-DRC" Name="cnu_ib_lut_ram_drc_opted.rpt"/>
+  <File Type="OPT-DCP" Name="cnu_ib_lut_ram_opt.dcp"/>
+  <File Type="INIT-TIMING" Name="cnu_ib_lut_ram_timing_summary_init.rpt"/>
+  <File Type="ROUTE-BUS-SKEW-RPX" Name="cnu_ib_lut_ram_bus_skew_routed.rpx"/>
+  <File Type="REPORTS-TCL" Name="cnu_ib_lut_ram_reports.tcl"/>
+  <File Type="ROUTE-BUS-SKEW-PB" Name="cnu_ib_lut_ram_bus_skew_routed.pb"/>
+  <File Type="PA-TCL" Name="cnu_ib_lut_ram.tcl"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
-    <File Path="$PPRDIR/../define.v">
+    <File Path="$PSRCDIR/sources_1/bd/IB_RAM/IB_RAM.bd">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PPRDIR/../ib_lut_in2.v">
+    <File Path="$PSRCDIR/sources_1/imports/hdl/IB_RAM_wrapper.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PSRCDIR/sources_1/bd/IB_RAM/hdl/IB_RAM_wrapper.v"/>
+        <Attr Name="ImportTime" Val="1581927860"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/cnu_ib_lut_ram.v">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../define.v">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../../python_prj/COE_LUT/Iter_0/lut_Iter0_Func0_3.coe">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
     <Config>
       <Option Name="DesignMode" Val="RTL"/>
-      <Option Name="TopModule" Val="ib_lut_in2"/>
+      <Option Name="TopModule" Val="cnu_ib_lut_ram"/>
       <Option Name="TopAutoSet" Val="TRUE"/>
     </Config>
   </FileSet>
@@ -75,7 +139,9 @@
     </Config>
   </FileSet>
   <Strategy Version="1" Minor="2">
-    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019"/>
+    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019">
+      <Desc>Default settings for Implementation.</Desc>
+    </StratHandle>
     <Step Id="init_design"/>
     <Step Id="opt_design"/>
     <Step Id="power_opt_design"/>
@@ -85,6 +151,6 @@
     <Step Id="route_design"/>
     <Step Id="post_route_phys_opt_design"/>
     <Step Id="write_bitstream"/>
-    <Step Id="write_device_image"/>
   </Strategy>
+  <BlockFileSet Type="BlockSrcs" Name="IB_RAM_blk_mem_gen_0_0"/>
 </GenRun>

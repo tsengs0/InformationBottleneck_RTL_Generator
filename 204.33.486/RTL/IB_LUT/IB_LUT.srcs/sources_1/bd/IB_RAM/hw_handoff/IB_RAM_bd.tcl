@@ -158,12 +158,14 @@ proc create_root_design { parentCell } {
   # Create interface ports
   set BRAM_PORTA_0 [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:bram_rtl:1.0 BRAM_PORTA_0 ]
   set_property -dict [ list \
-   CONFIG.MASTER_TYPE {BRAM_CTRL} \
+   CONFIG.MASTER_TYPE {OTHER} \
+   CONFIG.READ_WRITE_MODE {READ_ONLY} \
    ] $BRAM_PORTA_0
 
   set BRAM_PORTB_0 [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:bram_rtl:1.0 BRAM_PORTB_0 ]
   set_property -dict [ list \
-   CONFIG.MASTER_TYPE {BRAM_CTRL} \
+   CONFIG.MASTER_TYPE {OTHER} \
+   CONFIG.READ_WRITE_MODE {READ_ONLY} \
    ] $BRAM_PORTB_0
 
 
@@ -173,29 +175,32 @@ proc create_root_design { parentCell } {
   set blk_mem_gen_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:blk_mem_gen:8.4 blk_mem_gen_0 ]
   set_property -dict [ list \
    CONFIG.Algorithm {Minimum_Area} \
-   CONFIG.Assume_Synchronous_Clk {false} \
-   CONFIG.Byte_Size {8} \
+   CONFIG.Assume_Synchronous_Clk {true} \
+   CONFIG.Byte_Size {9} \
    CONFIG.Coe_File {../../../../../../../../python_prj/COE_LUT/Iter_0/lut_Iter0_Func0_3.coe} \
-   CONFIG.EN_SAFETY_CKT {true} \
-   CONFIG.Enable_32bit_Address {true} \
-   CONFIG.Enable_B {Use_ENB_Pin} \
+   CONFIG.Collision_Warnings {NONE} \
+   CONFIG.Disable_Collision_Warnings {false} \
+   CONFIG.EN_SAFETY_CKT {false} \
+   CONFIG.Enable_32bit_Address {false} \
+   CONFIG.Enable_A {Always_Enabled} \
+   CONFIG.Enable_B {Always_Enabled} \
    CONFIG.Load_Init_File {true} \
    CONFIG.Memory_Type {True_Dual_Port_RAM} \
-   CONFIG.Operating_Mode_A {READ_FIRST} \
-   CONFIG.Operating_Mode_B {READ_FIRST} \
+   CONFIG.Operating_Mode_A {NO_CHANGE} \
+   CONFIG.Operating_Mode_B {NO_CHANGE} \
    CONFIG.Port_B_Clock {100} \
    CONFIG.Port_B_Enable_Rate {100} \
    CONFIG.Port_B_Write_Rate {50} \
-   CONFIG.Read_Width_A {1024} \
-   CONFIG.Read_Width_B {1024} \
+   CONFIG.Read_Width_A {36} \
+   CONFIG.Read_Width_B {36} \
    CONFIG.Register_PortA_Output_of_Memory_Primitives {true} \
    CONFIG.Register_PortB_Output_of_Memory_Primitives {true} \
-   CONFIG.Use_Byte_Write_Enable {true} \
-   CONFIG.Use_RSTA_Pin {true} \
-   CONFIG.Use_RSTB_Pin {true} \
-   CONFIG.Write_Depth_A {4} \
-   CONFIG.Write_Width_A {1024} \
-   CONFIG.Write_Width_B {1024} \
+   CONFIG.Use_Byte_Write_Enable {false} \
+   CONFIG.Use_RSTA_Pin {false} \
+   CONFIG.Use_RSTB_Pin {false} \
+   CONFIG.Write_Depth_A {114} \
+   CONFIG.Write_Width_A {36} \
+   CONFIG.Write_Width_B {36} \
    CONFIG.use_bram_block {Stand_Alone} \
  ] $blk_mem_gen_0
 
