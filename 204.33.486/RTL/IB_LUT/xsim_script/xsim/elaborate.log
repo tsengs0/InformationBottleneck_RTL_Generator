@@ -1,0 +1,22 @@
+Vivado Simulator 2019.2
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: /home/s1820419/Xilinx/Vivado/2019.2/bin/unwrapped/lnx64.o/xelab --relax --debug typical --mt auto -L xil_defaultlib -L blk_mem_gen_v8_4_4 -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot cnu_ib_lut_ram xil_defaultlib.cnu_ib_lut_ram xil_defaultlib.glbl -log elaborate.log 
+Multi-threading is on. Using 6 slave threads.
+WARNING: [XSIM 43-3431] One or more environment variables have been detected which affect the operation of the C compiler. These are typically not set in standard installations and are not tested by Xilinx, however they may be appropriate for your system, so the flow will attempt to continue.  If errors occur, try running xelab with the "-mt off -v 1" switches to see more information from the C compiler. The following environment variables have been detected:
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_output_stage(...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_softecc_outpu...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4_mem_module(C_...
+Compiling module blk_mem_gen_v8_4_4.blk_mem_gen_v8_4_4(C_FAMILY="kin...
+Compiling module xil_defaultlib.IB_RAM_blk_mem_gen_1_0
+Compiling module xil_defaultlib.IB_RAM
+Compiling module xil_defaultlib.IB_RAM_wrapper
+Compiling module xil_defaultlib.cnu6_ib_map
+Compiling module xil_defaultlib.cnu_ib_lut_ram
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot cnu_ib_lut_ram

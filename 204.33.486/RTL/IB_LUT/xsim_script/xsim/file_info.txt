@@ -1,0 +1,7 @@
+define.v,verilog,xil_defaultlib,../../../LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/imports/cnu_6_bram/define.v,incdir="../../IB_LUT.srcs/sources_1/imports/cnu_6_bram"
+IB_RAM.v,verilog,xil_defaultlib,../../IB_LUT.ip_user_files/bd/IB_RAM/sim/IB_RAM.v,incdir="../../IB_LUT.srcs/sources_1/imports/cnu_6_bram"
+IB_RAM_blk_mem_gen_1_0.v,verilog,xil_defaultlib,../../IB_LUT.ip_user_files/bd/IB_RAM/ip/IB_RAM_blk_mem_gen_1_0/sim/IB_RAM_blk_mem_gen_1_0.v,incdir="../../IB_LUT.srcs/sources_1/imports/cnu_6_bram"
+IB_RAM_wrapper.v,verilog,xil_defaultlib,../../../LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/imports/hdl/IB_RAM_wrapper.v,incdir="../../IB_LUT.srcs/sources_1/imports/cnu_6_bram"
+cnu6_ib_map.v,verilog,xil_defaultlib,../../../LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/imports/cnu_6_bram/cnu6_ib_map.v,incdir="../../IB_LUT.srcs/sources_1/imports/cnu_6_bram"
+cnu_ib_lut_ram.v,verilog,xil_defaultlib,../../../LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/new/cnu_ib_lut_ram.v,incdir="../../IB_LUT.srcs/sources_1/imports/cnu_6_bram"
+glbl.v,Verilog,xil_defaultlib,glbl.v

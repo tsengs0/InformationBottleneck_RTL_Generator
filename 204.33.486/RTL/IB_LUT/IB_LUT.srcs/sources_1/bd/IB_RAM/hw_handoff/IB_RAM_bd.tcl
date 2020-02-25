@@ -43,8 +43,8 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 
 set list_projs [get_projects -quiet]
 if { $list_projs eq "" } {
-   create_project project_1 myproj -part xc7z020clg484-1
-   set_property BOARD_PART em.avnet.com:zed:part0:1.4 [current_project]
+   create_project project_1 myproj -part xc7k325tffg900-2
+   set_property BOARD_PART xilinx.com:kc705:part0:1.6 [current_project]
 }
 
 
@@ -157,29 +157,18 @@ proc create_root_design { parentCell } {
 
   # Create interface ports
   set BRAM_PORTA_0 [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:bram_rtl:1.0 BRAM_PORTA_0 ]
-  set_property -dict [ list \
-   CONFIG.MASTER_TYPE {OTHER} \
-   CONFIG.READ_WRITE_MODE {READ_ONLY} \
-   ] $BRAM_PORTA_0
 
   set BRAM_PORTB_0 [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:bram_rtl:1.0 BRAM_PORTB_0 ]
-  set_property -dict [ list \
-   CONFIG.MASTER_TYPE {OTHER} \
-   CONFIG.READ_WRITE_MODE {READ_ONLY} \
-   ] $BRAM_PORTB_0
 
 
   # Create ports
 
-  # Create instance: blk_mem_gen_0, and set properties
-  set blk_mem_gen_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:blk_mem_gen:8.4 blk_mem_gen_0 ]
+  # Create instance: blk_mem_gen_1, and set properties
+  set blk_mem_gen_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:blk_mem_gen:8.4 blk_mem_gen_1 ]
   set_property -dict [ list \
-   CONFIG.Algorithm {Minimum_Area} \
    CONFIG.Assume_Synchronous_Clk {true} \
    CONFIG.Byte_Size {9} \
    CONFIG.Coe_File {../../../../../../../../python_prj/COE_LUT/Iter_0/lut_Iter0_Func0_3.coe} \
-   CONFIG.Collision_Warnings {NONE} \
-   CONFIG.Disable_Collision_Warnings {false} \
    CONFIG.EN_SAFETY_CKT {false} \
    CONFIG.Enable_32bit_Address {false} \
    CONFIG.Enable_A {Always_Enabled} \
@@ -193,20 +182,19 @@ proc create_root_design { parentCell } {
    CONFIG.Port_B_Write_Rate {50} \
    CONFIG.Read_Width_A {36} \
    CONFIG.Read_Width_B {36} \
-   CONFIG.Register_PortA_Output_of_Memory_Primitives {true} \
-   CONFIG.Register_PortB_Output_of_Memory_Primitives {true} \
+   CONFIG.Register_PortA_Output_of_Memory_Primitives {false} \
+   CONFIG.Register_PortB_Output_of_Memory_Primitives {false} \
    CONFIG.Use_Byte_Write_Enable {false} \
    CONFIG.Use_RSTA_Pin {false} \
-   CONFIG.Use_RSTB_Pin {false} \
    CONFIG.Write_Depth_A {114} \
    CONFIG.Write_Width_A {36} \
    CONFIG.Write_Width_B {36} \
    CONFIG.use_bram_block {Stand_Alone} \
- ] $blk_mem_gen_0
+ ] $blk_mem_gen_1
 
   # Create interface connections
-  connect_bd_intf_net -intf_net BRAM_PORTA_0_1 [get_bd_intf_ports BRAM_PORTA_0] [get_bd_intf_pins blk_mem_gen_0/BRAM_PORTA]
-  connect_bd_intf_net -intf_net BRAM_PORTB_0_1 [get_bd_intf_ports BRAM_PORTB_0] [get_bd_intf_pins blk_mem_gen_0/BRAM_PORTB]
+  connect_bd_intf_net -intf_net BRAM_PORTA_0_1 [get_bd_intf_ports BRAM_PORTA_0] [get_bd_intf_pins blk_mem_gen_1/BRAM_PORTA]
+  connect_bd_intf_net -intf_net BRAM_PORTB_0_1 [get_bd_intf_ports BRAM_PORTB_0] [get_bd_intf_pins blk_mem_gen_1/BRAM_PORTB]
 
   # Create port connections
 

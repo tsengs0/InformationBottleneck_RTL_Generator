@@ -25,7 +25,8 @@ module cnu_ib_lut_ram;
 
 wire [`IB_ROM_SIZE-1:0] entry_set_9[0:1];        
 wire [`IB_ROM_ADDR_WIDTH-1:0] entry_set_addr[0:1];
-reg rst; 
+reg rst;
+wire cnt; 
 reg sys_clk;  
 wire [`QUAN_SIZE-1:0] bank_portA[0:7]; 
 wire [`QUAN_SIZE-1:0] bank_portB[0:7];  
@@ -94,10 +95,11 @@ cnu6_ib_map ib_map_0(
 	.rom_readA (entry_set_9[0]),
 	.rom_readB (entry_set_9[1]),
 	.sys_clk (sys_clk),
-	.rstn    (rstn)
+	.rstn    (~rst),
+	.cnt(cnt)
 );
 
-integer f0, f1;
+integer f0;
 initial begin
     f0 = $fopen("ib_map_bank0_7.csv", "w");
 end
@@ -112,15 +114,16 @@ end
 
 initial begin
     #0
-    rst <= 1'b0;
+    rst <= 1'b1;
     
     #100
-    rst <= 1'b1; 
+    rst <= 1'b0; 
 end
 
 integer i;
 initial begin    
-    #100;
+    #105;
+    
     for(i=0;i<114;i=i+1) begin
        #20;
        //$display("%h,%h,%h,%h\n", bank_portA[0], bank_portB[0], bank_portC[0], bank_portD[0]);
@@ -131,9 +134,9 @@ initial begin
        $fwrite(f0, "%h,%h,%h,%h\n", bank_portA[4], bank_portB[4], bank_portC[4], bank_portD[4]);
        $fwrite(f0, "%h,%h,%h,%h\n", bank_portA[5], bank_portB[5], bank_portC[5], bank_portD[5]);
        $fwrite(f0, "%h,%h,%h,%h\n", bank_portA[6], bank_portB[6], bank_portC[6], bank_portD[6]);
-       $fwrite(f0, "%h,%h,%h,%h\n", bank_portA[7], bank_portB[7], bank_portC[7], bank_portD[7]);
+       $fwrite(f0, "%h,%h,%h,%h\n\n", bank_portA[7], bank_portB[7], bank_portC[7], bank_portD[7]);
     end
-    $fclose(f0); $fclose(f1);
+    $fclose(f0);
 end
 
 initial #(100+20*114+50) $finish;

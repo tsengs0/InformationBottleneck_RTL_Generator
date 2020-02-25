@@ -1,15 +1,15 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x712AC614C76B20AA",
-      "device": "xc7z020clg484-1",
+      "boundary_crc": "0x712AC61402300C96",
+      "device": "xc7k325tffg900-2",
       "name": "IB_RAM",
       "synth_flow_mode": "Hierarchical",
       "tool_version": "2019.2",
       "validated": "true"
     },
     "design_tree": {
-      "blk_mem_gen_0": ""
+      "blk_mem_gen_1": ""
     },
     "interface_ports": {
       "BRAM_PORTA_0": {
@@ -29,10 +29,8 @@
             "value_src": "default"
           },
           "MASTER_TYPE": {
-            "value": "OTHER"
-          },
-          "READ_WRITE_MODE": {
-            "value": "READ_ONLY"
+            "value": "OTHER",
+            "value_src": "default"
           },
           "READ_LATENCY": {
             "value": "1",
@@ -57,10 +55,8 @@
             "value_src": "default"
           },
           "MASTER_TYPE": {
-            "value": "OTHER"
-          },
-          "READ_WRITE_MODE": {
-            "value": "READ_ONLY"
+            "value": "OTHER",
+            "value_src": "default"
           },
           "READ_LATENCY": {
             "value": "1",
@@ -70,24 +66,15 @@
       }
     },
     "components": {
-      "blk_mem_gen_0": {
+      "blk_mem_gen_1": {
         "vlnv": "xilinx.com:ip:blk_mem_gen:8.4",
-        "xci_name": "IB_RAM_blk_mem_gen_0_0",
+        "xci_name": "IB_RAM_blk_mem_gen_1_0",
         "parameters": {
-          "Algorithm": {
-            "value": "Minimum_Area"
-          },
           "Assume_Synchronous_Clk": {
             "value": "true"
           },
           "Coe_File": {
             "value": "../../../../../../../../python_prj/COE_LUT/Iter_0/lut_Iter0_Func0_3.coe"
-          },
-          "Collision_Warnings": {
-            "value": "NONE"
-          },
-          "Disable_Collision_Warnings": {
-            "value": "false"
           },
           "Enable_32bit_Address": {
             "value": "false"
@@ -126,18 +113,15 @@
             "value": "36"
           },
           "Register_PortA_Output_of_Memory_Primitives": {
-            "value": "true"
+            "value": "false"
           },
           "Register_PortB_Output_of_Memory_Primitives": {
-            "value": "true"
+            "value": "false"
           },
           "Use_Byte_Write_Enable": {
             "value": "false"
           },
           "Use_RSTA_Pin": {
-            "value": "false"
-          },
-          "Use_RSTB_Pin": {
             "value": "false"
           },
           "Write_Depth_A": {
@@ -156,16 +140,16 @@
       }
     },
     "interface_nets": {
-      "BRAM_PORTA_0_1": {
-        "interface_ports": [
-          "BRAM_PORTA_0",
-          "blk_mem_gen_0/BRAM_PORTA"
-        ]
-      },
       "BRAM_PORTB_0_1": {
         "interface_ports": [
           "BRAM_PORTB_0",
-          "blk_mem_gen_0/BRAM_PORTB"
+          "blk_mem_gen_1/BRAM_PORTB"
+        ]
+      },
+      "BRAM_PORTA_0_1": {
+        "interface_ports": [
+          "BRAM_PORTA_0",
+          "blk_mem_gen_1/BRAM_PORTA"
         ]
       }
     }
