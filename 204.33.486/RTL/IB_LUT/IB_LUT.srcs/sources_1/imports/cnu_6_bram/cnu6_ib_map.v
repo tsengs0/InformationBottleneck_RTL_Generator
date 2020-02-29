@@ -47,17 +47,8 @@ module cnu6_ib_map (
 	input wire [`IB_ROM_SIZE-1:0] rom_readA,
 	input wire [`IB_ROM_SIZE-1:0] rom_readB,
 	input sys_clk,
-	input rstn,
-	output reg cnt
+	input rstn
 );
-
-// 18 entryies x4-bit can be read from cnu6_ib_rom in every clock cycle
-// Thus, to flush out those 18 entries to cnu_ib_ram[x], two clock cycles is needed
-//reg cnt = 1'b0;
-always @(negedge sys_clk, negedge rstn) begin
-	if(!rstn) cnt <= 1'b0;
-	else      cnt <= cnt + 1'b1;
-end
 
 always @(negedge sys_clk, negedge rstn) begin
 	if(!rstn) begin
@@ -70,69 +61,78 @@ always @(negedge sys_clk, negedge rstn) begin
 	end
 end
 
-localparam bank_data_width = `QUAN_SIZE*4;
-reg [bank_data_width-1:0] bank_portABCD[0:7];
-reg [2:0] bank_id_shift0 [0:7];
-//reg [2:0] bank_id_shift1 [0:7];
+//// Bank Interleaving ID shifter
+//reg [2:0] bank_id_shift [0:7];
+//always @(negedge sys_clk, negedge rstn) begin
+//    if(!rstn) begin
+//        {bank_id_shift[0], bank_id_shift[1]} <= 6'b111_110;
+//        {bank_id_shift[2], bank_id_shift[3]} <= 6'b101_100;
+//        {bank_id_shift[4], bank_id_shift[5]} <= 6'b011_010;
+//        {bank_id_shift[6], bank_id_shift[7]} <= 6'b001_000;
+//    end
+//    else begin
+//        {bank_id_shift[0], bank_id_shift[1]} <= {bank_id_shift[2], bank_id_shift[3]};
+//        {bank_id_shift[2], bank_id_shift[3]} <= {bank_id_shift[4], bank_id_shift[5]};
+//        {bank_id_shift[4], bank_id_shift[5]} <= {bank_id_shift[6], bank_id_shift[7]};
+//        {bank_id_shift[6], bank_id_shift[7]} <= {bank_id_shift[0], bank_id_shift[1]};
+//    end
+//end
+
+// 4-Port ID shifter, ID in {portA, portB, portC, portD}
+reg [1:0] port_id_shifter [0:3];
 always @(negedge sys_clk, negedge rstn) begin
-    if(!rstn) begin
-        {bank_id_shift0[0], bank_id_shift0[1]} <= 6'b000_001;
-        {bank_id_shift0[2], bank_id_shift0[3]} <= 6'b010_011;
-        {bank_id_shift0[4], bank_id_shift0[5]} <= 6'b100_101;
-        {bank_id_shift0[6], bank_id_shift0[7]} <= 6'b110_111;
-   /*     
-        {bank_id_shift1[0], bank_id_shift1[1]} <= 6'b001_010;
-        {bank_id_shift1[2], bank_id_shift1[3]} <= 6'b011_100;
-        {bank_id_shift1[4], bank_id_shift1[5]} <= 6'b101_110;
-        {bank_id_shift1[6], bank_id_shift1[7]} <= 6'b111_000;*/
-    end
-    else begin
-        {bank_id_shift0[0], bank_id_shift0[1]} <= {bank_id_shift0[1], bank_id_shift0[2]};
-        {bank_id_shift0[2], bank_id_shift0[3]} <= {bank_id_shift0[3], bank_id_shift0[4]};
-        {bank_id_shift0[4], bank_id_shift0[5]} <= {bank_id_shift0[5], bank_id_shift0[6]};
-        {bank_id_shift0[6], bank_id_shift0[7]} <= {bank_id_shift0[7], bank_id_shift0[0]};
-        
-      /*  {bank_id_shift1[0], bank_id_shift1[1]} <=  {bank_id_shift1[1], bank_id_shift1[2]};
-        {bank_id_shift1[2], bank_id_shift1[3]} <=  {bank_id_shift1[3], bank_id_shift1[4]};
-        {bank_id_shift1[4], bank_id_shift1[5]} <=  {bank_id_shift1[5], bank_id_shift1[6]};
-        {bank_id_shift1[6], bank_id_shift1[7]} <=  {bank_id_shift1[7], bank_id_shift1[0]};*/
-    end
+	if(!rstn) begin
+		{port_id_shifter[0], port_id_shifter[1]} <= 4'b00_01;
+		{port_id_shifter[2], port_id_shifter[3]} <= 4'b10_11;
+	end
+	else  begin
+		{port_id_shifter[0], port_id_shifter[1]} <= {port_id_shifter[2], port_id_shifter[3]};
+		{port_id_shifter[2], port_id_shifter[3]} <= {port_id_shifter[0], port_id_shifter[1]}; 
+	end
 end
 
+reg [1:0] offset_cnt;
+always @(negedge sys_clk, negedge rstn) begin
+	if(!rstn) offset_cnt[1:0] <= 2'b00;
+	else offset_cnt[1:0] <= offset_cnt[1:0] + 1'b1;
+end
+localparam interBank_data_width = 32;
+reg [interBank_data_width-1:0] interBank_port0_7[0:3];
 // Write the data to one cnu_ib_ram[x], where x is in {0, 1, 2, 3}
 always @(negedge sys_clk, negedge rstn) begin
 	if(!rstn) begin
-		bank_portABCD[0] <= {bank_data_width{1'bx}}; // one bank 4-port x 4-bit = 16-bit
-		bank_portABCD[1] <= {bank_data_width{1'bx}}; // one bank 4-port x 4-bit = 16-bit
-		bank_portABCD[2] <= {bank_data_width{1'bx}}; // one bank 4-port x 4-bit = 16-bit
-		bank_portABCD[3] <= {bank_data_width{1'bx}}; // one bank 4-port x 4-bit = 16-bit
-		bank_portABCD[4] <= {bank_data_width{1'bx}}; // one bank 4-port x 4-bit = 16-bit
-		bank_portABCD[5] <= {bank_data_width{1'bx}}; // one bank 4-port x 4-bit = 16-bit
-		bank_portABCD[6] <= {bank_data_width{1'bx}}; // one bank 4-port x 4-bit = 16-bit
-		bank_portABCD[7] <= {bank_data_width{1'bx}}; // one bank 4-port x 4-bit = 16-bit
+		interBank_port0_7[0] <= {interBank_data_width{1'bx}}; // one set of 8 interleaving banks x 4-bit = 32-bit
+		interBank_port0_7[1] <= {interBank_data_width{1'bx}}; // one set of 8 interleaving banks x 4-bit = 32-bit
+		interBank_port0_7[2] <= {interBank_data_width{1'bx}}; // one set of 8 interleaving banks x 4-bit = 32-bit
+		interBank_port0_7[3] <= {interBank_data_width{1'bx}}; // one set of 8 interleaving banks x 4-bit = 32-bit
 	end
-	else if(cnt == 1'b0) begin
-		bank_portABCD[bank_id_shift0[0]] <= rom_readA[`IB_ROM_SIZE-1:`IB_ROM_SIZE-16]; // one bank 4-port x 4-bit = 16-bit
-		bank_portABCD[bank_id_shift0[1]] <= rom_readA[`IB_ROM_SIZE-1-16:`IB_ROM_SIZE-16-16]; 
-		bank_portABCD[bank_id_shift0[2]] <= {rom_readA[3:0], rom_readB[`IB_ROM_SIZE-1:`IB_ROM_SIZE-12]}; 
-		bank_portABCD[bank_id_shift0[3]] <= rom_readB[`IB_ROM_SIZE-1-12:`IB_ROM_SIZE-12-16];
-		bank_portABCD[bank_id_shift0[4]][bank_data_width-1:bank_data_width-8] <= rom_readB[`IB_ROM_SIZE-1-12-16:`IB_ROM_SIZE-12-16-8];
+	else if(offset_cnt[1:0] == 2'b00) begin
+	    interBank_port0_7[port_id_shifter[0]][31:0] <= rom_readA[`IB_ROM_SIZE-1:`IB_ROM_SIZE-32]; 
+	    interBank_port0_7[port_id_shifter[1]] <= {rom_readA[3:0], rom_readB[`IB_ROM_SIZE-1:`IB_ROM_SIZE-28]};
+	    interBank_port0_7[port_id_shifter[2]][interBank_data_width-1:24] <= rom_readB[`IB_ROM_SIZE-1-28:0];
 	end
-	else begin // cnt == 1'b1
-    	bank_portABCD[bank_id_shift0[3]][bank_data_width-1-8:bank_data_width-8-8] <= rom_readA[`IB_ROM_SIZE-1:`IB_ROM_SIZE-8];
-		bank_portABCD[bank_id_shift0[4]] <=  rom_readA[`IB_ROM_SIZE-1-8:`IB_ROM_SIZE-8-16]; 
-		bank_portABCD[bank_id_shift0[5]] <= {rom_readA[`IB_ROM_SIZE-1-8-16:`IB_ROM_SIZE-8-16-12], rom_readB[`IB_ROM_SIZE-1:`IB_ROM_SIZE-4]}; 
-		bank_portABCD[bank_id_shift0[6]] <=  rom_readB[`IB_ROM_SIZE-1-4:`IB_ROM_SIZE-4-16]; 
-		bank_portABCD[bank_id_shift0[7]] <= rom_readB[`IB_ROM_SIZE-1-4-16:`IB_ROM_SIZE-4-16-16];
+	else if(offset_cnt[1:0] == 2'b01) begin
+		{
+		 interBank_port0_7[port_id_shifter[0]][23:0],// <= rom_readA[`IB_ROM_SIZE-1:`IB_ROM_SIZE-24];
+		 interBank_port0_7[port_id_shifter[1]],// <= {rom_readA[`IB_ROM_SIZE-1-24:0], rom_readB[`IB_ROM_SIZE-1:`IB_ROM_SIZE-20]};
+		 interBank_port0_7[port_id_shifter[2]][interBank_data_width-1:16]// <= rom_readB[`IB_ROM_SIZE-1-20:0];
+		} <= {rom_readA[`IB_ROM_SIZE-1:0], rom_readB[`IB_ROM_SIZE-1:0]}; 
+	end
+	else if(offset_cnt[1:0] == 2'b10) begin
+		 interBank_port0_7[port_id_shifter[0]][15:0] <= rom_readA[`IB_ROM_SIZE-1:`IB_ROM_SIZE-16];
+		 interBank_port0_7[port_id_shifter[1]]       <= {rom_readA[`IB_ROM_SIZE-1-16:0], rom_readB[`IB_ROM_SIZE-1:`IB_ROM_SIZE-12]};
+		 interBank_port0_7[port_id_shifter[2]][interBank_data_width-1:8] <= rom_readB[`IB_ROM_SIZE-1-12:0];
+	end
+	else begin // if(offset_cnt[1:0] == 2'b11) begin
+		 interBank_port0_7[port_id_shifter[0]][7:0] <= rom_readA[`IB_ROM_SIZE-1:`IB_ROM_SIZE-8];                                   
+		 interBank_port0_7[port_id_shifter[1]]      <= {rom_readA[`IB_ROM_SIZE-1-8:0], rom_readB[`IB_ROM_SIZE-1:`IB_ROM_SIZE-4]}; 
+		 interBank_port0_7[port_id_shifter[2]][interBank_data_width-1:0] <= rom_readB[`IB_ROM_SIZE-1-4:0];
 	end
 end
 
-assign {bank0_portA, bank0_portB, bank0_portC, bank0_portD} = bank_portABCD[0];
-assign {bank1_portA, bank1_portB, bank1_portC, bank1_portD} = bank_portABCD[1];
-assign {bank2_portA, bank2_portB, bank2_portC, bank2_portD} = bank_portABCD[2];
-assign {bank3_portA, bank3_portB, bank3_portC, bank3_portD} = bank_portABCD[3];
-assign {bank4_portA, bank4_portB, bank4_portC, bank4_portD} = bank_portABCD[4];
-assign {bank5_portA, bank5_portB, bank5_portC, bank5_portD} = bank_portABCD[5];
-assign {bank6_portA, bank6_portB, bank6_portC, bank6_portD} = bank_portABCD[6];
-assign {bank7_portA, bank7_portB, bank7_portC, bank7_portD} = bank_portABCD[7];
+// In an bank-interleaving manner
+assign {bank0_portA, bank1_portA, bank2_portA, bank3_portA, bank4_portA, bank5_portA, bank6_portA, bank7_portA} = interBank_port0_7[0];
+assign {bank0_portB, bank1_portB, bank2_portB, bank3_portB, bank4_portB, bank5_portB, bank6_portB, bank7_portB} = interBank_port0_7[1];
+assign {bank0_portC, bank1_portC, bank2_portC, bank3_portC, bank4_portC, bank5_portC, bank6_portC, bank7_portC} = interBank_port0_7[2];
+assign {bank0_portD, bank1_portD, bank2_portD, bank3_portD, bank4_portD, bank5_portD, bank6_portD, bank7_portD} = interBank_port0_7[3];
 endmodule

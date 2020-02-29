@@ -26,7 +26,6 @@ module cnu_ib_lut_ram;
 wire [`IB_ROM_SIZE-1:0] entry_set_9[0:1];        
 wire [`IB_ROM_ADDR_WIDTH-1:0] entry_set_addr[0:1];
 reg rst;
-wire cnt; 
 reg sys_clk;  
 wire [`QUAN_SIZE-1:0] bank_portA[0:7]; 
 wire [`QUAN_SIZE-1:0] bank_portB[0:7];  
@@ -95,8 +94,7 @@ cnu6_ib_map ib_map_0(
 	.rom_readA (entry_set_9[0]),
 	.rom_readB (entry_set_9[1]),
 	.sys_clk (sys_clk),
-	.rstn    (~rst),
-	.cnt(cnt)
+	.rstn    (~rst)
 );
 
 integer f0;
@@ -127,14 +125,10 @@ initial begin
     for(i=0;i<114;i=i+1) begin
        #20;
        //$display("%h,%h,%h,%h\n", bank_portA[0], bank_portB[0], bank_portC[0], bank_portD[0]);
-       $fwrite(f0, "%h,%h,%h,%h\n", bank_portA[0], bank_portB[0], bank_portC[0], bank_portD[0]);
-       $fwrite(f0, "%h,%h,%h,%h\n", bank_portA[1], bank_portB[1], bank_portC[1], bank_portD[1]);
-       $fwrite(f0, "%h,%h,%h,%h\n", bank_portA[2], bank_portB[2], bank_portC[2], bank_portD[2]);
-       $fwrite(f0, "%h,%h,%h,%h\n", bank_portA[3], bank_portB[3], bank_portC[3], bank_portD[3]);
-       $fwrite(f0, "%h,%h,%h,%h\n", bank_portA[4], bank_portB[4], bank_portC[4], bank_portD[4]);
-       $fwrite(f0, "%h,%h,%h,%h\n", bank_portA[5], bank_portB[5], bank_portC[5], bank_portD[5]);
-       $fwrite(f0, "%h,%h,%h,%h\n", bank_portA[6], bank_portB[6], bank_portC[6], bank_portD[6]);
-       $fwrite(f0, "%h,%h,%h,%h\n\n", bank_portA[7], bank_portB[7], bank_portC[7], bank_portD[7]);
+       $fwrite(f0, "%h,%h,%h,%h,%h,%h,%h,%h\n", bank_portA[0], bank_portA[1], bank_portA[2], bank_portA[3], bank_portA[4], bank_portA[5], bank_portA[6], bank_portA[7]);
+       $fwrite(f0, "%h,%h,%h,%h,%h,%h,%h,%h\n", bank_portB[0], bank_portB[1], bank_portB[2], bank_portB[3], bank_portB[4], bank_portB[5], bank_portB[6], bank_portB[7]);
+       $fwrite(f0, "%h,%h,%h,%h,%h,%h,%h,%h\n", bank_portC[0], bank_portC[1], bank_portC[2], bank_portC[3], bank_portC[4], bank_portC[5], bank_portC[6], bank_portC[7]);
+       $fwrite(f0, "%h,%h,%h,%h,%h,%h,%h,%h\n\n", bank_portD[0], bank_portD[1], bank_portD[2], bank_portD[3], bank_portD[4], bank_portD[5], bank_portD[6], bank_portD[7]);
     end
     $fclose(f0);
 end
