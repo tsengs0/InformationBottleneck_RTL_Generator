@@ -42,19 +42,21 @@ initial begin
 end
 
 // Clock Domain
-wire clk_300MHz, clk_450MHz;
+wire ram_clk, rom_clk;
 clock_domain_wrapper clock_domain_0(
-    .clk_out1_0 (clk_300MHz),
-    .clk_out2_0 (clk_450MHz),
+    .clk_out1_0 (ram_clk),
+    .clk_out2_0 (rom_clk),
     .reset (~rstn),
     .sys_diff_clock_clk_n (sys_clk_n),
     .sys_diff_clock_clk_p (sys_clk_p)
 );
-reg clk_150MHz = 1'b0;
-always @(posedge clk_300MHz, negedge rstn) begin
-    if(!rstn) clk_150MHz <= 1'b0;
-    else      clk_150MHz <= ~clk_150MHz;
-end
+
+// Decomposition Clock Generator
+wire m_clk; // 20MHz
+decomp_clk_gen mCLK (
+    .ram_clk (ram_clk),
+    .m_clk (m_clk)
+);
 
 // Configuration of IB-LUT ROM
 wire [`IB_ROM_SIZE-1:0] entry_set_9[0:1];        
@@ -64,19 +66,20 @@ reg sys_clk;
 wire [`QUAN_SIZE-1:0] bank_portA[0:7]; 
 wire [`QUAN_SIZE-1:0] bank_portB[0:7];  
 wire [`QUAN_SIZE-1:0] bank_portC[0:7];  
-wire [`QUAN_SIZE-1:0] bank_portD[0:7];                   
+wire [`QUAN_SIZE-1:0] bank_portD[0:7]; 
+//wire [3:0] port_shifter;                  
     
 IB_RAM_wrapper RAMB36E1_0 (
     .BRAM_PORTA_0_dout (entry_set_9[0]),
     .BRAM_PORTB_0_dout (entry_set_9[1]), 
     
     .BRAM_PORTA_0_addr (entry_set_addr[0]),
-    .BRAM_PORTA_0_clk (clk_150MHz),
+    .BRAM_PORTA_0_clk (rom_clk),
     .BRAM_PORTA_0_din ({36{1'bx}}),
     .BRAM_PORTA_0_we ((1'b0)),
      
     .BRAM_PORTB_0_addr (entry_set_addr[1]),
-    .BRAM_PORTB_0_clk(clk_150MHz),
+    .BRAM_PORTB_0_clk(rom_clk),
     .BRAM_PORTB_0_din({36{1'bx}}),
     .BRAM_PORTB_0_we (1'b0)
   );
@@ -85,50 +88,77 @@ cnu6_ib_map ib_map_0(
 	.bank0_portA (bank_portA[0]),
 	.bank0_portB (bank_portB[0]),
 	.bank0_portC (bank_portC[0]),
-	.bank0_portD (bank_portD[0]),
+	//.bank0_portD (bank_portD[0]),
 
 	.bank1_portA (bank_portA[1]),
 	.bank1_portB (bank_portB[1]),
 	.bank1_portC (bank_portC[1]),
-	.bank1_portD (bank_portD[1]),
+	//.bank1_portD (bank_portD[1]),
 
 	.bank2_portA (bank_portA[2]),
 	.bank2_portB (bank_portB[2]),
 	.bank2_portC (bank_portC[2]),
-	.bank2_portD (bank_portD[2]),
+	//.bank2_portD (bank_portD[2]),
 
 	.bank3_portA (bank_portA[3]),
 	.bank3_portB (bank_portB[3]),
 	.bank3_portC (bank_portC[3]),
-	.bank3_portD (bank_portD[3]),
+	//.bank3_portD (bank_portD[3]),
 
 	.bank4_portA (bank_portA[4]),
 	.bank4_portB (bank_portB[4]),
 	.bank4_portC (bank_portC[4]),
-	.bank4_portD (bank_portD[4]),
+	//.bank4_portD (bank_portD[4]),
 
 	.bank5_portA (bank_portA[5]),
 	.bank5_portB (bank_portB[5]),
 	.bank5_portC (bank_portC[5]),
-	.bank5_portD (bank_portD[5]),
+	//.bank5_portD (bank_portD[5]),
 
 	.bank6_portA (bank_portA[6]),
 	.bank6_portB (bank_portB[6]),
 	.bank6_portC (bank_portC[6]),
-	.bank6_portD (bank_portD[6]),
+	//.bank6_portD (bank_portD[6]),
 
 	.bank7_portA (bank_portA[7]),
 	.bank7_portB (bank_portB[7]),
 	.bank7_portC (bank_portC[7]),
-	.bank7_portD (bank_portD[7]),
+	//.bank7_portD (bank_portD[7]),
+	//.port_shifter (port_shifter[3:0]),
 
 	.rom_read_addrA (entry_set_addr[0]),
 	.rom_read_addrB (entry_set_addr[1]),
 
 	.rom_readA (entry_set_9[0]),
 	.rom_readB (entry_set_9[1]),
-	.sys_clk (clk_150MHz),
+	.sys_clk (rom_clk),
 	.rstn    (~rst)
+);
+
+// MUX following (datapath) the output of CNU-IB Map and input
+wire [31:0] interBank_write_data;
+c6ibm_port_shifter c6ibm_port_shifter_0(
+    .port_out (interBank_write_data[31:0]),
+    
+    .in_portA ({bank_portA[0], bank_portA[1], bank_portA[2], bank_portA[3], bank_portA[4], bank_portA[5], bank_portA[6], bank_portA[7]}),
+    .in_portB ({bank_portB[0], bank_portB[1], bank_portB[2], bank_portB[3], bank_portB[4], bank_portB[5], bank_portB[6], bank_portB[7]}),
+    .in_portC ({bank_portC[0], bank_portC[1], bank_portC[2], bank_portC[3], bank_portC[4], bank_portC[5], bank_portC[6], bank_portC[7]}),
+    
+    .en (),
+    .ram_clk (ram_clk)
+);
+
+// DEMUX following (datapath) the output of MUX abov
+// The interleaving-bank data[#Bank*QUAN_SIZE-1:0] is forwarded to one of CNU-IB RAM x, x in {0, 1, 2, 3}
+wire [31:0] ram_write_data [0:3];
+c6ibwr_ram_sel c6ibwr_ram_sel_0 (
+    .interBank_data_ram0 (ram_write_data[0]),
+    .interBank_data_ram1 (ram_write_data[1]),
+    .interBank_data_ram2 (ram_write_data[2]),
+    .interBank_data_ram3 (ram_write_data[3]),
+    
+    .interBank_write_data (interBank_write_data[31:0]),
+    .ram_sel ()
 );
 
 integer f0;
@@ -227,17 +257,17 @@ ib_lut_ram func_ram_0(
     .page_addr_write (), // All 8 banks are synchronously updated in the same page 
 
     // Write Qual-port    
-    .bank_data_write0 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write1 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write2 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write3 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write4 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write5 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write6 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write7 (), // Same bank of all 4 ports are written same page data       
+    .bank_data_write0 (ram_write_data[0][31:28]), // Same bank of all 4 ports are written same page data
+    .bank_data_write1 (ram_write_data[0][27:24]), // Same bank of all 4 ports are written same page data
+    .bank_data_write2 (ram_write_data[0][23:20]), // Same bank of all 4 ports are written same page data
+    .bank_data_write3 (ram_write_data[0][19:16]), // Same bank of all 4 ports are written same page data
+    .bank_data_write4 (ram_write_data[0][15:12]), // Same bank of all 4 ports are written same page data
+    .bank_data_write5 (ram_write_data[0][11:8] ), // Same bank of all 4 ports are written same page data
+    .bank_data_write6 (ram_write_data[0][7:4]  ), // Same bank of all 4 ports are written same page data
+    .bank_data_write7 (ram_write_data[0][3:0]  ), // Same bank of all 4 ports are written same page data       
     
     .write_en (),
-    .sys_clk (clk_150MHz)
+    .sys_clk (ram_clk)
 );
 
 ib_lut_ram func_ram_1(
@@ -260,17 +290,17 @@ ib_lut_ram func_ram_1(
     .page_addr_write (), // All 8 banks are synchronously updated in the same page 
 
     // Write Qual-port    
-    .bank_data_write0 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write1 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write2 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write3 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write4 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write5 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write6 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write7 (), // Same bank of all 4 ports are written same page data       
+    .bank_data_write0 (ram_write_data[1][31:28]), // Same bank of all 4 ports are written same page data
+    .bank_data_write1 (ram_write_data[1][27:24]), // Same bank of all 4 ports are written same page data
+    .bank_data_write2 (ram_write_data[1][23:20]), // Same bank of all 4 ports are written same page data
+    .bank_data_write3 (ram_write_data[1][19:16]), // Same bank of all 4 ports are written same page data
+    .bank_data_write4 (ram_write_data[1][15:12]), // Same bank of all 4 ports are written same page data
+    .bank_data_write5 (ram_write_data[1][11:8] ), // Same bank of all 4 ports are written same page data
+    .bank_data_write6 (ram_write_data[1][7:4]  ), // Same bank of all 4 ports are written same page data
+    .bank_data_write7 (ram_write_data[1][3:0]  ), // Same bank of all 4 ports are written same page data       
     
     .write_en (),
-    .sys_clk (clk_150MHz)
+    .sys_clk (ram_clk)
 );
 
 ib_lut_ram func_ram_2(
@@ -293,17 +323,17 @@ ib_lut_ram func_ram_2(
     .page_addr_write (), // All 8 banks are synchronously updated in the same page 
 
     // Write Qual-port    
-    .bank_data_write0 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write1 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write2 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write3 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write4 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write5 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write6 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write7 (), // Same bank of all 4 ports are written same page data       
+    .bank_data_write0 (ram_write_data[2][31:28]), // Same bank of all 4 ports are written same page data
+    .bank_data_write1 (ram_write_data[2][27:24]), // Same bank of all 4 ports are written same page data
+    .bank_data_write2 (ram_write_data[2][23:20]), // Same bank of all 4 ports are written same page data
+    .bank_data_write3 (ram_write_data[2][19:16]), // Same bank of all 4 ports are written same page data
+    .bank_data_write4 (ram_write_data[2][15:12]), // Same bank of all 4 ports are written same page data
+    .bank_data_write5 (ram_write_data[2][11:8] ), // Same bank of all 4 ports are written same page data
+    .bank_data_write6 (ram_write_data[2][7:4]  ), // Same bank of all 4 ports are written same page data
+    .bank_data_write7 (ram_write_data[2][3:0]  ), // Same bank of all 4 ports are written same page data       
     
     .write_en (),
-    .sys_clk (clk_150MHz)
+    .sys_clk (ram_clk)
 );
 
 ib_lut_ram func_ram_3(
@@ -326,17 +356,17 @@ ib_lut_ram func_ram_3(
     .page_addr_write (), // All 8 banks are synchronously updated in the same page 
 
     // Write Qual-port    
-    .bank_data_write0 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write1 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write2 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write3 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write4 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write5 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write6 (), // Same bank of all 4 ports are written same page data
-    .bank_data_write7 (), // Same bank of all 4 ports are written same page data       
+    .bank_data_write0 (ram_write_data[3][31:28]), // Same bank of all 4 ports are written same page data
+    .bank_data_write1 (ram_write_data[3][27:24]), // Same bank of all 4 ports are written same page data
+    .bank_data_write2 (ram_write_data[3][23:20]), // Same bank of all 4 ports are written same page data
+    .bank_data_write3 (ram_write_data[3][19:16]), // Same bank of all 4 ports are written same page data
+    .bank_data_write4 (ram_write_data[3][15:12]), // Same bank of all 4 ports are written same page data
+    .bank_data_write5 (ram_write_data[3][11:8] ), // Same bank of all 4 ports are written same page data
+    .bank_data_write6 (ram_write_data[3][7:4]  ), // Same bank of all 4 ports are written same page data
+    .bank_data_write7 (ram_write_data[3][3:0]  ), // Same bank of all 4 ports are written same page data       
     
     .write_en (),
-    .sys_clk (clk_150MHz)
+    .sys_clk (ram_clk)
 );
 assign t_c[`QUAN_SIZE-1:0] = t_portA[3];
 endmodule
