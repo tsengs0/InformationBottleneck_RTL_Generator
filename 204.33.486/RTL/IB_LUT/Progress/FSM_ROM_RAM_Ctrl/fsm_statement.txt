@@ -1,0 +1,66 @@
+CNU6IB Control Unit
+a) Output: 
+	(1) ram_write_en
+	(2) iter_update
+	(3) c6ib_rom_rst
+b) Input:
+	(1) sys_clk
+	(2) rstn
+	(3) iter_rqst
+	(4) iter_terminate 
+
+Finite State 
+State 0. IDLE
+input:  {sys_clk, rstn, iter_rqst, iter_terminate} == {x, 0, 0, 0}
+output: {ram_write_en, iter_update, c6ib_rom_rst} == {0, 0, 1}
+next step:
+	{negedge, 1, 1, 1} -> State 1
+	others -> suspension
+
+State 1. PRELOAD ADDR
+input (from State 0): {sys_clk, rstn, iter_rqst, iter_terminate} == {negedge, 1, 1, 0}
+output: {ram_write_en, iter_update, c6ib_rom_rst} = {0, 1, 0}
+operation: 
+	To give ROM dual-port's corresponding read addresses, i.e., 0x00 and 0x01, at half clock cycle ahead of 
+	ROM-Data-Fetch timing (rising edge of rom_clk).
+next step: 
+	{posedge, 1, 1, 0} -> State 2 
+	others -> suspension
+
+State 2. PRELOAD DATA
+input (from State 1): {sys_clk, rstn, iter_rqst, iter_terminate} == {posedge, 1, 1, 0}
+output: {write_en, iter_update, c6ib_rom_rst} = {0, 1, 0}
+operation:
+	To fetch first two pages' data from ROM, i.e., first 18 entries for RAM.
+	Then the data will be latched on dual read ports, each of which contributes 36-bit or 9 entries of data.
+next step:
+	{negedge, 1, 1, 0} -> State 3
+	others -> suspension
+
+State 3. RAM LOAD
+input (from State 2): {sys_clk, rstn, iter_rqst, iter_terminate} == {negedge, 1, 1, 0}
+output: {write_en, iter_update, c6ib_rom_rst} = {1, 1, 0}
+operation: 
+	The CNU-IB Map will partition and latch the first given 72-bit or 18 entries of data in a bank-interleaving
+	manner, at its three read ports of 32-bit width for each.
+next step: 
+	{negedge, 1, 1, 0} -> State 4
+	others -> suspension
+
+State 4. BATCH WRITE
+input (from State 3): {sys_clk, rstn, iter_rqst, iter_terminate} == {negedge, 1, 1, 0}
+output {write_en, iter_update, c6ib_rom_rst} = {1, 1, 0}
+operation:
+	Iteratively writing the data into CNU-IB RAMs
+next step:
+	sys_clk in posedge && (iter_rqst == 0 || iter_terminate == 1) -> State 5
+	{sys_clk, rstn, iter_rqst, iter_terminate} == {negedge, 1, 1, 0} -> State 4
+	others -> suspension
+
+State 5. FINISH
+input (from State 4): {sys_clk, rstn, iter_rqst || iter_terminate} == {posedge, 0, 1}
+output: {write_en, iter_update, c6ib_rom_rst} = {0, 0, 1}
+operation: 
+	Completing the update of next iteration's data set, then coming back to IDLE status again.
+next step:
+	x -> State 0
