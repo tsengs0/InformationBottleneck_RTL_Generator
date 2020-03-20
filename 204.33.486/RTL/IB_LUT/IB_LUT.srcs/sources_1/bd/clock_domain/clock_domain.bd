@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x870ACD6BABE98CD2",
+      "boundary_crc": "0x70D0C27ED4D302C9",
       "device": "xc7k325tffg900-2",
       "name": "clock_domain",
       "synth_flow_mode": "Hierarchical",
@@ -40,12 +40,15 @@
           }
         }
       },
+      "locked_0": {
+        "direction": "O"
+      },
       "clk_out1_0": {
         "type": "clk",
         "direction": "O",
         "parameters": {
           "CLK_DOMAIN": {
-            "value": "clock_domain_clk_wiz_0_0_clk_out1",
+            "value": "clock_domain_clk_wiz_0_1_clk_out1",
             "value_src": "default_prop"
           },
           "FREQ_HZ": {
@@ -66,18 +69,19 @@
         "direction": "O",
         "parameters": {
           "CLK_DOMAIN": {
-            "value": "clock_domain_clk_wiz_0_0_clk_out1",
+            "value": "clock_domain_clk_wiz_0_1_clk_out1",
             "value_src": "ip_prop"
           },
           "FREQ_HZ": {
-            "value": "100000000"
+            "value": "100000000",
+            "value_src": "ip_prop"
           },
           "INSERT_VIP": {
             "value": "0",
             "value_src": "default"
           },
           "PHASE": {
-            "value": "0.0",
+            "value": "60.0",
             "value_src": "ip_prop"
           }
         }
@@ -86,43 +90,64 @@
     "components": {
       "clk_wiz_0": {
         "vlnv": "xilinx.com:ip:clk_wiz:6.0",
-        "xci_name": "clock_domain_clk_wiz_0_0",
+        "xci_name": "clock_domain_clk_wiz_0_1",
         "parameters": {
           "CLKIN1_JITTER_PS": {
             "value": "50.0"
           },
+          "CLKOUT1_DRIVES": {
+            "value": "BUFG"
+          },
           "CLKOUT1_JITTER": {
-            "value": "89.301"
+            "value": "110.944"
           },
           "CLKOUT1_PHASE_ERROR": {
-            "value": "91.235"
+            "value": "105.461"
           },
           "CLKOUT1_REQUESTED_OUT_FREQ": {
             "value": "300.000"
           },
+          "CLKOUT2_DRIVES": {
+            "value": "BUFG"
+          },
           "CLKOUT2_JITTER": {
-            "value": "110.629"
+            "value": "136.686"
           },
           "CLKOUT2_PHASE_ERROR": {
-            "value": "91.235"
+            "value": "105.461"
           },
           "CLKOUT2_REQUESTED_DUTY_CYCLE": {
-            "value": "16.667"
+            "value": "16.700"
           },
-          "CLKOUT2_REQUESTED_OUT_FREQ": {
-            "value": "100.000"
+          "CLKOUT2_REQUESTED_PHASE": {
+            "value": "60"
           },
           "CLKOUT2_USED": {
             "value": "true"
           },
-          "CLK_IN1_BOARD_INTERFACE": {
-            "value": "Custom"
+          "CLKOUT3_DRIVES": {
+            "value": "BUFG"
           },
-          "CLK_IN2_BOARD_INTERFACE": {
-            "value": "Custom"
+          "CLKOUT4_DRIVES": {
+            "value": "BUFG"
+          },
+          "CLKOUT5_DRIVES": {
+            "value": "BUFG"
+          },
+          "CLKOUT6_DRIVES": {
+            "value": "BUFG"
+          },
+          "CLKOUT7_DRIVES": {
+            "value": "BUFG"
+          },
+          "CLK_IN1_BOARD_INTERFACE": {
+            "value": "sys_diff_clock"
+          },
+          "MMCM_BANDWIDTH": {
+            "value": "OPTIMIZED"
           },
           "MMCM_CLKFBOUT_MULT_F": {
-            "value": "4.500"
+            "value": "9"
           },
           "MMCM_CLKIN1_PERIOD": {
             "value": "5.000"
@@ -131,7 +156,7 @@
             "value": "10.0"
           },
           "MMCM_CLKOUT0_DIVIDE_F": {
-            "value": "3.000"
+            "value": "3"
           },
           "MMCM_CLKOUT1_DIVIDE": {
             "value": "9"
@@ -139,11 +164,20 @@
           "MMCM_CLKOUT1_DUTY_CYCLE": {
             "value": "0.167"
           },
+          "MMCM_CLKOUT1_PHASE": {
+            "value": "60.000"
+          },
+          "MMCM_COMPENSATION": {
+            "value": "ZHOLD"
+          },
           "MMCM_DIVCLK_DIVIDE": {
-            "value": "1"
+            "value": "2"
           },
           "NUM_OUT_CLKS": {
             "value": "2"
+          },
+          "PRIMITIVE": {
+            "value": "PLL"
           },
           "PRIM_IN_FREQ": {
             "value": "200.000"
@@ -173,6 +207,12 @@
         "ports": [
           "reset",
           "clk_wiz_0/reset"
+        ]
+      },
+      "clk_wiz_0_locked": {
+        "ports": [
+          "clk_wiz_0/locked",
+          "locked_0"
         ]
       },
       "clk_wiz_0_clk_out1": {

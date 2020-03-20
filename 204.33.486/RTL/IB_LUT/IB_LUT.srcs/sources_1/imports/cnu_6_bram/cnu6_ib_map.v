@@ -39,7 +39,7 @@ module cnu6_ib_map (
 	output wire [`QUAN_SIZE-1:0] bank7_portA,
 	output wire [`QUAN_SIZE-1:0] bank7_portB,
 	output wire [`QUAN_SIZE-1:0] bank7_portC,
-	output wire [`QUAN_SIZE-1:0] bank7_portD,
+	//output wire [`QUAN_SIZE-1:0] bank7_portD,
 	//output reg [3:0] port_shifter,
 
 	output reg [`IB_ROM_ADDR_WIDTH-1:0] rom_read_addrA,
@@ -87,14 +87,14 @@ always @(negedge sys_clk, negedge rstn) begin
 	else offset_cnt[1:0] <= offset_cnt[1:0] + 1'b1;
 end
 localparam interBank_data_width = 32;
-reg [interBank_data_width-1:0] interBank_port0_7[0:3];
-// Write the data to one cnu_ib_ram[x], where x is in {0, 1, 2, 3}
+reg [interBank_data_width-1:0] interBank_port0_7[0:2];
+// Write the data to one cnu_ib_ram[x], where x is in {0, 1, 2}
 always @(negedge sys_clk, negedge rstn) begin
 	if(!rstn) begin
 		interBank_port0_7[0] <= {interBank_data_width{1'bx}}; // one set of 8 interleaving banks x 4-bit = 32-bit
 		interBank_port0_7[1] <= {interBank_data_width{1'bx}}; // one set of 8 interleaving banks x 4-bit = 32-bit
 		interBank_port0_7[2] <= {interBank_data_width{1'bx}}; // one set of 8 interleaving banks x 4-bit = 32-bit
-		interBank_port0_7[3] <= {interBank_data_width{1'bx}}; // one set of 8 interleaving banks x 4-bit = 32-bit
+		//interBank_port0_7[3] <= {interBank_data_width{1'bx}}; // one set of 8 interleaving banks x 4-bit = 32-bit
 	end
 	else if(offset_cnt[1:0] == 2'b00) begin
 	    interBank_port0_7[/*port_id_shifter[0]*/0][31:0] <= rom_readA[`IB_ROM_SIZE-1:`IB_ROM_SIZE-32]; 

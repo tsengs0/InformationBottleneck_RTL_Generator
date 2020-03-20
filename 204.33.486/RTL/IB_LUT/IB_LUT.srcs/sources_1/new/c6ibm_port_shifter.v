@@ -3,7 +3,7 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 03/04/2020 11:26:26 PM
+// Create Date: 7th March, 2020 PM8:48
 // Design Name: 
 // Module Name: c6ibm_port_shifter
 // Project Name: 
@@ -14,7 +14,7 @@
 // Dependencies: 
 // 
 // Revision:
-// Revision 0.01 - File Created
+// Revision 1.3
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
@@ -29,30 +29,39 @@ module c6ibm_port_shifter(
     input wire ram_clk
 );
 
-reg [1:0] cnt = 2'b00;
+/*
+reg en_reg;
+initial en_reg <= 1'b0;
+always @(posedge ram_clk) en_reg <= en;
+*/
+reg [1:0] cnt;
+initial cnt[1:0] <= 2'b00;
 always @(negedge ram_clk) begin
-    if(!en) cnt[1:0] <= 2'b00;
-    else cnt[1:0] <= cnt[1:0]+1'b1;
+    if(!en) 
+	cnt[1:0] <= 2'b00;
+    else if(cnt[1:0] == 2'b10) 
+	cnt[1:0] <= 2'b00;
+    else 
+	cnt[1:0] <= cnt[1:0]+1'b1;
 end
 
 reg [95:0] ports_data = 96'd0;
 always @(posedge ram_clk) begin
     if(!en) 
-        ports_data[95:0] <= 96'd0;
+	ports_data[95:0] <= 96'd0;
     else if(cnt[1:0] == 2'b00) 
-        ports_data[95:0] <= 96'd0;
-    else if(cnt[1:0] == 2'b01) 
         ports_data[95:0] <= {in_portA[31:0], in_portB[31:0], in_portC[31:0]};
-    else
-        ports_data[95:0] <= {ports_data[63:0], 32'd0};
+    else begin
+	ports_data[95:64] <= ports_data[63:32];
+	ports_data[63:32] <= ports_data[31: 0];
+	ports_data[31: 0] <= in_portA[31:0];
+    end
 end
 
 initial port_out[31:0] <= 32'd0;
 always @(negedge ram_clk) begin
-    if(!en)
-        port_out[31:0] <= 32'd0;
-    else if(cnt[1:0] == 2'b00)
-        port_out[31:0] <= 32'd0;
+    if(!en) 
+	port_out[31:0] <= 32'd0;
     else
         port_out[31:0] <= ports_data[95:64];
 end

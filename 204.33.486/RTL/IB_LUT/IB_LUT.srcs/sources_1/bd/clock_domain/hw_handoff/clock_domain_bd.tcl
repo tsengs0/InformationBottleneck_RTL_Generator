@@ -168,9 +168,7 @@ proc create_root_design { parentCell } {
    CONFIG.FREQ_HZ {300000000} \
  ] $clk_out1_0
   set clk_out2_0 [ create_bd_port -dir O -type clk clk_out2_0 ]
-  set_property -dict [ list \
-   CONFIG.FREQ_HZ {450000000} \
- ] $clk_out2_0
+  set locked_0 [ create_bd_port -dir O locked_0 ]
   set reset [ create_bd_port -dir I -type rst reset ]
   set_property -dict [ list \
    CONFIG.POLARITY {ACTIVE_HIGH} \
@@ -180,22 +178,34 @@ proc create_root_design { parentCell } {
   set clk_wiz_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz:6.0 clk_wiz_0 ]
   set_property -dict [ list \
    CONFIG.CLKIN1_JITTER_PS {50.0} \
-   CONFIG.CLKOUT1_JITTER {89.301} \
-   CONFIG.CLKOUT1_PHASE_ERROR {91.235} \
+   CONFIG.CLKOUT1_DRIVES {BUFG} \
+   CONFIG.CLKOUT1_JITTER {110.944} \
+   CONFIG.CLKOUT1_PHASE_ERROR {105.461} \
    CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {300.000} \
-   CONFIG.CLKOUT2_JITTER {82.539} \
-   CONFIG.CLKOUT2_PHASE_ERROR {91.235} \
-   CONFIG.CLKOUT2_REQUESTED_OUT_FREQ {450.000} \
+   CONFIG.CLKOUT2_DRIVES {BUFG} \
+   CONFIG.CLKOUT2_JITTER {136.686} \
+   CONFIG.CLKOUT2_PHASE_ERROR {105.461} \
+   CONFIG.CLKOUT2_REQUESTED_DUTY_CYCLE {16.700} \
+   CONFIG.CLKOUT2_REQUESTED_PHASE {60} \
    CONFIG.CLKOUT2_USED {true} \
+   CONFIG.CLKOUT3_DRIVES {BUFG} \
+   CONFIG.CLKOUT4_DRIVES {BUFG} \
+   CONFIG.CLKOUT5_DRIVES {BUFG} \
+   CONFIG.CLKOUT6_DRIVES {BUFG} \
+   CONFIG.CLKOUT7_DRIVES {BUFG} \
    CONFIG.CLK_IN1_BOARD_INTERFACE {sys_diff_clock} \
-   CONFIG.CLK_IN2_BOARD_INTERFACE {Custom} \
-   CONFIG.MMCM_CLKFBOUT_MULT_F {4.500} \
+   CONFIG.MMCM_BANDWIDTH {OPTIMIZED} \
+   CONFIG.MMCM_CLKFBOUT_MULT_F {9} \
    CONFIG.MMCM_CLKIN1_PERIOD {5.000} \
    CONFIG.MMCM_CLKIN2_PERIOD {10.0} \
-   CONFIG.MMCM_CLKOUT0_DIVIDE_F {3.000} \
-   CONFIG.MMCM_CLKOUT1_DIVIDE {2} \
-   CONFIG.MMCM_DIVCLK_DIVIDE {1} \
+   CONFIG.MMCM_CLKOUT0_DIVIDE_F {3} \
+   CONFIG.MMCM_CLKOUT1_DIVIDE {9} \
+   CONFIG.MMCM_CLKOUT1_DUTY_CYCLE {0.167} \
+   CONFIG.MMCM_CLKOUT1_PHASE {60.000} \
+   CONFIG.MMCM_COMPENSATION {ZHOLD} \
+   CONFIG.MMCM_DIVCLK_DIVIDE {2} \
    CONFIG.NUM_OUT_CLKS {2} \
+   CONFIG.PRIMITIVE {PLL} \
    CONFIG.PRIM_IN_FREQ {200.000} \
    CONFIG.PRIM_SOURCE {Differential_clock_capable_pin} \
    CONFIG.RESET_BOARD_INTERFACE {reset} \
@@ -208,6 +218,7 @@ proc create_root_design { parentCell } {
   # Create port connections
   connect_bd_net -net clk_wiz_0_clk_out1 [get_bd_ports clk_out1_0] [get_bd_pins clk_wiz_0/clk_out1]
   connect_bd_net -net clk_wiz_0_clk_out2 [get_bd_ports clk_out2_0] [get_bd_pins clk_wiz_0/clk_out2]
+  connect_bd_net -net clk_wiz_0_locked [get_bd_ports locked_0] [get_bd_pins clk_wiz_0/locked]
   connect_bd_net -net reset_1 [get_bd_ports reset] [get_bd_pins clk_wiz_0/reset]
 
   # Create address segments

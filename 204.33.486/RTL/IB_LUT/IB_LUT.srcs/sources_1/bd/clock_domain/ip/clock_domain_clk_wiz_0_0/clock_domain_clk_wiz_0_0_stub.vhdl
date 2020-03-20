@@ -1,8 +1,8 @@
 -- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
--- Date        : Mon Mar  2 14:47:42 2020
--- Host        : vpcc running 64-bit CentOS Linux release 7.4.1708 (Core)
+-- Date        : Fri Mar 20 23:22:57 2020
+-- Host        : uv running 64-bit SUSE Linux Enterprise Server 12 SP1
 -- Command     : write_vhdl -force -mode synth_stub
 --               /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_LUT/IB_LUT.srcs/sources_1/bd/clock_domain/ip/clock_domain_clk_wiz_0_0/clock_domain_clk_wiz_0_0_stub.vhdl
 -- Design      : clock_domain_clk_wiz_0_0
