@@ -11,7 +11,7 @@ digraph finite_state_machine {
     IDLE -> PRELOAD_ADDR [ label = "{negedge, 1, 1, 1}" ];
     IDLE -> IDLE [ label = "{x, 0, 0, 0}" ];
 
-    PRELOAD_ADDR -> PRELOAD_DATA [ label = "{posedge, 1, 1, 0}" ];
+    PRELOAD_ADDR -> PRELOAD_DATA [ label = "{negedge, 1, 1, 0}" ];
     PRELOAD_ADDR -> PRELOAD_ADDR [ label = "{others}" ]    
 
     PRELOAD_DATA -> RAM_LOAD [ label = "{negedge, 1, 1, 0}" ];
@@ -20,7 +20,7 @@ digraph finite_state_machine {
     RAM_LOAD -> BATCH_WRITE [ label = "{negedge, 1, 1, 0}" ];
     RAM_LOAD -> RAM_LOAD [ label = "{others}" ];
 
-    BATCH_WRITE -> FINISH [ label = "sys_clk.posedge \n and \n (iter_rqst=0 or iter_termination=1 )" ];
+    BATCH_WRITE -> FINISH [ label = "sys_clk.negedge \n and \n (iter_rqst=0 or iter_termination=1 )" ];
     BATCH_WRITE -> BATCH_WRITE [ label = "{negedge, 1, 1, 0}" ];
 
     FINISH -> IDLE;
