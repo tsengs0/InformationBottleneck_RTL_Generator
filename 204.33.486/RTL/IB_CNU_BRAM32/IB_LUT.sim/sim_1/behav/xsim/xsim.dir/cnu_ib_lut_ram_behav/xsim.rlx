@@ -1,0 +1,12 @@
+
+{ 
+    crc :  11634617273061631974  , 
+    ccp_crc :  0  , 
+    cmdline : " -wto bc7896355b3d4b4caaf88166cc137be7 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L blk_mem_gen_v8_4_4 -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot cnu_ib_lut_ram_behav xil_defaultlib.cnu_ib_lut_ram xil_defaultlib.glbl" , 
+    buildDate : "Nov  6 2019" , 
+    buildTime : "21:42:20" , 
+    linkCmd : "/usr/bin/gcc -Wa,-W  -O -fPIC  -m64  -Wl,--no-as-needed  -Wl,--unresolved-symbols=ignore-all  -o \"xsim.dir/cnu_ib_lut_ram_behav/xsimk\"   \"xsim.dir/cnu_ib_lut_ram_behav/obj/xsim_0.lnx64.o\" \"xsim.dir/cnu_ib_lut_ram_behav/obj/xsim_1.lnx64.o\" -L\"/home/s1820419/Xilinx/Vivado/2019.2/lib/lnx64.o\" -lrdi_simulator_kernel   -lrdi_simbridge_kernel" , 
+    aggregate_nets : 
+    [ 
+    ] 
+} 

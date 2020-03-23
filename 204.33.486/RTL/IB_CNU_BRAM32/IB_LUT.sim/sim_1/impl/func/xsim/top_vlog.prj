@@ -1,0 +1,6 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  --include "../../../../../IB_LUT.srcs/sources_1/imports/cnu_6_bram" --include "../../../../../IB_LUT.srcs/sources_1/bd/clock_domain/ipshared/4fba" \
+"top_func_impl.v" \
+
+# Do not sort compile order
+nosort

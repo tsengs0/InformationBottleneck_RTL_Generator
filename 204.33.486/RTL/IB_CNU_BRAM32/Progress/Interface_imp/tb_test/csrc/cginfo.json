@@ -1,0 +1,230 @@
+{
+    "cycles_program_begin": 12238175603106627,
+    "PEModules": [],
+    "rlimit": {
+        "stack": -1,
+        "data": -1
+    },
+    "SIMBData": {
+        "out": "amcQwB.o",
+        "bytes": 94836,
+        "archive": "archive.0/_23013_archive_1.a"
+    },
+    "CompileStatus": "Successful",
+    "stat": {
+        "ru_self_cgstart": {
+            "ru_utime_sec": 0.088985999999999996,
+            "ru_stime_sec": 0.071988999999999997,
+            "ru_maxrss_kb": 68844,
+            "ru_majflt": 0,
+            "ru_minflt": 24754,
+            "ru_nvcsw": 418,
+            "ru_nivcsw": 38
+        },
+        "ru_childs_cgstart": {
+            "ru_utime_sec": 0.025995999999999998,
+            "ru_stime_sec": 0.039993000000000001,
+            "ru_maxrss_kb": 22456,
+            "ru_majflt": 0,
+            "ru_minflt": 9980,
+            "ru_nvcsw": 51,
+            "ru_nivcsw": 42
+        },
+        "cpu_cycles_cgstart": 12238179126979185,
+        "nQuads": 691,
+        "peak_mem_kb": 242816,
+        "nMops": 1677,
+        "cpu_cycles_total": 4003967604,
+        "CodeGen(%)": 23.931886956967745,
+        "totalObjSize": 129796,
+        "ru_self_end": {
+            "ru_utime_sec": 0.116982,
+            "ru_stime_sec": 0.084986999999999993,
+            "ru_maxrss_kb": 76172,
+            "ru_majflt": 0,
+            "ru_minflt": 27327,
+            "ru_nvcsw": 499,
+            "ru_nivcsw": 44
+        },
+        "cpu_cycles_end": 12238179607074231,
+        "Frontend(%)": 76.068113043032255,
+        "ru_childs_end": {
+            "ru_utime_sec": 0.025995999999999998,
+            "ru_stime_sec": 0.039993000000000001,
+            "ru_maxrss_kb": 22456,
+            "ru_majflt": 0,
+            "ru_minflt": 9980,
+            "ru_nvcsw": 51,
+            "ru_nivcsw": 42
+        },
+        "quadSpeed": 24682.097442491777,
+        "mopSpeed": 59901.414487783957,
+        "mop/quad": 2.4269175108538352,
+        "outputSizePerQuad": 187.83791606367583
+    },
+    "perf": [
+        [
+            0.74650692939758301,
+            0.051991999999999997,
+            0.048992000000000001,
+            227040,
+            227708,
+            1583678171.0583379,
+            12238178233124313,
+            "doParsingAndDesignResolution",
+            "entry"
+        ],
+        [
+            0.7599480152130127,
+            0.059990000000000002,
+            0.050992000000000003,
+            227612,
+            228260,
+            1583678171.071779,
+            12238178281332957,
+            "doParsingAndDesignResolution",
+            "exit"
+        ],
+        [
+            0.76889991760253906,
+            0.059990000000000002,
+            0.052991000000000003,
+            227940,
+            228260,
+            1583678171.0807309,
+            12238178313479913,
+            "doPostDesignResolutionToVir2Vcs",
+            "entry"
+        ],
+        [
+            0.77820396423339844,
+            0.063990000000000005,
+            0.054990999999999998,
+            229000,
+            229004,
+            1583678171.090035,
+            12238178346888192,
+            "doUptoVir2VcsNoSepCleanup",
+            "entry"
+        ],
+        [
+            0.9226839542388916,
+            0.086985999999999994,
+            0.067988999999999994,
+            230112,
+            242816,
+            1583678171.234515,
+            12238178865863643,
+            "doUptoVir2VcsNoSepCleanup",
+            "exit"
+        ],
+        [
+            0.92281699180603027,
+            0.086985999999999994,
+            0.067988999999999994,
+            230112,
+            242816,
+            1583678171.234648,
+            12238178866273764,
+            "doRadify_vir2vcsAll",
+            "entry"
+        ],
+        [
+            0.92882394790649414,
+            0.086985999999999994,
+            0.069988999999999996,
+            230276,
+            242816,
+            1583678171.2406549,
+            12238178887760313,
+            "doRadify_vir2vcsAll",
+            "exit"
+        ],
+        [
+            0.92885208129882812,
+            0.086985999999999994,
+            0.069988999999999996,
+            230276,
+            242816,
+            1583678171.2406831,
+            12238178887834461,
+            "doPostDesignResolutionToVir2Vcs",
+            "exit"
+        ],
+        [
+            0.92887210845947266,
+            0.086985999999999994,
+            0.069988999999999996,
+            230276,
+            242816,
+            1583678171.2407031,
+            12238178887901397,
+            "doGAToPass2",
+            "entry"
+        ],
+        [
+            0.99532508850097656,
+            0.088985999999999996,
+            0.071988999999999997,
+            228720,
+            242816,
+            1583678171.3071561,
+            12238179126772860,
+            "DoPass2",
+            "entry"
+        ],
+        [
+            1.0682559013366699,
+            0.113982,
+            0.082987000000000005,
+            238788,
+            242816,
+            1583678171.3800869,
+            12238179388693434,
+            "DoPass2",
+            "exit"
+        ]
+    ],
+    "MlibObjs": {},
+    "CompileStrategy": "fullobj",
+    "PrevCompiledModules": {},
+    "NameTable": {
+        "top": [
+            "top",
+            "Emx8S",
+            "module",
+            1
+        ],
+        "...MASTER...": [
+            "SIM",
+            "amcQw",
+            "module",
+            2
+        ]
+    },
+    "cpu_cycles_pass2_start": 12238179126807393,
+    "CurCompileUdps": {},
+    "CurCompileModules": [
+        "...MASTER...",
+        "...MASTER...",
+        "top",
+        "top"
+    ],
+    "LVLData": [
+        "SIM"
+    ],
+    "CompileProcesses": [
+        "cgproc.23013.json"
+    ],
+    "Misc": {
+        "master_pid": 23013,
+        "VCS_HOME": "/eda/synopsys/vcs-mx_vN-2017.12-SP2/vcs-mx/N-2017.12-SP2/",
+        "cwd": "/mnt/fs800/home/s1610105/LDPC_MinorResearch/tb_test",
+        "csrc": "csrc",
+        "csrc_abs": "/mnt/fs800/home/s1610105/LDPC_MinorResearch/tb_test/csrc",
+        "daidir": "/mnt/fs800/home/s1610105/LDPC_MinorResearch/tb_test/tb.daidir",
+        "default_output_dir": "csrc",
+        "daidir_abs": "/mnt/fs800/home/s1610105/LDPC_MinorResearch/tb_test/tb.daidir",
+        "archive_dir": "archive.0"
+    }
+}
