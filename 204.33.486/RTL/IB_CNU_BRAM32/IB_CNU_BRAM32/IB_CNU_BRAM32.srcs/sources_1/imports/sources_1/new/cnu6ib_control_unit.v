@@ -21,6 +21,7 @@
 module cnu6ib_control_unit(
     output wire rom_port_fetch, // to enable the ib-map starting to fetch data from read port of ROM
     output wire ram_write_en,
+    output wire ram_mux_en,
     output wire iter_update,
     output wire c6ib_rom_rst,
     output reg [2:0] state,
@@ -103,11 +104,12 @@ assign {rom_port_fetch, iter_update, c6ib_rom_rst, ram_write_en} = (state[2:0] =
                                                                    (state[2:0] == BATCH_WRITE ) ? {3'b110, ram_write_en_latch} : 
                                                                                                   {3'b001, ram_write_en_latch};
 */
-assign {rom_port_fetch, ram_write_en, iter_update, c6ib_rom_rst} = /*State 0*/ (state[2:0] == IDLE     ) ? 4'b0001 :
-                                                                   /*State 1*/ (state[2:0] == ROM_FETCH) ? 4'b1010 :
-                                                                   /*State 2*/ (state[2:0] == RAM_LOAD0) ? 4'b1110 :
-                                                                   /*State 3*/ (state[2:0] == RAM_LOAD1) ? 4'b1110 :
-                                                                   /*State 4*/                             4'b0001; // FINISH state
+assign {rom_port_fetch, ram_mux_en, ram_write_en, iter_update, c6ib_rom_rst} = 
+                                                                   /*State 0*/ (state[2:0] == IDLE     ) ? 5'b00001 :
+                                                                   /*State 1*/ (state[2:0] == ROM_FETCH) ? 5'b10110 :
+                                                                   /*State 2*/ (state[2:0] == RAM_LOAD0) ? 5'b11010 :
+                                                                   /*State 3*/ (state[2:0] == RAM_LOAD1) ? 5'b11110 :
+                                                                   /*State 4*/                             5'b00001; // FINISH state
 	
 /* 
 // Optimisation by Karnaugh maps                                                  

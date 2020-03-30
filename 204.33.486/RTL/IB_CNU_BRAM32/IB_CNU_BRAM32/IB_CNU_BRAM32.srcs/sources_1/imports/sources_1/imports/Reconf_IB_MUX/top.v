@@ -42,10 +42,11 @@ initial begin
     forever #1.667 {CLK_300_N, CLK_300_P} <= {~CLK_300_N, ~CLK_300_P};
 end
 reg rstn_cnu_fsm, iter_rqst, iter_termination;
-wire rom_port_fetch, ram_write_en, iter_update, c6ib_rom_rst;
+wire rom_port_fetch, ram_mux_en, ram_write_en, iter_update, c6ib_rom_rst;
 wire [2:0] state;
 cnu6ib_control_unit control_unit (
     .rom_port_fetch (rom_port_fetch),
+    .ram_mux_en   (ram_mux_en),
     .ram_write_en (ram_write_en),
     .iter_update  (iter_update),
     .c6ib_rom_rst (c6ib_rom_rst),
@@ -139,7 +140,7 @@ c6ibm_port_shifter c6ibm_port_shifter_0(
     .in_portA ({bank_portA[0], bank_portA[1], bank_portA[2], bank_portA[3], bank_portA[4], bank_portA[5], bank_portA[6], bank_portA[7]}),
     .in_portB ({bank_portB[0], bank_portB[1], bank_portB[2], bank_portB[3], bank_portB[4], bank_portB[5], bank_portB[6], bank_portB[7]}),
 
-    .en (ram_write_en),
+    .en (ram_mux_en),
     .ram_clk (ram_clk)
 );
 
@@ -208,7 +209,10 @@ wire [4:0] page_addr_ram0;
 wire [4:0] page_addr_ram1; 
 wire [4:0] page_addr_ram2;
 wire [4:0] page_addr_ram3; 
-c6ibAddr_ram_sel ram_write_addr_gate (
+c6ibAddr_ram_sel #(
+    .RAM_DEPTH(`IB_ROM_SIZE), 
+    .RAM_NUM(`IB_CNU_DECOMP_funNum)
+) ram_write_addr_gate (
 	.page_addr_ram0 (page_addr_ram0[4:0]), 
 	.page_addr_ram1 (page_addr_ram1[4:0]), 
 	.page_addr_ram2 (page_addr_ram2[4:0]), 
