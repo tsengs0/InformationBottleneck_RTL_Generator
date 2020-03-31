@@ -29,14 +29,16 @@ module cnu6ib_control_unit(
     input wire sys_clk,
     input wire rstn,
     input wire iter_rqst,
-    input wire iter_termination
+    input wire iter_termination,
+    input wire pipeline_en
 );
       
-parameter IDLE      = 3'b000;
-parameter ROM_FETCH = 3'b001;
-parameter RAM_LOAD0 = 3'b010;
-parameter RAM_LOAD1 = 3'b011;
-parameter FINISH    = 3'b100;
+parameter IDLE       = 3'b000;
+parameter ROM_FETCH0 = 3'b001; // only for the first write or non-pipeline fashion
+parameter ROM_FETCH  = 3'b010;
+parameter RAM_LOAD0  = 3'b011;
+parameter RAM_LOAD1  = 3'b100;
+parameter FINISH     = 3'b101;
 
 initial state[2:0] <= IDLE;
 wire idle_cond, finish_cond;
@@ -56,12 +58,24 @@ always @(negedge sys_clk) begin
             if (!idle_cond)
                state <= IDLE;
             else if (in_cond[2:0] == 3'b110) begin // negedge
-               state <= ROM_FETCH;
+                if(pipeline_en == 1'b0)
+                    state <= ROM_FETCH0;
+                else
+                    state <= ROM_FETCH;
             end
             else
                state <= IDLE;
            //{ram_write_en, iter_update, c6ib_rom_rst}  <= 3'b001;
          end
+         
+         ROM_FETCH0 : begin
+            if (in_cond[2:0] == 3'b110)
+               state <= RAM_LOAD0;
+            else
+               state <= ROM_FETCH0;
+            //{ram_write_en, iter_update, c6ib_rom_rst} <= 3'b010;
+         end
+         
          ROM_FETCH : begin
             if (in_cond[2:0] == 3'b110)
                state <= RAM_LOAD0;
@@ -80,7 +94,10 @@ always @(negedge sys_clk) begin
             if (finish_cond)
                state <= FINISH;
             else if (in_cond[2:0] == 3'b110)
-                state <= ROM_FETCH;
+                if(pipeline_en == 1'b0)
+                    state <= ROM_FETCH0;
+                else
+                    state <= ROM_FETCH;
             else
                state <= RAM_LOAD1;
             //{ram_write_en, iter_update, c6ib_rom_rst} <= 3'b110;
@@ -105,11 +122,12 @@ assign {rom_port_fetch, iter_update, c6ib_rom_rst, ram_write_en} = (state[2:0] =
                                                                                                   {3'b001, ram_write_en_latch};
 */
 assign {rom_port_fetch, ram_mux_en, ram_write_en, iter_update, c6ib_rom_rst} = 
-                                                                   /*State 0*/ (state[2:0] == IDLE     ) ? 5'b00001 :
-                                                                   /*State 1*/ (state[2:0] == ROM_FETCH) ? 5'b10110 :
-                                                                   /*State 2*/ (state[2:0] == RAM_LOAD0) ? 5'b11010 :
-                                                                   /*State 3*/ (state[2:0] == RAM_LOAD1) ? 5'b11110 :
-                                                                   /*State 4*/                             5'b00001; // FINISH state
+                                                                   /*State 0*/ (state[2:0] == IDLE      ) ? 5'b00001 :
+                                                                   /*State 1*/ (state[2:0] == ROM_FETCH0) ? 5'b10010 :
+                                                                   /*State 2*/ (state[2:0] == ROM_FETCH ) ? 5'b10110 :
+                                                                   /*State 3*/ (state[2:0] == RAM_LOAD0 ) ? 5'b11010 :
+                                                                   /*State 4*/ (state[2:0] == RAM_LOAD1 ) ? 5'b11110 :
+                                                                   /*State 5*/                              5'b00001; // FINISH state
 	
 /* 
 // Optimisation by Karnaugh maps                                                  

@@ -41,7 +41,7 @@ initial begin
     // To generate 300MHz system clock
     forever #1.667 {CLK_300_N, CLK_300_P} <= {~CLK_300_N, ~CLK_300_P};
 end
-reg rstn_cnu_fsm, iter_rqst, iter_termination;
+reg rstn_cnu_fsm, iter_rqst, iter_termination, pipeline_en;
 wire rom_port_fetch, ram_mux_en, ram_write_en, iter_update, c6ib_rom_rst;
 wire [2:0] state;
 cnu6ib_control_unit control_unit (
@@ -55,7 +55,8 @@ cnu6ib_control_unit control_unit (
     .sys_clk (ram_clk),
     .rstn (rstn_cnu_fsm),
     .iter_rqst (iter_rqst),
-    .iter_termination (iter_termination)
+    .iter_termination (iter_termination),
+    .pipeline_en (pipeline_en)
 );
 
 // Clock Domain
@@ -74,9 +75,9 @@ assign {ram_clk, rom_clk} = {clk_gate[1] & mmcm_nlocked, clk_gate[0] & mmcm_nloc
 
 // Decomposition Clock Generator
 wire m_clk; // 9.3750 MHz
-decomp_clk_gen decomp_clk_gen_0 (
+decomp_clk_gen #(.RAM_DEPTH(`IB_ROM_SIZE)) decomp_clk_gen_0 (
 	.m_clk   (m_clk),
-	.en      (rom_port_fetch),
+	.en      (ram_write_en),
 	.ram_clk (ram_clk)
 );
 
@@ -93,9 +94,7 @@ IB_RAM_wrapper IB_CNU_ROM32 (
     .BRAM_PORTB_0_addr (entry_set_addr[1]),
     .BRAM_PORTB_0_clk(rom_clk)
   );
- 
-  
-  
+   
 wire [`QUAN_SIZE-1:0] bank_portA[0:7]; 
 wire [`QUAN_SIZE-1:0] bank_portB[0:7];  
 cnu6_ib_map ib_map_0(
@@ -397,7 +396,7 @@ initial begin
 end
 */
 reg update_finish;
-initial begin
+/*initial begin
 	#0;
 	{rstn_cnu_fsm, iter_rqst, iter_termination} <= 3'b000;
 	update_finish  <= 1'b0;
@@ -413,14 +412,50 @@ initial begin
 	{rstn_cnu_fsm, iter_rqst, iter_termination} <= 3'b000;
 	$fclose(f0);
 	update_finish <= 1'b1;
+end*/
+reg [7:0] write_cnt;
+initial begin
+    #0;
+ 	{rstn_cnu_fsm, iter_rqst, iter_termination} <= 3'b000;
+	update_finish  <= 1'b0; 
+	pipeline_en <= 1'b0;
+	write_cnt[7:0] <= 8'd0;   
+end
+always @(posedge ram_clk) begin
+    if(write_cnt <= `ITER_WRITE_PAGE_NUM) begin
+        {rstn_cnu_fsm, iter_rqst, iter_termination} <= 3'b110; 
+        update_finish <= 1'b0;
+    end
+    else if(write_cnt == `ITER_WRITE_PAGE_NUM+1) begin
+        {rstn_cnu_fsm, iter_rqst, iter_termination} <= 3'b001; 
+        update_finish <= 1'b1;
+        $fclose(f0);
+    end
+    else 
+       {rstn_cnu_fsm, iter_rqst, iter_termination} <= 3'b000; 
+end
+always @(negedge ram_clk) begin
+    if(state[2:0] == 3'd2 || state[2:0] == 3'd4)
+        if(write_cnt <= `ITER_WRITE_PAGE_NUM+1)
+            write_cnt[7:0] <= write_cnt[7:0] + 1'b1;
+        else
+            write_cnt[7:0] <= write_cnt[7:0];
+    else
+        write_cnt[7:0] <= write_cnt[7:0];
+end
+
+initial pipeline_en <= 1'b0;
+always @(negedge ram_clk) begin
+    if(state[2:0] == 3'd1) pipeline_en <= 1'b1;
+    else pipeline_en <= pipeline_en;
 end
 
 integer f0;
 initial begin
     f0 = $fopen("cnu_ram_dataIn.csv", "w");
 end
-always @(posedge ram_clk) begin
-    if({ram_write_en, iter_update, c6ib_rom_rst} == 3'b110 && update_finish == 1'b0) begin
+always @(negedge ram_clk) begin
+    if(state[2:0] == 3'd2 || state[2:0] == 3'd4) begin
         $fwrite(f0, "%h,%h,%h,%h,%h,%h,%h,%h\n", 
                     interBank_write_data[31:28],
                     interBank_write_data[27:24],

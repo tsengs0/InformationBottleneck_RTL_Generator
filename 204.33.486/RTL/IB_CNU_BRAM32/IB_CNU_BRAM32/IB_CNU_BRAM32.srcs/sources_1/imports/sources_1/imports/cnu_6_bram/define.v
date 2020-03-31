@@ -10,6 +10,7 @@
 `define IB_ROM_SIZE 32 // width of one read-out port of RAMB36E1
 `define IB_ROM_ADDR_WIDTH 7 // ceil(log2(114-entry)) = 7-bit 
 `define IB_CNU_DECOMP_funNum 4
+`define ITER_WRITE_PAGE_NUM  `IB_ROM_SIZE*`IB_CNU_DECOMP_funNum
 `endif
 
 `define QUAN_SIZE 4

@@ -34,23 +34,23 @@ initial begin
     page_addr_ram3[4:0] <= 5'd0;
 end
 
-always @(negedge ram_clk) begin
+always @(posedge ram_clk) begin
     if(ram_sel[1:0] == 2'd0) page_addr_ram0[4:0] <= cnt[4:0];
 	else                          page_addr_ram0[4:0] <= 5'd0;
 end
 
-always @(negedge ram_clk) begin
+always @(posedge ram_clk) begin
     if(ram_sel[1:0] == 2'd1) page_addr_ram1[4:0] <= cnt[4:0];
 	else                          page_addr_ram1[4:0] <= 5'd0;
 end
 
-always @(negedge ram_clk) begin
+always @(posedge ram_clk) begin
 	if(!en_reg) page_addr_ram2[4:0] <= page_addr_ram2[4:0];
 	else if(ram_sel[1:0] == 2'd2) page_addr_ram2[4:0] <= cnt[4:0];
 	else                          page_addr_ram2[4:0] <= 5'd0;
 end
 
-always @(negedge ram_clk) begin
+always @(posedge ram_clk) begin
     if(ram_sel[1:0] == 2'd3) page_addr_ram3[4:0] <= cnt[4:0];
 	else                          page_addr_ram3[4:0] <= 5'd0;
 end
