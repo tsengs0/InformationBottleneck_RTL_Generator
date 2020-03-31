@@ -45,7 +45,7 @@ wire idle_cond, finish_cond;
 wire [2:0] in_cond;
 assign in_cond[2:0] = {rstn, iter_rqst, iter_termination};
 or u0 (idle_cond, rstn, iter_rqst, iter_termination);
-or u1 (finish_cond, !iter_rqst, iter_termination);
+or u1 (finish_cond, ~iter_rqst, iter_termination);
   
 always @(negedge sys_clk) begin
    if (!idle_cond) begin
@@ -83,8 +83,10 @@ always @(negedge sys_clk) begin
                state <= ROM_FETCH;
             //{ram_write_en, iter_update, c6ib_rom_rst} <= 3'b010;
          end
-         RAM_LOAD0 : begin
-            if (in_cond[2:0] == 3'b110)
+         RAM_LOAD0 : begin 
+            if (finish_cond)
+               state <= FINISH;         
+            else if (in_cond[2:0] == 3'b110)
                state <= RAM_LOAD1;
             else
                state <= RAM_LOAD0;

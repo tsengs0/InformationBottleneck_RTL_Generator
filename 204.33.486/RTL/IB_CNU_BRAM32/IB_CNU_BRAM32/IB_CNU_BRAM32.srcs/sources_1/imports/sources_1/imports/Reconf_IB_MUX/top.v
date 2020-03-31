@@ -153,16 +153,23 @@ ram_sel_counter ram_sel_cnt_0(
 
 // DEMUX following (datapath) the output of MUX abov
 // The interleaving-bank data[#Bank*QUAN_SIZE-1:0] is forwarded to one of CNU-IB RAM x, x in {0, 1, 2, 3}
-wire [31:0] ram_write_data [0:3];
+wire [31:0] ram_write_data_wire [0:3];
 c6ibwr_ram_sel c6ibwr_ram_sel_0 (
-    .interBank_data_ram0 (ram_write_data[0]),
-    .interBank_data_ram1 (ram_write_data[1]),
-    .interBank_data_ram2 (ram_write_data[2]),
-    .interBank_data_ram3 (ram_write_data[3]),
+    .interBank_data_ram0 (ram_write_data_wire[0]),
+    .interBank_data_ram1 (ram_write_data_wire[1]),
+    .interBank_data_ram2 (ram_write_data_wire[2]),
+    .interBank_data_ram3 (ram_write_data_wire[3]),
     
     .interBank_write_data (interBank_write_data[31:0]),
     .ram_sel (ram_sel[1:0])
 );
+reg [31:0] ram_write_data [0:3];
+always @(negedge ram_clk) begin
+    ram_write_data[0] <= ram_write_data_wire[0];
+    ram_write_data[1] <= ram_write_data_wire[1];
+    ram_write_data[2] <= ram_write_data_wire[2];
+    ram_write_data[3] <= ram_write_data_wire[3];
+end
 
 // Configuration of IB-LUT RAM
 wire [`QUAN_SIZE-1:0] t_portA[0:3]; // internal signals accounting for each 256-entry partial LUT's output
@@ -175,24 +182,24 @@ reconf_ib_lut2 func_0(
      .ib_ram_page_addr (ib_ram_addr[0]  ),
      .ib_ram_bank_addr (bank_read_sel[0]),
     
-     .y1 (a[1]),//(y1[`QUAN_SIZE-1:0]),
-     .y0 (a[0])//(y0[`QUAN_SIZE-1:0])
+     .y1 (y1[`QUAN_SIZE-1:0]),
+     .y0 (y0[`QUAN_SIZE-1:0])
 );
 
 reconf_ib_lut2 func_1(
      .ib_ram_page_addr (ib_ram_addr[1]  ),
      .ib_ram_bank_addr (bank_read_sel[1]),
     
-     .y1 (a[1]),//(t_portA[0]),
-     .y0 (a[0])//(y2[`QUAN_SIZE-1:0])
+     .y1 (y1[`QUAN_SIZE-1:0]),//(t_portA[0]),
+     .y0 (y0[`QUAN_SIZE-1:0])//(y2[`QUAN_SIZE-1:0])
 );
 
 reconf_ib_lut2 func_2(
      .ib_ram_page_addr (ib_ram_addr[2]  ),
      .ib_ram_bank_addr (bank_read_sel[2]),
     
-     .y1 (a[1]),//(t_portA[1]),
-     .y0 (a[0])//(y3[`QUAN_SIZE-1:0])
+     .y1 (y1[`QUAN_SIZE-1:0]),//(t_portA[1]),
+     .y0 (y0[`QUAN_SIZE-1:0])//(y3[`QUAN_SIZE-1:0])
 );
 
 reg [`QUAN_SIZE-1:0] a[0:1];
@@ -200,8 +207,8 @@ reconf_ib_lut2 func_3(
      .ib_ram_page_addr (ib_ram_addr[3]  ),
      .ib_ram_bank_addr (bank_read_sel[3]),
     
-     .y1 (a[1]),//(t_portA[2]),
-     .y0 (a[0])//(y4[`QUAN_SIZE-1:0])
+     .y1 (y1[`QUAN_SIZE-1:0]),//(t_portA[2]),
+     .y0 (y0[`QUAN_SIZE-1:0])//(y4[`QUAN_SIZE-1:0])
 );
 
 wire [4:0] page_addr_ram0; 
@@ -422,11 +429,11 @@ initial begin
 	write_cnt[7:0] <= 8'd0;   
 end
 always @(posedge ram_clk) begin
-    if(write_cnt <= `ITER_WRITE_PAGE_NUM) begin
+    if(write_cnt < `ITER_WRITE_PAGE_NUM) begin
         {rstn_cnu_fsm, iter_rqst, iter_termination} <= 3'b110; 
         update_finish <= 1'b0;
     end
-    else if(write_cnt == `ITER_WRITE_PAGE_NUM+1) begin
+    else if(write_cnt == `ITER_WRITE_PAGE_NUM) begin
         {rstn_cnu_fsm, iter_rqst, iter_termination} <= 3'b001; 
         update_finish <= 1'b1;
         $fclose(f0);
@@ -471,22 +478,19 @@ end
 
 initial begin
     #0;
-    y0 <= 1;
-    y1 <= 1;
-    y2 <= 1;
-    y3 <= 1;
-    y4 <= 1;
-    
-    a[0] <= 0;
-    a[1] <= 0;
+    y0 <= 0;
+    y1 <= 0;
+    y2 <= 0;
+    y3 <= 0;
+    y4 <= 0;
 end
 always @(posedge ram_clk) begin
-    if({ram_write_en, iter_update, c6ib_rom_rst} == 3'b001) begin 
-        y0 <= 1;//y0 + 1;
-        y1 <= 1;//y1 + &y0;
-        y2 <= 1;//y2 + &y1;
-        y3 <= 1;//y3 + &y2;
-        y4 <= 1;//y4 + &y3;
+    if({ram_write_en, iter_update, c6ib_rom_rst} == 3'b001 && update_finish == 1'b1) begin 
+        y0 <= y0 + 1;
+        y1 <= y1 + &y0;
+        y2 <= y2 + &y1;
+        y3 <= y3 + &y2;
+        y4 <= y4 + &y3;
     end
 end
 
@@ -497,18 +501,25 @@ initial begin
     f3 = $fopen("f2.csv", "w");
     f4 = $fopen("f3.csv", "w");
 end
+
 always @(posedge ram_clk) begin
-    if({ram_write_en, iter_update, c6ib_rom_rst} == 3'b001 && update_finish == 1'b1) begin
-        a[0] <= 0;//a[0]+&a[1];
-        a[1] <= 0;//a[1]+1;
-        $fwrite(f1, "%h,%h,%h\n", a[0], a[1], t_c_0);
-        $fwrite(f2, "%h,%h,%h\n", a[0], a[1], t_c_1);
-        $fwrite(f3, "%h,%h,%h\n", a[0], a[1], t_c_2);
-        $fwrite(f4, "%h,%h,%h\n", a[0], a[1], t_c_3);        
+    if(update_finish == 1'b1) begin
+        if(y1 != 4'hf && y0 != 4'hf) begin
+            $fwrite(f1, "%h,%h,%h\n", y1, y0, t_c_0);
+            $fwrite(f2, "%h,%h,%h\n", y1, y0, t_c_1);
+            $fwrite(f3, "%h,%h,%h\n", y1, y0, t_c_2);
+            $fwrite(f4, "%h,%h,%h\n", y1, y0, t_c_3); 
+        end
+        else if(y1 == 4'hf && y0 == 4'hf) begin
+            $fwrite(f1, "%h,%h,%h", y1, y0, t_c_0);
+            $fwrite(f2, "%h,%h,%h", y1, y0, t_c_1);
+            $fwrite(f3, "%h,%h,%h", y1, y0, t_c_2);
+            $fwrite(f4, "%h,%h,%h", y1, y0, t_c_3);     
+        end    
     end
 end
 always @(posedge ram_clk) begin
-    if(a[0] == 4'hf && a[1] == 4'hf) begin
+    if(update_finish == 1'b1 && y0 == 4'hf && y1 == 4'hf) begin
         $fclose(f1);
         $fclose(f2);
         $fclose(f3);
@@ -516,8 +527,8 @@ always @(posedge ram_clk) begin
     end
 end
 //initial #(7.5+2.5+5*3*60+5) $finish;
-initial begin
- #(611.789+611*512);
-    $finish; 
+always @(posedge ram_clk) begin
+    if(y0 == 4'hf && y1 == 4'hf)
+        $finish; 
 end
 endmodule
