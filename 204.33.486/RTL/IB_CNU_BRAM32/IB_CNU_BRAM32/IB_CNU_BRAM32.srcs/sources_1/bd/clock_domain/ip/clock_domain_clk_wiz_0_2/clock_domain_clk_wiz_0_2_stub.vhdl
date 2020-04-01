@@ -1,10 +1,10 @@
 -- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
--- Date        : Wed Mar 25 22:10:00 2020
+-- Date        : Wed Mar 25 22:09:59 2020
 -- Host        : uv running 64-bit SUSE Linux Enterprise Server 12 SP1
--- Command     : write_vhdl -force -mode synth_stub
---               /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_CNU_BRAM32/IB_CNU_BRAM32/IB_CNU_BRAM32.srcs/sources_1/bd/clock_domain/ip/clock_domain_clk_wiz_0_2/clock_domain_clk_wiz_0_2_stub.vhdl
+-- Command     : write_vhdl -force -mode synth_stub -rename_top clock_domain_clk_wiz_0_2 -prefix
+--               clock_domain_clk_wiz_0_2_ clock_domain_clk_wiz_0_2_stub.vhdl
 -- Design      : clock_domain_clk_wiz_0_2
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xczu7ev-ffvc1156-2-e

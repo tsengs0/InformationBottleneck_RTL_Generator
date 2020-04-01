@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Mon Mar 23 19:33:57 2020" VIVADOVERSION="2019.2">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Wed Apr  1 16:28:35 2020" VIVADOVERSION="2019.2">
 
   <SYSTEMINFO ARCH="zynquplus" BOARD="xilinx.com:zcu104:part0:1.1" DEVICE="xczu7ev" NAME="IB_RAM" PACKAGE="ffvc1156" SPEEDGRADE="-2"/>
 

@@ -3,8 +3,8 @@
 -- Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
 -- Date        : Mon Mar 23 19:36:45 2020
 -- Host        : uv running 64-bit SUSE Linux Enterprise Server 12 SP1
--- Command     : write_vhdl -force -mode synth_stub
---               /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_CNU_BRAM32/IB_CNU_BRAM32/IB_CNU_BRAM32.srcs/sources_1/bd/IB_RAM/ip/IB_RAM_blk_mem_gen_0_0/IB_RAM_blk_mem_gen_0_0_stub.vhdl
+-- Command     : write_vhdl -force -mode synth_stub -rename_top IB_RAM_blk_mem_gen_0_0 -prefix
+--               IB_RAM_blk_mem_gen_0_0_ IB_RAM_blk_mem_gen_0_0_stub.vhdl
 -- Design      : IB_RAM_blk_mem_gen_0_0
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xczu7ev-ffvc1156-2-e

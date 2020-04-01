@@ -27,8 +27,11 @@ module ram_sel_counter(
 wire clk_gate;
 assign clk_gate = m_clk & en;
 initial ram_sel[1:0] <= 2'b00;
-always @(negedge clk_gate) begin
-	if(m_clk == 1'b0)
-		ram_sel[1:0] <= ram_sel[1:0] + 2'b01;  
+always @(negedge m_clk) begin
+	//if(m_clk == 1'b0)
+	if(en)
+		ram_sel[1:0] <= ram_sel[1:0] + 1'b1;  
+    else 
+        ram_sel[1:0] <= 2'b00;//ram_sel[1:0];
 end
 endmodule

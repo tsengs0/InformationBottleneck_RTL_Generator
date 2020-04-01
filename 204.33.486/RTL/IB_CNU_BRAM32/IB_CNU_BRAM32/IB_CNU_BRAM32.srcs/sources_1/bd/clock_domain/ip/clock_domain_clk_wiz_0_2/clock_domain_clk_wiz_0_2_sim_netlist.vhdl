@@ -1,10 +1,10 @@
 -- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
--- Date        : Wed Mar 25 22:10:00 2020
+-- Date        : Wed Mar 25 22:09:59 2020
 -- Host        : uv running 64-bit SUSE Linux Enterprise Server 12 SP1
--- Command     : write_vhdl -force -mode funcsim
---               /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_CNU_BRAM32/IB_CNU_BRAM32/IB_CNU_BRAM32.srcs/sources_1/bd/clock_domain/ip/clock_domain_clk_wiz_0_2/clock_domain_clk_wiz_0_2_sim_netlist.vhdl
+-- Command     : write_vhdl -force -mode funcsim -rename_top clock_domain_clk_wiz_0_2 -prefix
+--               clock_domain_clk_wiz_0_2_ clock_domain_clk_wiz_0_2_sim_netlist.vhdl
 -- Design      : clock_domain_clk_wiz_0_2
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -23,8 +23,6 @@ entity clock_domain_clk_wiz_0_2_clock_domain_clk_wiz_0_2_clk_wiz is
     clk_in1_p : in STD_LOGIC;
     clk_in1_n : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of clock_domain_clk_wiz_0_2_clock_domain_clk_wiz_0_2_clk_wiz : entity is "clock_domain_clk_wiz_0_2_clk_wiz";
 end clock_domain_clk_wiz_0_2_clock_domain_clk_wiz_0_2_clk_wiz;
 
 architecture STRUCTURE of clock_domain_clk_wiz_0_2_clock_domain_clk_wiz_0_2_clk_wiz is

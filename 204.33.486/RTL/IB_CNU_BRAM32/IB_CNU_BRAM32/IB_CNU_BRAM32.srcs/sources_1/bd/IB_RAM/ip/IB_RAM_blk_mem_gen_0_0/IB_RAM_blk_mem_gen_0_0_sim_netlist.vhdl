@@ -3,8 +3,8 @@
 -- Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
 -- Date        : Mon Mar 23 19:36:45 2020
 -- Host        : uv running 64-bit SUSE Linux Enterprise Server 12 SP1
--- Command     : write_vhdl -force -mode funcsim
---               /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_CNU_BRAM32/IB_CNU_BRAM32/IB_CNU_BRAM32.srcs/sources_1/bd/IB_RAM/ip/IB_RAM_blk_mem_gen_0_0/IB_RAM_blk_mem_gen_0_0_sim_netlist.vhdl
+-- Command     : write_vhdl -force -mode funcsim -rename_top IB_RAM_blk_mem_gen_0_0 -prefix
+--               IB_RAM_blk_mem_gen_0_0_ IB_RAM_blk_mem_gen_0_0_sim_netlist.vhdl
 -- Design      : IB_RAM_blk_mem_gen_0_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -23,8 +23,6 @@ entity IB_RAM_blk_mem_gen_0_0_blk_mem_gen_prim_wrapper_init is
     addra : in STD_LOGIC_VECTOR ( 6 downto 0 );
     addrb : in STD_LOGIC_VECTOR ( 6 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of IB_RAM_blk_mem_gen_0_0_blk_mem_gen_prim_wrapper_init : entity is "blk_mem_gen_prim_wrapper_init";
 end IB_RAM_blk_mem_gen_0_0_blk_mem_gen_prim_wrapper_init;
 
 architecture STRUCTURE of IB_RAM_blk_mem_gen_0_0_blk_mem_gen_prim_wrapper_init is
@@ -311,8 +309,6 @@ entity IB_RAM_blk_mem_gen_0_0_blk_mem_gen_prim_width is
     addra : in STD_LOGIC_VECTOR ( 6 downto 0 );
     addrb : in STD_LOGIC_VECTOR ( 6 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of IB_RAM_blk_mem_gen_0_0_blk_mem_gen_prim_width : entity is "blk_mem_gen_prim_width";
 end IB_RAM_blk_mem_gen_0_0_blk_mem_gen_prim_width;
 
 architecture STRUCTURE of IB_RAM_blk_mem_gen_0_0_blk_mem_gen_prim_width is
@@ -340,8 +336,6 @@ entity IB_RAM_blk_mem_gen_0_0_blk_mem_gen_generic_cstr is
     addra : in STD_LOGIC_VECTOR ( 6 downto 0 );
     addrb : in STD_LOGIC_VECTOR ( 6 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of IB_RAM_blk_mem_gen_0_0_blk_mem_gen_generic_cstr : entity is "blk_mem_gen_generic_cstr";
 end IB_RAM_blk_mem_gen_0_0_blk_mem_gen_generic_cstr;
 
 architecture STRUCTURE of IB_RAM_blk_mem_gen_0_0_blk_mem_gen_generic_cstr is
@@ -369,8 +363,6 @@ entity IB_RAM_blk_mem_gen_0_0_blk_mem_gen_top is
     addra : in STD_LOGIC_VECTOR ( 6 downto 0 );
     addrb : in STD_LOGIC_VECTOR ( 6 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of IB_RAM_blk_mem_gen_0_0_blk_mem_gen_top : entity is "blk_mem_gen_top";
 end IB_RAM_blk_mem_gen_0_0_blk_mem_gen_top;
 
 architecture STRUCTURE of IB_RAM_blk_mem_gen_0_0_blk_mem_gen_top is
@@ -398,8 +390,6 @@ entity IB_RAM_blk_mem_gen_0_0_blk_mem_gen_v8_4_4_synth is
     addra : in STD_LOGIC_VECTOR ( 6 downto 0 );
     addrb : in STD_LOGIC_VECTOR ( 6 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of IB_RAM_blk_mem_gen_0_0_blk_mem_gen_v8_4_4_synth : entity is "blk_mem_gen_v8_4_4_synth";
 end IB_RAM_blk_mem_gen_0_0_blk_mem_gen_v8_4_4_synth;
 
 architecture STRUCTURE of IB_RAM_blk_mem_gen_0_0_blk_mem_gen_v8_4_4_synth is
@@ -634,8 +624,6 @@ entity IB_RAM_blk_mem_gen_0_0_blk_mem_gen_v8_4_4 is
   attribute C_WRITE_WIDTH_B of IB_RAM_blk_mem_gen_0_0_blk_mem_gen_v8_4_4 : entity is 32;
   attribute C_XDEVICEFAMILY : string;
   attribute C_XDEVICEFAMILY of IB_RAM_blk_mem_gen_0_0_blk_mem_gen_v8_4_4 : entity is "zynquplus";
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of IB_RAM_blk_mem_gen_0_0_blk_mem_gen_v8_4_4 : entity is "blk_mem_gen_v8_4_4";
   attribute downgradeipidentifiedwarnings : string;
   attribute downgradeipidentifiedwarnings of IB_RAM_blk_mem_gen_0_0_blk_mem_gen_v8_4_4 : entity is "yes";
 end IB_RAM_blk_mem_gen_0_0_blk_mem_gen_v8_4_4;

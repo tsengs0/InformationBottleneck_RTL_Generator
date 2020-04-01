@@ -7,7 +7,9 @@ module c6ibAddr_ram_sel
 	output reg [4:0] page_addr_ram0, 
 	output reg [4:0] page_addr_ram1, 
 	output reg [4:0] page_addr_ram2,
-	output reg [4:0] page_addr_ram3, 
+	output reg [4:0] page_addr_ram3,
+	output reg [RAM_NUM-1:0] we,
+     
 
 	input wire en,
 	input wire [1:0] ram_sel, 
@@ -32,26 +34,50 @@ initial begin
     page_addr_ram1[4:0] <= 5'd0;
     page_addr_ram2[4:0] <= 5'd0;
     page_addr_ram3[4:0] <= 5'd0;
+    we[RAM_NUM-1:0] <= 'd0;
 end
 
 always @(posedge ram_clk) begin
-    if(ram_sel[1:0] == 2'd0) page_addr_ram0[4:0] <= cnt[4:0];
-	else                          page_addr_ram0[4:0] <= 5'd0;
+    if(ram_sel[1:0] == 2'd0) begin
+        page_addr_ram0[4:0] <= cnt[4:0];
+        we[0] <= en; 
+    end
+	else begin
+	   page_addr_ram0[4:0] <= 5'd0;
+	   we[0] <= 1'b0;
+	end
 end
 
 always @(posedge ram_clk) begin
-    if(ram_sel[1:0] == 2'd1) page_addr_ram1[4:0] <= cnt[4:0];
-	else                          page_addr_ram1[4:0] <= 5'd0;
+    if(ram_sel[1:0] == 2'd1) begin
+        page_addr_ram1[4:0] <= cnt[4:0];
+        we[1] <= en; 
+    end
+	else begin
+	   page_addr_ram1[4:0] <= 5'd0;
+	   we[1] <= 1'b0;
+	end
 end
 
 always @(posedge ram_clk) begin
-	if(!en_reg) page_addr_ram2[4:0] <= page_addr_ram2[4:0];
-	else if(ram_sel[1:0] == 2'd2) page_addr_ram2[4:0] <= cnt[4:0];
-	else                          page_addr_ram2[4:0] <= 5'd0;
+    if(ram_sel[1:0] == 2'd2) begin
+        page_addr_ram2[4:0] <= cnt[4:0];
+        we[2] <= en; 
+    end
+	else begin
+	   page_addr_ram2[4:0] <= 5'd0;
+	   we[2] <= 1'b0;
+	end
 end
 
 always @(posedge ram_clk) begin
-    if(ram_sel[1:0] == 2'd3) page_addr_ram3[4:0] <= cnt[4:0];
-	else                          page_addr_ram3[4:0] <= 5'd0;
+    if(ram_sel[1:0] == 2'd3) begin
+        page_addr_ram3[4:0] <= cnt[4:0];
+        we[3] <= en; 
+    end
+	else begin
+	   page_addr_ram3[4:0] <= 5'd0;
+	   we[3] <= 1'b0;
+	end
 end
 endmodule

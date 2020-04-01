@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Wed Mar 25 22:07:47 2020" VIVADOVERSION="2019.2">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Wed Apr  1 16:23:08 2020" VIVADOVERSION="2019.2">
 
   <SYSTEMINFO ARCH="zynquplus" BOARD="xilinx.com:zcu104:part0:1.1" DEVICE="xczu7ev" NAME="clock_domain" PACKAGE="ffvc1156" SPEEDGRADE="-2"/>
 
@@ -19,6 +19,11 @@
         <CONNECTION INSTANCE="clk_wiz_0" PORT="clk_out1"/>
       </CONNECTIONS>
     </PORT>
+    <PORT CLKFREQUENCY="100000000" DIR="O" NAME="clk_out2_0" SIGIS="clk" SIGNAME="clk_wiz_0_clk_out2">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="clk_wiz_0" PORT="clk_out2"/>
+      </CONNECTIONS>
+    </PORT>
     <PORT CLKFREQUENCY="100000000" DIR="I" NAME="clk_300mhz_clk_n" SIGIS="clk" SIGNAME="clk_wiz_0_clk_in1_n">
       <CONNECTIONS>
         <CONNECTION INSTANCE="clk_wiz_0" PORT="clk_in1_n"/>
@@ -27,11 +32,6 @@
     <PORT CLKFREQUENCY="100000000" DIR="I" NAME="clk_300mhz_clk_p" SIGIS="clk" SIGNAME="clk_wiz_0_clk_in1_p">
       <CONNECTIONS>
         <CONNECTION INSTANCE="clk_wiz_0" PORT="clk_in1_p"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT CLKFREQUENCY="100000000" DIR="O" NAME="clk_out2_0" SIGIS="clk" SIGNAME="clk_wiz_0_clk_out2">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="clk_wiz_0" PORT="clk_out2"/>
       </CONNECTIONS>
     </PORT>
   </EXTERNALPORTS>

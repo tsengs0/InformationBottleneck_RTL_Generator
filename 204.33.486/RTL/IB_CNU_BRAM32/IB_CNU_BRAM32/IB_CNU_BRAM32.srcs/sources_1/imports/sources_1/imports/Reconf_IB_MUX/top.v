@@ -153,22 +153,22 @@ ram_sel_counter ram_sel_cnt_0(
 
 // DEMUX following (datapath) the output of MUX abov
 // The interleaving-bank data[#Bank*QUAN_SIZE-1:0] is forwarded to one of CNU-IB RAM x, x in {0, 1, 2, 3}
-wire [31:0] ram_write_data_wire [0:3];
+wire [31:0] ram_write_data [0:3];
 c6ibwr_ram_sel c6ibwr_ram_sel_0 (
-    .interBank_data_ram0 (ram_write_data_wire[0]),
-    .interBank_data_ram1 (ram_write_data_wire[1]),
-    .interBank_data_ram2 (ram_write_data_wire[2]),
-    .interBank_data_ram3 (ram_write_data_wire[3]),
+    .interBank_data_ram0 (ram_write_data[0]),
+    .interBank_data_ram1 (ram_write_data[1]),
+    .interBank_data_ram2 (ram_write_data[2]),
+    .interBank_data_ram3 (ram_write_data[3]),
     
     .interBank_write_data (interBank_write_data[31:0]),
     .ram_sel (ram_sel[1:0])
 );
-reg [31:0] ram_write_data [0:3];
+reg [31:0] ram_write_data_latch [0:3];
 always @(negedge ram_clk) begin
-    ram_write_data[0] <= ram_write_data_wire[0];
-    ram_write_data[1] <= ram_write_data_wire[1];
-    ram_write_data[2] <= ram_write_data_wire[2];
-    ram_write_data[3] <= ram_write_data_wire[3];
+    ram_write_data_latch[0] <= ram_write_data[0];
+    ram_write_data_latch[1] <= ram_write_data[1];
+    ram_write_data_latch[2] <= ram_write_data[2];
+    ram_write_data_latch[3] <= ram_write_data[3];
 end
 
 // Configuration of IB-LUT RAM
@@ -182,24 +182,24 @@ reconf_ib_lut2 func_0(
      .ib_ram_page_addr (ib_ram_addr[0]  ),
      .ib_ram_bank_addr (bank_read_sel[0]),
     
-     .y1 (y1[`QUAN_SIZE-1:0]),
-     .y0 (y0[`QUAN_SIZE-1:0])
+     .y1 (y0[`QUAN_SIZE-1:0]),
+     .y0 (y1[`QUAN_SIZE-1:0])
 );
 
 reconf_ib_lut2 func_1(
      .ib_ram_page_addr (ib_ram_addr[1]  ),
      .ib_ram_bank_addr (bank_read_sel[1]),
     
-     .y1 (y1[`QUAN_SIZE-1:0]),//(t_portA[0]),
-     .y0 (y0[`QUAN_SIZE-1:0])//(y2[`QUAN_SIZE-1:0])
+     .y1 (y0[`QUAN_SIZE-1:0]),//(t_portA[0]),
+     .y0 (y1[`QUAN_SIZE-1:0])//(y2[`QUAN_SIZE-1:0])
 );
 
 reconf_ib_lut2 func_2(
      .ib_ram_page_addr (ib_ram_addr[2]  ),
      .ib_ram_bank_addr (bank_read_sel[2]),
     
-     .y1 (y1[`QUAN_SIZE-1:0]),//(t_portA[1]),
-     .y0 (y0[`QUAN_SIZE-1:0])//(y3[`QUAN_SIZE-1:0])
+     .y1 (y0[`QUAN_SIZE-1:0]),//(t_portA[1]),
+     .y0 (y1[`QUAN_SIZE-1:0])//(y3[`QUAN_SIZE-1:0])
 );
 
 reg [`QUAN_SIZE-1:0] a[0:1];
@@ -207,14 +207,15 @@ reconf_ib_lut2 func_3(
      .ib_ram_page_addr (ib_ram_addr[3]  ),
      .ib_ram_bank_addr (bank_read_sel[3]),
     
-     .y1 (y1[`QUAN_SIZE-1:0]),//(t_portA[2]),
-     .y0 (y0[`QUAN_SIZE-1:0])//(y4[`QUAN_SIZE-1:0])
+     .y1 (y0[`QUAN_SIZE-1:0]),//(t_portA[2]),
+     .y0 (y1[`QUAN_SIZE-1:0])//(y4[`QUAN_SIZE-1:0])
 );
 
 wire [4:0] page_addr_ram0; 
 wire [4:0] page_addr_ram1; 
 wire [4:0] page_addr_ram2;
 wire [4:0] page_addr_ram3; 
+wire [`IB_CNU_DECOMP_funNum-1:0] ib_ram_we;
 c6ibAddr_ram_sel #(
     .RAM_DEPTH(`IB_ROM_SIZE), 
     .RAM_NUM(`IB_CNU_DECOMP_funNum)
@@ -223,6 +224,7 @@ c6ibAddr_ram_sel #(
 	.page_addr_ram1 (page_addr_ram1[4:0]), 
 	.page_addr_ram2 (page_addr_ram2[4:0]), 
 	.page_addr_ram3 (page_addr_ram3[4:0]), 
+	.we (ib_ram_we[`IB_CNU_DECOMP_funNum-1:0]),
 
 	.en      (ram_write_en),
 	.ram_sel (ram_sel[1:0]), 
@@ -258,7 +260,7 @@ ib_lut_ram func_ram_0(
     .bank_data_write6 (ram_write_data[0][7:4]  ), // Same bank of all 4 ports are written same page data
     .bank_data_write7 (ram_write_data[0][3:0]  ), // Same bank of all 4 ports are written same page data       
     
-    .write_en (ram_write_en),
+    .write_en (ib_ram_we[0]),
     .sys_clk (~ram_clk)
 );
 
@@ -291,7 +293,7 @@ ib_lut_ram func_ram_1(
     .bank_data_write6 (ram_write_data[1][7:4]  ), // Same bank of all 4 ports are written same page data
     .bank_data_write7 (ram_write_data[1][3:0]  ), // Same bank of all 4 ports are written same page data       
     
-    .write_en (ram_write_en),
+    .write_en (ib_ram_we[1]),
     .sys_clk (~ram_clk)
 );
 
@@ -324,7 +326,7 @@ ib_lut_ram func_ram_2(
     .bank_data_write6 (ram_write_data[2][7:4]  ), // Same bank of all 4 ports are written same page data
     .bank_data_write7 (ram_write_data[2][3:0]  ), // Same bank of all 4 ports are written same page data       
     
-    .write_en (ram_write_en),
+    .write_en (ib_ram_we[2]),
     .sys_clk (~ram_clk)
 );
 
@@ -357,7 +359,7 @@ ib_lut_ram func_ram_3(
     .bank_data_write6 (ram_write_data[3][7:4]  ), // Same bank of all 4 ports are written same page data
     .bank_data_write7 (ram_write_data[3][3:0]  ), // Same bank of all 4 ports are written same page data       
     
-    .write_en (ram_write_en),
+    .write_en (ib_ram_we[3]),
     .sys_clk (~ram_clk)
 );
 assign t_c_0[`QUAN_SIZE-1:0] = t_portA[0];
@@ -366,60 +368,7 @@ assign t_c_2[`QUAN_SIZE-1:0] = t_portA[2];
 assign t_c_3[`QUAN_SIZE-1:0] = t_portA[3];
 assign t_c[`QUAN_SIZE-1:0] = t_c_3[`QUAN_SIZE-1:0];
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
-integer f0;
-initial begin
-    f0 = $fopen("ib_map_bank0_7.csv", "w");
-end
-
-integer i;
-initial begin    
-    #105;
-    
-    for(i=0;i<114;i=i+1) begin
-       #20;
-       //$display("%h,%h,%h,%h\n", bank_portA[0], bank_portB[0], bank_portC[0], bank_portD[0]);
-       $fwrite(f0, "%h,%h,%h,%h,%h,%h,%h,%h\n", bank_portA[0], bank_portA[1], bank_portA[2], bank_portA[3], bank_portA[4], bank_portA[5], bank_portA[6], bank_portA[7]);
-       $fwrite(f0, "%h,%h,%h,%h,%h,%h,%h,%h\n", bank_portB[0], bank_portB[1], bank_portB[2], bank_portB[3], bank_portB[4], bank_portB[5], bank_portB[6], bank_portB[7]);
-       $fwrite(f0, "%h,%h,%h,%h,%h,%h,%h,%h\n", bank_portC[0], bank_portC[1], bank_portC[2], bank_portC[3], bank_portC[4], bank_portC[5], bank_portC[6], bank_portC[7]);
-       //$fwrite(f0, "%h,%h,%h,%h,%h,%h,%h,%h\n\n", bank_portD[0], bank_portD[1], bank_portD[2], bank_portD[3], bank_portD[4], bank_portD[5], bank_portD[6], bank_portD[7]);
-    end
-    $fclose(f0);
-end
-*/
-/*
-initial begin
-	#0;
-	en <= 1'b0;
-	//{in_portA, in_portB, in_portC} <= 96'd0;
-
-	#(2.5*3);
-	{in_portA, in_portB, in_portC} <= {32'd1, 32'd2, 32'd3};
-
-	#(2.5*2);
-	en <= 1'b1;
-	
-	//forever #(20*3) {in_portA, in_portB, in_portC} <= {in_portA+1, in_portB+1, in_portC+1};
-end
-*/
 reg update_finish;
-/*initial begin
-	#0;
-	{rstn_cnu_fsm, iter_rqst, iter_termination} <= 3'b000;
-	update_finish  <= 1'b0;
-
-	#2.5;
-	{rstn_cnu_fsm, iter_rqst, iter_termination} <= 3'b110;
-
-	//#(7.5+5*3*60);
-	#610;
-	{rstn_cnu_fsm, iter_rqst, iter_termination} <= 3'b001;
-	
-	#1.667; // finish updat of one iteration 
-	{rstn_cnu_fsm, iter_rqst, iter_termination} <= 3'b000;
-	$fclose(f0);
-	update_finish <= 1'b1;
-end*/
 reg [7:0] write_cnt;
 initial begin
     #0;
@@ -463,16 +412,15 @@ initial begin
 end
 always @(negedge ram_clk) begin
     if(state[2:0] == 3'd2 || state[2:0] == 3'd4) begin
-        $fwrite(f0, "%h,%h,%h,%h,%h,%h,%h,%h\n", 
-                    interBank_write_data[31:28],
-                    interBank_write_data[27:24],
-                    interBank_write_data[23:20],
-                    interBank_write_data[19:16],
-                    interBank_write_data[15:12],
-                    interBank_write_data[11:8],
-                    interBank_write_data[7:4],
-                    interBank_write_data[3:0]
-        );
+        $fwrite(f0, "%h,%h,%h,%h,%h,%h,%h,%h\n", ram_write_data[ram_sel[1:0]][31:28],
+                        ram_write_data[ram_sel[1:0]][27:24],
+                        ram_write_data[ram_sel[1:0]][23:20],
+                        ram_write_data[ram_sel[1:0]][19:16],
+                        ram_write_data[ram_sel[1:0]][15:12],
+                        ram_write_data[ram_sel[1:0]][11:8],
+                        ram_write_data[ram_sel[1:0]][7:4],
+                        ram_write_data[ram_sel[1:0]][3:0]
+        );      
     end
 end
 
@@ -504,13 +452,13 @@ end
 
 always @(posedge ram_clk) begin
     if(update_finish == 1'b1) begin
-        if(y1 != 4'hf && y0 != 4'hf) begin
+        if({y1, y0} != 8'hff) begin
             $fwrite(f1, "%h,%h,%h\n", y1, y0, t_c_0);
             $fwrite(f2, "%h,%h,%h\n", y1, y0, t_c_1);
             $fwrite(f3, "%h,%h,%h\n", y1, y0, t_c_2);
             $fwrite(f4, "%h,%h,%h\n", y1, y0, t_c_3); 
         end
-        else if(y1 == 4'hf && y0 == 4'hf) begin
+        else if({y1, y0} == 8'hff) begin
             $fwrite(f1, "%h,%h,%h", y1, y0, t_c_0);
             $fwrite(f2, "%h,%h,%h", y1, y0, t_c_1);
             $fwrite(f3, "%h,%h,%h", y1, y0, t_c_2);
@@ -519,7 +467,7 @@ always @(posedge ram_clk) begin
     end
 end
 always @(posedge ram_clk) begin
-    if(update_finish == 1'b1 && y0 == 4'hf && y1 == 4'hf) begin
+    if(update_finish == 1'b1 && {y1, y0} == 8'hff) begin
         $fclose(f1);
         $fclose(f2);
         $fclose(f3);
@@ -528,7 +476,7 @@ always @(posedge ram_clk) begin
 end
 //initial #(7.5+2.5+5*3*60+5) $finish;
 always @(posedge ram_clk) begin
-    if(y0 == 4'hf && y1 == 4'hf)
+    if({y1, y0} == 8'hff)
         $finish; 
 end
 endmodule

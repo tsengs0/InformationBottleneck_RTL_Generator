@@ -3,8 +3,8 @@
 // Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
 // Date        : Mon Mar 23 19:36:45 2020
 // Host        : uv running 64-bit SUSE Linux Enterprise Server 12 SP1
-// Command     : write_verilog -force -mode funcsim
-//               /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/IB_CNU_BRAM32/IB_CNU_BRAM32/IB_CNU_BRAM32.srcs/sources_1/bd/IB_RAM/ip/IB_RAM_blk_mem_gen_0_0/IB_RAM_blk_mem_gen_0_0_sim_netlist.v
+// Command     : write_verilog -force -mode funcsim -rename_top IB_RAM_blk_mem_gen_0_0 -prefix
+//               IB_RAM_blk_mem_gen_0_0_ IB_RAM_blk_mem_gen_0_0_sim_netlist.v
 // Design      : IB_RAM_blk_mem_gen_0_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -196,7 +196,6 @@ module IB_RAM_blk_mem_gen_0_0
         .web(1'b0));
 endmodule
 
-(* ORIG_REF_NAME = "blk_mem_gen_generic_cstr" *) 
 module IB_RAM_blk_mem_gen_0_0_blk_mem_gen_generic_cstr
    (douta,
     doutb,
@@ -227,7 +226,6 @@ module IB_RAM_blk_mem_gen_0_0_blk_mem_gen_generic_cstr
         .sleep(sleep));
 endmodule
 
-(* ORIG_REF_NAME = "blk_mem_gen_prim_width" *) 
 module IB_RAM_blk_mem_gen_0_0_blk_mem_gen_prim_width
    (douta,
     doutb,
@@ -258,7 +256,6 @@ module IB_RAM_blk_mem_gen_0_0_blk_mem_gen_prim_width
         .sleep(sleep));
 endmodule
 
-(* ORIG_REF_NAME = "blk_mem_gen_prim_wrapper_init" *) 
 module IB_RAM_blk_mem_gen_0_0_blk_mem_gen_prim_wrapper_init
    (douta,
     doutb,
@@ -536,7 +533,6 @@ module IB_RAM_blk_mem_gen_0_0_blk_mem_gen_prim_wrapper_init
         .WEBWE({1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0}));
 endmodule
 
-(* ORIG_REF_NAME = "blk_mem_gen_top" *) 
 module IB_RAM_blk_mem_gen_0_0_blk_mem_gen_top
    (douta,
     doutb,
@@ -592,7 +588,7 @@ endmodule
 (* C_WEA_WIDTH = "1" *) (* C_WEB_WIDTH = "1" *) (* C_WRITE_DEPTH_A = "128" *) 
 (* C_WRITE_DEPTH_B = "128" *) (* C_WRITE_MODE_A = "WRITE_FIRST" *) (* C_WRITE_MODE_B = "WRITE_FIRST" *) 
 (* C_WRITE_WIDTH_A = "32" *) (* C_WRITE_WIDTH_B = "32" *) (* C_XDEVICEFAMILY = "zynquplus" *) 
-(* ORIG_REF_NAME = "blk_mem_gen_v8_4_4" *) (* downgradeipidentifiedwarnings = "yes" *) 
+(* downgradeipidentifiedwarnings = "yes" *) 
 module IB_RAM_blk_mem_gen_0_0_blk_mem_gen_v8_4_4
    (clka,
     rsta,
@@ -810,7 +806,6 @@ module IB_RAM_blk_mem_gen_0_0_blk_mem_gen_v8_4_4
         .sleep(sleep));
 endmodule
 
-(* ORIG_REF_NAME = "blk_mem_gen_v8_4_4_synth" *) 
 module IB_RAM_blk_mem_gen_0_0_blk_mem_gen_v8_4_4_synth
    (douta,
     doutb,
