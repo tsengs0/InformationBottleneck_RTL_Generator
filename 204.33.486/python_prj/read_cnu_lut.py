@@ -30,8 +30,10 @@ dset2 = f['dde_results']
 print(dset2.keys())
 
 check_node_lut = dset2['check_node_vector']
+var_node_lut = dset2['var_node_vector']
 print(check_node_lut)
 print("\n\n")
+print(var_node_lut)
 
 
 # Get pointer of target LUT
@@ -202,4 +204,4 @@ def gen_CNU_LUT_V():
 # exportCNU_LUT_COE()
 # exportCNU_LUT_CSV()
 # gen_CNU_LUT_V()
-dut_pattern_gen()
+#dut_pattern_gen()
