@@ -33,7 +33,7 @@ gen_204:
 	mkdir 204.33.484_rtl
 	./$(EXE_NAME) ../PCM/204.33.484.txt
 	mv cnu_*.v vnu_*.v 204.33.484_rtl/
-	mv fully_parallel_route_instantiate.v 204.33.484_rtl/
+	mv fully_parallel_*.v 204.33.484_rtl/
 
 gen_8000:
 	rm -rf 8000.4000.3.483_rtl

@@ -35,6 +35,7 @@ verilog_gen::verilog_gen(const char *read_filename)
 	cnu_file.open(cnu_inst_filename); vnu_file.open(vnu_inst_filename);
 	cnu_p2s_file.open(cnu_p2s_inst_filename); cnu_s2p_file.open(cnu_s2p_inst_filename);
 	vnu_p2s_file.open(vnu_p2s_inst_filename); vnu_s2p_file.open(vnu_s2p_inst_filename);
+	fully_parallel_imple_file.open(fully_parallel_imple_filename);
 
 	//Reading file line by line
 	while(getline(pcm_file,str)) {
@@ -70,6 +71,10 @@ verilog_gen::verilog_gen(const char *read_filename)
 				  }
 				  else if(line_cnt == 3) { // loading the degree of each check node
 					list_dc[entry_cnt] = std::stoul(token, nullptr, 0);
+					if(entry_cnt == M-1) {
+						fully_route_instantiate(fully_parallel_filename);
+						fully_route_implementation_port();
+					}
 				  }
 				  entry_cnt += 1;
 			}
@@ -77,14 +82,15 @@ verilog_gen::verilog_gen(const char *read_filename)
 		else {
         		while(getline(stream,token, '\t')) {
 				  if(dv_line_cnt < N && line_cnt > 3) { // generating the instantiation file for VNUs 
-					vnu_instantiate(dv_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1); // index starts from '0'
+					//vnu_instantiate(dv_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1); // index starts from '0'
 					vnu_p2s_instantiate(dv_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1);
-					vnu_s2p_instantiate(dv_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1);
+					//vnu_s2p_instantiate(dv_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1);
+					fully_route_implementation(dv_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1);
 				  }
 				  else if(dc_line_cnt < M && line_cnt > (3+N)) { // generating the instantiation file for CNUs
-					cnu_instantiate(dc_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1); // index starts from '0'
+					//cnu_instantiate(dc_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1); // index starts from '0'
 					cnu_p2s_instantiate(dc_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1);
-					cnu_s2p_instantiate(dc_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1);
+					//cnu_s2p_instantiate(dc_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1);
 				  }
 				  else {
 					cout << "Finished RTL code generation" << endl;
@@ -99,8 +105,7 @@ verilog_gen::verilog_gen(const char *read_filename)
 		line_cnt += 1;
 	}
 
-	fully_route_instantiate(fully_parallel_filename);
-	fully_route_implementation(fully_parallel_imple_filename);
+	cout << "Finished RTL code generation" << endl;
 	close_file();
 }
 
@@ -186,6 +191,7 @@ void verilog_gen::fully_route_instantiate(const char *filename)
 	fully_parallel_file.open(filename);
 	fully_parallel_file << "fully_parallel_route routing_network(" << endl << "\t"
 			    << "// (N-K) number of check-to-Variable message buses, each of which is d_c bit width as input ports of this routing network" << endl << "\t"; 
+	// Generating the instantiation of output port
 	for(unsigned int i=0; i < M; i++) {
 		for(unsigned int j=0; j < max_dc; j++) {
 			fully_parallel_file << ".v2c_parallelOut_" << i << j << "(v2c_" << j << "[" << i << "])," << endl << "\t"; 
@@ -200,18 +206,101 @@ void verilog_gen::fully_route_instantiate(const char *filename)
 			fully_parallel_file << ".c2v_parallelOut_" << i << j << "(c2v_" << j << "[" << i << "])," << endl << "\t"; 
 		}
 	}
-
 	fully_parallel_file << endl << "\t";
+
+	// Generating the instantiation of input port
+	for(unsigned int i=0; i < M; i++) {
+		for(unsigned int j=0; j < max_dc; j++) {
+			fully_parallel_file << ".c2v_parallelIn_" << i << j << "(c2v_" << j << "[" << i << "])," << endl << "\t"; 
+		}
+	}
+	fully_parallel_file << endl << "\t";
+	for(unsigned int i=0; i < N; i++) {
+		for(unsigned int j=0; j < max_dv; j++) {
+			fully_parallel_file << ".v2c_parallelIn_" << i << j << "(v2c_" << j << "[" << i << "])," << endl << "\t"; 
+		}
+	}
 	
+	fully_parallel_file << endl << "\t";
 	fully_parallel_file << ".load()," << endl << "\t"
 			    << ".parallel_en ()," << endl << "\t"
 			    << ".serial_clk (ram_clk)" << endl
 			    << "};"; 
 }
 		
-void verilog_gen::fully_route_implementation(const char *filename)
+void verilog_gen::fully_route_implementation(unsigned line_cnt, unsigned int entry_cnt, unsigned int coordinate) // only for regular codes
 {
+	fully_parallel_imple_file << "\tvnu_bitSerial_port vnu_converter_port" << (line_cnt*list_dv[line_cnt])+entry_cnt << " (" << endl << "\t\t"
+	         << ".serialInOut (cn_serialInOut_" << coordinate << "_" << line_cnt << "_s)," << endl << "\t\t"
+		 << ".convert_done (vnu_p2s_done_" << coordinate << "_" << line_cnt << ")," << endl << "\t"
+		 << ".serial_clk (sys_clk)," << endl << "\t"
+		 << ".rstn (rstn)," << endl << "\t"
+		 //<< ".serial_en()," << endl << "\t" 
+		 //<< ".load()" << endl << "\t"
+		 << ".data_in (m_" << coordinate << "_" << line_cnt << ")"
+		 << endl << ");" << endl;   
+}
 
+void verilog_gen::fully_route_implementation_port()
+{
+	fully_parallel_imple_file << "`include \"define.vh\"" << endl << endl;
+	fully_parallel_imple_file << "module fully_parallel_route(" << endl << "\t"
+			    << "// (N-K) number of check-to-Variable message buses, each of which is d_c bit width as input ports of this routing network" << endl << "\t"; 
+	// Generating the instantiation of output port
+	for(unsigned int i=0; i < M; i++) {
+		for(unsigned int j=0; j < list_dc[i]; j++) {
+			fully_parallel_imple_file << "output wire [`DATAPATH_WIDT-1:0] v2c_parallelOut_" << i << j << "," << endl << "\t"; 
+		}
+	}
+	fully_parallel_imple_file << endl << "\t";
+
+	fully_parallel_imple_file << "// N number of check-to-Variable message buses, each of which is d_v bit width outgoing to serial-to-parallel converters" 
+			    << endl << "\t";
+	for(unsigned int i=0; i < N; i++) {
+		for(unsigned int j=0; j < list_dv[i]; j++) {
+			fully_parallel_imple_file << "output wire [`DATAPATH_WIDTH-1:0] c2v_parallelOut_" << i << j << "," << endl << "\t"; 
+		}
+	}
+	fully_parallel_imple_file << endl << "\t";
+
+	// Generating the instantiation of input port
+	for(unsigned int i=0; i < M; i++) {
+		for(unsigned int j=0; j < list_dc[i]; j++) {
+			fully_parallel_imple_file << "input wire [`DATAPATH_WIDTH-1:0] c2v_parallelIn_" << i << j << "," << endl << "\t"; 
+		}
+	}
+	fully_parallel_imple_file << endl << "\t";
+	for(unsigned int i=0; i < N; i++) {
+		for(unsigned int j=0; j < list_dv[i]; j++) {
+			fully_parallel_imple_file << "input wire [`DATAPATH_WIDTH-1:0] v2c_parallelIn_" << i << j << "," << endl << "\t"; 
+		}
+	}
+	fully_parallel_imple_file << endl << "\t";
+	
+	fully_parallel_imple_file << "input wire [1:0] load," << endl << "\t"
+			    << "input wire [1:0] parallel_en," << endl << "\t"
+			    << "input wire serial_clk" << endl
+			    << "};" << endl << "\t"; 
+
+	// Declare the internal wires
+	for(unsigned int i=0; i < M; i++) {
+		fully_parallel_imple_file << endl << "\t" << "wire [`CN_DEGREE-1:0] cn_serialInOut_" << i << ";" << endl << "\t"
+			<< "cnu_bitSerial_port cnu_converter_port" << i << "(" << endl << "\t\t"
+			<< ".serialInOut (cn_serialInOut_" << i << "[`CN_DEGREE-1:0])," << endl << "\t\t";
+		for(unsigned int j=0; j < list_dc[i]; j++) {
+			fully_parallel_imple_file << ".v2c_parallelOut_" << j << " (v2c_parallelOut_" << i << j << "[`DATAPATH_WIDTH-1:0]),"
+						  << endl << "\t\t";
+		}
+		fully_parallel_imple_file << endl << "\t\t";
+		for(unsigned int j=0; j < list_dc[i]; j++) {
+			fully_parallel_imple_file << ".c2v_parallelIn_" << j << " (c2v_parallelIn_" << i << j << "[`DATAPATH_WIDTH-1:0]),"
+						  << endl << "\t\t";
+		}
+		fully_parallel_imple_file << ".load (load[0])," << endl << "\t\t"
+			    << ".parallel_en (parallel_en[0])," << endl << "\t\t"
+			    << ".serial_clk (serial_clk)" << endl << "\t"
+			    << "};" << endl << "\t"; 
+	}
 }
 
 void verilog_gen::vnu_instantiate(unsigned int line_cnt, unsigned int entry_cnt, unsigned int coordinate)

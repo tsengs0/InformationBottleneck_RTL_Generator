@@ -43,7 +43,8 @@ class verilog_gen {
 		/*Not Finished Yet*/void cnu_bitSerial_port(const char *filename);
 		/*Not Finished Yet*/void vnu_bitSerial_port(const char *filename);
 		void fully_route_instantiate(const char *filename); // only for regular codes
-		void fully_route_implementation(const char *filename); // only for regular codes
+		void fully_route_implementation(unsigned line_cnt, unsigned int entry_cnt, unsigned int coordinate); // only for regular codes
+		void fully_route_implementation_port();
 		
 		void vnu_instantiate(unsigned int line_cnt, unsigned int entry_cnt, unsigned int coordinate);
 		void vnu_p2s_instantiate(unsigned int line_cnt, unsigned int entry_cnt, unsigned int coordinate);
