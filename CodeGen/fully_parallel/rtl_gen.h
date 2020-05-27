@@ -29,6 +29,8 @@ class verilog_gen {
 		unsigned int **cnu_list, **vnc_list;
 		unsigned int *index_cnt_cnu, *index_cnt_vnu;
 		float code_rate;
+		// The tempoary variables for construction of fully-parallel routing network
+		unsigned int *dc_count;
 
 	public:
 		verilog_gen(const char *read_filename); 

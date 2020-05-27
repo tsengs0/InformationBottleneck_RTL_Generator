@@ -55,6 +55,7 @@ verilog_gen::verilog_gen(const char *read_filename)
 					code_rate = (float) K / (float) N;	
 				        list_dc = new unsigned int[M];
 					list_dv = new unsigned int[N];
+					dc_count = new unsigned int[M];
 					index_cnt_cnu = new unsigned int[M]();
 					index_cnt_vnu = new unsigned int[N]();
 				  }
@@ -71,6 +72,7 @@ verilog_gen::verilog_gen(const char *read_filename)
 				  }
 				  else if(line_cnt == 3) { // loading the degree of each check node
 					list_dc[entry_cnt] = std::stoul(token, nullptr, 0);
+					dc_count[entry_cnt] = std::stoul(token, nullptr, 0);
 					if(entry_cnt == M-1) {
 						fully_route_instantiate(fully_parallel_filename);
 						fully_route_implementation_port();
@@ -230,15 +232,33 @@ void verilog_gen::fully_route_instantiate(const char *filename)
 		
 void verilog_gen::fully_route_implementation(unsigned line_cnt, unsigned int entry_cnt, unsigned int coordinate) // only for regular codes
 {
-	fully_parallel_imple_file << "\tvnu_bitSerial_port vnu_converter_port" << (line_cnt*list_dv[line_cnt])+entry_cnt << " (" << endl << "\t\t"
-	         << ".serialInOut (cn_serialInOut_" << coordinate << "_" << line_cnt << "_s)," << endl << "\t\t"
-		 << ".convert_done (vnu_p2s_done_" << coordinate << "_" << line_cnt << ")," << endl << "\t"
-		 << ".serial_clk (sys_clk)," << endl << "\t"
-		 << ".rstn (rstn)," << endl << "\t"
-		 //<< ".serial_en()," << endl << "\t" 
-		 //<< ".load()" << endl << "\t"
-		 << ".data_in (m_" << coordinate << "_" << line_cnt << ")"
-		 << endl << ");" << endl;   
+	if(dc_count[coordinate] == 0) {
+		cout << "Somethings wrong on the settings of check node degree, the degree of the check node " << coordinate << "is " << list_dc[coordinate] 
+		     << "." << endl << "However, there are more than such number of variable nodes which are managed to be connected to the check node." << endl
+		     << "Please check the format of the given configuration file of Parity Check Matrix" << endl;
+		exit(1);
+	}
+	else if(entry_cnt == 0) {
+		fully_parallel_imple_file << endl << "\tvnu_bitSerial_port vnu_converter_port" << line_cnt << " (" << endl << "\t\t";
+	        fully_parallel_imple_file << ".serialInOut ({cn_serialInOut_" << coordinate << "[" 
+					  << list_dc[coordinate]-dc_count[coordinate] << "],";
+		dc_count[coordinate]-=1;
+	}
+	else if(entry_cnt < (list_dv[line_cnt]-1)){
+	        fully_parallel_imple_file << " cn_serialInOut_" << coordinate << "[" 
+					  << list_dc[coordinate]-dc_count[coordinate] << "],";
+		dc_count[coordinate]-=1;
+	}
+	else {
+	        fully_parallel_imple_file << " cn_serialInOut_" << coordinate << "[" 
+					  << list_dc[coordinate]-dc_count[coordinate] << "]}," << endl << "\t\t"
+					  << ".load (load[1])," << endl << "\t\t"
+					  << ".parallel_en (parallel_en[1])," << endl << "\t\t"
+				          << ".serial_clk (serial_clk)" << endl << "\t"
+					  << "};" << endl;
+		dc_count[coordinate]-=1;
+		if(line_cnt == (N-1)) fully_parallel_imple_file << "endmodule;";
+	}
 }
 
 void verilog_gen::fully_route_implementation_port()
