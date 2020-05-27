@@ -251,13 +251,13 @@ void verilog_gen::fully_route_implementation(unsigned line_cnt, unsigned int ent
 	}
 	else {
 	        fully_parallel_imple_file << " cn_serialInOut_" << coordinate << "[" 
-					  << list_dc[coordinate]-dc_count[coordinate] << "]}," << endl << "\t\t"
+					  << list_dc[coordinate]-dc_count[coordinate] << "]})," << endl << "\t\t"
 					  << ".load (load[1])," << endl << "\t\t"
 					  << ".parallel_en (parallel_en[1])," << endl << "\t\t"
 				          << ".serial_clk (serial_clk)" << endl << "\t"
-					  << "};" << endl;
+					  << ");" << endl;
 		dc_count[coordinate]-=1;
-		if(line_cnt == (N-1)) fully_parallel_imple_file << "endmodule;";
+		if(line_cnt == (N-1)) fully_parallel_imple_file << "endmodule";
 	}
 }
 
@@ -269,7 +269,7 @@ void verilog_gen::fully_route_implementation_port()
 	// Generating the instantiation of output port
 	for(unsigned int i=0; i < M; i++) {
 		for(unsigned int j=0; j < list_dc[i]; j++) {
-			fully_parallel_imple_file << "output wire [`DATAPATH_WIDT-1:0] v2c_parallelOut_" << i << j << "," << endl << "\t"; 
+			fully_parallel_imple_file << "output wire [`DATAPATH_WIDTH-1:0] v2c_parallelOut_" << i << j << "," << endl << "\t"; 
 		}
 	}
 	fully_parallel_imple_file << endl << "\t";
@@ -300,7 +300,7 @@ void verilog_gen::fully_route_implementation_port()
 	fully_parallel_imple_file << "input wire [1:0] load," << endl << "\t"
 			    << "input wire [1:0] parallel_en," << endl << "\t"
 			    << "input wire serial_clk" << endl
-			    << "};" << endl << "\t"; 
+			    << ");" << endl << "\t"; 
 
 	// Declare the internal wires
 	for(unsigned int i=0; i < M; i++) {
@@ -319,7 +319,7 @@ void verilog_gen::fully_route_implementation_port()
 		fully_parallel_imple_file << ".load (load[0])," << endl << "\t\t"
 			    << ".parallel_en (parallel_en[0])," << endl << "\t\t"
 			    << ".serial_clk (serial_clk)" << endl << "\t"
-			    << "};" << endl << "\t"; 
+			    << ");" << endl << "\t"; 
 	}
 }
 
