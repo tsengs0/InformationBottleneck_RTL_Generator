@@ -1,12 +1,23 @@
 import h5py
 import csv
 import subprocess
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import math
 
 q = 4  # 4-bit quantisation
 VN_DEGREE = 3+1
 M = (VN_DEGREE - 2)+1
 cardinality = pow(2, q)
 Iter_max = 50
+map_table = [0] * cardinality
+for i in range(cardinality):
+    if i < (cardinality / 2):
+        map_table[i] = int((-cardinality / 2) + (i % (cardinality / 2)))
+    else:
+        map_table[i] = int((i % (cardinality / 2)) + 1)
+modulation_phase = 2 # BPSK
 
 # Parameters for IB-CNU RAMs accesses
 depth_ib_func = cardinality * cardinality
@@ -158,6 +169,52 @@ def exportVNU_LUT_COE_Iter0_25():
             coe_file.close()
 
 
-#exportVNU_LUT_COE()
-#exportVNU_LUT_COE_0_2()
-exportVNU_LUT_COE_Iter0_25()
+def symmetry_eval(y0, y1, t_c):
+    fig,ax=plt.subplots(1,1)
+    #colors = ['red', 'yellow']
+    cp = ax.contourf(y0, y1, t_c, levels=int(math.log2(modulation_phase)))
+    fig.colorbar(cp)
+    ax.set_title('Symmetry of 2-input LUT for Decision Node')
+    ax.set_xlabel('y0 (4-bit)')
+    ax.set_ylabel('y1 (4-bit)')
+    plt.show()
+
+def symmetry_eval(y0, y1, t_c):
+    fig,ax=plt.subplots(1,1)
+    l = [0.0]*modulation_phase
+    l[0] = -0.5
+    for i in range(modulation_phase):
+        l[i] = l[i-1] + 1
+    #cp = ax.contourf(y0, y1, t_c, levels=l)
+    cp = ax.imshow(t_c, cmap=cm.jet, interpolation='nearest')
+    cb = fig.colorbar(cp)
+    cb.set_ticks(l)
+    cb.set_ticklabels([-1, 1])
+    ax.set_title('Symmetry of 2-input LUT for Decision Node')
+    ax.set_xlabel('y0 (4-bit)')
+    ax.set_ylabel('y1 (4-bit)')
+    plt.xticks(y0, map_table)
+    plt.yticks(y1, map_table)
+    plt.show()
+# exportCNU_LUT_COE()
+# exportCNU_LUT_CSV()
+# gen_CNU_LUT_V()
+#dut_pattern_gen()
+#showCNU_LUT(1)
+y0_vec = [int(0)]*cardinality
+y1_vec = [int(0)]*cardinality
+t_c_vec = [[int(0) for i in range(cardinality)] for j in range(cardinality)]
+max_magnitude = (cardinality/2) - 1
+m = 2
+offset = ptr(0, m)
+for y0 in range(cardinality):
+    for y1 in range(cardinality):
+        t_c = lut_out(y0, y1, offset)
+        y0_vec[y0] = y0
+        y1_vec[y1] = y1
+        if t_c > max_magnitude:
+            t_c = int(1)
+        else:
+            t_c = int(-1)
+        t_c_vec[y0][y1] = t_c
+symmetry_eval(y0_vec, y1_vec, t_c_vec)

@@ -1,12 +1,23 @@
 import h5py
 import csv
 import subprocess
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+from matplotlib.colors import ListedColormap
 
 q = 4  # 4-bit quantisation
 CN_DEGREE = 6
 M = CN_DEGREE - 2
 cardinality = pow(2, q)
 Iter_max = 50
+
+map_table = [0] * cardinality
+for i in range(cardinality):
+    if i < (cardinality / 2):
+        map_table[i] = int((-cardinality / 2) + (i % (cardinality / 2)))
+    else:
+        map_table[i] = int((i % (cardinality / 2)) + 1)
 
 # Parameters for IB-CNU RAMs accesses
 depth_ib_func = cardinality * cardinality
@@ -161,8 +172,8 @@ def dut_pattern_gen():
 
 
 # Demonstrate output of all LUTs with given entry address
-def showCNU_LUT():
-    for i in range(50):
+def showCNU_LUT(iter_id):
+    for i in range(iter_id):
         print("\nIn iteration ", i)
         for m in range(4):
             offset = ptr(i, m)
@@ -200,8 +211,45 @@ def gen_CNU_LUT_V():
                 shell=True)
             rtl_file.close()
 
+def symmetry_eval(y0, y1, t_c):
+    fig,ax=plt.subplots(1,1)
+    l = [0.0]*cardinality
+    l[0] = -7.5
+    for i in range(1, cardinality, 1):
+        l[i] = l[i-1] + 1
+    #cp = ax.contourf(y0, y1, t_c, levels=l)
+    cp = ax.imshow(t_c, cmap=cm.jet, interpolation='nearest')
+    cb = fig.colorbar(cp)
+    cb.set_ticks(l)
+    cb.set_ticklabels(map_table)
+    ax.set_title('Symmetry of 2-input LUT for Check Node')
+    ax.set_xlabel('y0 (4-bit)')
+    ax.set_ylabel('y1 (4-bit)')
+    plt.xticks(y0, map_table)
+    plt.yticks(y1, map_table)
+    plt.show()
+
+def modulate(t_c):
+    return int(map_table[int(t_c)])
 
 # exportCNU_LUT_COE()
 # exportCNU_LUT_CSV()
 # gen_CNU_LUT_V()
 #dut_pattern_gen()
+#showCNU_LUT(1)
+y0_vec = [0]*cardinality
+y1_vec = [0]*cardinality
+t_c_vec = [[0 for i in range(cardinality)] for j in range(cardinality)]
+max_magnitude = (cardinality/2)-1
+for m in range(1):
+    offset = ptr(0, m)
+    for y0 in range(cardinality):
+        for y1 in range(cardinality):
+            t_c = lut_out(y0, y1, offset)
+            y0_vec[y0] = y0
+            y1_vec[y1] = y1
+            t_c = modulate(t_c)
+            #if t_c > max_magnitude:
+            #    t_c = max_magnitude - (t_c - max_magnitude - 1)
+            t_c_vec[y0][y1] = t_c
+symmetry_eval(y0_vec, y1_vec, t_c_vec)
