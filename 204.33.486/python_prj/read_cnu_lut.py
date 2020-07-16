@@ -232,24 +232,144 @@ def symmetry_eval(y0, y1, t_c):
 def modulate(t_c):
     return int(map_table[int(t_c)])
 
-# exportCNU_LUT_COE()
-# exportCNU_LUT_CSV()
-# gen_CNU_LUT_V()
-#dut_pattern_gen()
-#showCNU_LUT(1)
-y0_vec = [0]*cardinality
-y1_vec = [0]*cardinality
-t_c_vec = [[0 for i in range(cardinality)] for j in range(cardinality)]
-max_magnitude = (cardinality/2)-1
-for m in range(1):
-    offset = ptr(0, m)
-    for y0 in range(cardinality):
-        for y1 in range(cardinality):
-            t_c = lut_out(y0, y1, offset)
-            y0_vec[y0] = y0
-            y1_vec[y1] = y1
-            t_c = modulate(t_c)
-            #if t_c > max_magnitude:
-            #    t_c = max_magnitude - (t_c - max_magnitude - 1)
-            t_c_vec[y0][y1] = t_c
-symmetry_eval(y0_vec, y1_vec, t_c_vec)
+def XNOR(InA, InB):
+    if InA == 0 and InB == 0:
+        return True
+    elif InA == 0 and InB == 1:
+        return False
+    elif InA == 1 and InB == 0:
+        return False
+    elif InA == 1 and InB == 1:
+        return True
+    else:
+        print("The format of given Input signal(s) might be wrong")
+        return False
+
+def OR(InA, InB):
+    if InA == 0 and InB == 0:
+        return False
+    elif InA == 0 and InB == 1:
+        return True
+    elif InA == 1 and InB == 0:
+        return True
+    elif InA == 1 and InB == 1:
+        return True
+    else:
+        print("The format of given Input signal(s) might be wrong")
+        return False
+
+def lut_symmetric_eval():
+    y0_vec = [0] * cardinality
+    y1_vec = [0] * cardinality
+    t_c_vec = [[0 for i in range(cardinality)] for j in range(cardinality)]
+    max_magnitude = (cardinality / 2) - 1
+    for m in range(1):
+        offset = ptr(0, m)
+        for y0 in range(cardinality):
+            for y1 in range(cardinality):
+                t_c = lut_out(y0, y1, offset)
+                y0_vec[y0] = y0
+                y1_vec[y1] = y1
+                t_c = modulate(t_c)
+
+                # if t_c > max_magnitude:
+                #     t_c = max_magnitude - (t_c - max_magnitude - 1)
+                t_c_vec[y0][y1] = t_c
+    # symmetry_eval(y0_vec, y1_vec, t_c_vec)
+
+def lut_symmetric_eval(y0_range, y1_range):
+    max_magnitude = (cardinality / 2) - 1
+    t_c_vec = [[0 for i in y0_range] for j in y1_range]
+    for m in range(1):
+        offset = ptr(0, m)
+        for y0 in y0_range:
+            for y1 in y1_range:
+                # Convert the y0 and y1 LUTs read addresses
+                msb_y0 = int((y0 >> 3) % 2)
+                msb_y1 = int((y1 >> 3) % 2)
+                y0_addr = y0 % (2**(q-1))
+                y1_addr = y1 % (2**(q-1))
+                if msb_y0 == 1:
+                    y0_addr = (2**(q-1)) - 1 - y0_addr # 1's complement
+                else:
+                    y0_addr = y0_addr
+
+                if msb_y1 == 1:
+                    y1_addr = (2**(q-1)) - 1 - y1_addr  # 1's complement
+                else:
+                    y1_addr = y1_addr
+
+                # Determine the sign bit of the final result
+                msb_temp = XNOR(msb_y0, msb_y1)
+                if msb_temp == True:
+                    MSB = 1
+                else:
+                    MSB = 0
+
+                # Read magnitude from LUT
+                t_c = lut_out(y0_addr, y1_addr, offset)
+                t_c = t_c % (2 ** (q-1)) # remove MSB
+                #t_c_vec[y0][y1] = t_c + (MSB << 3)
+
+                # Convert magnitude into signed value
+                if MSB == 0:
+                    t_c = (2**(q-1)) -1 - t_c # 1's complement
+                else:
+                    t_c = t_c
+
+                t_c_vec[y0][y1] = int(t_c + (MSB << 3))
+                '''
+                if y0 > 7 and y1 <= 7:
+                    t_c_vec[y0-8][y1] = int(t_c + (MSB << 3))
+                elif y1 > 7 and y0 <= 7:
+                    t_c_vec[y0][y1-8] = int(t_c + (MSB << 3))
+                elif y0 > 7 and y1 > 7:
+                    t_c_vec[y0-8][y1-8] = int(t_c + (MSB << 3))
+                elif y0 <= 7 and y1 <= 7:
+                    t_c_vec[y0][y1] = int(t_c + (MSB << 3))
+                '''
+    return t_c_vec
+
+def lut_symmetric_baseline(y0_range, y1_range):
+    max_magnitude = (cardinality / 2) - 1
+    t_c_vec = [[0 for i in y0_range] for j in y1_range]
+    for m in range(1):
+        offset = ptr(0, m)
+        for y0 in y0_range:
+            for y1 in y1_range:
+                t_c = lut_out(y0, y1, offset)
+                t_c_vec[y0][y1] = int(t_c)
+    return t_c_vec
+
+def main():
+    # exportCNU_LUT_COE()
+    # exportCNU_LUT_CSV()
+    # gen_CNU_LUT_V()
+    # dut_pattern_gen()
+    # showCNU_LUT(1)
+    #lut_symmetric_eval()
+
+    y0_range = [i for i in range(cardinality)]
+    y1_range = [i for i in range(cardinality)]
+    print(y0_range, y1_range)
+    t0 = lut_symmetric_baseline(y0_range, y1_range)
+
+    y0_range = [i for i in range(cardinality)]
+    y1_range = [i for i in range(cardinality)]
+    print(y0_range, y1_range)
+    t1 = lut_symmetric_eval(y0_range, y1_range)
+
+    err = 0
+    for i in range(cardinality):
+        for j in range(cardinality):
+            if t0[i][j] == t1[i][j]:
+                #print("t0: %d\tt1: %d" % (t0[i][j], t1[i][j]))
+                err = err + 0
+            else:
+                print("Wrong")
+                print("t0: %d\tt1: %d" % (t0[i][j], t1[i][j]))
+                err = err + 1
+    print("Error: %d" % (err))
+
+if __name__ == "__main__":
+   main()
