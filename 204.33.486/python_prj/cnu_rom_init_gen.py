@@ -118,8 +118,48 @@ def exportCNU_LUT_COE_0_3():
         subprocess.call(cmd_move + create_coe_filename + ' ' + coe_folder_filename + '/Iter_' + str(i) + '/', shell=True)
         coe_file.close()
 
+# Export every LUT to individual Memory Coefficient file for Xilinx Vivado to initially write the data into BlockRAM
+def exportVNU_LUT_COE_Iter0_25():
+    coe_folder_filename = 'COE_BRAM32.CNU'
+    subprocess.call(cmd_mkdir + coe_folder_filename, shell=True)
+    for i in range(2):
+        filename = 'Iter_' + str(25 * i) + '_' + str((25 * i) + 25 - 1)
+        create_Iter_filename = cmd_mkdir + filename
+        subprocess.call(create_Iter_filename, shell=True)
+        subprocess.call(cmd_move + filename + ' ' + coe_folder_filename + '/', shell=True)
+
+        # Generate COE file for each iteration, where one COE file conatains all 1024 entries of f^{Iter}_m. m in {0, 1, 2, 3}
+        # Format: Since RAMB36E1 is chosen with 36-bit of read data width, 12 entries per RAM row, i.e., 12-entry x 3-bit = 36-bit.
+        # Radix: binary.
+        # Depth of BRAM (RAMB36E1): ceil(64-entry*3-bit*25/36) = 133
+        # Write down output value of each corresponding entry
+        for m in range(M):
+            cnt = 1
+            line = 1
+            create_coe_filename = file_lut_coe + 'Iter' + str(25*i) + '_' + str((25*i)+25 - 1) + '_Func'+str(m)+'.coe'
+            coe_file = open(create_coe_filename, "w")
+            coe_file.write("memory_initialization_radix=2;\nmemory_initialization_vector=\n")
+
+            for iter in range(25*i, (25*i)+25):
+                offset = ptr(iter, m)
+                for y0 in range(int(cardinality/2)):
+                    for y1 in range(int(cardinality/2)):
+                        t = lut_out(y0, y1, offset)
+                        if y0 == cardinality/2 - 1 and y1 == cardinality/2 - 1 and line == (depth_ib_func/interleave_bank_num)*25:
+                            coe_file.write(str(format(t, '036b')) + ";")
+                        else:
+                            if (cnt % interleave_bank_num) == 0:
+                                coe_file.write(str(format(t, '036b')) + ", \n")
+                                line = line + 1
+                            else:
+                                coe_file.write(str(format(t, '036b')))
+                        cnt = cnt + 1
+            subprocess.call(cmd_move + create_coe_filename + ' ' + coe_folder_filename + '/' + filename + '/', shell=True)
+            coe_file.close()
+
 #expotCNU_LUT_COE()
 #exportCNU_LUT_COE_0_3()
+exportVNU_LUT_COE_Iter0_25()
 y = [1, 1, 1, 1, 1]
 t = [0, 0, 0, 0]
 m=[0, 1, 2, 3]
