@@ -1,7 +1,7 @@
 module cnu6_f0 #(
 	parameter QUAN_SIZE = 4
 )(
-	output wire read_addr_offset_out,
+	output wire read_addr_offset_out, // to forward the current multi-frame offset signal to the next sub-datapath
     // For the first CNU
     output wire [QUAN_SIZE-1:0] t_portA, // internal signals accounting for each 256-entry partial LUT's output
     output wire [QUAN_SIZE-1:0] t_portB, // internal signals accounting for each 256-entry partial LUT's output
@@ -39,7 +39,7 @@ module cnu6_f0 #(
     input wire [QUAN_SIZE-1:0] cnu1_v2c_5,
 	
 	input wire read_clk,
-	input wire read_addr_offset,
+	input wire read_addr_offset, // offset determing the switch between multi-frame
 	
     // Iteration-Update Page Address 
     input wire [5:0] page_addr_ram,
@@ -96,20 +96,20 @@ ib_cnu6_f0_route cnu1_f0_in_pipe(
 );
 sym_cn_lut_in func_ram_0(
 	// For read operation
-	.t_c_A (t_portA[`QUAN_SIZE-1:0]), // For first reader  (A)	
-	.t_c_B (t_portB[`QUAN_SIZE-1:0]), // For second reader (B)	
-	.t_c_C (t_portC[`QUAN_SIZE-1:0]), // For third reader  (C)	
-	.t_c_D (t_portD[`QUAN_SIZE-1:0]), // For fourth reader (D)	
+	.t_c_A (t_portA[QUAN_SIZE-1:0]), // For first reader  (A)	
+	.t_c_B (t_portB[QUAN_SIZE-1:0]), // For second reader (B)	
+	.t_c_C (t_portC[QUAN_SIZE-1:0]), // For third reader  (C)	
+	.t_c_D (t_portD[QUAN_SIZE-1:0]), // For fourth reader (D)	
 	.read_addr_offset_out (read_addr_offset_out),
 	
     .y0_in_A (cnu0_f0_y0[0]),// page address across 32 pages
     .y0_in_B (cnu0_f0_y0[1]),// page address across 32 pages
     .y0_in_C (cnu1_f0_y0[0]),// page address across 32 pages
     .y0_in_D (cnu1_f0_y0[1]),// page address across 32 pages
-    .y1_in_A (cnu0_f0y1[0]), // bank address across 8 banks
-    .y1_in_B (cnu0_f0y1[1]), // bank address across 8 banks
-    .y1_in_C (cnu1_f0y1[0]), // bank address across 8 banks
-    .y1_in_D (cnu1_f0y1[1]), // bank address across 8 banks
+    .y1_in_A (cnu0_f0_y1[0]), // bank address across 2 banks
+    .y1_in_B (cnu0_f0_y1[1]), // bank address across 2 banks
+    .y1_in_C (cnu1_f0_y1[0]), // bank address across 2 banks
+    .y1_in_D (cnu1_f0_y1[1]), // bank address across 2 banks
 
 	.read_addr_offset (read_addr_offset),
 	.read_clk (read_clk),
@@ -117,8 +117,8 @@ sym_cn_lut_in func_ram_0(
 	// For write operation
 	.lut_in_bank0 (ram_write_data_0[5:3]), // input data
 	.lut_in_bank1 (ram_write_data_0[2:0]), // input data 
-	.page_write_addr (ram_write_data_0[4:0]), // write address
-	.write_addr_offset (ram_write_data_0[5]), // write address offset
+	.page_write_addr (page_addr_ram[4:0]), // write address
+	.write_addr_offset (page_addr_ram[5]), // write address offset
 	.we (ib_ram_we),
 	.write_clk (write_clk)
 );

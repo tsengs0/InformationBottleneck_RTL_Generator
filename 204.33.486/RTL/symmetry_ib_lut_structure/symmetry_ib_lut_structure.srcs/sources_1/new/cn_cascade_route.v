@@ -49,8 +49,8 @@ module ib_cnu6_f0_route #(
 	// For the second decomposed LUT
 	//assign f00_y0[QUAN_SIZE-1:0] = (we == 1'b1) ? QUAN_SIZE'd0 : M0[QUAN_SIZE-1:0];
 	//assign f00_y1[QUAN_SIZE-1:0] = (we == 1'b1) ? QUAN_SIZE'd0 : M1[QUAN_SIZE-1:0];
-	assign f00_y0[QUAN_SIZE-1:0] = M3[QUAN_SIZE-1:0];
-	assign f00_y1[QUAN_SIZE-1:0] = M4[QUAN_SIZE-1:0];
+	assign f01_y0[QUAN_SIZE-1:0] = M3[QUAN_SIZE-1:0];
+	assign f01_y1[QUAN_SIZE-1:0] = M4[QUAN_SIZE-1:0];
 	
 	assign M0_reg[QUAN_SIZE-1:0] = M0[QUAN_SIZE-1:0];
 	assign M1_reg[QUAN_SIZE-1:0] = M1[QUAN_SIZE-1:0];
@@ -180,8 +180,8 @@ module ib_cnu6_f3_route #(
 	assign f32_y0[QUAN_SIZE-1:0] = t_21[QUAN_SIZE-1:0];
 	assign f32_y1[QUAN_SIZE-1:0] = M5[QUAN_SIZE-1:0];    
 	// For the fourth decomposed LUT
-	assign f33_y0[QUAN_SIZE-1:0] <= t_22[QUAN_SIZE-1:0];
-	assign f33_y1[QUAN_SIZE-1:0] <= M1[QUAN_SIZE-1:0];    
+	assign f33_y0[QUAN_SIZE-1:0] = t_22[QUAN_SIZE-1:0];
+	assign f33_y1[QUAN_SIZE-1:0] = M1[QUAN_SIZE-1:0];    
 	// For the fifth decomposed LUT
 	assign f34_y0[QUAN_SIZE-1:0] = t_22[QUAN_SIZE-1:0];
 	assign f34_y1[QUAN_SIZE-1:0] = M2[QUAN_SIZE-1:0];    
