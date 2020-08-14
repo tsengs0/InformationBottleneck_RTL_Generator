@@ -8,15 +8,23 @@ module vnu3_f0 #(
     // For the first VNU
     output wire [QUAN_SIZE-1:0] vnu0_tPort0, // internal signals accounting for each 128-entry partial LUT's output
     output wire [QUAN_SIZE-1:0] vnu0_tPort1, // internal signals accounting for each 128-entry partial LUT's output
+	output wire [QUAN_SIZE-1:0] vnu0_c2v1,
+	output wire [QUAN_SIZE-1:0] vnu0_c2v2,
     // For the second VNU       
     output wire [QUAN_SIZE-1:0] vnu1_tPort0, // internal signals accounting for each 128-entry partial LUT's output
     output wire [QUAN_SIZE-1:0] vnu1_tPort1, // internal signals accounting for each 128-entry partial LUT's output
+	output wire [QUAN_SIZE-1:0] vnu1_c2v1,
+	output wire [QUAN_SIZE-1:0] vnu1_c2v2,
     // For the third VNU        
     output wire [QUAN_SIZE-1:0] vnu2_tPort0, // internal signals accounting for each 128-entry partial LUT's output
     output wire [QUAN_SIZE-1:0] vnu2_tPort1, // internal signals accounting for each 128-entry partial LUT's output
+	output wire [QUAN_SIZE-1:0] vnu2_c2v1,
+	output wire [QUAN_SIZE-1:0] vnu2_c2v2,
     // For the fourth VNU       
     output wire [QUAN_SIZE-1:0] vnu3_tPort0, // internal signals accounting for each 128-entry partial LUT's output
     output wire [QUAN_SIZE-1:0] vnu3_tPort1, // internal signals accounting for each 128-entry partial LUT's output	
+	output wire [QUAN_SIZE-1:0] vnu3_c2v1,
+	output wire [QUAN_SIZE-1:0] vnu3_c2v2,
 	
 	output wire vnu0_tranEn_out0,
 	output wire vnu0_tranEn_out1,
@@ -28,28 +36,28 @@ module vnu3_f0 #(
 	output wire vnu3_tranEn_out1,
 	
     // From the first VNU
-    input wire [`QUAN_SIZE-1:0] vnu0_c2v_0,
-    input wire [`QUAN_SIZE-1:0] vnu0_c2v_1,
-    input wire [`QUAN_SIZE-1:0] vnu0_c2v_2,
-    input wire [`QUAN_SIZE-1:0] vnu0_ch_llr,
+    input wire [QUAN_SIZE-1:0] vnu0_c2v_0,
+    input wire [QUAN_SIZE-1:0] vnu0_c2v_1,
+    input wire [QUAN_SIZE-1:0] vnu0_c2v_2,
+    input wire [QUAN_SIZE-1:0] vnu0_ch_llr,
 
     // From the second VNU
-    input wire [`QUAN_SIZE-1:0] vnu1_c2v_0,
-    input wire [`QUAN_SIZE-1:0] vnu1_c2v_1,
-    input wire [`QUAN_SIZE-1:0] vnu1_c2v_2,
-    input wire [`QUAN_SIZE-1:0] vnu1_ch_llr,
+    input wire [QUAN_SIZE-1:0] vnu1_c2v_0,
+    input wire [QUAN_SIZE-1:0] vnu1_c2v_1,
+    input wire [QUAN_SIZE-1:0] vnu1_c2v_2,
+    input wire [QUAN_SIZE-1:0] vnu1_ch_llr,
    
     // From the third VNU
-    input wire [`QUAN_SIZE-1:0] vnu2_c2v_0,
-    input wire [`QUAN_SIZE-1:0] vnu2_c2v_1,
-    input wire [`QUAN_SIZE-1:0] vnu2_c2v_2,
-    input wire [`QUAN_SIZE-1:0] vnu2_ch_llr,
+    input wire [QUAN_SIZE-1:0] vnu2_c2v_0,
+    input wire [QUAN_SIZE-1:0] vnu2_c2v_1,
+    input wire [QUAN_SIZE-1:0] vnu2_c2v_2,
+    input wire [QUAN_SIZE-1:0] vnu2_ch_llr,
 
     // From the fourth VNU
-    input wire [`QUAN_SIZE-1:0] vnu3_c2v_0,
-    input wire [`QUAN_SIZE-1:0] vnu3_c2v_1,
-    input wire [`QUAN_SIZE-1:0] vnu3_c2v_2,
-    input wire [`QUAN_SIZE-1:0] vnu3_ch_llr,
+    input wire [QUAN_SIZE-1:0] vnu3_c2v_0,
+    input wire [QUAN_SIZE-1:0] vnu3_c2v_1,
+    input wire [QUAN_SIZE-1:0] vnu3_c2v_2,
+    input wire [QUAN_SIZE-1:0] vnu3_ch_llr,
 	
 	input wire read_clk,
 	input wire read_addr_offset, // offset determing the switch between multi-frame

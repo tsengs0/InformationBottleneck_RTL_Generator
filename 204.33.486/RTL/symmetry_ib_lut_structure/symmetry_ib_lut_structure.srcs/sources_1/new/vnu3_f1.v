@@ -31,42 +31,37 @@ module vnu3_f1 #(
 	//output wire vnu3_tranEn_out0,
 	//output wire vnu3_tranEn_out1,
 	
-	input wire vnu0_tranEn_in0,
-	input wire vnu0_tranEn_in1,
-	input wire vnu0_tranEn_in2,
-	input wire vnu1_tranEn_in0,
-	input wire vnu1_tranEn_in1,
-	input wire vnu1_tranEn_in2,
-	input wire vnu2_tranEn_in0,
-	input wire vnu2_tranEn_in1,
-	input wire vnu2_tranEn_in2,
-	input wire vnu3_tranEn_in0,
-	input wire vnu3_tranEn_in1,
-	input wire vnu3_tranEn_in2,
-	
     // From the first VNU
     input wire [QUAN_SIZE-1:0] vnu0_t00,
     input wire [QUAN_SIZE-1:0] vnu0_t01,
     input wire [QUAN_SIZE-1:0] vnu0_c2v_1,
     input wire [QUAN_SIZE-1:0] vnu0_c2v_2,
+	input wire vnu0_tranEn_in0,
+	input wire vnu0_tranEn_in1,
 
     // From the second VNU
     input wire [QUAN_SIZE-1:0] vnu1_t00,
     input wire [QUAN_SIZE-1:0] vnu1_t01,
     input wire [QUAN_SIZE-1:0] vnu1_c2v_1,
-    input wire [QUAN_SIZE-1:0] vnu1_c2v_2,            
+    input wire [QUAN_SIZE-1:0] vnu1_c2v_2, 
+	input wire vnu1_tranEn_in0,
+	input wire vnu1_tranEn_in1,	
    
     // From the third VNU
     input wire [QUAN_SIZE-1:0] vnu2_t00,
     input wire [QUAN_SIZE-1:0] vnu2_t01,
     input wire [QUAN_SIZE-1:0] vnu2_c2v_1,
     input wire [QUAN_SIZE-1:0] vnu2_c2v_2,
+	input wire vnu2_tranEn_in0,
+	input wire vnu2_tranEn_in1,
 
     // From the fourth VNU
     input wire [QUAN_SIZE-1:0] vnu3_t00,
     input wire [QUAN_SIZE-1:0] vnu3_t01,
     input wire [QUAN_SIZE-1:0] vnu3_c2v_1,
     input wire [QUAN_SIZE-1:0] vnu3_c2v_2,
+	input wire vnu3_tranEn_in0,
+	input wire vnu3_tranEn_in1,
 	
 	input wire read_clk,
 	input wire read_addr_offset, // offset determing the switch between multi-frame
@@ -143,15 +138,15 @@ ib_vnu3_f1_route vnu3_f1_in_pipe(
 
 /*-------------IB-VNU RAM 0--------------------*/
 sym_vn_lut_out func_ram_10(
-    .t_c_A (vnu0_v2c2[`QUAN_SIZE-1:0]), // For first reader  (A)    
-    .t_c_B (vnu0_v2c1[`QUAN_SIZE-1:0]), // For second reader (B) 
-    .t_c_C (vnu0_v2c0[`QUAN_SIZE-1:0]), // For third reader  (C)  
-    .t_c_D (vnu1_v2c2[`QUAN_SIZE-1:0]), // For fourth reader (D)
+    .t_c_A (vnu0_v2c2[QUAN_SIZE-1:0]), // For first reader  (A)    
+    .t_c_B (vnu0_v2c1[QUAN_SIZE-1:0]), // For second reader (B) 
+    .t_c_C (vnu0_v2c0[QUAN_SIZE-1:0]), // For third reader  (C)  
+    .t_c_D (vnu1_v2c2[QUAN_SIZE-1:0]), // For fourth reader (D)
 	.read_addr_offset_out (read_addr_offset_out),
 	
 	.transpose_en_inA (vnu0_tranEn_in0),
-	.transpose_en_inB (vnu0_tranEn_in1),
-	.transpose_en_inC (vnu0_tranEn_in2),
+	.transpose_en_inB (vnu0_tranEn_in0),
+	.transpose_en_inC (vnu0_tranEn_in1),
 	.transpose_en_inD (vnu1_tranEn_in0),
 
 	.y0_in_A (vnu0_f1_y0[0]),
@@ -167,8 +162,8 @@ sym_vn_lut_out func_ram_10(
 	.read_clk (read_clk),
 //////////////////////////////////////////////////////////
 	// For write operation
-	.lut_in_bank0 (ram_write_data_0[LUT_PORT_SIZE*BANK_NUM-1:LUT_PORT_SIZE]), // input data
-	.lut_in_bank1 (ram_write_data_0[LUT_PORT_SIZE-1:0]), // input data 
+	.lut_in_bank0 (ram_write_data_1[LUT_PORT_SIZE*BANK_NUM-1:LUT_PORT_SIZE]), // input data
+	.lut_in_bank1 (ram_write_data_1[LUT_PORT_SIZE-1:0]), // input data 
 	.page_write_addr (page_addr_ram[ENTRY_ADDR-2:0]), // write address
 	.write_addr_offset ((page_addr_ram[ENTRY_ADDR-1])), // write address offset
 	.we (ib_ram_we),
@@ -176,16 +171,16 @@ sym_vn_lut_out func_ram_10(
 );
 /*-------------IB-VNU RAM 1--------------------*/
 sym_vn_lut_out func_ram_11(
-    .t_c_A (vnu1_v2c1[`QUAN_SIZE-1:0]), // For first reader  (A)    
-    .t_c_B (vnu1_v2c0[`QUAN_SIZE-1:0]), // For second reader (B) 
-    .t_c_C (vnu2_v2c2[`QUAN_SIZE-1:0]), // For third reader  (C)  
-    .t_c_D (vnu2_v2c1[`QUAN_SIZE-1:0]), // For fourth reader (D)
+    .t_c_A (vnu1_v2c1[QUAN_SIZE-1:0]), // For first reader  (A)    
+    .t_c_B (vnu1_v2c0[QUAN_SIZE-1:0]), // For second reader (B) 
+    .t_c_C (vnu2_v2c2[QUAN_SIZE-1:0]), // For third reader  (C)  
+    .t_c_D (vnu2_v2c1[QUAN_SIZE-1:0]), // For fourth reader (D)
 	//.read_addr_offset_out (read_addr_offset_out), // done by func_ram_10 is enough
 	
-	.transpose_en_inA (vnu1_tranEn_in1),
-	.transpose_en_inB (vnu1_tranEn_in2),
+	.transpose_en_inA (vnu1_tranEn_in0),
+	.transpose_en_inB (vnu1_tranEn_in1),
 	.transpose_en_inC (vnu2_tranEn_in0),
-	.transpose_en_inD (vnu2_tranEn_in1),
+	.transpose_en_inD (vnu2_tranEn_in0),
 
 	.y0_in_A (vnu1_f1_y0[1]),
 	.y0_in_B (vnu1_f1_y0[2]),
@@ -200,8 +195,8 @@ sym_vn_lut_out func_ram_11(
 	.read_clk (read_clk),
 //////////////////////////////////////////////////////////
 	// For write operation
-	.lut_in_bank0 (ram_write_data_0[LUT_PORT_SIZE*BANK_NUM-1:LUT_PORT_SIZE]), // input data
-	.lut_in_bank1 (ram_write_data_0[LUT_PORT_SIZE-1:0]), // input data 
+	.lut_in_bank0 (ram_write_data_1[LUT_PORT_SIZE*BANK_NUM-1:LUT_PORT_SIZE]), // input data
+	.lut_in_bank1 (ram_write_data_1[LUT_PORT_SIZE-1:0]), // input data 
 	.page_write_addr (page_addr_ram[ENTRY_ADDR-2:0]), // write address
 	.write_addr_offset ((page_addr_ram[ENTRY_ADDR-1])), // write address offset
 	.we (ib_ram_we),
@@ -209,16 +204,16 @@ sym_vn_lut_out func_ram_11(
 );
 /*-------------IB-VNU RAM 2--------------------*/
 sym_vn_lut_out func_ram_12(
-    .t_c_A (vnu2_v2c0[`QUAN_SIZE-1:0]), // For first reader  (A)    
-    .t_c_B (vnu3_v2c2[`QUAN_SIZE-1:0]), // For second reader (B) 
-    .t_c_C (vnu3_v2c1[`QUAN_SIZE-1:0]), // For third reader  (C)  
-    .t_c_D (vnu3_v2c0[`QUAN_SIZE-1:0]), // For fourth reader (D)
+    .t_c_A (vnu2_v2c0[QUAN_SIZE-1:0]), // For first reader  (A)    
+    .t_c_B (vnu3_v2c2[QUAN_SIZE-1:0]), // For second reader (B) 
+    .t_c_C (vnu3_v2c1[QUAN_SIZE-1:0]), // For third reader  (C)  
+    .t_c_D (vnu3_v2c0[QUAN_SIZE-1:0]), // For fourth reader (D)
 	//.read_addr_offset_out (read_addr_offset_out), // done by func_ram_10 is enough
 	
-	.transpose_en_inA (vnu2_tranEn_in2),
+	.transpose_en_inA (vnu2_tranEn_in1),
 	.transpose_en_inB (vnu3_tranEn_in0),
-	.transpose_en_inC (vnu3_tranEn_in1),
-	.transpose_en_inD (vnu3_tranEn_in2),
+	.transpose_en_inC (vnu3_tranEn_in0),
+	.transpose_en_inD (vnu3_tranEn_in1),
 
 	.y0_in_A (vnu2_f1_y0[2]),
 	.y0_in_B (vnu3_f1_y0[0]),
@@ -233,8 +228,8 @@ sym_vn_lut_out func_ram_12(
 	.read_clk (read_clk),
 //////////////////////////////////////////////////////////
 	// For write operation
-	.lut_in_bank0 (ram_write_data_0[LUT_PORT_SIZE*BANK_NUM-1:LUT_PORT_SIZE]), // input data
-	.lut_in_bank1 (ram_write_data_0[LUT_PORT_SIZE-1:0]), // input data 
+	.lut_in_bank0 (ram_write_data_1[LUT_PORT_SIZE*BANK_NUM-1:LUT_PORT_SIZE]), // input data
+	.lut_in_bank1 (ram_write_data_1[LUT_PORT_SIZE-1:0]), // input data 
 	.page_write_addr (page_addr_ram[ENTRY_ADDR-2:0]), // write address
 	.write_addr_offset ((page_addr_ram[ENTRY_ADDR-1])), // write address offset
 	.we (ib_ram_we),

@@ -21,12 +21,6 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
-module mem_map(
-
-    );
-endmodule
-
 // Description: 
 // To decode the address mapping scheme in a bank-interleaving fashion
 // 1) page address: 5-bit, i.e., depth of 32 per device

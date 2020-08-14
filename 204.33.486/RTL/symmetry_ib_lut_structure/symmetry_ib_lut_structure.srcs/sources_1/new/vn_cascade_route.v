@@ -48,7 +48,9 @@ module ib_vnu3_f0_route #(
 	assign E2_reg[QUAN_SIZE-1:0] = E2[QUAN_SIZE-1:0];
 endmodule
 
-module ib_vnu3_f1_route (
+module ib_vnu3_f1_route #(
+	parameter QUAN_SIZE = 4
+)(
     output wire [QUAN_SIZE-1:0] f10_y0,
     output wire [QUAN_SIZE-1:0] f10_y1,
     output wire [QUAN_SIZE-1:0] f11_y0,

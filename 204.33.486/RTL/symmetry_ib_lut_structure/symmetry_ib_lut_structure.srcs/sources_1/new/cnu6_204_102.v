@@ -16,9 +16,14 @@ module cnu6_204_102 (
     input wire [`QUAN_SIZE-1:0] cnu1_3,
     input wire [`QUAN_SIZE-1:0] cnu1_4,
     input wire [`QUAN_SIZE-1:0] cnu1_5, 
+	
+	// Iteration-Update Page Address Offset
 	input wire read_addr_offset,
     // Iteration-Update Page Address 
-    input wire [`IB_ROM_ADDR_WIDTH-1:0] page_addr_ram,
+    input wire [`IB_ROM_ADDR_WIDTH-1:0] page_addr_ram_0,
+	input wire [`IB_ROM_ADDR_WIDTH-1:0] page_addr_ram_1,
+	input wire [`IB_ROM_ADDR_WIDTH-1:0] page_addr_ram_2,
+	input wire [`IB_ROM_ADDR_WIDTH-1:0] page_addr_ram_3,
     // Iteration-Update Data
     input wire [`IB_ROM_SIZE-1:0] ram_write_data_0,
     input wire [`IB_ROM_SIZE-1:0] ram_write_data_1,
@@ -106,7 +111,7 @@ generate
         .read_addr_offset (read_addr_offset), // offset determing the switch between multi-frame under the following sub-datapath
       
 		// Iteration-Update Page Address 
-        .page_addr_ram (page_addr_ram[`IB_ROM_ADDR_WIDTH-1:0]),
+        .page_addr_ram (page_addr_ram_0[`IB_ROM_ADDR_WIDTH-1:0]),
         // Iteration-Update Data
         .ram_write_data_0 (ram_write_data_0[`IB_ROM_SIZE-1:0]),
 
@@ -163,7 +168,7 @@ generate
         .read_addr_offset (read_addr_offset_internal[0]), // offset determing the switch between multi-frame under the following sub-datapath
 
         // Iteration-Update Page Address 
-        .page_addr_ram (page_addr_ram[`IB_ROM_ADDR_WIDTH-1:0]),
+        .page_addr_ram (page_addr_ram_1[`IB_ROM_ADDR_WIDTH-1:0]),
         // Iteration-Update Data
         .ram_write_data_1 (ram_write_data_1[`IB_ROM_SIZE-1:0]),
 
@@ -221,7 +226,7 @@ generate
         .cnu1_v2c_5 (cnu1_f1_M_reg[5]),
 
         // Iteration-Update Page Address 
-        .page_addr_ram (page_addr_ram[`IB_ROM_ADDR_WIDTH-1:0]),
+        .page_addr_ram (page_addr_ram_2[`IB_ROM_ADDR_WIDTH-1:0]),
         // Iteration-Update Data
         .ram_write_data_2 (ram_write_data_2[`IB_ROM_SIZE-1:0]),
 
@@ -271,7 +276,7 @@ generate
         .read_addr_offset (read_addr_offset_internal[2]), // offset determing the switch between multi-frame under the following sub-datapath
 
         // Iteration-Update Page Address 
-        .page_addr_ram (page_addr_ram[`IB_ROM_ADDR_WIDTH-1:0]),
+        .page_addr_ram (page_addr_ram_3[`IB_ROM_ADDR_WIDTH-1:0]),
         // Iteration-Update Data
         .ram_write_data_3 (ram_write_data_3[`IB_ROM_SIZE-1:0]),
 
