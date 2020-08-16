@@ -29,10 +29,10 @@ module sym_dn_lut (
 		//.INIT(128'h00000000000000000000000000000000),
 		.IS_WCLK_INVERTED(1'b0) // Specifies active high/low WCLK
 	) dn_port0_port1 (
-		.DPO(lut_data0[i]),   // Read port 1-bit output
-		.SPO(lut_data1[i]),   // Read/write port 1-bit output
+		.DPO(lut_data0),   // Read port 1-bit output
+		.SPO(lut_data1),   // Read/write port 1-bit output
 		
-		.D(lut_in[i]),       // RAM data input
+		.D(lut_in),       // RAM data input
 		
 		.DPRA(read_addr0[6:0]),    // Read port 7-bit address input
 		.A(syn_addr_port0_1[6:0]), // Read/write port 7-bit address input
@@ -44,10 +44,10 @@ module sym_dn_lut (
 		//.INIT(128'h00000000000000000000000000000000),
 		.IS_WCLK_INVERTED(1'b0) // Specifies active high/low WCLK
 	) dn_port2_port3 (
-		.DPO(lut_data2[i]),   // Read port 1-bit output
-		.SPO(lut_data3[i]),   // Read/write port 1-bit output
+		.DPO(lut_data2),   // Read port 1-bit output
+		.SPO(lut_data3),   // Read/write port 1-bit output
 		
-		.D(lut_in[i]),       // RAM data input
+		.D(lut_in),       // RAM data input
 		
 		.DPRA(read_addr2[6:0]),    // Read port 7-bit address input
 		.A(syn_addr_port2_3[6:0]), // Read/write port 7-bit address input

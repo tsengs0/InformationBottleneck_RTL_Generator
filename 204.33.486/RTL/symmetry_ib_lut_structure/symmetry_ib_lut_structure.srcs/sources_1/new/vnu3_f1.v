@@ -1,5 +1,6 @@
 module vnu3_f1 #(
 	parameter QUAN_SIZE  = 4,
+	parameter PIPELINE_DEPTH = 3,
 	parameter ENTRY_ADDR = 7, // regardless of bank interleaving here
 	parameter BANK_NUM   = 2,
 	parameter LUT_PORT_SIZE = 4

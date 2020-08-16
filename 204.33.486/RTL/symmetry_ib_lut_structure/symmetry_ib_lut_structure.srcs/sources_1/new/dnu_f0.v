@@ -1,9 +1,10 @@
 module dnu_f0 #(
+	parameter QUAN_SIZE = 4,
 	parameter ENTRY_ADDR = 7, // regardless of bank interleaving here
 	parameter BANK_NUM   = 2,
 	parameter LUT_PORT_SIZE = 1
 )(
-	output wire read_addr_offset_out, // to forward the current multi-frame offset signal to the next sub-datapath	
+	//output wire read_addr_offset_out, // to forward the current multi-frame offset signal to the next sub-datapath	
     // For the first DNU
     output wire dnu0_hard_decision, // internal signals accounting for each 128-entry partial LUT's output
     // For the second DNU       
@@ -87,7 +88,7 @@ sym_dn_lut_out func_ram_10(
     .t_c_B (dnu1_hard_decision), // For second reader (B) 
     .t_c_C (dnu2_hard_decision), // For third reader  (C)  
     .t_c_D (dnu3_hard_decision), // For fourth reader (D)
-	.read_addr_offset_out (read_addr_offset_out),
+	//.read_addr_offset_out (read_addr_offset_out),
 	
 	.transpose_en_inA (vnu0_tranEn_in0),
 	.transpose_en_inB (vnu1_tranEn_in0),

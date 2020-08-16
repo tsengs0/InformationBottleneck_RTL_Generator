@@ -24,7 +24,7 @@ module sym_dn_lut_out (
 	input wire [3:0] y0_in_D,
 	input wire [3:0] y1_in_D,
 
-	output wire read_addr_offset_out,
+	//output wire read_addr_offset_out,
 	input wire read_addr_offset,
 	input wire read_clk,
 //////////////////////////////////////////////////////////
@@ -143,7 +143,7 @@ module sym_dn_lut_out (
 	wire OutA, OutB, OutC, OutD;
 	reg OutA_pipe1, OutB_pipe1, OutC_pipe1, OutD_pipe1;
 	reg msb_pipe1_A, msb_pipe1_B, msb_pipe1_C, msb_pipe1_D;
-	reg read_addr_offset_pipe1;
+	//reg read_addr_offset_pipe1;
 	sym_dn_rank rank_m(
 		// For read operation
 	   .lut_data0    (OutA),   
@@ -188,7 +188,7 @@ module sym_dn_lut_out (
 		msb_pipe1_B <= 0;
 		msb_pipe1_C <= 0;
 		msb_pipe1_D <= 0;
-		read_addr_offset_pipe1 <= 0;
+		//read_addr_offset_pipe1 <= 0;
 	end
 	always @(posedge read_clk) OutA_pipe1 <= OutA;
 	always @(posedge read_clk) OutB_pipe1 <= OutB;
@@ -200,12 +200,12 @@ module sym_dn_lut_out (
 		msb_pipe1_C <= msb_pipe0_C;
 		msb_pipe1_D <= msb_pipe0_D;
 	end
-	always @(posedge read_clk) read_addr_offset_pipe1 <= read_addr_offset_pipe0;
+	//always @(posedge read_clk) read_addr_offset_pipe1 <= read_addr_offset_pipe0;
 ////////////////////////////////////////////////////////////////////////////////////////////
 	// Pipeline Stage 2	
 	xor hard_decision_portA (t_c_A, OutA_pipe1, msb_pipe1_A);
 	xor hard_decision_portB (t_c_B, OutB_pipe1, msb_pipe1_B);
 	xor hard_decision_portC (t_c_C, OutC_pipe1, msb_pipe1_C);
 	xor hard_decision_portD (t_c_D, OutD_pipe1, msb_pipe1_D);
-	assign read_addr_offset_out = read_addr_offset_pipe1;
+	//assign read_addr_offset_out = read_addr_offset_pipe1;
 endmodule
