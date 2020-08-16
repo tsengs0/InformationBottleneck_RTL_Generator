@@ -9,27 +9,27 @@ module vnu3_f1 #(
     output wire [QUAN_SIZE-1:0] vnu0_v2c0, // internal signals accounting for each 128-entry partial LUT's output
     output wire [QUAN_SIZE-1:0] vnu0_v2c1, // internal signals accounting for each 128-entry partial LUT's output
 	output wire [QUAN_SIZE-1:0] vnu0_v2c2, // internal signals accounting for each 128-entry partial LUT's output
+	output wire [QUAN_SIZE-1:0] vnu0_E_reg2,
     // For the second VNU       
     output wire [QUAN_SIZE-1:0] vnu1_v2c0, // internal signals accounting for each 128-entry partial LUT's output
     output wire [QUAN_SIZE-1:0] vnu1_v2c1, // internal signals accounting for each 128-entry partial LUT's output
 	output wire [QUAN_SIZE-1:0] vnu1_v2c2, // internal signals accounting for each 128-entry partial LUT's output
+	output wire [QUAN_SIZE-1:0] vnu1_E_reg2,
     // For the third VNU        
     output wire [QUAN_SIZE-1:0] vnu2_v2c0, // internal signals accounting for each 128-entry partial LUT's output
     output wire [QUAN_SIZE-1:0] vnu2_v2c1, // internal signals accounting for each 128-entry partial LUT's output
 	output wire [QUAN_SIZE-1:0] vnu2_v2c2, // internal signals accounting for each 128-entry partial LUT's output
+	output wire [QUAN_SIZE-1:0] vnu2_E_reg2,
 	// For the fourth VNU       
     output wire [QUAN_SIZE-1:0] vnu3_v2c0, // internal signals accounting for each 128-entry partial LUT's output
     output wire [QUAN_SIZE-1:0] vnu3_v2c1, // internal signals accounting for each 128-entry partial LUT's output
 	output wire [QUAN_SIZE-1:0] vnu3_v2c2, // internal signals accounting for each 128-entry partial LUT's output
+	output wire [QUAN_SIZE-1:0] vnu3_E_reg2,
 
-	//output wire vnu0_tranEn_out0,
-	//output wire vnu0_tranEn_out1,
-	//output wire vnu1_tranEn_out0,
-	//output wire vnu1_tranEn_out1,
-	//output wire vnu2_tranEn_out0,
-	//output wire vnu2_tranEn_out1,
-	//output wire vnu3_tranEn_out0,
-	//output wire vnu3_tranEn_out1,
+	output wire vnu0_tranEn_out0, // for the decision node in the next stage
+	output wire vnu1_tranEn_out0, // for the decision node in the next stage
+	output wire vnu2_tranEn_out0, // for the decision node in the next stage
+	output wire vnu3_tranEn_out0, // for the decision node in the next stage
 	
     // From the first VNU
     input wire [QUAN_SIZE-1:0] vnu0_t00,
@@ -142,6 +142,10 @@ sym_vn_lut_out func_ram_10(
     .t_c_B (vnu0_v2c1[QUAN_SIZE-1:0]), // For second reader (B) 
     .t_c_C (vnu0_v2c0[QUAN_SIZE-1:0]), // For third reader  (C)  
     .t_c_D (vnu1_v2c2[QUAN_SIZE-1:0]), // For fourth reader (D)
+	.transpose_en_outA (vnu0_tranEn_out0),
+	.transpose_en_outB (vnu1_tranEn_out0),
+	.transpose_en_outC (vnu2_tranEn_out0),
+	.transpose_en_outD (vnu3_tranEn_out0),
 	.read_addr_offset_out (read_addr_offset_out),
 	
 	.transpose_en_inA (vnu0_tranEn_in0),

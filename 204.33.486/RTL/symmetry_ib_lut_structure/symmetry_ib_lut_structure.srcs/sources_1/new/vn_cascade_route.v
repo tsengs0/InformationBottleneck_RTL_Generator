@@ -75,5 +75,20 @@ module ib_vnu3_f1_route #(
 	assign f12_y1 = E1[QUAN_SIZE-1:0];
 endmodule
 
+module ib_dnu_f0_route #(
+	parameter QUAN_SIZE = 4
+)(
+    output wire [QUAN_SIZE-1:0] f0_y0,
+    output wire [QUAN_SIZE-1:0] f0_y1,
+
+    input wire [QUAN_SIZE-1:0] t_00,
+    input wire [QUAN_SIZE-1:0] E2            
+);
+
+	// For the first decomposed LUT
+	assign f0_y0 = t_00[QUAN_SIZE-1:0];
+	assign f0_y1 = E2[QUAN_SIZE-1:0];
+endmodule
+
 
 

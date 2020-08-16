@@ -19,7 +19,7 @@ module sym_vn_lut (
     wire [6:0] syn_addr_port0_1;
 	wire [6:0] syn_addr_port2_3;
     assign syn_addr_port0_1[6:0] = (we == 1'b1) ? write_addr[6:0] : read_addr1[6:0];
-	assign syn_addr_port2_3[6:0] = (we == 1'b1) ? write_addr[6:0] : read_addr2[6:0];
+	assign syn_addr_port2_3[6:0] = (we == 1'b1) ? write_addr[6:0] : read_addr3[6:0];
 	
    genvar i;
    generate

@@ -2,24 +2,28 @@ module sym_vn_lut_out (
 	// For read operation
 	// Port A
 	output wire [3:0] t_c_A,
+	output wire transpose_en_outA,
 	input wire transpose_en_inA,
 	input wire [3:0] y0_in_A,
 	input wire [3:0] y1_in_A,
 
 	// Port B
 	output wire [3:0] t_c_B,
+	output wire transpose_en_outB,
 	input wire transpose_en_inB,
 	input wire [3:0] y0_in_B,
 	input wire [3:0] y1_in_B,
 
 	// Port C
 	output wire [3:0] t_c_C,
+	output wire transpose_en_outC,
 	input wire transpose_en_inC,
 	input wire [3:0] y0_in_C,
 	input wire [3:0] y1_in_C,
 
 	// Port D
 	output wire [3:0] t_c_D,
+	output wire transpose_en_outD,
 	input wire transpose_en_inD,
 	input wire [3:0] y0_in_D,
 	input wire [3:0] y1_in_D,
@@ -66,10 +70,10 @@ module sym_vn_lut_out (
 	assign y1_mux_D[3:0] = (y0_mux_D[3] == 1'b1) ? ~y1_in_D[3:0] : y1_in_D[3:0];
 	
 	wire msb_A, msb_B, msb_C, msb_D;
-	assign msb_A = y0_in_A[3];
-	assign msb_B = y0_in_B[3];
-	assign msb_C = y0_in_C[3];
-	assign msb_D = y0_in_D[3];
+	assign msb_A = y0_mux_A[3];
+	assign msb_B = y0_mux_B[3];
+	assign msb_C = y0_mux_C[3];
+	assign msb_D = y0_mux_D[3];
 ////////////////////////////////////////////////////////////////////////////////////////////
 	// Pipeline Stage 0
 	reg [2:0] y0_pipe0_A, y0_pipe0_B, y0_pipe0_C, y0_pipe0_D;
@@ -207,5 +211,9 @@ module sym_vn_lut_out (
 	assign t_c_B[3:0] = (msb_pipe1_B == 1'b1) ? ~OutB_pipe1[3:0] : OutB_pipe1[3:0];
 	assign t_c_C[3:0] = (msb_pipe1_C == 1'b1) ? ~OutC_pipe1[3:0] : OutC_pipe1[3:0];
 	assign t_c_D[3:0] = (msb_pipe1_D == 1'b1) ? ~OutD_pipe1[3:0] : OutD_pipe1[3:0];
+	assign transpose_en_outA = msb_pipe1_A; // for the decision node in the next stage
+	assign transpose_en_outB = msb_pipe1_B; // for the decision node in the next stage
+	assign transpose_en_outC = msb_pipe1_C; // for the decision node in the next stage
+	assign transpose_en_outD = msb_pipe1_D; // for the decision node in the next stage
 	assign read_addr_offset_out = read_addr_offset_pipe1;
 endmodule

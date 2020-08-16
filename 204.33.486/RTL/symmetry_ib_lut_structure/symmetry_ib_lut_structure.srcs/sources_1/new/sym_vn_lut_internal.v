@@ -70,10 +70,10 @@ module sym_vn_lut_internal (
 	assign y1_mux_D[3:0] = (y0_mux_D[3] == 1'b1) ? ~y1_in_D[3:0] : y1_in_D[3:0];	
 	
 	wire msb_A, msb_B, msb_C, msb_D;
-	assign msb_A = y0_in_A[3];
-	assign msb_B = y0_in_B[3];
-	assign msb_C = y0_in_C[3];
-	assign msb_D = y0_in_D[3];
+	assign msb_A = y0_mux_A[3];
+	assign msb_B = y0_mux_B[3];
+	assign msb_C = y0_mux_C[3];
+	assign msb_D = y0_mux_D[3];
 ////////////////////////////////////////////////////////////////////////////////////////////
 	// Pipeline Stage 0
 	reg [2:0] y0_pipe0_A, y0_pipe0_B, y0_pipe0_C, y0_pipe0_D;
