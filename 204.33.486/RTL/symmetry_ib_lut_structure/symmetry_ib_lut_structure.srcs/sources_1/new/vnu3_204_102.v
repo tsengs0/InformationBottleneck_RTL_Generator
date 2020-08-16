@@ -26,6 +26,8 @@ module vnu3_204_102 #(
     input wire [QUAN_SIZE-1:0] vnu3_2,
 	input wire [QUAN_SIZE-1:0] vnu3_ch_llr,
 
+//==============================================================//
+// Variable Node Units
 	// Iteration-Update Page Address Offset
 	input wire read_addr_offset,
     // Iteration-Update Page Address 
@@ -34,12 +36,20 @@ module vnu3_204_102 #(
     // Iteration-Update Data
     input wire [LUT_PORT_SIZE*BANK_NUM-1:0] ram_write_data_0,
     input wire [LUT_PORT_SIZE*BANK_NUM-1:0] ram_write_data_1,
-
+// Decision Node Units
+	// Iteration-Update Page Address Offset
+	input wire dnu_read_addr_offset,
+    // Iteration-Update Page Address 
+    input wire [ENTRY_ADDR-1:0] dnu_page_addr_ram,
+    // Iteration-Update Data
+    input wire [BANK_NUM-1:0] dnu_ram_write_data,
+//==============================================================//
     // Clock source and Enable signals
     input wire CLK_300_N,
     input wire CLK_300_P,
     input wire rstn,
     input wire [`VN_DEGREE+1-2-1:0] ib_ram_we
+	input wire ib_dnu_ram_we
 );
 
 wire clk_lock, read_clk, write_clk, clk_rd_gate, clk_wr_gate;
@@ -217,6 +227,41 @@ generate
 		.write_clk (write_clk),
 		.ib_ram_we (ib_ram_we[1])
 	);	
+	
+	dnu_f0 u_f2(
+		output wire read_addr_offset_out, // to forward the current multi-frame offset signal to the next sub-datapath	
+		output wire dnu0_hard_decision, // internal signals accounting for each 128-entry partial LUT's output
+		output wire dnu1_hard_decision, // internal signals accounting for each 128-entry partial LUT's output		        
+		output wire dnu2_hard_decision, // internal signals accounting for each 128-entry partial LUT's output
+		output wire dnu3_hard_decision, // internal signals accounting for each 128-entry partial LUT's output
+		
+		// From the first DNU
+		input wire [QUAN_SIZE-1:0] vnu0_t10,
+		input wire [QUAN_SIZE-1:0] vnu0_c2v_2,
+		input wire vnu0_tranEn_in0,
+	
+		// From the second DNU
+		input wire [QUAN_SIZE-1:0] vnu1_t10,
+		input wire [QUAN_SIZE-1:0] vnu1_c2v_2,
+		input wire vnu1_tranEn_in0,
+		
+		// From the third DNU
+		input wire [QUAN_SIZE-1:0] vnu2_t10,
+		input wire [QUAN_SIZE-1:0] vnu2_c2v_2,
+		input wire vnu2_tranEn_in0,
+		
+		// From the fourth DNU
+		input wire [QUAN_SIZE-1:0] vnu3_t10,
+		input wire [QUAN_SIZE-1:0] vnu3_c2v_2,
+		input wire vnu3_tranEn_in0,
+		
+		.read_clk (read_clk),
+		.read_addr_offset (read_addr_offset_outSet[j]), // offset determing the switch between multi-frame 
+		.page_addr_ram (dnu_page_addr_ram),
+		.ram_write_data_1 (dnu_ram_write_data[BANK_NUM-1:0]),
+		.write_clk (write_clk),
+		.ib_ram_we (ib_dnu_ram_we)
+	);
 
     reg [`QUAN_SIZE*`VN_DEGREE-1:0] vnu0_v2c_fifo;
     initial vnu0_v2c_fifo[`QUAN_SIZE*`VN_DEGREE-1:0] <= {vnu0_v2c[0], vnu0_v2c[1], vnu0_v2c[2]};

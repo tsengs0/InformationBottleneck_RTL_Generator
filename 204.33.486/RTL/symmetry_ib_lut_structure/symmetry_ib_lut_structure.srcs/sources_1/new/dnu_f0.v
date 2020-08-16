@@ -12,15 +12,6 @@ module dnu_f0 #(
     output wire dnu2_hard_decision, // internal signals accounting for each 128-entry partial LUT's output
 	// For the fourth DNU       
     output wire dnu3_hard_decision, // internal signals accounting for each 128-entry partial LUT's output
-
-	//output wire vnu0_tranEn_out0,
-	//output wire vnu0_tranEn_out1,
-	//output wire vnu1_tranEn_out0,
-	//output wire vnu1_tranEn_out1,
-	//output wire vnu2_tranEn_out0,
-	//output wire vnu2_tranEn_out1,
-	//output wire vnu3_tranEn_out0,
-	//output wire vnu3_tranEn_out1,
 	
     // From the first DNU
     input wire [QUAN_SIZE-1:0] vnu0_t10,

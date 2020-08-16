@@ -1,5 +1,27 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 
+// Design Name: 
+// Module Name: vnu3_f0
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// Pipeline stage: 3, i.e., two set of pipeline registers
+// 
+//////////////////////////////////////////////////////////////////////////////////
 module vnu3_f0 #(
 	parameter QUAN_SIZE  = 4,
+	parameter PIPELINE_DEPTH = 3,
 	parameter ENTRY_ADDR = 7, // regardless of bank interleaving here
 	parameter BANK_NUM   = 2,
 	parameter LUT_PORT_SIZE = 4
@@ -79,8 +101,6 @@ ib_vnu3_f0_route vnu0_f0_in_pipe(
     .f00_y1 (vnu0_f0_y1[0]),
     .f01_y0 (vnu0_f0_y0[1]), 
     .f01_y1 (vnu0_f0_y1[1]),
-    .E1_reg (vnu0_c2v1[QUAN_SIZE-1:0]),
-    .E2_reg (vnu0_c2v2[QUAN_SIZE-1:0]),
 
     .E0 (vnu0_c2v_0[QUAN_SIZE-1:0]),
     .E1 (vnu0_c2v_1[QUAN_SIZE-1:0]),
@@ -95,8 +115,6 @@ ib_vnu3_f0_route vnu1_f0_in_pipe(
     .f00_y1 (vnu1_f0_y1[0]),
     .f01_y0 (vnu1_f0_y0[1]), 
     .f01_y1 (vnu1_f0_y1[1]),
-    .E1_reg (vnu1_c2v1[QUAN_SIZE-1:0]),
-    .E2_reg (vnu1_c2v2[QUAN_SIZE-1:0]),
 
     .E0 (vnu1_c2v_0[QUAN_SIZE-1:0]),
     .E1 (vnu1_c2v_1[QUAN_SIZE-1:0]),
@@ -111,8 +129,6 @@ ib_vnu3_f0_route vnu2_f0_in_pipe(
     .f00_y1 (vnu2_f0_y1[0]),
     .f01_y0 (vnu2_f0_y0[1]), 
     .f01_y1 (vnu2_f0_y1[1]),
-    .E1_reg (vnu2_c2v1[QUAN_SIZE-1:0]),
-    .E2_reg (vnu2_c2v2[QUAN_SIZE-1:0]),
 
     .E0 (vnu2_c2v_0[QUAN_SIZE-1:0]),
     .E1 (vnu2_c2v_1[QUAN_SIZE-1:0]),
@@ -127,15 +143,55 @@ ib_vnu3_f0_route vnu3_f0_in_pipe(
     .f00_y1 (vnu3_f0_y1[0]),
     .f01_y0 (vnu3_f0_y0[1]), 
     .f01_y1 (vnu3_f0_y1[1]),
-    .E1_reg (vnu3_c2v1[QUAN_SIZE-1:0]),
-    .E2_reg (vnu3_c2v2[QUAN_SIZE-1:0]),
 
     .E0 (vnu3_c2v_0[QUAN_SIZE-1:0]),
     .E1 (vnu3_c2v_1[QUAN_SIZE-1:0]),
     .E2 (vnu3_c2v_2[QUAN_SIZE-1:0]),
     .ch_llr (vnu0_ch_llr[QUAN_SIZE-1:0]) // priori LLR from the underlying channel
 );
-
+//================================================================================//
+// Pipeline Mechanism for V2C messages where it will be used in VNU3.f1 
+ib_f0_c2v_pipeline #(
+	.PIPELINE_DEPTH (PIPELINE_DEPTH)
+) vnu0_v2c_pipe (
+	.E1_reg (vnu0_c2v1[QUAN_SIZE-1:0]),
+	.E2_reg (vnu0_c2v2[QUAN_SIZE-1:0]),
+	
+	.c2v1_in  (vnu0_c2v_1[QUAN_SIZE-1:0]),
+	.c2v2_in  (vnu0_c2v_2[QUAN_SIZE-1:0]),
+	.read_clk (read_clk)
+);
+ib_f0_c2v_pipeline #(
+	.PIPELINE_DEPTH (PIPELINE_DEPTH)
+) vnu1_v2c_pipe (
+	.E1_reg (vnu1_c2v1[QUAN_SIZE-1:0]),
+	.E2_reg (vnu1_c2v2[QUAN_SIZE-1:0]),
+	
+	.c2v1_in  (vnu1_c2v_1[QUAN_SIZE-1:0]),
+	.c2v2_in  (vnu1_c2v_2[QUAN_SIZE-1:0]),
+	.read_clk (read_clk)
+);
+ib_f0_c2v_pipeline #(
+	.PIPELINE_DEPTH (PIPELINE_DEPTH)
+) vnu2_v2c_pipe (
+	.E1_reg (vnu2_c2v1[QUAN_SIZE-1:0]),
+	.E2_reg (vnu2_c2v2[QUAN_SIZE-1:0]),
+	
+	.c2v1_in  (vnu2_c2v_1[QUAN_SIZE-1:0]),
+	.c2v2_in  (vnu2_c2v_2[QUAN_SIZE-1:0]),
+	.read_clk (read_clk)
+);
+ib_f0_c2v_pipeline #(
+	.PIPELINE_DEPTH (PIPELINE_DEPTH)
+) vnu3_v2c_pipe (
+	.E1_reg (vnu3_c2v1[QUAN_SIZE-1:0]),
+	.E2_reg (vnu3_c2v2[QUAN_SIZE-1:0]),
+	
+	.c2v1_in  (vnu3_c2v_1[QUAN_SIZE-1:0]),
+	.c2v2_in  (vnu3_c2v_2[QUAN_SIZE-1:0]),
+	.read_clk (read_clk)
+);
+//================================================================================//
 // vnu0 pipe and vnu1 pipe share the first IB-VNU RAM
 sym_vn_lut_in func_ram_00(
     .t_c_A (vnu0_tPort0[QUAN_SIZE-1:0]), // For first reader  (A)    
