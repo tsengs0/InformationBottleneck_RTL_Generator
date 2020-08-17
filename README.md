@@ -12,17 +12,24 @@ In the above IP, there is one FIFO buffer in between PL and PS. Once the computa
 (N=204)
 Module | LUTRAM | LUT Logic
 ------ | ------ | ---------
-vnu3   | 16,320	| 9589
+vnu3   | 16,320	| 9680
+vnu3+dnu | 17,136 | 9,956
 cnu6   | 8,568	| 5149
 symbol_generator(x100) | 4400 | 28500
 ------ | ------ | ---------
-total | 29,288  | 43,238
-utilisation | 28.781% | 33.612%
-utilisation of LUT | 31.478%
+total (without DNUs) | 29,288  | 43,329
+total (with DNUs) | 30,104 | 43,605
+utilisation (without decision nodes) | 28.781% | 33.612%
+utilisation (with DNUs) | 29.5833% | 33.8969%
+utilisation of LUT (without DNUs) | 31.478%
+utilisation of LUT (with DNUs) | 31.9918%
 
 (N=204*3=612)	
 Module | LUTRAM | LUT Logic
 ------ | ------ | ---------
-total  | 79,064	| 72,714
-utilisation | 77.697% | 56.525%
-utilisation of LUT | 65.876%
+total (without DNUs)  | 79,064	| 72,714
+total (with DNUs)  | 81,512	| 73,815
+utilisation (without DNUs) | 77.697% | 56.525%
+utilisation (with DNUs) | 80.1022% | 57.3811%
+utilisation of LUT (without DNUs) | 65.876%
+utilisation of LUT (with DNUs) | 67.4162%

@@ -1,0 +1,47 @@
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Tue Aug  4 01:44:35 2020
+| Host         : lmpcc running 64-bit SUSE Linux Enterprise Server 15 SP1
+| Command      : report_drc -file vn_top_drc_routed.rpt -pb vn_top_drc_routed.pb -rpx vn_top_drc_routed.rpx
+| Design       : vn_top
+| Device       : xczu7ev-ffvc1156-2-e
+| Speed File   : -2
+| Design State : Fully Routed
+------------------------------------------------------------------------------------------------------------
+
+Report DRC
+
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: netlist
+          Floorplan: design_1
+      Design limits: <entire design considered>
+           Ruledeck: default
+             Max violations: <unlimited>
+             Violations found: 2
++--------+------------------+----------------------------+------------+
+| Rule   | Severity         | Description                | Violations |
++--------+------------------+----------------------------+------------+
+| NSTD-1 | Critical Warning | Unspecified I/O Standard   | 1          |
+| UCIO-1 | Critical Warning | Unconstrained Logical Port | 1          |
++--------+------------------+----------------------------+------------+
+
+2. REPORT DETAILS
+-----------------
+NSTD-1#1 Critical Warning
+Unspecified I/O Standard  
+46 out of 49 logical ports use I/O standard (IOSTANDARD) value 'DEFAULT', instead of a user assigned specific value. This may cause I/O contention or incompatibility with the board power or connectivity affecting performance, signal integrity or in extreme cases cause damage to the device or the components to which it is connected. To correct this violation, specify all I/O standards. This design will fail to generate a bitstream unless all logical ports have a user specified I/O standard value defined. To allow bitstream creation with unspecified I/O standard values (not recommended), use this command: set_property SEVERITY {Warning} [get_drc_checks NSTD-1].  NOTE: When using the Vivado Runs infrastructure (e.g. launch_runs Tcl command), add this command to a .tcl file and add that file as a pre-hook for write_bitstream step for the implementation run. Problem ports: c2v_A0[3:0], c2v_A1[3:0], c2v_A2[3:0], c2v_A3[3:0], lut_in_bank0[3:0], lut_in_bank1[3:0], page_write_addr[5:0], v2cA[3:0], v2cB[3:0], v2cC[3:0], we, write_addr_offset, read_addr_offset, read_addr_offset_out.
+Related violations: <none>
+
+UCIO-1#1 Critical Warning
+Unconstrained Logical Port  
+46 out of 49 logical ports have no user assigned specific location constraint (LOC). This may cause I/O contention or incompatibility with the board power or connectivity affecting performance, signal integrity or in extreme cases cause damage to the device or the components to which it is connected. To correct this violation, specify all pin locations. This design will fail to generate a bitstream unless all logical ports have a user specified site LOC constraint defined.  To allow bitstream creation with unspecified pin locations (not recommended), use this command: set_property SEVERITY {Warning} [get_drc_checks UCIO-1].  NOTE: When using the Vivado Runs infrastructure (e.g. launch_runs Tcl command), add this command to a .tcl file and add that file as a pre-hook for write_bitstream step for the implementation run.  Problem ports: c2v_A0[3:0], c2v_A1[3:0], c2v_A2[3:0], c2v_A3[3:0], lut_in_bank0[3:0], lut_in_bank1[3:0], page_write_addr[5:0], v2cA[3:0], v2cB[3:0], v2cC[3:0], we, write_addr_offset, read_addr_offset, read_addr_offset_out.
+Related violations: <none>
+
+
