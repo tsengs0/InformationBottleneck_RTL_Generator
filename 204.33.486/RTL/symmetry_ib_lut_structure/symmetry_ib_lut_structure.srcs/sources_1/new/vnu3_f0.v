@@ -153,7 +153,7 @@ ib_vnu3_f0_route vnu3_f0_in_pipe(
 // Pipeline Mechanism for V2C messages where it will be used in VNU3.f1 
 ib_f0_c2v_pipeline #(
 	.PIPELINE_DEPTH (PIPELINE_DEPTH)
-) vnu0_v2c_pipe (
+) vnu0_c2v_pipe (
 	.E1_reg (vnu0_c2v1[QUAN_SIZE-1:0]),
 	.E2_reg (vnu0_c2v2[QUAN_SIZE-1:0]),
 	
@@ -163,7 +163,7 @@ ib_f0_c2v_pipeline #(
 );
 ib_f0_c2v_pipeline #(
 	.PIPELINE_DEPTH (PIPELINE_DEPTH)
-) vnu1_v2c_pipe (
+) vnu1_c2v_pipe (
 	.E1_reg (vnu1_c2v1[QUAN_SIZE-1:0]),
 	.E2_reg (vnu1_c2v2[QUAN_SIZE-1:0]),
 	
@@ -173,7 +173,7 @@ ib_f0_c2v_pipeline #(
 );
 ib_f0_c2v_pipeline #(
 	.PIPELINE_DEPTH (PIPELINE_DEPTH)
-) vnu2_v2c_pipe (
+) vnu2_c2v_pipe (
 	.E1_reg (vnu2_c2v1[QUAN_SIZE-1:0]),
 	.E2_reg (vnu2_c2v2[QUAN_SIZE-1:0]),
 	
@@ -183,7 +183,7 @@ ib_f0_c2v_pipeline #(
 );
 ib_f0_c2v_pipeline #(
 	.PIPELINE_DEPTH (PIPELINE_DEPTH)
-) vnu3_v2c_pipe (
+) vnu3_c2v_pipe (
 	.E1_reg (vnu3_c2v1[QUAN_SIZE-1:0]),
 	.E2_reg (vnu3_c2v2[QUAN_SIZE-1:0]),
 	

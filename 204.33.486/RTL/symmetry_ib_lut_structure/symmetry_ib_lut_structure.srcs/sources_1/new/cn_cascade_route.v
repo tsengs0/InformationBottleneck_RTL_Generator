@@ -26,12 +26,6 @@ module ib_cnu6_f0_route #(
     output wire [QUAN_SIZE-1:0] f00_y1,
     output wire [QUAN_SIZE-1:0] f01_y0,
     output wire [QUAN_SIZE-1:0] f01_y1,
-    output wire [QUAN_SIZE-1:0] M0_reg,
-    output wire [QUAN_SIZE-1:0] M1_reg,
-    output wire [QUAN_SIZE-1:0] M2_reg,
-    output wire [QUAN_SIZE-1:0] M3_reg,
-    output wire [QUAN_SIZE-1:0] M4_reg,
-    output wire [QUAN_SIZE-1:0] M5_reg,
         
     input wire [QUAN_SIZE-1:0] M0,
     input wire [QUAN_SIZE-1:0] M1,
@@ -50,14 +44,59 @@ module ib_cnu6_f0_route #(
 	//assign f00_y0[QUAN_SIZE-1:0] = (we == 1'b1) ? QUAN_SIZE'd0 : M0[QUAN_SIZE-1:0];
 	//assign f00_y1[QUAN_SIZE-1:0] = (we == 1'b1) ? QUAN_SIZE'd0 : M1[QUAN_SIZE-1:0];
 	assign f01_y0[QUAN_SIZE-1:0] = M3[QUAN_SIZE-1:0];
-	assign f01_y1[QUAN_SIZE-1:0] = M4[QUAN_SIZE-1:0];
+	assign f01_y1[QUAN_SIZE-1:0] = M4[QUAN_SIZE-1:0];    
+endmodule
+
+module ib_f0_v2c_pipeline #(
+	parameter QUAN_SIZE = 4,
+	parameter PIPELINE_DEPTH = 3
+)(
+	output wire [QUAN_SIZE-1:0] M0_reg,
+	output wire [QUAN_SIZE-1:0] M1_reg,
+	output wire [QUAN_SIZE-1:0] M2_reg,
+	output wire [QUAN_SIZE-1:0] M3_reg,
+	output wire [QUAN_SIZE-1:0] M4_reg,
+	output wire [QUAN_SIZE-1:0] M5_reg,
 	
-	assign M0_reg[QUAN_SIZE-1:0] = M0[QUAN_SIZE-1:0];
-	assign M1_reg[QUAN_SIZE-1:0] = M1[QUAN_SIZE-1:0];
-	assign M2_reg[QUAN_SIZE-1:0] = M2[QUAN_SIZE-1:0];
-	assign M3_reg[QUAN_SIZE-1:0] = M3[QUAN_SIZE-1:0];
-	assign M4_reg[QUAN_SIZE-1:0] = M4[QUAN_SIZE-1:0];
-	assign M5_reg[QUAN_SIZE-1:0] = M5[QUAN_SIZE-1:0];    
+	input wire [QUAN_SIZE-1:0] v2c0_in,
+	input wire [QUAN_SIZE-1:0] v2c1_in,
+	input wire [QUAN_SIZE-1:0] v2c2_in,
+	input wire [QUAN_SIZE-1:0] v2c3_in,
+	input wire [QUAN_SIZE-1:0] v2c4_in,
+	input wire [QUAN_SIZE-1:0] v2c5_in,
+	input wire read_clk
+);
+	// PIPELINE_DEPTH pipeline stages require two pipeline registers
+	reg [QUAN_SIZE-1:0] v2c_0 [0:PIPELINE_DEPTH-2];
+	reg [QUAN_SIZE-1:0] v2c_1 [0:PIPELINE_DEPTH-2];
+	reg [QUAN_SIZE-1:0] v2c_2 [0:PIPELINE_DEPTH-2];
+	reg [QUAN_SIZE-1:0] v2c_3 [0:PIPELINE_DEPTH-2];
+	reg [QUAN_SIZE-1:0] v2c_4 [0:PIPELINE_DEPTH-2];
+	reg [QUAN_SIZE-1:0] v2c_5 [0:PIPELINE_DEPTH-2];
+	
+	always@(posedge read_clk) v2c_0[0] <= v2c0_in[QUAN_SIZE-1:0];
+	always@(posedge read_clk) v2c_1[0] <= v2c1_in[QUAN_SIZE-1:0];
+	always@(posedge read_clk) v2c_2[0] <= v2c2_in[QUAN_SIZE-1:0];
+	always@(posedge read_clk) v2c_3[0] <= v2c3_in[QUAN_SIZE-1:0];
+	always@(posedge read_clk) v2c_4[0] <= v2c4_in[QUAN_SIZE-1:0];
+	always@(posedge read_clk) v2c_5[0] <= v2c5_in[QUAN_SIZE-1:0];
+	genvar i;
+	generate
+		for(i = 1; i < PIPELINE_DEPTH - 1; i=i+1) begin : c2v_msg_pipe_inst
+			always@(posedge read_clk) v2c_0[i] <= v2c_0[i-1];
+			always@(posedge read_clk) v2c_1[i] <= v2c_1[i-1];
+			always@(posedge read_clk) v2c_2[i] <= v2c_2[i-1];
+			always@(posedge read_clk) v2c_3[i] <= v2c_3[i-1];
+			always@(posedge read_clk) v2c_4[i] <= v2c_4[i-1];
+			always@(posedge read_clk) v2c_5[i] <= v2c_5[i-1];
+		end
+	endgenerate
+	assign M0_reg[QUAN_SIZE-1:0] = v2c_0[PIPELINE_DEPTH-2];
+	assign M1_reg[QUAN_SIZE-1:0] = v2c_1[PIPELINE_DEPTH-2];
+	assign M2_reg[QUAN_SIZE-1:0] = v2c_2[PIPELINE_DEPTH-2];
+	assign M3_reg[QUAN_SIZE-1:0] = v2c_3[PIPELINE_DEPTH-2];
+	assign M4_reg[QUAN_SIZE-1:0] = v2c_4[PIPELINE_DEPTH-2];
+	assign M5_reg[QUAN_SIZE-1:0] = v2c_5[PIPELINE_DEPTH-2];
 endmodule
 
 module ib_cnu6_f1_route #(
@@ -67,12 +106,6 @@ module ib_cnu6_f1_route #(
     output wire [QUAN_SIZE-1:0] f10_y1,
     output wire [QUAN_SIZE-1:0] f11_y0,
     output wire [QUAN_SIZE-1:0] f11_y1,
-    output wire [QUAN_SIZE-1:0] M0_reg,
-    output wire [QUAN_SIZE-1:0] M1_reg,
-    output wire [QUAN_SIZE-1:0] M2_reg,
-    output wire [QUAN_SIZE-1:0] M3_reg,
-    output wire [QUAN_SIZE-1:0] M4_reg,
-    output wire [QUAN_SIZE-1:0] M5_reg,
 
     input wire [QUAN_SIZE-1:0] t_00,
     input wire [QUAN_SIZE-1:0] t_01,
@@ -89,14 +122,59 @@ module ib_cnu6_f1_route #(
 	assign f10_y1[QUAN_SIZE-1:0] = M2[QUAN_SIZE-1:0];    
 	// For the second decomposed LUT
 	assign f11_y0[QUAN_SIZE-1:0] = t_01[QUAN_SIZE-1:0];
-	assign f11_y1[QUAN_SIZE-1:0] = M5[QUAN_SIZE-1:0];    
+	assign f11_y1[QUAN_SIZE-1:0] = M5[QUAN_SIZE-1:0];        
+endmodule
+
+module ib_f1_v2c_pipeline #(
+	parameter QUAN_SIZE = 4,
+	parameter PIPELINE_DEPTH = 3
+)(
+	output wire [QUAN_SIZE-1:0] M0_reg,
+	output wire [QUAN_SIZE-1:0] M1_reg,
+	output wire [QUAN_SIZE-1:0] M2_reg,
+	output wire [QUAN_SIZE-1:0] M3_reg,
+	output wire [QUAN_SIZE-1:0] M4_reg,
+	output wire [QUAN_SIZE-1:0] M5_reg,
 	
-	assign M0_reg[QUAN_SIZE-1:0] = M0[QUAN_SIZE-1:0];
-	assign M1_reg[QUAN_SIZE-1:0] = M1[QUAN_SIZE-1:0];
-	assign M2_reg[QUAN_SIZE-1:0] = M2[QUAN_SIZE-1:0];
-	assign M3_reg[QUAN_SIZE-1:0] = M3[QUAN_SIZE-1:0];
-	assign M4_reg[QUAN_SIZE-1:0] = M4[QUAN_SIZE-1:0];
-	assign M5_reg[QUAN_SIZE-1:0] = M5[QUAN_SIZE-1:0];    
+	input wire [QUAN_SIZE-1:0] v2c0_in,
+	input wire [QUAN_SIZE-1:0] v2c1_in,
+	input wire [QUAN_SIZE-1:0] v2c2_in,
+	input wire [QUAN_SIZE-1:0] v2c3_in,
+	input wire [QUAN_SIZE-1:0] v2c4_in,
+	input wire [QUAN_SIZE-1:0] v2c5_in,
+	input wire read_clk
+);
+	// PIPELINE_DEPTH pipeline stages require two pipeline registers
+	reg [QUAN_SIZE-1:0] v2c_0 [0:PIPELINE_DEPTH-2];
+	reg [QUAN_SIZE-1:0] v2c_1 [0:PIPELINE_DEPTH-2];
+	reg [QUAN_SIZE-1:0] v2c_2 [0:PIPELINE_DEPTH-2];
+	reg [QUAN_SIZE-1:0] v2c_3 [0:PIPELINE_DEPTH-2];
+	reg [QUAN_SIZE-1:0] v2c_4 [0:PIPELINE_DEPTH-2];
+	reg [QUAN_SIZE-1:0] v2c_5 [0:PIPELINE_DEPTH-2];
+	
+	always@(posedge read_clk) v2c_0[0] <= v2c0_in[QUAN_SIZE-1:0];
+	always@(posedge read_clk) v2c_1[0] <= v2c1_in[QUAN_SIZE-1:0];
+	always@(posedge read_clk) v2c_2[0] <= v2c2_in[QUAN_SIZE-1:0];
+	always@(posedge read_clk) v2c_3[0] <= v2c3_in[QUAN_SIZE-1:0];
+	always@(posedge read_clk) v2c_4[0] <= v2c4_in[QUAN_SIZE-1:0];
+	always@(posedge read_clk) v2c_5[0] <= v2c5_in[QUAN_SIZE-1:0];
+	genvar i;
+	generate
+		for(i = 1; i < PIPELINE_DEPTH - 1; i=i+1) begin : c2v_msg_pipe_inst
+			always@(posedge read_clk) v2c_0[i] <= v2c_0[i-1];
+			always@(posedge read_clk) v2c_1[i] <= v2c_1[i-1];
+			always@(posedge read_clk) v2c_2[i] <= v2c_2[i-1];
+			always@(posedge read_clk) v2c_3[i] <= v2c_3[i-1];
+			always@(posedge read_clk) v2c_4[i] <= v2c_4[i-1];
+			always@(posedge read_clk) v2c_5[i] <= v2c_5[i-1];
+		end
+	endgenerate
+	assign M0_reg[QUAN_SIZE-1:0] = v2c_0[PIPELINE_DEPTH-2];
+	assign M1_reg[QUAN_SIZE-1:0] = v2c_1[PIPELINE_DEPTH-2];
+	assign M2_reg[QUAN_SIZE-1:0] = v2c_2[PIPELINE_DEPTH-2];
+	assign M3_reg[QUAN_SIZE-1:0] = v2c_3[PIPELINE_DEPTH-2];
+	assign M4_reg[QUAN_SIZE-1:0] = v2c_4[PIPELINE_DEPTH-2];
+	assign M5_reg[QUAN_SIZE-1:0] = v2c_5[PIPELINE_DEPTH-2];
 endmodule
 
 module ib_cnu6_f2_route #(
@@ -110,10 +188,6 @@ module ib_cnu6_f2_route #(
     output wire [QUAN_SIZE-1:0] f22_y1,
     output wire [QUAN_SIZE-1:0] f23_y0,
     output wire [QUAN_SIZE-1:0] f23_y1,
-    output wire [QUAN_SIZE-1:0] M1_reg,
-    output wire [QUAN_SIZE-1:0] M2_reg,
-    output wire [QUAN_SIZE-1:0] M4_reg,
-    output wire [QUAN_SIZE-1:0] M5_reg,
 
     input wire [QUAN_SIZE-1:0] t_10,
     input wire [QUAN_SIZE-1:0] t_11,
@@ -136,12 +210,47 @@ module ib_cnu6_f2_route #(
 	assign f22_y1[QUAN_SIZE-1:0] = M0[QUAN_SIZE-1:0]  ;    
 	// For the fourth decomposed LUT
 	assign f23_y0[QUAN_SIZE-1:0] = t_11[QUAN_SIZE-1:0];
-	assign f23_y1[QUAN_SIZE-1:0] = M1[QUAN_SIZE-1:0]  ;    
+	assign f23_y1[QUAN_SIZE-1:0] = M1[QUAN_SIZE-1:0]  ;        
+endmodule
+
+module ib_f2_v2c_pipeline #(
+	parameter QUAN_SIZE = 4,
+	parameter PIPELINE_DEPTH = 3
+)(
+	output wire [QUAN_SIZE-1:0] M1_reg,
+	output wire [QUAN_SIZE-1:0] M2_reg,
+	output wire [QUAN_SIZE-1:0] M4_reg,
+	output wire [QUAN_SIZE-1:0] M5_reg,
 	
-	assign M1_reg[QUAN_SIZE-1:0] = M1[QUAN_SIZE-1:0];
-	assign M2_reg[QUAN_SIZE-1:0] = M2[QUAN_SIZE-1:0];
-	assign M4_reg[QUAN_SIZE-1:0] = M4[QUAN_SIZE-1:0];
-	assign M5_reg[QUAN_SIZE-1:0] = M5[QUAN_SIZE-1:0];    
+	input wire [QUAN_SIZE-1:0] v2c1_in,
+	input wire [QUAN_SIZE-1:0] v2c2_in,
+	input wire [QUAN_SIZE-1:0] v2c4_in,
+	input wire [QUAN_SIZE-1:0] v2c5_in,
+	input wire read_clk
+);
+	// PIPELINE_DEPTH pipeline stages require two pipeline registers
+	reg [QUAN_SIZE-1:0] v2c_1 [0:PIPELINE_DEPTH-2];
+	reg [QUAN_SIZE-1:0] v2c_2 [0:PIPELINE_DEPTH-2];
+	reg [QUAN_SIZE-1:0] v2c_4 [0:PIPELINE_DEPTH-2];
+	reg [QUAN_SIZE-1:0] v2c_5 [0:PIPELINE_DEPTH-2];
+	
+	always@(posedge read_clk) v2c_1[0] <= v2c1_in[QUAN_SIZE-1:0];
+	always@(posedge read_clk) v2c_2[0] <= v2c2_in[QUAN_SIZE-1:0];
+	always@(posedge read_clk) v2c_4[0] <= v2c4_in[QUAN_SIZE-1:0];
+	always@(posedge read_clk) v2c_5[0] <= v2c5_in[QUAN_SIZE-1:0];
+	genvar i;
+	generate
+		for(i = 1; i < PIPELINE_DEPTH - 1; i=i+1) begin : c2v_msg_pipe_inst
+			always@(posedge read_clk) v2c_1[i] <= v2c_1[i-1];
+			always@(posedge read_clk) v2c_2[i] <= v2c_2[i-1];
+			always@(posedge read_clk) v2c_4[i] <= v2c_4[i-1];
+			always@(posedge read_clk) v2c_5[i] <= v2c_5[i-1];
+		end
+	endgenerate
+	assign M1_reg[QUAN_SIZE-1:0] = v2c_1[PIPELINE_DEPTH-2];
+	assign M2_reg[QUAN_SIZE-1:0] = v2c_2[PIPELINE_DEPTH-2];
+	assign M4_reg[QUAN_SIZE-1:0] = v2c_4[PIPELINE_DEPTH-2];
+	assign M5_reg[QUAN_SIZE-1:0] = v2c_5[PIPELINE_DEPTH-2];
 endmodule
 
 module ib_cnu6_f3_route #(

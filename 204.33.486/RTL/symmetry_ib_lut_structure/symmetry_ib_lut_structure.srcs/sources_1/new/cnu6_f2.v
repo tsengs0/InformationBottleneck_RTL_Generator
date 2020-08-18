@@ -1,5 +1,27 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 
+// Design Name: 
+// Module Name: cnu6_f2
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// Pipeline stage: 3, i.e., two set of pipeline registers
+// 
+//////////////////////////////////////////////////////////////////////////////////
 module cnu6_f2 #(
-	parameter QUAN_SIZE = 4
+	parameter QUAN_SIZE = 4,
+	parameter PIPELINE_DEPTH = 3
 )(
 	output wire read_addr_offset_out, // to forward the current multi-frame offset signal to the next sub-datapath
     // For the first CNU
@@ -66,10 +88,6 @@ ib_cnu6_f2_route cnu0_f2_in_pipe(
     .f22_y1 (cnu0_f2_y1[2]),
     .f23_y0 (cnu0_f2_y0[3]),
     .f23_y1 (cnu0_f2_y1[3]),
-    .M1_reg (cnu0_M_reg1[QUAN_SIZE-1:0]),
-    .M2_reg (cnu0_M_reg2[QUAN_SIZE-1:0]),
-    .M4_reg (cnu0_M_reg4[QUAN_SIZE-1:0]),
-    .M5_reg (cnu0_M_reg5[QUAN_SIZE-1:0]),
         
     .t_10 (t_10[QUAN_SIZE-1:0]),
     .t_11 (t_11[QUAN_SIZE-1:0]),
@@ -92,10 +110,6 @@ ib_cnu6_f2_route cnu1_f2_in_pipe(
     .f22_y1 (cnu1_f2_y1[2]),
     .f23_y0 (cnu1_f2_y0[3]),
     .f23_y1 (cnu1_f2_y1[3]),
-    .M1_reg (cnu1_M_reg1[QUAN_SIZE-1:0]),
-    .M2_reg (cnu1_M_reg2[QUAN_SIZE-1:0]),
-    .M4_reg (cnu1_M_reg4[QUAN_SIZE-1:0]),
-    .M5_reg (cnu1_M_reg5[QUAN_SIZE-1:0]),
         
     .t_10 (t_12[QUAN_SIZE-1:0]),
     .t_11 (t_13[QUAN_SIZE-1:0]),
@@ -106,7 +120,37 @@ ib_cnu6_f2_route cnu1_f2_in_pipe(
     .M4(cnu1_v2c_4[QUAN_SIZE-1:0]),
     .M5(cnu1_v2c_5[QUAN_SIZE-1:0])
 );
-
+//================================================================================//
+// Pipeline Mechanism for V2C messages where it will be used in CNU6.f3 
+ib_f2_v2c_pipeline #(
+	.PIPELINE_DEPTH(PIPELINE_DEPTH)
+) cnu0_v2c_pipe(
+	.M1_reg (cnu0_M_reg1[QUAN_SIZE-1:0]),
+	.M2_reg (cnu0_M_reg2[QUAN_SIZE-1:0]),
+	.M4_reg (cnu0_M_reg4[QUAN_SIZE-1:0]),
+	.M5_reg (cnu0_M_reg5[QUAN_SIZE-1:0]),
+	
+	.v2c1_in (cnu0_v2c_1[QUAN_SIZE-1:0]),
+	.v2c2_in (cnu0_v2c_2[QUAN_SIZE-1:0]),
+	.v2c4_in (cnu0_v2c_4[QUAN_SIZE-1:0]),
+	.v2c5_in (cnu0_v2c_5[QUAN_SIZE-1:0]),
+	.read_clk (read_clk)
+);
+ib_f2_v2c_pipeline #(
+	.PIPELINE_DEPTH(PIPELINE_DEPTH)
+) cnu1_v2c_pipe(
+	.M1_reg (cnu1_M_reg1[QUAN_SIZE-1:0]),
+	.M2_reg (cnu1_M_reg2[QUAN_SIZE-1:0]),
+	.M4_reg (cnu1_M_reg4[QUAN_SIZE-1:0]),
+	.M5_reg (cnu1_M_reg5[QUAN_SIZE-1:0]),
+	
+	.v2c1_in (cnu1_v2c_1[QUAN_SIZE-1:0]),
+	.v2c2_in (cnu1_v2c_2[QUAN_SIZE-1:0]),
+	.v2c4_in (cnu1_v2c_4[QUAN_SIZE-1:0]),
+	.v2c5_in (cnu1_v2c_5[QUAN_SIZE-1:0]),
+	.read_clk (read_clk)
+);
+//================================================================================//
 sym_cn_lut_internal func_ram_20(
 	// For read operation
 	.t_c_A (cnu0_t_portA[QUAN_SIZE-1:0]), // For first reader  (A)	

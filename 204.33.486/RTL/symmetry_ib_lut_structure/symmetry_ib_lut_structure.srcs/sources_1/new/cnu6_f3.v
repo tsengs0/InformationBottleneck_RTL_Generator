@@ -1,6 +1,28 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 
+// Design Name: 
+// Module Name: cnu6_f3
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// Pipeline stage: 3, i.e., two set of pipeline registers
+// 
+//////////////////////////////////////////////////////////////////////////////////
 module cnu6_f3 #(
 	parameter QUAN_SIZE = 4,
-	parameter CN_DEGREE = 6
+	parameter CN_DEGREE = 6,
+	parameter PIPELINE_DEPTH = 3
 )(
 	output wire read_addr_offset_out, // to forward the current multi-frame offset signal to the next sub-datapath
     // For the first CNU

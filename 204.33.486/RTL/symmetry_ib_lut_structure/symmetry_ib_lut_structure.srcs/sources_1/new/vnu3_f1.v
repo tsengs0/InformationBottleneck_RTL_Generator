@@ -141,28 +141,28 @@ ib_vnu3_f1_route vnu3_f1_in_pipe(
 // Pipeline Mechanism for V2C messages where it will be used in DNU.f0 
 ib_f1_c2v_pipeline #(
 	.PIPELINE_DEPTH (PIPELINE_DEPTH)
-) vnu0_v2c_pipe (
+) vnu0_c2v_pipe (
 	.E2_reg   (vnu0_E_reg2[QUAN_SIZE-1:0]),
 	.c2v2_in  (vnu0_c2v_2[QUAN_SIZE-1:0]),
 	.read_clk (read_clk)
 );
 ib_f1_c2v_pipeline #(
 	.PIPELINE_DEPTH (PIPELINE_DEPTH)
-) vnu1_v2c_pipe (
+) vnu1_c2v_pipe (
 	.E2_reg   (vnu1_E_reg2[QUAN_SIZE-1:0]),
 	.c2v2_in  (vnu1_c2v_2[QUAN_SIZE-1:0]),
 	.read_clk (read_clk)
 );
 ib_f1_c2v_pipeline #(
 	.PIPELINE_DEPTH (PIPELINE_DEPTH)
-) vnu2_v2c_pipe (
+) vnu2_c2v_pipe (
 	.E2_reg   (vnu2_E_reg2[QUAN_SIZE-1:0]),
 	.c2v2_in  (vnu2_c2v_2[QUAN_SIZE-1:0]),
 	.read_clk (read_clk)
 );
 ib_f1_c2v_pipeline #(
 	.PIPELINE_DEPTH (PIPELINE_DEPTH)
-) vnu3_v2c_pipe (
+) vnu3_c2v_pipe (
 	.E2_reg   (vnu3_E_reg2[QUAN_SIZE-1:0]),
 	.c2v2_in  (vnu3_c2v_2[QUAN_SIZE-1:0]),
 	.read_clk (read_clk)
