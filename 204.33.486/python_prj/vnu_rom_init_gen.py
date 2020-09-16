@@ -1,17 +1,18 @@
 import h5py
 import csv
 import subprocess
+import numpy as np
 
 q = 4  # 4-bit quantisation
 VN_DEGREE = 3+1
-M = (VN_DEGREE - 2)+1
-cardinality = pow(2, q)
+M = VN_DEGREE-2
+cardinality = pow(2, q) # by exploiting the symmetry of CNU, 3-bit input is enough
 Iter_max = 50
 
 # Parameters for IB-CNU RAMs accesses
-depth_ib_func = cardinality * cardinality
-depth_ram = 32
-interleave_bank_num = depth_ib_func / depth_ram
+depth_ib_func = (cardinality/2) * cardinality # only half symmetry
+interleave_bank_num = 2
+depth_ram = depth_ib_func / interleave_bank_num # indicating one iteration dataset only
 
 file_204_102 = 'ib_regular_444_1.300_50_ib_123_10_5_first_none_ib_ib.h5'
 file_lut_csv = 'lut_'  # lut_Iter50_Func3.csv
@@ -129,35 +130,48 @@ def exportVNU_LUT_COE_Iter0_25():
         subprocess.call(cmd_move + filename + ' ' + coe_folder_filename + '/', shell=True)
 
         # Generate COE file for each iteration, where one COE file conatains all 1024 entries of f^{Iter}_m. m in {0, 1, 2, 3}
-        # Format: Since RAMB36E1 is chosen with 32-bit of read data width, 8 entries per RAM row, i.e., 9-entry x 4-bit = 36-bit.
-        # Radix: hexadecimal.
-        # Depth of BRAM (RAMB36E1): ceil(4096-bit/32) = 128
+        # Format: Since RAMB36E1 is chosen with 36-bit of read data width, 12 entries per RAM row, i.e., 12-entry x 3-bit = 36-bit.
+        # Radix: binary.
+        # Depth of BRAM (RAMB36E1): ceil(64-entry*3-bit*25/36) = 133
         # Write down output value of each corresponding entry
-        for m in range(M-1): # The last (M-1)th will be handled by other function which is for decision node
-            cnt = 1
-            line = 1
+        for m in range(M):
             create_coe_filename = file_lut_coe + 'Iter' + str(25*i) + '_' + str((25*i)+25 - 1) + '_Func'+str(m)+'.coe'
             coe_file = open(create_coe_filename, "w")
-            coe_file.write("memory_initialization_radix=16;\nmemory_initialization_vector=\n")
+            coe_file.write("memory_initialization_radix=2;\nmemory_initialization_vector=\n")
 
+            line = 0
+            cnt = 0
             for iter in range(25*i, (25*i)+25):
                 offset = ptr(iter, m)
-                for y0 in range(cardinality):
-                    for y1 in range(cardinality):
-                        t = lut_out(y0, y1, offset)
-                        if y0 == cardinality - 1 and y1 == cardinality - 1 and line == (depth_ib_func/interleave_bank_num)*25:
-                            coe_file.write(str(hex(int(t))[2:]) + ";")
+                for y0 in range(int(cardinality/2)): # only half symmetry
+                    for y1 in range(int(cardinality)):
+                        t = int(lut_out(y0, y1, offset))
+                        if y0 == (cardinality/2) - 1 and y1 == cardinality - 1 and line == (depth_ib_func/interleave_bank_num)*25-1:
+                            coe_file.write(str(format(t, '04b')) + ";")
                         else:
-                            if (cnt % interleave_bank_num) == 0:
-                                coe_file.write(str(hex(int(t))[2:]) + ", \n")
+                            if (cnt == interleave_bank_num-1):
+                                coe_file.write(str(format(t, '04b')) + ", \n")
                                 line = line + 1
+                                cnt = 0
                             else:
-                                coe_file.write(str(hex(int(t))[2:]))
-                        cnt = cnt + 1
+                                coe_file.write(str(format(t, '04b')))
+                                cnt = cnt + 1
             subprocess.call(cmd_move + create_coe_filename + ' ' + coe_folder_filename + '/' + filename + '/', shell=True)
             coe_file.close()
-
 
 #exportVNU_LUT_COE()
 #exportVNU_LUT_COE_0_2()
 exportVNU_LUT_COE_Iter0_25()
+
+iter = 0
+m = 0
+y0 = [x for x in range(0,8)]
+y1 = [x for x in range(0,16)]
+t = [[0 for x in range(16)] for y in range(8)]
+offset = ptr(iter, m)
+for i in range(8):
+    for j in range(16):
+        temp=int(lut_out(y0[i], y1[j], offset))
+        t[i][j] = format(temp, '04b')
+print(t)
+

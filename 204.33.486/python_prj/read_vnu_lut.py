@@ -13,7 +13,7 @@ VN_DEGREE = 3+1
 M = VN_DEGREE - 2
 cardinality = pow(2, q)
 Iter_max = 50
-test_set_num = 10#2**(q*5)
+test_set_num = 2**(q*5)
 test_set_unit = VN_DEGREE - 1
 test_sample_num = test_set_unit * test_set_num
 snr_eval = 2
@@ -280,6 +280,10 @@ def inv_mux_out(InA):  # only used by final cascaded LUT
 
     return int(addr), int(msb)
 
+def sign_mag_extract(bitwidth, InA):
+    sign = np.uint8(InA / (2**(bitwidth-1))) % 2
+    mag = np.uint8(InA % (2**(bitwidth-1)))
+    return sign, mag
 
 def inv_mux(in_index, InA):
     if in_index == 0:
@@ -307,12 +311,29 @@ def inv_mux_in2(y0, y1):
     y1_addr, msb_y1 = inv_mux(1, (2**mag_bitwidth)*2*msb_y0 + y1)
     return int(y0_addr), int(y1_addr), msb_y0, msb_y1
 
+def burst_xor(bitwidth, vec_in, operand_com):
+    result = [0]*bitwidth
+    result_concate = 0
+    for i in range(bitwidth):
+        temp = int(vec_in / (2**i))
+        temp = temp % 2
+        logic = XOR(temp, operand_com)
+        if logic == True:
+            result[i] = 1
+        elif logic == False:
+            result[i] = 0
+        else:
+            print("The returned boolean result must be either True or False, but the actual result is %d" % (logic))
+            sys.exit()
+        result_concate = result_concate + (result[i]*(2**i))
 
-def lut_symmetric_eval(m_range, y0_range, y1_range):
+    return result_concate
+
+def lut_symmetric_eval(iter, m_range, y0_range, y1_range):
     max_magnitude = (cardinality / 2) - 1
     t_c_vec = [[0 for i in y1_range] for j in y0_range]
     for m in range(m_range, m_range + 1):
-        offset = ptr(0, m)
+        offset = ptr(iter, m)
         for y0 in y0_range:
             for y1 in y1_range:
                 # Convert the y0 and y1 LUTs read addresses
@@ -325,11 +346,11 @@ def lut_symmetric_eval(m_range, y0_range, y1_range):
                 t_c_vec[y0][y1] = int(mag)
     return t_c_vec
 
-def lut_symmetric_baseline(m_range, y0_range, y1_range):
+def lut_symmetric_baseline(iter, m_range, y0_range, y1_range):
     max_magnitude = (cardinality / 2) - 1
     t_c_vec = [[0 for i in y0_range] for j in y1_range]
     for m in range(m_range, m_range + 1):
-        offset = ptr(0, m)
+        offset = ptr(iter, m)
         for y0 in y0_range:
             for y1 in y1_range:
                 t_c = lut_out(y0, y1, offset)
@@ -337,15 +358,15 @@ def lut_symmetric_baseline(m_range, y0_range, y1_range):
     return t_c_vec
 
 
-def single_lut_symmetry_eval():
+def single_lut_symmetry_eval(iter):
     y0_range = [i for i in range(cardinality)]
     y1_range = [i for i in range(cardinality)]
     print(y0_range, y1_range)
     max_magnitude = (cardinality / 2) - 1
 
     for m in range(M):
-        t0 = lut_symmetric_baseline(m, y0_range, y1_range)
-        t1 = lut_symmetric_eval(m, y0_range, y1_range)
+        t0 = lut_symmetric_baseline(iter, m, y0_range, y1_range)
+        t1 = lut_symmetric_eval(iter, m, y0_range, y1_range)
 
         err = 0
         for i in range(cardinality):
@@ -359,103 +380,64 @@ def single_lut_symmetry_eval():
                     err = err + 1
         print("m: %d\tError: %d" % (m, err))
 
-
-def lut_symmetric_in(m, y0,
-                     y1):  # for single LUT structure which is only feasible when cascading structure is not required, e.g., Decision Node Operation
-    offset = ptr(0, m)
-    # Convert the y0 and y1 LUTs read addresses
-    y0_addr, y1_addr, msb_y0, msb_y1 = inv_mux_in2(y0, y1)
-    # Determine the sign bit of the final result
-    msb_temp = XOR(msb_y0, msb_y1)
-    if msb_temp == True:
-        MSB = 1
-    else:
-        MSB = 0
-
-    # Read magnitude from LUT
-    t_c = lut_out(y0_addr, y1_addr, offset)
-    t_c = int(t_c % (2 ** mag_bitwidth))  # remove MSB
-
-    t_c = int(t_c + (MSB << mag_bitwidth))
-    return t_c
-
-
 ## ======================== Cascading LUT Structure ========================= ##
-def lut_symmetric_cascade_in(m, y0, y1):
-    offset = ptr(0, m)
+def lut_symmetric_cascade_in(iter, m, y0, y1):
+    offset = ptr(iter, m)
+
     # Convert the y0 and y1 LUTs read addresses
     y0_addr, y1_addr, msb_y0, msb_y1 = inv_mux_in2(y0, y1)
-    # Determine the sign bit of the final result
-    msb_temp = XNOR(msb_y0, msb_y1)
-    if msb_temp == True:
-        MSB = 1
-    else:
-        MSB = 0
 
     # Read magnitude from LUT
     t_c = lut_out(y0_addr, y1_addr, offset)
-    t_c = int(t_c % (2 ** mag_bitwidth))  # remove MSB
+    #MSB, t_c = sign_mag_extract(q, t_c)
+    #return t_c, MSB
+    return t_c, msb_y0
 
-    return t_c, MSB
+def lut_symmetric_cascade_internal(iter, m, forward_sign, y0, y1):
+    offset = ptr(iter, m)
 
-
-def lut_symmetric_cascade_internal(m, sign_forward, y0_mag, y1):
-    offset = ptr(0, m)
     # Convert the y0 and y1 LUTs read addresses
-    y0_addr = inv_mag(y0_mag)
-    msb_y0 = sign_forward
-    y1_addr, msb_y1 = inv_mux(y1)
-    # Determine the sign bit of the final result
-    msb_temp = XNOR(msb_y0, msb_y1)
-    if msb_temp == True:
-        MSB = 1
-    else:
-        MSB = 0
+    operand_com = int(y0 / (2**mag_bitwidth)) % 2
+    vec_in = (y0 % (2**mag_bitwidth)) + (forward_sign*(2**mag_bitwidth))
+    formed_y0 = burst_xor(q, vec_in, operand_com)
+    msb_y0, y0_addr = sign_mag_extract(q, formed_y0)
+    y1_addr, msb_y1 = inv_mux(1, (2**mag_bitwidth)*2*msb_y0 + y1)
+    #y0_addr, y1_addr, msb_y0, msb_y1 = inv_mux_in2(formed_y0, y1)
 
     # Read magnitude from LUT
     t_c = lut_out(y0_addr, y1_addr, offset)
-    t_c = int(t_c % (2 ** mag_bitwidth))  # remove MSB
 
-    return t_c, MSB
+    return t_c, msb_y0
 
+def lut_symmetric_cascade_out(iter, m, forward_sign, y0, y1):
+    offset = ptr(iter, m)
 
-def lut_symmetric_cascade_out(m, sign_forward, y0_mag, y1):
-    offset = ptr(0, m)
     # Convert the y0 and y1 LUTs read addresses
-    # if sign_forward == 1:
-    #    y0_addr = inv_mag(y0_mag)
-    # else:
-    #    y0_addr = int(7)
-    y0_addr = inv_mag(y0_mag)
-    msb_y0 = sign_forward
-    y1_addr, msb_y1 = inv_mux(y1)
-    # Determine the sign bit of the final result
-    msb_temp = XNOR(msb_y0, msb_y1)
-    if msb_temp == True:
-        MSB = 1
-    else:
-        MSB = 0
+    operand_com = int(y0 / (2**mag_bitwidth)) % 2
+    vec_in = (y0 % (2**mag_bitwidth)) + (forward_sign*(2**mag_bitwidth))
+    formed_y0 = burst_xor(q, vec_in, operand_com)
+    msb_y0, y0_addr = sign_mag_extract(q, formed_y0)
+    y1_addr, msb_y1 = inv_mux(1, (2**mag_bitwidth)*2*msb_y0 + y1)
+    #y0_addr, y1_addr, msb_y0, msb_y1 = inv_mux_in2(formed_y0, y1)
 
     # Read magnitude from LUT
     t_c = lut_out(y0_addr, y1_addr, offset)
-    t_c = int(t_c % (2 ** mag_bitwidth))  # remove MSB
 
-    # 2's complement formating
-    mag, s = inv_mux_out(t_c + (MSB << mag_bitwidth))
-    t_c = int(mag + (s << mag_bitwidth))
+    mag, s = inv_mux(1, (2 ** mag_bitwidth) * 2 * msb_y0 + t_c)
+    t_c = int(mag)
+
     return t_c
 
-
-def symmetric_cascade_lut(v2c_vec):
+def symmetric_cascade_lut(iter, c2v_vec):
     t_c = [0] * M
     sign_forward = [0] * (M - 1)
     for m in range(M):
         if m == 0 and M != 1:
-            t_c[0], sign_forward[0] = lut_symmetric_cascade_in(0, v2c_vec[0], v2c_vec[1])
+            t_c[0], sign_forward[0] = lut_symmetric_cascade_in(iter, 0, c2v_vec[0], c2v_vec[1])
         elif m < (M - 1) and m > 0:
-            t_c[m], sign_forward[m] = lut_symmetric_cascade_internal(m, sign_forward[m - 1], t_c[m - 1], v2c_vec[m + 1])
+            t_c[m], sign_forward[m] = lut_symmetric_cascade_internal(iter, m, sign_forward[m-1], t_c[m - 1], c2v_vec[m + 1])
         elif m == (M - 1):
-            t_c[m] = lut_symmetric_cascade_out(m, sign_forward[m - 1], t_c[m - 1], v2c_vec[m + 1])
+            t_c[m] = lut_symmetric_cascade_out(iter, m, sign_forward[m-1], t_c[m - 1], c2v_vec[m + 1])
         else:
             print("Wrong configuration on Symmetric Cascading LUT due to a mismatch of M")
             return -1
@@ -469,12 +451,12 @@ def lut_baseline(iter, m, y0, y1):
     return t_c
 
 
-def cascade_lut_baseline(v2c_vec):
+def cascade_lut_baseline(iter, c2v_vec):
     for m in range(M):
         if m == 0:
-            t_c = lut_baseline(0, v2c_vec[0], v2c_vec[1])
+            t_c = lut_baseline(iter, 0, c2v_vec[0], c2v_vec[1])
         else:
-            t_c = lut_baseline(m, t_c, v2c_vec[m + 1])
+            t_c = lut_baseline(iter, m, t_c, c2v_vec[m + 1])
 
     return int(t_c)
 
@@ -487,46 +469,43 @@ def cascade_lut_pattern_gen():
 
 
 def main():
-    # exportCNU_LUT_COE()
-    # exportCNU_LUT_CSV()
-    # gen_CNU_LUT_V()
+    # exportVNU_LUT_COE()
+    # exportVNU_LUT_CSV()
+    # gen_VNU_LUT_V()
     # dut_pattern_gen()
-    # showCNU_LUT(1)
+    # showVNU_LUT(1)
 
     #lut_symmetric_vis() # visualise the symmetry of LUT for ease of observation
 
-    single_lut_symmetry_eval() # evaluate 2-input LUT solely
-    '''
+    single_lut_symmetry_eval(iter=0) # evaluate 2-input LUT solely
+    #'''
     t0 = [0] * test_set_num
     t1 = [0] * test_set_num
     ch_msg_vec = [0] * test_sample_num
     ch_msg_vec = cascade_lut_pattern_gen()
 
-    # for i in range(test_set_num):
-    for i in range(4):
-        t0[i] = cascade_lut_baseline(ch_msg_vec[test_set_unit * i:test_set_unit * i + test_set_unit])
-        # print("Channel Message: ", ch_msg_vec, "\nCascadded LUTs (baseline): ", t0[i])
+    for iter in range(1):#range(Iter_max):
+        for i in range(test_set_num):
+        #for i in range(4):
+            t0[i] = cascade_lut_baseline(iter, ch_msg_vec[test_set_unit * i:test_set_unit * i + test_set_unit])
+            # print("Channel Message: ", ch_msg_vec, "\nCascadded LUTs (baseline): ", t0[i])
 
-        t1[i] = symmetric_cascade_lut(ch_msg_vec[test_set_unit * i:test_set_unit * i + test_set_unit])
-        # print("\nChannel Message: ", ch_msg_vec, "\nCascadded LUTs (symmetry): ", t1[i])
-
-    # Verification
-    single_lut_symmetry_eval()
+            t1[i] = symmetric_cascade_lut(iter, ch_msg_vec[test_set_unit * i:test_set_unit * i + test_set_unit])
+            # print("\nChannel Message: ", ch_msg_vec, "\nCascadded LUTs (symmetry): ", t1[i])
 
     err = 0
-    for i in range(10):
+    for i in range(test_set_num):
         if int(t0[i]) != int(t1[i]):
             err = err + 1
-        for j in range(test_set_unit * i, test_set_unit * i + test_set_unit):
-            print(format(ch_msg_vec[j], '04b'))
-        print("%d,%d,%d\n" % (i, t0[i], t1[i]))
+            for j in range(test_set_unit * i, test_set_unit * i + test_set_unit):
+                print(format(ch_msg_vec[j], '04b'))
+            print("TestSet_%d: expect->%d, actual->%d\n" % (i, t0[i], t1[i]))
 
     if err == 0:
         print("Verification is passed")
     else:
         print("Err: %d" % (err))
-    :return: 
-    '''
+    #'''
     '''
     for iter in range(1):
         for m in range(1):

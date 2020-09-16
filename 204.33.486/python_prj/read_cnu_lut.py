@@ -535,12 +535,12 @@ def main():
     single_lut_symmetry_eval()
 
     err = 0
-    for i in range(10):
+    for i in range(test_set_num):
         if int(t0[i]) != int(t1[i]):
             err = err + 1
-        for j in range(test_set_unit*i, test_set_unit*i+test_set_unit):
-            print(format(ch_msg_vec[j], '04b'))
-        print("%d,%d,%d\n" % (i, t0[i], t1[i]))
+            for j in range(test_set_unit*i, test_set_unit*i+test_set_unit):
+                print(format(ch_msg_vec[j], '04b'))
+            print("TestSet_%d: expect->%d, actual->%d\n" % (i, t0[i], t1[i]))
 
     if err == 0:
         print("Verification is passed")
