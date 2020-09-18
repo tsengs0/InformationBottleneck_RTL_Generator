@@ -59,7 +59,7 @@ module sym_dn_rank (
 	.we (we),
 	.write_clk (write_clk)
  );
- 
+  
  sym_dn_lut bank1(
 	.lut_data0 (bank1_out0),
 	.lut_data1 (bank1_out1),

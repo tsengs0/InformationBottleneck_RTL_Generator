@@ -43,7 +43,7 @@ module hulfDuplex_parallel2serial #(
             always @(posedge sys_clk) begin
                 d_ff[i] <= ff_source[i];
             end
-            assign Q_out[i] = d_ff[i];;  
+            assign Q_out[i] = d_ff[i];  
         end
     endgenerate
 endmodule
