@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 `include "define.vh"
 
-module cn_write_tb;
+module cn_write_manual_debug;
 
 parameter ROM_RD_BW = 6;    // bit-width of one read port of BRAM based IB-ROM
 parameter ROM_ADDR_BW = 10;  // bit-width of read address of BRAM based IB-ROM
@@ -365,10 +365,6 @@ endgenerate
     wire [`QUAN_SIZE-1:0] cnu1_f2_out[0:3];
     wire [`QUAN_SIZE-1:0] cnu0_f2_M_reg [0:3];
     wire [`QUAN_SIZE-1:0] cnu1_f2_M_reg [0:3];
-`ifdef V2C_C2V_PROBE
-	wire [`QUAN_SIZE-1:0] cnu0_f2_M0_probe;
-	wire [`QUAN_SIZE-1:0] cnu0_f2_M3_probe;
-`endif
     cnu6_f2 u_f2(
 		.read_addr_offset_out (read_addr_offset_internal[2]), // to forward the current multi-frame offset signal to the next sub-datapath
         // For the first CNU
@@ -386,10 +382,6 @@ endgenerate
         .cnu0_M_reg2 (cnu0_f2_M_reg[1]),
         .cnu0_M_reg4 (cnu0_f2_M_reg[2]),
         .cnu0_M_reg5 (cnu0_f2_M_reg[3]),
-`ifdef V2C_C2V_PROBE
-        .cnu0_M_reg0 (cnu0_f2_M0_probe[`QUAN_SIZE-1:0]),
-        .cnu0_M_reg3 (cnu0_f2_M3_probe[`QUAN_SIZE-1:0]),
-`endif
         // For the second CNU
         .cnu1_M_reg1 (cnu1_f2_M_reg[0]),
         .cnu1_M_reg2 (cnu1_f2_M_reg[1]),
@@ -429,9 +421,6 @@ endgenerate
     // Instantiation of F_3
     wire [`QUAN_SIZE-1:0] cnu0_c2v [0:`CN_DEGREE-1];
     wire [`QUAN_SIZE-1:0] cnu1_c2v [0:`CN_DEGREE-1];
-`ifdef V2C_C2V_PROBE	
-	wire [`QUAN_SIZE-1:0] cnu0_v2c_probe[0:`CN_DEGREE-1];
-`endif
     cnu6_f3 u_f3(
 		.read_addr_offset_out (read_addr_offset_outSet), // to forward the current multi-frame offset signal to the next sub-datapath
         // For the first CNU
@@ -441,14 +430,6 @@ endgenerate
         .cnu0_c2v_3 (cnu0_c2v[3]),
         .cnu0_c2v_4 (cnu0_c2v[4]),
         .cnu0_c2v_5 (cnu0_c2v[5]), 
-`ifdef V2C_C2V_PROBE
-		.cnu0_v2c_0_probe (cnu0_v2c_probe[0]), 
-		.cnu0_v2c_1_probe (cnu0_v2c_probe[1]), 
-		.cnu0_v2c_2_probe (cnu0_v2c_probe[2]), 
-		.cnu0_v2c_3_probe (cnu0_v2c_probe[3]),
-		.cnu0_v2c_4_probe (cnu0_v2c_probe[4]),
-		.cnu0_v2c_5_probe (cnu0_v2c_probe[5]),
-`endif
         // For the second CNU
         .cnu1_c2v_0 (cnu1_c2v[0]), 
         .cnu1_c2v_1 (cnu1_c2v[1]), 
@@ -466,10 +447,6 @@ endgenerate
         .cnu0_v2c_2 (cnu0_f2_M_reg[1]),
         .cnu0_v2c_4 (cnu0_f2_M_reg[2]),
         .cnu0_v2c_5 (cnu0_f2_M_reg[3]),
-`ifdef V2C_C2V_PROBE
-        .cnu0_v2c_0 (cnu0_f2_M0_probe[`QUAN_SIZE-1:0]),
-        .cnu0_v2c_3 (cnu0_f2_M3_probe[`QUAN_SIZE-1:0]),
-`endif
         // From the second CNU
         .cnu1_t_20 (cnu1_f2_out[0]),
         .cnu1_t_21 (cnu1_f2_out[1]),
@@ -504,13 +481,14 @@ end
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 logic [`IB_CNU_DECOMP_funNum-1:0] update_finish;
 integer cnu_f [0:`IB_CNU_DECOMP_funNum-1];
+/*
 initial begin
-    cnu_f[0] = $fopen("cnu_ram_dataIn.f0.csv", "w");
+    //cnu_f[0] = $fopen("cnu_ram_dataIn.f0.csv", "w");
 	cnu_f[1] = $fopen("cnu_ram_dataIn.f1.csv", "w");
 	cnu_f[2] = $fopen("cnu_ram_dataIn.f2.csv", "w");
 	cnu_f[3] = $fopen("cnu_ram_dataIn.f3.csv", "w");
 end
-
+*/
 generate
 	//genvar i;
 	for(i=0;i<`IB_CNU_DECOMP_funNum;i=i+1) begin : insta_cn_fsm_in_sim
@@ -525,14 +503,15 @@ generate
 			
 			#200;
 			{rstn_cnu_fsm[i], iter_rqst[i], iter_termination[i]} <= 3'b110; 
-		
+			
 			wait(update_finish[i] == 1'b1);
 			{rstn_cnu_fsm[i], iter_rqst[i], iter_termination[i]} <= 3'b001;
 		end
+		
 		always @(posedge write_clk) begin
 			if(iter_rqst[i] == 1'b1 && busy[i] == 2'b10) begin
 				update_finish[i] <= 1'b1;
-				$fclose(cnu_f[i]);
+				//$fclose(cnu_f[i]);
 			end
 		end
 		
@@ -542,6 +521,7 @@ generate
 		//	else pipeline_en <= pipeline_en;
 		//end
 		
+		/*
 		always @(posedge write_clk) begin
 			if(state[i] == 3'd3) begin
 				$fwrite(cnu_f[i], "%d,%b,%b\n", 
@@ -551,6 +531,7 @@ generate
 				);      
 			end
 		end
+		*/
 	end
 endgenerate
 /*
@@ -561,47 +542,50 @@ end
 */
 initial begin
     #0;
-	{v2c_0[0], v2c_1[0]} <= 8'hff;
+    {v2c_0[0], v2c_1[0]} <= 8'd0;
     {v2c_0[1], v2c_1[1]} <= 8'd0;
     {v2c_0[2], v2c_1[2]} <= 8'd0;
     {v2c_0[3], v2c_1[3]} <= 8'd0;
     {v2c_0[4], v2c_1[4]} <= 8'd0;
     {v2c_0[5], v2c_1[5]} <= 8'd0;
 end
-
-reg [`QUAN_SIZE*`CN_DEGREE-1:0] v2c_cnt;
-initial #0 v2c_cnt[`QUAN_SIZE*`CN_DEGREE-1:0] <= 0;
-
-always @(posedge read_clk) begin
-    if({ram_write_en[0], iter_update[0], c6ib_rom_rst[0]} == 3'b001 && update_finish[0] == 1'b1)
-		v2c_cnt[`QUAN_SIZE*`CN_DEGREE-1:0] <= v2c_cnt[`QUAN_SIZE*`CN_DEGREE-1:0]+1'b1;
-end
 always @(posedge read_clk) begin
     if({ram_write_en[0], iter_update[0], c6ib_rom_rst[0]} == 3'b001 && update_finish[0] == 1'b1) begin 
         // Simulation for CNU6_0
- 	    v2c_0[0] <= v2c_cnt[3:0];
-        v2c_0[1] <= v2c_cnt[7:4];
-        v2c_0[2] <= v2c_cnt[11:8];
-        v2c_0[3] <= v2c_cnt[15:12];
-        v2c_0[4] <= v2c_cnt[19:16];
-        v2c_0[5] <= v2c_cnt[23:20];
+		/*
+ 	    v2c_0[0] <= v2c_0[0] + 1;
+        v2c_0[1] <= v2c_0[1] + &v2c_0[0];
+        v2c_0[2] <= v2c_0[2] + &{v2c_0[1], v2c_0[0]};
+        v2c_0[3] <= v2c_0[3] + &{v2c_0[2], v2c_0[2], v2c_0[0]};
+        v2c_0[4] <= v2c_0[4] + &{v2c_0[3], v2c_0[2], v2c_0[2], v2c_0[0]};
+        v2c_0[5] <= v2c_0[5] + &{v2c_0[4], v2c_0[3], v2c_0[2], v2c_0[2], v2c_0[0]};
+		*/
+		v2c_0[0] <= 4'h0;
+        v2c_0[1] <= 4'h1;
+        v2c_0[2] <= 4'h1;
+        v2c_0[3] <= 4'h0;
+        v2c_0[4] <= 4'h1;
+        v2c_0[5] <= 4'h1;
 		// Simulation for CNU6_1
-		v2c_1[0] <= v2c_cnt[3:0];
-        v2c_1[1] <= v2c_cnt[7:4];
-        v2c_1[2] <= v2c_cnt[11:8];
-        v2c_1[3] <= v2c_cnt[15:12];
-        v2c_1[4] <= v2c_cnt[19:16];
-        v2c_1[5] <= v2c_cnt[23:20];
+		v2c_1[0] <= v2c_1[0] + 1;
+        v2c_1[1] <= v2c_1[1] + &v2c_1[0];
+        v2c_1[2] <= v2c_1[2] + &{v2c_1[1], v2c_1[0]};
+        v2c_1[3] <= v2c_1[3] + &{v2c_1[2], v2c_1[2], v2c_1[0]};
+        v2c_1[4] <= v2c_1[4] + &{v2c_1[3], v2c_1[2], v2c_1[2], v2c_1[0]};
+        v2c_1[5] <= v2c_1[5] + &{v2c_1[4], v2c_1[3], v2c_1[2], v2c_1[2], v2c_1[0]};
+
     end
 end
 
 integer cnu_ram_f [0:`IB_CNU_DECOMP_funNum-1];
+/*
 initial begin
-    cnu_ram_f[0] = $fopen("cnu_ram_dataOut.f0.csv", "w");
+    //cnu_ram_f[0] = $fopen("cnu_ram_dataOut.f0.csv", "w");
 	cnu_ram_f[1] = $fopen("cnu_ram_dataOut.f1.csv", "w");
 	cnu_ram_f[2] = $fopen("cnu_ram_dataOut.f2.csv", "w");
 	cnu_ram_f[3] = $fopen("cnu_ram_dataOut.f3.csv", "w");
 end
+*/
 reg [`QUAN_SIZE*5-1:0] M0_reg[0:1]; reg [`QUAN_SIZE*5-1:0] M1_reg[0:1]; reg [`QUAN_SIZE*5-1:0] M2_reg[0:1];
 reg [`QUAN_SIZE*5-1:0] M3_reg[0:1]; reg [`QUAN_SIZE*5-1:0] M4_reg[0:1]; reg [`QUAN_SIZE*5-1:0] M5_reg[0:1];
 initial begin
@@ -614,7 +598,7 @@ initial begin
     {M5_reg[0], M5_reg[1]} <= 40'd0;      
 end
 always @(posedge read_clk) begin
-    if({ram_write_en[0], iter_update[0], c6ib_rom_rst[0]} == 3'b001 && update_finish[0] == 1'b1) begin
+    if(update_finish[0] == 1'b1) begin
 		M0_reg[0] <= {v2c_0[0], M0_reg[0][`QUAN_SIZE*5-1:`QUAN_SIZE]};
 		M1_reg[0] <= {v2c_0[1], M1_reg[0][`QUAN_SIZE*5-1:`QUAN_SIZE]};
 		M2_reg[0] <= {v2c_0[2], M2_reg[0][`QUAN_SIZE*5-1:`QUAN_SIZE]};
@@ -630,15 +614,16 @@ always @(posedge read_clk) begin
 		M5_reg[1] <= {v2c_1[5], M5_reg[1][`QUAN_SIZE*5-1:`QUAN_SIZE]};
     end
 end
+/*
 always @(posedge read_clk) begin
-    if({ram_write_en[0], iter_update[0], c6ib_rom_rst[0]} == 3'b001 && update_finish[0] == 1'b1) begin
+    if(update_finish[0] == 1'b1) begin
         //if({M0_reg[4], M1_reg[4], M2_reg[4], M3_reg[4], M4_reg[4], M5_reg[4]} != {`CN_DEGREE{4'hf}}) begin
         if({cnu0_f0_M_reg[0],cnu0_f0_M_reg[1],cnu0_f0_M_reg[2],cnu0_f0_M_reg[3],cnu0_f0_M_reg[4],cnu0_f0_M_reg[5]} != {24'hffffff}) begin
             // For F0
-			$fwrite(cnu_ram_f[0], "%h,%h,%h,%h,%h,%h,%h,%h\n",
-				cnu0_f0_M_reg[0],cnu0_f0_M_reg[1],cnu0_f0_M_reg[2],cnu0_f0_M_reg[3],cnu0_f0_M_reg[4],cnu0_f0_M_reg[5],
-				f0_out[0], f0_out[1]
-            );
+			//$fwrite(cnu_ram_f[0], "%h,%h,%h,%h,%h,%h,%h,%h\n",
+			//	cnu0_f0_M_reg[0],cnu0_f0_M_reg[1],cnu0_f0_M_reg[2],cnu0_f0_M_reg[3],cnu0_f0_M_reg[4],cnu0_f0_M_reg[5],
+			//	f0_out[0], f0_out[1]
+            //);
 			
 			// For F1
 	        $fwrite(cnu_ram_f[1], "%h,%h,%h,%h,%h,%h,%h,%h\n",
@@ -651,21 +636,21 @@ always @(posedge read_clk) begin
 				cnu0_f0_M_reg[0],cnu0_f0_M_reg[1],cnu0_f0_M_reg[2],cnu0_f0_M_reg[3],cnu0_f0_M_reg[4],cnu0_f0_M_reg[5],
 				cnu0_f2_out[0], cnu0_f2_out[1], cnu0_f2_out[2], cnu0_f2_out[3]
             );		
-		end
-		if({cnu0_v2c_probe[0],cnu0_v2c_probe[1],cnu0_v2c_probe[2],cnu0_v2c_probe[3],cnu0_v2c_probe[4],cnu0_v2c_probe[5]} != {24'hffffff}) begin
+			
 			// For F3
 			$fwrite(cnu_ram_f[3], "%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h\n",
-				cnu0_v2c_probe[0],cnu0_v2c_probe[1],cnu0_v2c_probe[2],cnu0_v2c_probe[3],cnu0_v2c_probe[4],cnu0_v2c_probe[5],
+				cnu0_f0_M_reg[0],cnu0_f0_M_reg[1],cnu0_f0_M_reg[2],cnu0_f0_M_reg[3],cnu0_f0_M_reg[4],cnu0_f0_M_reg[5],
 				cnu0_c2v[0], cnu0_c2v[1], cnu0_c2v[2], cnu0_c2v[3], cnu0_c2v[4], cnu0_c2v[5]
-            );		
+            );	
+			
         end
         //else if({M0_reg[4], M1_reg[4], M2_reg[4], M3_reg[4], M4_reg[4], M5_reg[4]} == {`CN_DEGREE{4'hf}}) begin
         else if({cnu0_f0_M_reg[0],cnu0_f0_M_reg[1],cnu0_f0_M_reg[2],cnu0_f0_M_reg[3],cnu0_f0_M_reg[4],cnu0_f0_M_reg[5]} == {24'hffffff}) begin
             // For F0
-			$fwrite(cnu_ram_f[0], "%h,%h,%h,%h,%h,%h,%h,%h",
-				cnu0_f0_M_reg[0],cnu0_f0_M_reg[1],cnu0_f0_M_reg[2],cnu0_f0_M_reg[3],cnu0_f0_M_reg[4],cnu0_f0_M_reg[5],
-				f0_out[0], f0_out[1]
-            );
+			//$fwrite(cnu_ram_f[0], "%h,%h,%h,%h,%h,%h,%h,%h",
+			//	cnu0_f0_M_reg[0],cnu0_f0_M_reg[1],cnu0_f0_M_reg[2],cnu0_f0_M_reg[3],cnu0_f0_M_reg[4],cnu0_f0_M_reg[5],
+			//	f0_out[0], f0_out[1]
+            //);
 			
 			// For F1
 	        $fwrite(cnu_ram_f[1], "%h,%h,%h,%h,%h,%h,%h,%h",
@@ -678,31 +663,31 @@ always @(posedge read_clk) begin
 				cnu0_f0_M_reg[0],cnu0_f0_M_reg[1],cnu0_f0_M_reg[2],cnu0_f0_M_reg[3],cnu0_f0_M_reg[4],cnu0_f0_M_reg[5],
 				cnu0_f2_out[0], cnu0_f2_out[1], cnu0_f2_out[2], cnu0_f2_out[3]
             );		
-		end	
-		
-		if({cnu0_v2c_probe[0],cnu0_v2c_probe[1],cnu0_v2c_probe[2],cnu0_v2c_probe[3],cnu0_v2c_probe[4],cnu0_v2c_probe[5]} == {24'hffffff}) begin
+			
 			// For F3
 			$fwrite(cnu_ram_f[3], "%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h",
-				cnu0_v2c_probe[0],cnu0_v2c_probe[1],cnu0_v2c_probe[2],cnu0_v2c_probe[3],cnu0_v2c_probe[4],cnu0_v2c_probe[5],
+				cnu0_f0_M_reg[0],cnu0_f0_M_reg[1],cnu0_f0_M_reg[2],cnu0_f0_M_reg[3],cnu0_f0_M_reg[4],cnu0_f0_M_reg[5],
 				cnu0_c2v[0], cnu0_c2v[1], cnu0_c2v[2], cnu0_c2v[3], cnu0_c2v[4], cnu0_c2v[5]
             );				
         end    
     end
 end
+
 always @(posedge read_clk) begin
     //if(update_finish == 1'b1 && {M0_reg[4], M1_reg[4], M2_reg[4], M3_reg[4], M4_reg[4], M5_reg[4]} == {`CN_DEGREE{4'hf}}) begin
-    if(update_finish[0] == 1'b1 && {cnu0_v2c_probe[0],cnu0_v2c_probe[1],cnu0_v2c_probe[2],cnu0_v2c_probe[3],cnu0_v2c_probe[4],cnu0_v2c_probe[5]} == {24'hffffff}) begin
+    if(update_finish[0] == 1'b1 && {cnu0_f0_M_reg[0],cnu0_f0_M_reg[1],cnu0_f0_M_reg[2],cnu0_f0_M_reg[3],cnu0_f0_M_reg[4],cnu0_f0_M_reg[5]} == {24'hffffff}) begin
         $fclose(cnu_ram_f[0]); 
 		$fclose(cnu_ram_f[1]); 
 		$fclose(cnu_ram_f[2]); 
 		$fclose(cnu_ram_f[3]);
     end
 end
-
+*/
 //initial #(7.5+2.5+5*3*60+5) $finish;
 always @(posedge read_clk) begin
     //if({M0_reg[4], M1_reg[4], M2_reg[4], M3_reg[4], M4_reg[4], M5_reg[4]} == {`CN_DEGREE{4'hf}})
-    if({cnu0_v2c_probe[0],cnu0_v2c_probe[1],cnu0_v2c_probe[2],cnu0_v2c_probe[3],cnu0_v2c_probe[4],cnu0_v2c_probe[5]} == {24'hffffff})
-        $finish; 
+    //if({cnu0_f0_M_reg[0],cnu0_f0_M_reg[1],cnu0_f0_M_reg[2],cnu0_f0_M_reg[3],cnu0_f0_M_reg[4],cnu0_f0_M_reg[5]} == {24'hffffff})
+    //    $finish;
+	#1000 $finish;
 end
 endmodule
