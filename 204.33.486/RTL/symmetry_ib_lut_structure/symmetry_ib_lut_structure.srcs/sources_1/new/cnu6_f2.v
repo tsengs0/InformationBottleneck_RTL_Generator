@@ -19,6 +19,7 @@
 // Pipeline stage: 3, i.e., two set of pipeline registers
 // 
 //////////////////////////////////////////////////////////////////////////////////
+`include "define.vh"
 module cnu6_f2 #(
 	parameter QUAN_SIZE = 4,
 	parameter PIPELINE_DEPTH = 3
@@ -39,6 +40,11 @@ module cnu6_f2 #(
     output wire [QUAN_SIZE-1:0] cnu0_M_reg2,
     output wire [QUAN_SIZE-1:0] cnu0_M_reg4,
     output wire [QUAN_SIZE-1:0] cnu0_M_reg5,
+`ifdef V2C_C2V_PROBE
+    output wire [QUAN_SIZE-1:0] cnu0_M_reg0,
+    output wire [QUAN_SIZE-1:0] cnu0_M_reg3, 
+`endif	
+	
     // For the second CNU
     output wire [QUAN_SIZE-1:0] cnu1_M_reg1,
     output wire [QUAN_SIZE-1:0] cnu1_M_reg2,
@@ -129,11 +135,18 @@ ib_f2_v2c_pipeline #(
 	.M2_reg (cnu0_M_reg2[QUAN_SIZE-1:0]),
 	.M4_reg (cnu0_M_reg4[QUAN_SIZE-1:0]),
 	.M5_reg (cnu0_M_reg5[QUAN_SIZE-1:0]),
-	
+`ifdef V2C_C2V_PROBE	
+	.M0_reg (cnu0_M_reg0[QUAN_SIZE-1:0]),
+	.M3_reg (cnu0_M_reg3[QUAN_SIZE-1:0]),
+`endif	
 	.v2c1_in (cnu0_v2c_1[QUAN_SIZE-1:0]),
 	.v2c2_in (cnu0_v2c_2[QUAN_SIZE-1:0]),
 	.v2c4_in (cnu0_v2c_4[QUAN_SIZE-1:0]),
 	.v2c5_in (cnu0_v2c_5[QUAN_SIZE-1:0]),
+`ifdef V2C_C2V_PROBE	
+	.v2c0_in (cnu0_v2c_0[QUAN_SIZE-1:0]),
+	.v2c3_in (cnu0_v2c_3[QUAN_SIZE-1:0]),
+`endif
 	.read_clk (read_clk)
 );
 ib_f2_v2c_pipeline #(
@@ -208,4 +221,24 @@ sym_cn_lut_internal func_ram_21(
 	.we (ib_ram_we),
 	.write_clk (write_clk)
 );
+
+`ifdef V2C_C2V_PROBE
+integer cnu_ram_f;
+always @(posedge read_clk) begin
+    if(ib_ram_we == 1'b0) begin
+        $fwrite(cnu_ram_f, "%h,%h,%h,%h,%h,%h,%h,%h,%h,%h\n",
+        cnu0_M_reg0[QUAN_SIZE-1:0],
+        cnu0_M_reg1[QUAN_SIZE-1:0],
+        cnu0_M_reg2[QUAN_SIZE-1:0],
+        cnu0_M_reg3[QUAN_SIZE-1:0],
+        cnu0_M_reg4[QUAN_SIZE-1:0],
+        cnu0_M_reg5[QUAN_SIZE-1:0],       
+        cnu0_t_portA[QUAN_SIZE-1:0],
+        cnu0_t_portB[QUAN_SIZE-1:0],
+        cnu0_t_portC[QUAN_SIZE-1:0],
+        cnu0_t_portD[QUAN_SIZE-1:0]
+        );
+    end
+end           
+`endif
 endmodule

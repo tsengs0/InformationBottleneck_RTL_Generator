@@ -1,4 +1,5 @@
 `define SIM
+`define V2C_C2V_PROBE
 
 `define RC_204_102
 `ifdef RC_204_102

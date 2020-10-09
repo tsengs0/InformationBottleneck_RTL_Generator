@@ -1,7 +1,7 @@
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-// Date        : Wed Sep 16 20:55:28 2020
+// Date        : Fri Oct  9 18:40:02 2020
 // Host        : lmpcc running 64-bit SUSE Linux Enterprise Server 15 SP1
 // Command     : write_verilog -force -mode synth_stub
 //               /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/symmetry_ib_lut_structure/symmetry_ib_lut_structure.srcs/sources_1/bd/memory_system/ip/memory_system_blk_mem_gen_0_0/memory_system_blk_mem_gen_0_0_stub.v

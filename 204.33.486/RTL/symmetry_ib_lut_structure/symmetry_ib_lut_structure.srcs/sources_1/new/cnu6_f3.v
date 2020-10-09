@@ -19,6 +19,7 @@
 // Pipeline stage: 3, i.e., two set of pipeline registers
 // 
 //////////////////////////////////////////////////////////////////////////////////
+`include "define.vh"
 module cnu6_f3 #(
 	parameter QUAN_SIZE = 4,
 	parameter CN_DEGREE = 6,
@@ -32,6 +33,14 @@ module cnu6_f3 #(
     output wire [QUAN_SIZE-1:0] cnu0_c2v_3,
     output wire [QUAN_SIZE-1:0] cnu0_c2v_4,
     output wire [QUAN_SIZE-1:0] cnu0_c2v_5, 
+`ifdef V2C_C2V_PROBE
+    output wire [QUAN_SIZE-1:0] cnu0_v2c_0_probe, 
+    output wire [QUAN_SIZE-1:0] cnu0_v2c_1_probe, 
+    output wire [QUAN_SIZE-1:0] cnu0_v2c_2_probe, 
+    output wire [QUAN_SIZE-1:0] cnu0_v2c_3_probe,
+    output wire [QUAN_SIZE-1:0] cnu0_v2c_4_probe,
+    output wire [QUAN_SIZE-1:0] cnu0_v2c_5_probe,
+`endif
     // For the second CNU
     output wire [QUAN_SIZE-1:0] cnu1_c2v_0, 
     output wire [QUAN_SIZE-1:0] cnu1_c2v_1, 
@@ -49,6 +58,10 @@ module cnu6_f3 #(
     input wire [QUAN_SIZE-1:0] cnu0_v2c_2,
     input wire [QUAN_SIZE-1:0] cnu0_v2c_4,
     input wire [QUAN_SIZE-1:0] cnu0_v2c_5,
+`ifdef V2C_C2V_PROBE
+    input wire [QUAN_SIZE-1:0] cnu0_v2c_0,
+    input wire [QUAN_SIZE-1:0] cnu0_v2c_3,
+`endif
     // From the second CNU
     input wire [QUAN_SIZE-1:0] cnu1_t_20,
     input wire [QUAN_SIZE-1:0] cnu1_t_21,
@@ -96,7 +109,28 @@ ib_cnu6_f3_route cnu0_f3_in_pipe(
     .M4(cnu0_v2c_4[QUAN_SIZE-1:0]),
     .M5(cnu0_v2c_5[QUAN_SIZE-1:0])
 );
-
+//================================================================================//
+// Pipeline Mechanism for V2C messages where it will be used for testbench
+`ifdef V2C_C2V_PROBE
+ib_f3_v2c_pipeline_probe #(
+	.PIPELINE_DEPTH(PIPELINE_DEPTH)
+) cnu0_v2c_pipe(
+	.M0_reg (cnu0_v2c_0_probe[QUAN_SIZE-1:0]),
+	.M1_reg (cnu0_v2c_1_probe[QUAN_SIZE-1:0]),
+	.M2_reg (cnu0_v2c_2_probe[QUAN_SIZE-1:0]),
+	.M3_reg (cnu0_v2c_3_probe[QUAN_SIZE-1:0]),
+	.M4_reg (cnu0_v2c_4_probe[QUAN_SIZE-1:0]),
+	.M5_reg (cnu0_v2c_5_probe[QUAN_SIZE-1:0]),
+	
+	.v2c0_in (cnu0_v2c_0[QUAN_SIZE-1:0]),
+	.v2c1_in (cnu0_v2c_1[QUAN_SIZE-1:0]),
+	.v2c2_in (cnu0_v2c_2[QUAN_SIZE-1:0]),
+	.v2c3_in (cnu0_v2c_3[QUAN_SIZE-1:0]),
+	.v2c4_in (cnu0_v2c_4[QUAN_SIZE-1:0]),
+	.v2c5_in (cnu0_v2c_5[QUAN_SIZE-1:0]),
+	.read_clk (read_clk)
+);
+`endif
 wire [QUAN_SIZE-1:0] cnu1_f3_y0 [0:CN_DEGREE-1];
 wire [QUAN_SIZE-1:0] cnu1_f3_y1 [0:CN_DEGREE-1];
 ib_cnu6_f3_route cnu1_f3_in_pipe(

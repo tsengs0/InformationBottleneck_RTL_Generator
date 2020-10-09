@@ -19,6 +19,7 @@
 // Pipeline stage: 3, i.e., two set of pipeline registers
 // 
 //////////////////////////////////////////////////////////////////////////////////
+`include "define.vh"
 module cnu6_f1 #(
 	parameter QUAN_SIZE = 4,
 	parameter PIPELINE_DEPTH = 3
@@ -179,4 +180,22 @@ sym_cn_lut_internal func_ram_1(
 	.we (ib_ram_we),
 	.write_clk (write_clk)
 );
+
+`ifdef V2C_C2V_PROBE
+integer cnu_ram_f;
+always @(posedge read_clk) begin
+    if(ib_ram_we == 1'b0) begin
+        $fwrite(cnu_ram_f, "%h,%h,%h,%h,%h,%h,%h,%h\n",
+            cnu0_M_reg0[QUAN_SIZE-1:0],
+            cnu0_M_reg1[QUAN_SIZE-1:0],
+            cnu0_M_reg2[QUAN_SIZE-1:0],
+            cnu0_M_reg3[QUAN_SIZE-1:0],
+            cnu0_M_reg4[QUAN_SIZE-1:0],
+            cnu0_M_reg5[QUAN_SIZE-1:0],
+            t_portA[QUAN_SIZE-1:0],
+            t_portB[QUAN_SIZE-1:0]
+        );
+    end
+end           
+`endif
 endmodule

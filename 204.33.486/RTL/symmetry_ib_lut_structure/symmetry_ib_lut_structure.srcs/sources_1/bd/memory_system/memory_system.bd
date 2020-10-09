@@ -1741,76 +1741,34 @@
       }
     },
     "interface_nets": {
-      "BRAM_PORTB_2_2": {
+      "BRAM_PORTA_3_1": {
         "interface_ports": [
-          "vn_iter0_m0_portB",
-          "vn_iter0_24_func0/BRAM_PORTB"
+          "cn_iter0_m3_portA",
+          "cn_iter0_24_func3/BRAM_PORTA"
         ]
       },
-      "BRAM_PORTB_1_1": {
+      "BRAM_PORTB_2_1": {
         "interface_ports": [
-          "cn_iter0_m1_portB",
-          "cn_iter0_24_func1/BRAM_PORTB"
+          "cn_iter0_m2_portB",
+          "cn_iter0_24_func2/BRAM_PORTB"
         ]
       },
-      "BRAM_PORTA_2_2": {
+      "BRAM_PORTB_4_2": {
         "interface_ports": [
-          "vn_iter0_m0_portA",
-          "vn_iter0_24_func0/BRAM_PORTA"
+          "vn_iter1_m0_portB",
+          "vn_iter25_49_func0/BRAM_PORTB"
         ]
       },
-      "BRAM_PORTB_4_1": {
+      "BRAM_PORTA_3_2": {
         "interface_ports": [
-          "cn_iter1_m0_portB",
-          "cn_iter25_49_func0/BRAM_PORTB"
+          "vn_iter0_m1_portA",
+          "vn_iter0_24_func1/BRAM_PORTA"
         ]
       },
-      "BRAM_PORTA_7_1": {
+      "BRAM_PORTA_4_1": {
         "interface_ports": [
-          "cn_iter1_m3_portA",
-          "cn_iter25_49_func3/BRAM_PORTA"
-        ]
-      },
-      "BRAM_PORTB_1_2": {
-        "interface_ports": [
-          "dn_iter1_portB",
-          "dn_iter25_49/BRAM_PORTB"
-        ]
-      },
-      "BRAM_PORTB_3_2": {
-        "interface_ports": [
-          "vn_iter0_m1_portB",
-          "vn_iter0_24_func1/BRAM_PORTB"
-        ]
-      },
-      "BRAM_PORTB_0_2": {
-        "interface_ports": [
-          "dn_iter0_portB",
-          "dn_iter0_24/BRAM_PORTB"
-        ]
-      },
-      "BRAM_PORTA_1_1": {
-        "interface_ports": [
-          "cn_iter0_m1_portA",
-          "cn_iter0_24_func1/BRAM_PORTA"
-        ]
-      },
-      "BRAM_PORTA_2_1": {
-        "interface_ports": [
-          "cn_iter0_m2_portA",
-          "cn_iter0_24_func2/BRAM_PORTA"
-        ]
-      },
-      "BRAM_PORTB_3_1": {
-        "interface_ports": [
-          "cn_iter0_m3_portB",
-          "cn_iter0_24_func3/BRAM_PORTB"
-        ]
-      },
-      "BRAM_PORTB_7_1": {
-        "interface_ports": [
-          "cn_iter1_m3_portB",
-          "cn_iter25_49_func3/BRAM_PORTB"
+          "cn_iter1_m0_portA",
+          "cn_iter25_49_func0/BRAM_PORTA"
         ]
       },
       "BRAM_PORTB_6_1": {
@@ -1819,10 +1777,28 @@
           "cn_iter25_49_func2/BRAM_PORTB"
         ]
       },
-      "BRAM_PORTA_3_1": {
+      "BRAM_PORTA_4_2": {
         "interface_ports": [
-          "cn_iter0_m3_portA",
-          "cn_iter0_24_func3/BRAM_PORTA"
+          "vn_iter1_m0_portA",
+          "vn_iter25_49_func0/BRAM_PORTA"
+        ]
+      },
+      "BRAM_PORTA_1_2": {
+        "interface_ports": [
+          "dn_iter1_portA",
+          "dn_iter25_49/BRAM_PORTA"
+        ]
+      },
+      "BRAM_PORTA_6_1": {
+        "interface_ports": [
+          "cn_iter1_m2_portA",
+          "cn_iter25_49_func2/BRAM_PORTA"
+        ]
+      },
+      "BRAM_PORTA_5_2": {
+        "interface_ports": [
+          "vn_iter1_m1_portA",
+          "vn_iter25_49_func1/BRAM_PORTA"
         ]
       },
       "BRAM_PORTA_0_1": {
@@ -1843,58 +1819,82 @@
           "cn_iter25_49_func1/BRAM_PORTA"
         ]
       },
-      "BRAM_PORTB_4_2": {
-        "interface_ports": [
-          "vn_iter1_m0_portB",
-          "vn_iter25_49_func0/BRAM_PORTB"
-        ]
-      },
-      "BRAM_PORTA_4_1": {
-        "interface_ports": [
-          "cn_iter1_m0_portA",
-          "cn_iter25_49_func0/BRAM_PORTA"
-        ]
-      },
-      "BRAM_PORTA_5_2": {
-        "interface_ports": [
-          "vn_iter1_m1_portA",
-          "vn_iter25_49_func1/BRAM_PORTA"
-        ]
-      },
-      "BRAM_PORTA_1_2": {
-        "interface_ports": [
-          "dn_iter1_portA",
-          "dn_iter25_49/BRAM_PORTA"
-        ]
-      },
       "BRAM_PORTB_0_1": {
         "interface_ports": [
           "cn_iter0_m0_portB",
           "cn_iter0_24_func0/BRAM_PORTB"
         ]
       },
-      "BRAM_PORTA_6_1": {
+      "BRAM_PORTB_3_1": {
         "interface_ports": [
-          "cn_iter1_m2_portA",
-          "cn_iter25_49_func2/BRAM_PORTA"
+          "cn_iter0_m3_portB",
+          "cn_iter0_24_func3/BRAM_PORTB"
         ]
       },
-      "BRAM_PORTA_3_2": {
+      "BRAM_PORTB_7_1": {
         "interface_ports": [
-          "vn_iter0_m1_portA",
-          "vn_iter0_24_func1/BRAM_PORTA"
+          "cn_iter1_m3_portB",
+          "cn_iter25_49_func3/BRAM_PORTB"
         ]
       },
-      "BRAM_PORTB_2_1": {
+      "BRAM_PORTA_1_1": {
         "interface_ports": [
-          "cn_iter0_m2_portB",
-          "cn_iter0_24_func2/BRAM_PORTB"
+          "cn_iter0_m1_portA",
+          "cn_iter0_24_func1/BRAM_PORTA"
         ]
       },
-      "BRAM_PORTA_4_2": {
+      "BRAM_PORTB_1_2": {
         "interface_ports": [
-          "vn_iter1_m0_portA",
-          "vn_iter25_49_func0/BRAM_PORTA"
+          "dn_iter1_portB",
+          "dn_iter25_49/BRAM_PORTB"
+        ]
+      },
+      "BRAM_PORTA_7_1": {
+        "interface_ports": [
+          "cn_iter1_m3_portA",
+          "cn_iter25_49_func3/BRAM_PORTA"
+        ]
+      },
+      "BRAM_PORTA_2_1": {
+        "interface_ports": [
+          "cn_iter0_m2_portA",
+          "cn_iter0_24_func2/BRAM_PORTA"
+        ]
+      },
+      "BRAM_PORTB_0_2": {
+        "interface_ports": [
+          "dn_iter0_portB",
+          "dn_iter0_24/BRAM_PORTB"
+        ]
+      },
+      "BRAM_PORTB_3_2": {
+        "interface_ports": [
+          "vn_iter0_m1_portB",
+          "vn_iter0_24_func1/BRAM_PORTB"
+        ]
+      },
+      "BRAM_PORTB_2_2": {
+        "interface_ports": [
+          "vn_iter0_m0_portB",
+          "vn_iter0_24_func0/BRAM_PORTB"
+        ]
+      },
+      "BRAM_PORTB_1_1": {
+        "interface_ports": [
+          "cn_iter0_m1_portB",
+          "cn_iter0_24_func1/BRAM_PORTB"
+        ]
+      },
+      "BRAM_PORTB_4_1": {
+        "interface_ports": [
+          "cn_iter1_m0_portB",
+          "cn_iter25_49_func0/BRAM_PORTB"
+        ]
+      },
+      "BRAM_PORTA_2_2": {
+        "interface_ports": [
+          "vn_iter0_m0_portA",
+          "vn_iter0_24_func0/BRAM_PORTA"
         ]
       },
       "BRAM_PORTA_0_2": {
