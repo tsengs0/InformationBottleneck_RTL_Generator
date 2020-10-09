@@ -250,7 +250,7 @@ def lut_symmetric_vis():
     t_c_vec = [[0 for i in range(cardinality)] for j in range(cardinality)]
     max_magnitude = (cardinality / 2) - 1
     for m in range(M):
-        offset = ptr(0, m)
+        offset = ptr(1, m)
         for y0 in range(cardinality):
             for y1 in range(cardinality):
                 t_c = lut_out(y0, y1, offset)
@@ -517,4 +517,5 @@ def main():
                     print("(%s, %s) = %s" % (format(int(y0), '04b'), format(int(y1), '04b'), format(int(t), '04b')))
     '''
 if __name__ == "__main__":
-    main()
+    #main()
+    lut_symmetric_vis() # visualise the symmetry of LUT for ease of observation

@@ -4,13 +4,15 @@ import subprocess
 import numpy as np
 
 q = 4  # 4-bit quantisation
+mag_bitwidth = q-1
+mag_num = 2**mag_bitwidth
 CN_DEGREE = 6
 M = CN_DEGREE - 2
-cardinality = pow(2, q-1) # by exploiting the symmetry of CNU, 3-bit input is enough
+cardinality = pow(2, q) # by exploiting the symmetry of CNU, 3-bit input is enough
 Iter_max = 50
 
 # Parameters for IB-CNU RAMs accesses
-depth_ib_func = cardinality * cardinality
+depth_ib_func = mag_num * mag_num
 interleave_bank_num = 2
 depth_ram = depth_ib_func / interleave_bank_num # indicating one iteration dataset only
 
@@ -143,11 +145,11 @@ def exportCNU_LUT_COE_Iter0_25():
             cnt = 0
             for iter in range(25*i, (25*i)+25):
                 offset = ptr(iter, m)
-                for y0 in range(int(cardinality)):
-                    for y1 in range(int(cardinality)):
+                for y0 in range(int(mag_num)):
+                    for y1 in range(int(mag_num)):
                         t = lut_out(y0, y1, offset)
-                        t = int(t % cardinality)
-                        if y0 == cardinality - 1 and y1 == cardinality - 1 and line == (depth_ib_func/interleave_bank_num)*25-1:
+                        t = int(t % mag_num)
+                        if y0 == mag_num - 1 and y1 == mag_num - 1 and line == (depth_ib_func/interleave_bank_num)*25-1:
                             coe_file.write(str(format(t, '03b')) + ";")
                         else:
                             if (cnt == interleave_bank_num-1):
@@ -162,7 +164,7 @@ def exportCNU_LUT_COE_Iter0_25():
 
 #expotCNU_LUT_COE()
 #exportCNU_LUT_COE_0_3()
-#exportCNU_LUT_COE_Iter0_25()
+exportCNU_LUT_COE_Iter0_25()
 
 iter = 0
 m = 0
@@ -172,7 +174,7 @@ t = [[0 for x in range(8)] for y in range(8)]
 offset = ptr(iter, m)
 for i in range(8):
     for j in range(8):
-        temp=int(lut_out(y0[i], y1[j], offset))
+        temp=int(lut_out(y0[i], y1[j], offset) % mag_num)
         t[i][j] = format(temp, '03b')
-print(t)
+        print((y0[i] % 8), ',', (y1[j] % 8), ',',t[i][j])
 

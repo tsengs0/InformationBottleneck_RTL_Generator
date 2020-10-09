@@ -2,6 +2,7 @@ import h5py
 import csv
 import subprocess
 import numpy as np
+import sys
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from matplotlib.colors import ListedColormap
@@ -18,8 +19,6 @@ test_set_unit = CN_DEGREE - 1
 test_sample_num = test_set_unit * test_set_num
 snr_eval = 2
 mean_eval = 1.0
-cas_awgn_filename = 'cascade_cnu_lut_awgn_pattern.txt'
-ch_msg_filename = 'cascade_cnu_lut_ch_msg_pattern.txt'
 
 map_table = [0] * cardinality
 for i in range(cardinality):
@@ -34,9 +33,6 @@ depth_ram = 32
 interleave_bank_num = depth_ib_func / depth_ram
 
 file_204_102 = 'ib_regular_444_1.300_50_ib_123_10_5_first_none_ib_ib.h5'
-file_lut_csv = 'lut_'  # lut_Iter50_Func3.csv
-file_lut_coe = 'lut_'  # lut_Iter50_Func3.coe
-file_lut_rtl = 'lut_cnu_'
 cmd_mkdir = 'mkdir '
 cmd_move = 'mv '
 cmd_copy = 'cp -a '
@@ -45,6 +41,25 @@ f = h5py.File(file_204_102, 'r')
 list(f.keys())
 dset1 = f['config']
 dset2 = f['dde_results']
+c2v_dut_filename = 'c2v_baseline_dut' + '.csv'
+cnu_f0_dut_filename = 'cnu_f0_baseline_dut' + '.csv'
+cnu_f1_dut_filename = 'cnu_f1_baseline_dut' + '.csv'
+cnu_f2_dut_filename = 'cnu_f2_baseline_dut' + '.csv'
+cnu_f3_dut_filename = 'cnu_f3_baseline_dut' + '.csv'
+'''-------------------------------------------------------------------------------------------------'''
+## The configuration of cascading datapath structure
+cascade_lut_num = [2, 2, 4, 6] # the number of decomposed LUTs over each m, where m in {0, 1 ,2, 3}
+# the pair of input sources (variable-to-check msg) for each F0 decomposed LUT
+# the pair of input sources (variable-to-check msg) for each F1 to F3 decomposed LUT
+# Note that any value + 128 accounts for the input source from the outputs of its precedent decomposed LUTs,
+# e.g., "0+128" of F1 indicates one input of F1 LUT is fed by the ouput of 0th decomposed LUT
+inSrc_offset = 128
+cascade_lut_f0_inSrc = [[0, 1], [4, 3]]
+cascade_lut_f1_inSrc = [[0+inSrc_offset, 2], [1+inSrc_offset, 5]]
+cascade_lut_f2_inSrc = [[0+inSrc_offset, 3], [0+inSrc_offset, 4], [1+inSrc_offset, 0], [1+inSrc_offset, 1]]
+cascade_lut_f3_inSrc = [[0+inSrc_offset, 4], [0+inSrc_offset, 5], [1+inSrc_offset, 5], [2+inSrc_offset, 1], [2+inSrc_offset, 2], [3+inSrc_offset, 2]]
+'''-------------------------------------------------------------------------------------------------'''
+
 
 # There are six members in the Group f['dde_results']
 print(dset2.keys())
@@ -124,60 +139,6 @@ def exportCNU_LUT_COE():
         subprocess.call(cmd_move + create_coe_filename + ' ' + coe_folder_filename + '/Iter_' + str(i) + '/',
                         shell=True)
         coe_file.close()
-
-
-# DUT test patterns generation of IB-CNU RAMs Write
-def dut_pattern_gen():
-    dut_folder_filename = "DUT"
-    pattern_folder_filename = dut_folder_filename + '/IB_CNU_RAM_PATTERN'
-    ramData_folder_filename = pattern_folder_filename + '/ram_write_data'
-    ramAddr_folder_filename = pattern_folder_filename + '/ram_write_addr'
-    subprocess.call(cmd_mkdir + dut_folder_filename, shell=True)
-    subprocess.call(cmd_mkdir + pattern_folder_filename, shell=True)
-    subprocess.call(cmd_mkdir + ramData_folder_filename, shell=True)
-    subprocess.call(cmd_mkdir + ramAddr_folder_filename, shell=True)
-    for i in range(Iter_max):
-        create_Iter_filename = cmd_mkdir + 'Iter_' + str(i)
-        subprocess.call(create_Iter_filename, shell=True)
-        subprocess.call(cmd_copy + 'Iter_' + str(i) + ' ' + ramData_folder_filename + '/', shell=True)
-        subprocess.call(cmd_move + 'Iter_' + str(i) + ' ' + ramAddr_folder_filename + '/', shell=True)
-
-        # Create M sets of write data and addresses patterns files, where M is the number of 2-LUTs
-        cnt = 1
-        for m in range(M):
-            create_write_data_filename = 'data.iter' + str(i) + '.func' + str(m) + '.csv'
-            create_write_addr_filename = 'addr.iter' + str(i) + '.func' + str(m) + '.csv'
-            data_pattern_file = open(create_write_data_filename, "w")
-            addr_pattern_file = open(create_write_addr_filename, "w")
-            offset = ptr(i, m)
-            page = 0
-            page_range = 3
-            page_cnt = 1
-            for y0 in range(cardinality):
-                for y1 in range(cardinality):
-                    t = lut_out(y0, y1, offset)
-                    if y0 == cardinality - 1 and y1 == cardinality - 1:
-                        data_pattern_file.write(str(hex(int(t))[2:]))
-                    else:
-                        if (cnt % interleave_bank_num) == 0:
-                            data_pattern_file.write(str(hex(int(t))[2:]) + "\n")
-                            if page in range(page_range):
-                                addr_pattern_file.write(str(page) + "\n")
-                                page = page + 1
-                            else:
-                                page = page - 1
-                                page_range = page_range + 2
-                                addr_pattern_file.write(str(page) + "\n")
-                                page = page+1
-                        else:
-                            data_pattern_file.write(str(hex(int(t))[2:]) + ",")
-                    cnt = cnt + 1
-                    page_cnt = page_cnt+1
-            subprocess.call(cmd_move + create_write_data_filename + ' ' + ramData_folder_filename + '/Iter_' + str(i) + '/',shell=True)
-            subprocess.call(cmd_move + create_write_addr_filename + ' ' + ramAddr_folder_filename + '/Iter_' + str(i) + '/',shell=True)
-            data_pattern_file.close()
-            addr_pattern_file.close()
-
 
 # Demonstrate output of all LUTs with given entry address
 def showCNU_LUT(iter_id):
@@ -411,8 +372,8 @@ def lut_symmetric_in(m, y0, y1): # for single LUT structure which is only feasib
     return t_c
 
 ## ======================== Cascading LUT Structure ========================= ##
-def lut_symmetric_cascade_in(m, y0, y1):
-    offset = ptr(0, m)
+def lut_symmetric_cascade_in(iter, m, y0, y1):
+    offset = ptr(iter, m)
     # Convert the y0 and y1 LUTs read addresses
     y0_addr, y1_addr, msb_y0, msb_y1 = inv_mux_in2(y0, y1)
     # Determine the sign bit of the final result
@@ -428,8 +389,8 @@ def lut_symmetric_cascade_in(m, y0, y1):
 
     return t_c, MSB
 
-def lut_symmetric_cascade_internal(m, sign_forward, y0_mag, y1):
-    offset = ptr(0, m)
+def lut_symmetric_cascade_internal(iter, m, sign_forward, y0_mag, y1):
+    offset = ptr(iter, m)
     # Convert the y0 and y1 LUTs read addresses
     y0_addr = inv_mag(y0_mag)
     msb_y0 = sign_forward
@@ -447,8 +408,8 @@ def lut_symmetric_cascade_internal(m, sign_forward, y0_mag, y1):
 
     return t_c, MSB
 
-def lut_symmetric_cascade_out(m, sign_forward, y0_mag, y1):
-    offset = ptr(0, m)
+def lut_symmetric_cascade_out(iter, m, sign_forward, y0_mag, y1):
+    offset = ptr(iter, m)
     # Convert the y0 and y1 LUTs read addresses
     #if sign_forward == 1:
     #    y0_addr = inv_mag(y0_mag)
@@ -473,35 +434,213 @@ def lut_symmetric_cascade_out(m, sign_forward, y0_mag, y1):
     t_c = int(mag + (s << mag_bitwidth))
     return t_c
 
-def symmetric_cascade_lut(v2c_vec):
+def symmetric_cascade_lut(iter, v2c_vec):
     t_c = [0] * M
     sign_forward = [0] * (M - 1)
     for m in range(M):
         if m == 0 and M != 1:
-            t_c[0], sign_forward[0] = lut_symmetric_cascade_in(0, v2c_vec[0], v2c_vec[1])
+            t_c[0], sign_forward[0] = lut_symmetric_cascade_in(iter, 0, v2c_vec[0], v2c_vec[1])
         elif m < (M - 1) and m > 0:
-            t_c[m], sign_forward[m] = lut_symmetric_cascade_internal(m, sign_forward[m - 1], t_c[m - 1], v2c_vec[m + 1])
+            t_c[m], sign_forward[m] = lut_symmetric_cascade_internal(iter, m, sign_forward[m - 1], t_c[m - 1], v2c_vec[m + 1])
         elif m == (M - 1):
-            t_c[m] = lut_symmetric_cascade_out(m, sign_forward[m - 1], t_c[m - 1], v2c_vec[m + 1])
+            t_c[m] = lut_symmetric_cascade_out(iter, m, sign_forward[m - 1], t_c[m - 1], v2c_vec[m + 1])
         else:
             print("Wrong configuration on Symmetric Cascading LUT due to a mismatch of M")
             return -1
 
     return int(t_c[M - 1])
 
-def lut_baseline(m, y0, y1):
-    offset = ptr(0, m)
+def lut_baseline(iter, m, y0, y1):
+    offset = ptr(iter, m)
     t_c = lut_out(y0, y1, offset)
-    return t_c
+    return int(t_c)
 
+## Datapath of only one check-to-variable message
 def cascade_lut_baseline(v2c_vec):
     for m in range(M):
         if m == 0:
-            t_c = lut_baseline(0, v2c_vec[0], v2c_vec[1])
+            t_c = lut_baseline(0, 0, v2c_vec[0], v2c_vec[1])
         else:
-            t_c = lut_baseline(m, t_c, v2c_vec[m + 1])
+            t_c = lut_baseline(0, m, t_c, v2c_vec[m + 1])
 
-    return int(t_c)
+    return t_c
+
+## Generate output patterns of f0 LUTs
+def cnu6_f03_dut_sample_gen(v2c_vec, tc_vec, m):
+    tc_num = len(tc_vec)
+    if m == 0:
+        cnu_f0_dut_file.write(
+            str(hex(int(v2c_vec[0]))[2]) + "," +
+            str(hex(int(v2c_vec[1]))[2]) + "," +
+            str(hex(int(v2c_vec[2]))[2]) + "," +
+            str(hex(int(v2c_vec[3]))[2]) + "," +
+            str(hex(int(v2c_vec[4]))[2]) + "," +
+            str(hex(int(v2c_vec[5]))[2]) + ","
+        )
+
+        for f_m in range(tc_num-1):
+            cnu_f0_dut_file.write(str(hex(int(tc_vec[f_m]))[2]) + ",")
+        cnu_f0_dut_file.write(str(hex(int(tc_vec[tc_num-1]))[2]) + "\n")
+
+    elif m == 1:
+        cnu_f1_dut_file.write(
+            str(hex(int(v2c_vec[0]))[2]) + "," +
+            str(hex(int(v2c_vec[1]))[2]) + "," +
+            str(hex(int(v2c_vec[2]))[2]) + "," +
+            str(hex(int(v2c_vec[3]))[2]) + "," +
+            str(hex(int(v2c_vec[4]))[2]) + "," +
+            str(hex(int(v2c_vec[5]))[2]) + ","
+        )
+
+        for f_m in range(tc_num-1):
+            cnu_f1_dut_file.write(str(hex(int(tc_vec[f_m]))[2]) + ",")
+        cnu_f1_dut_file.write(str(hex(int(tc_vec[tc_num-1]))[2]) + "\n")
+
+    elif m == 2:
+        cnu_f2_dut_file.write(
+            str(hex(int(v2c_vec[0]))[2]) + "," +
+            str(hex(int(v2c_vec[1]))[2]) + "," +
+            str(hex(int(v2c_vec[2]))[2]) + "," +
+            str(hex(int(v2c_vec[3]))[2]) + "," +
+            str(hex(int(v2c_vec[4]))[2]) + "," +
+            str(hex(int(v2c_vec[5]))[2]) + ","
+        )
+
+        for f_m in range(tc_num-1):
+            cnu_f2_dut_file.write(str(hex(int(tc_vec[f_m]))[2]) + ",")
+        cnu_f2_dut_file.write(str(hex(int(tc_vec[tc_num-1]))[2]) + "\n")
+
+    elif m == 3:
+        cnu_f3_dut_file.write(
+            str(hex(int(v2c_vec[0]))[2]) + "," +
+            str(hex(int(v2c_vec[1]))[2]) + "," +
+            str(hex(int(v2c_vec[2]))[2]) + "," +
+            str(hex(int(v2c_vec[3]))[2]) + "," +
+            str(hex(int(v2c_vec[4]))[2]) + "," +
+            str(hex(int(v2c_vec[5]))[2]) + ","
+        )
+
+        for f_m in range(tc_num-1):
+            cnu_f3_dut_file.write(str(hex(int(tc_vec[f_m]))[2]) + ",")
+        cnu_f3_dut_file.write(str(hex(int(tc_vec[tc_num-1]))[2]) + "\n")
+
+    else:
+        print("Wrong parameter is passed, the M is only until %d but the actual passed M is %d" % (M - 2, m))
+        sys.exit()
+
+## Datapath of one check node unit in d_c=6
+def cascaded_cnu6_sym_sw(iter, v2c_vec):
+    # Declare the number of decomposed LUTs output sources
+    f0_tc = np.empty(cascade_lut_num[0], dtype=np.int8)
+    f1_tc = np.empty(cascade_lut_num[1], dtype=np.int8)
+    f2_tc = np.empty(cascade_lut_num[2], dtype=np.int8)
+    f3_tc = np.empty(cascade_lut_num[3], dtype=np.int8)
+    f0_sign_forward = np.empty(cascade_lut_num[0], dtype=np.int8)
+    f1_sign_forward = np.empty(cascade_lut_num[1], dtype=np.int8)
+    f2_sign_forward = np.empty(cascade_lut_num[2], dtype=np.int8)
+
+    for m in range(M):
+        if m == 0:
+            for f0_m in range(cascade_lut_num[m]):
+                in_id_0 = cascade_lut_f0_inSrc[f0_m][0]
+                in_id_1 = cascade_lut_f0_inSrc[f0_m][1]
+                f0_tc[f0_m], f0_sign_forward[f0_m] = lut_symmetric_cascade_in(iter, 0, v2c_vec[in_id_0], v2c_vec[in_id_1])
+                f0_tc[f0_m] = f0_tc[f0_m] + (f0_sign_forward[f0_m] << (q-1)) # to concatenate the magnitude with sign bit
+            cnu6_f03_dut_sample_gen(v2c_vec, f0_tc, m) # write the input-output log file for RTL DUTs
+
+        elif m == 1:
+            for f1_m in range(cascade_lut_num[m]):
+                # To assign the input source 0
+                if(cascade_lut_f1_inSrc[f1_m][0] >= inSrc_offset):
+                    in_id_0 = cascade_lut_f1_inSrc[f1_m][0] - inSrc_offset
+                    inSrc_0 = f0_tc[in_id_0] % (2**(q-1))
+                    inSign_0 = f0_sign_forward[in_id_0]
+                else:
+                    in_id_0 = cascade_lut_f1_inSrc[f1_m][0]
+                    inSrc_0 = v2c_vec[in_id_0]
+
+                # TO assign the input source 1
+                if(cascade_lut_f1_inSrc[f1_m][1] >= inSrc_offset):
+                    in_id_1 = cascade_lut_f1_inSrc[f1_m][1] - inSrc_offset
+                    inSrc_1 = f0_tc[in_id_1]
+                else:
+                    in_id_1 = cascade_lut_f1_inSrc[f1_m][1]
+                    inSrc_1 = v2c_vec[in_id_1]
+
+                f1_tc[f1_m], f1_sign_forward[f1_m] = lut_symmetric_cascade_internal(iter, m, inSign_0, inSrc_0, inSrc_1)
+                f1_tc[f1_m] = f1_tc[f1_m] + (f1_sign_forward[f1_m] << (q-1)) # to concatenate the magnitude with sign bit
+            cnu6_f03_dut_sample_gen(v2c_vec, f1_tc, m) # write the input-output log file for RTL DUTs
+
+        elif m == 2:
+            for f2_m in range(cascade_lut_num[m]):
+                # To assign the input source 0
+                if(cascade_lut_f2_inSrc[f2_m][0] >= inSrc_offset):
+                    in_id_0 = cascade_lut_f2_inSrc[f2_m][0] - inSrc_offset
+                    inSrc_0 = f1_tc[in_id_0] % (2**(q-1))
+                    inSign_0 = f1_sign_forward[in_id_0]
+                else:
+                    in_id_0 = cascade_lut_f2_inSrc[f2_m][0]
+                    inSrc_0 = v2c_vec[in_id_0]
+
+                # TO assign the input source 1
+                if(cascade_lut_f2_inSrc[f2_m][1] >= inSrc_offset):
+                    in_id_1 = cascade_lut_f2_inSrc[f2_m][1] - inSrc_offset
+                    inSrc_1 = f1_tc[in_id_1]
+                else:
+                    in_id_1 = cascade_lut_f2_inSrc[f2_m][1]
+                    inSrc_1 = v2c_vec[in_id_1]
+
+                f2_tc[f2_m], f2_sign_forward[f2_m] = lut_symmetric_cascade_internal(iter, m, inSign_0, inSrc_0, inSrc_1)
+                f2_tc[f2_m] = f2_tc[f2_m] + (f2_sign_forward[f2_m] << (q-1)) # to concatenate the magnitude with sign bit
+            cnu6_f03_dut_sample_gen(v2c_vec, f2_tc, m) # write the input-output log file for RTL DUTs
+
+        elif m == 3:
+            for f3_m in range(cascade_lut_num[m]):
+                # To assign the input source 0
+                if(cascade_lut_f3_inSrc[f3_m][0] >= inSrc_offset):
+                    in_id_0 = cascade_lut_f3_inSrc[f3_m][0] - inSrc_offset
+                    inSrc_0 = f2_tc[in_id_0] % (2**(q-1))
+                    inSign_0 = f2_sign_forward[in_id_0]
+                else:
+                    in_id_0 = cascade_lut_f3_inSrc[f3_m][0]
+                    inSrc_0 = v2c_vec[in_id_0]
+
+                # TO assign the input source 1
+                if(cascade_lut_f3_inSrc[f3_m][1] >= inSrc_offset):
+                    in_id_1 = cascade_lut_f3_inSrc[f3_m][1] - inSrc_offset
+                    inSrc_1 = f2_tc[in_id_1]
+                else:
+                    in_id_1 = cascade_lut_f3_inSrc[f3_m][1]
+                    inSrc_1 = v2c_vec[in_id_1]
+
+                f3_tc[f3_m] = lut_symmetric_cascade_out(iter, m, inSign_0, inSrc_0, inSrc_1)
+            cnu6_f03_dut_sample_gen(v2c_vec, f3_tc, m) # write the input-output log file for RTL DUTs
+
+        else:
+            print("Wrong parameter is passed, the M is only until %d but the actual passed M is %d" % (M-2, m))
+            sys.exit()
+
+        #c2v_dut_sample_gen(v2c_vec, f3_tc)
+
+    return f3_tc
+
+## Generate check-to-variable message samples for DUT
+def c2v_dut_sample_gen(v2c_vec, c2v_vec):
+    c2v_dut_file.write(
+        str(hex(int(v2c_vec[0]))[2]) + "," +
+        str(hex(int(v2c_vec[1]))[2]) + "," +
+        str(hex(int(v2c_vec[2]))[2]) + "," +
+        str(hex(int(v2c_vec[3]))[2]) + "," +
+        str(hex(int(v2c_vec[4]))[2]) + "," +
+        str(hex(int(v2c_vec[5]))[2]) + "," +
+
+        str(hex(int(c2v_vec[0]))[2]) + "," +
+        str(hex(int(c2v_vec[1]))[2]) + "," +
+        str(hex(int(c2v_vec[2]))[2]) + "," +
+        str(hex(int(c2v_vec[3]))[2]) + "," +
+        str(hex(int(c2v_vec[4]))[2]) + "," +
+        str(hex(int(c2v_vec[5]))[2]) + "\n"
+    )
 
 def cascade_lut_pattern_gen():
     awgn_test_pattern = gng.sw_gauss_sample_gen(export_filename=cas_awgn_filename, mean=mean_eval, std_dev=gng.std_dev_cal(snr_eval), num=test_sample_num)
@@ -516,8 +655,8 @@ def main():
     # showCNU_LUT(1)
 
     #lut_symmetric_vis() # visualise the symmetry of LUT for ease of observation
-
     #single_lut_symmetry_eval() # evaluate 2-input LUT solely
+    '''
     t0 = [0] * test_set_num
     t1 = [0] * test_set_num
     ch_msg_vec = [0] * test_sample_num
@@ -527,7 +666,7 @@ def main():
         t0[i] = cascade_lut_baseline(ch_msg_vec[test_set_unit*i:test_set_unit*i+test_set_unit])
         #print("Channel Message: ", ch_msg_vec, "\nCascadded LUTs (baseline): ", t0[i])
 
-        t1[i] = symmetric_cascade_lut(ch_msg_vec[test_set_unit*i:test_set_unit*i+test_set_unit])
+        t1[i] = symmetric_cascade_lut(0, ch_msg_vec[test_set_unit*i:test_set_unit*i+test_set_unit])
         #print("\nChannel Message: ", ch_msg_vec, "\nCascadded LUTs (symmetry): ", t1[i])
 
 
@@ -546,15 +685,42 @@ def main():
         print("Verification is passed")
     else:
         print("Err: %d" % (err))
-    '''
+
     for m in range(M):
         print("=============== M: %d ===================" % (m))
         for y0 in range(cardinality):
             for y1 in range(cardinality):
                 t = lut_baseline(m, y0, y1)
                 print("(%d, %d) = %d" % (y0, y1, t))
-    
     '''
 
+    v2c_sample = np.zeros(CN_DEGREE, dtype=np.int8)
+    c2v_sample = np.zeros(CN_DEGREE, dtype=np.int8)
+    for iter in range(1): # only do the DUT of 0th iteration
+        for v2c_aggregate in range(2**24 - 1):
+            for i in range(CN_DEGREE):
+                right_shift = v2c_aggregate >> (i*q)
+                v2c_sample[i] = right_shift % (2**q)
+
+            c2v_sample = cascaded_cnu6_sym_sw(iter, v2c_sample)
+        #print("Iter_", iter, "  v2c: ", v2c_sample, " --> c2v: ", c2v_sample)
+
 if __name__ == "__main__":
-   main()
+    '''
+    c2v_dut_file = open(c2v_dut_filename, "w")
+    cnu_f0_dut_file = open(cnu_f0_dut_filename, "w")
+    cnu_f1_dut_file = open(cnu_f1_dut_filename, "w")
+    cnu_f2_dut_file = open(cnu_f2_dut_filename, "w")
+    cnu_f3_dut_file = open(cnu_f3_dut_filename, "w")
+    main()
+    c2v_dut_file.close()
+    cnu_f0_dut_file.close()
+    cnu_f1_dut_file.close()
+    cnu_f2_dut_file.close()
+    cnu_f3_dut_file.close()
+    '''
+    for i in range(8):
+        for j in range(8):
+            t = lut_baseline(0, 0, i, j) % 8
+            t = format(t, '03b')
+            print((i % 8), ',', (j % 8), ',',t)
