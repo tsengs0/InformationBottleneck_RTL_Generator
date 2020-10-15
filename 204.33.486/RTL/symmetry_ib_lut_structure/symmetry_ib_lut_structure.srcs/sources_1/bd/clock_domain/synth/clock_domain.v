@@ -1,7 +1,7 @@
 //Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-//Date        : Fri Jul 17 18:06:26 2020
+//Date        : Mon Oct 12 00:59:18 2020
 //Host        : lmpcc running 64-bit SUSE Linux Enterprise Server 15 SP1
 //Command     : generate_target clock_domain.bd
 //Design      : clock_domain
@@ -20,7 +20,7 @@ module clock_domain
   (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 clk_300mhz CLK_N" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME clk_300mhz, CAN_DEBUG false, FREQ_HZ 300000000" *) input clk_300mhz_clk_n;
   (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 clk_300mhz CLK_P" *) input clk_300mhz_clk_p;
   output locked_0;
-  (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 CLK.READ_CLK_0 CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME CLK.READ_CLK_0, CLK_DOMAIN clock_domain_clk_wiz_0_0_write_clk, FREQ_HZ 150000000, INSERT_VIP 0, PHASE 0.0" *) output read_clk_0;
+  (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 CLK.READ_CLK_0 CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME CLK.READ_CLK_0, CLK_DOMAIN clock_domain_clk_wiz_0_0_write_clk, FREQ_HZ 200000000, INSERT_VIP 0, PHASE 0.0" *) output read_clk_0;
   (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 RST.RESET RST" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME RST.RESET, INSERT_VIP 0, POLARITY ACTIVE_HIGH" *) input reset;
   (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 CLK.WRITE_CLK_0 CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME CLK.WRITE_CLK_0, CLK_DOMAIN clock_domain_clk_wiz_0_0_write_clk, FREQ_HZ 250000000, INSERT_VIP 0, PHASE 0.0" *) output write_clk_0;
 

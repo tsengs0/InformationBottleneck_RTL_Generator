@@ -18,7 +18,7 @@
 //// Additional Comments:
 //// So far, the interconnection network is built in a fully parallel structure.
 ////////////////////////////////////////////////////////////////////////////////////
-//`include "define.vh"
+`include "define.vh"
 module decoder_204_102_read_top;
 //localparam INITIAL_START_CYCLE = 100;
 //reg CLK_300_N;
