@@ -196,7 +196,7 @@ void verilog_gen::fully_route_instantiate(const char *filename)
 	// Generating the instantiation of output port
 	for(unsigned int i=0; i < M; i++) {
 		for(unsigned int j=0; j < max_dc; j++) {
-			fully_parallel_file << ".v2c_parallelOut_" << i << j << "(v2c_" << j << "[" << i << "])," << endl << "\t"; 
+			fully_parallel_file << ".v2c_parallelOut_" << i << j << "(v2c_out" << j << "[" << i << "])," << endl << "\t"; 
 		}
 	}
 	fully_parallel_file << endl << "\t";
@@ -205,7 +205,7 @@ void verilog_gen::fully_route_instantiate(const char *filename)
 			    << endl << "\t";
 	for(unsigned int i=0; i < N; i++) {
 		for(unsigned int j=0; j < max_dv; j++) {
-			fully_parallel_file << ".c2v_parallelOut_" << i << j << "(c2v_" << j << "[" << i << "])," << endl << "\t"; 
+			fully_parallel_file << ".c2v_parallelOut_" << i << j << "(c2v_out" << j << "[" << i << "])," << endl << "\t"; 
 		}
 	}
 	fully_parallel_file << endl << "\t";

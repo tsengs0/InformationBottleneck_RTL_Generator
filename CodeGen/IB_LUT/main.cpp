@@ -2,12 +2,11 @@
 
 int main(int argc, char **argv)
 {
-	if(argc != 3) {
-		cout << "Please give the lut csv file and information of quntised bits" << endl;
+	if(argc != 2) {
+		cout << "The file of Parity Check Matrix must be given" << endl;
 		exit(1);
 	}
-	
-	unsigned int cardinality = pow(2, atoi(argv[2]));
-	verilog_gen Gen(argv[1], cardinality);
+	verilog_gen Gen(argv[1]);
+	Gen.show_param();
 	return 0;
 }
