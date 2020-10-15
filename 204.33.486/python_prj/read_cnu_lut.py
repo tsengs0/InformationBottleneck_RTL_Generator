@@ -706,7 +706,6 @@ def main():
         #print("Iter_", iter, "  v2c: ", v2c_sample, " --> c2v: ", c2v_sample)
 
 if __name__ == "__main__":
-    '''
     c2v_dut_file = open(c2v_dut_filename, "w")
     cnu_f0_dut_file = open(cnu_f0_dut_filename, "w")
     cnu_f1_dut_file = open(cnu_f1_dut_filename, "w")
@@ -718,7 +717,6 @@ if __name__ == "__main__":
     cnu_f1_dut_file.close()
     cnu_f2_dut_file.close()
     cnu_f3_dut_file.close()
-    '''
     for i in range(8):
         for j in range(8):
             t = lut_baseline(0, 0, i, j) % 8

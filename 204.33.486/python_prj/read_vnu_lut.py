@@ -13,7 +13,7 @@ VN_DEGREE = 3+1
 M = VN_DEGREE - 2
 cardinality = pow(2, q)
 Iter_max = 50
-test_set_num = 2**(q*5)
+test_set_num = 50#2**(q*5)
 test_set_unit = VN_DEGREE - 1
 test_sample_num = test_set_unit * test_set_num
 snr_eval = 2
@@ -24,7 +24,6 @@ symmetric_ratio = [
     1,  # the symmetric ratio of input y0 (horizontal extent)
     0.5 # the symmetric ratio of input y1 (vertical extent)
 ]
-
 
 map_table = [0] * cardinality
 for i in range(cardinality):
@@ -50,6 +49,21 @@ f = h5py.File(file_204_102, 'r')
 list(f.keys())
 dset1 = f['config']
 dset2 = f['dde_results']
+v2c_dut_filename = 'v2c_baseline_dut' + '.csv'
+vnu_f0_dut_filename = 'vnu_f0_baseline_dut' + '.csv'
+vnu_f1_dut_filename = 'vnu_f1_baseline_dut' + '.csv'
+'''-------------------------------------------------------------------------------------------------'''
+## The configuration of cascading datapath structure
+cascade_lut_num = [2, 3] # the number of decomposed LUTs over each m, where m in {0, 1 ,2, 3}
+# the pair of input sources (variable-to-check msg) for each F0 decomposed LUT
+# the pair of input sources (variable-to-check msg) for each F1 to F3 decomposed LUT
+# Note that any value + 128 accounts for the input source from the outputs of its precedent decomposed LUTs,
+# e.g., "0+128" of F1 indicates one input of F1 LUT is fed by the ouput of 0th decomposed LUT
+inSrc_offset = 128
+llr_id = 256
+cascade_lut_f0_inSrc = [[llr_id, 0], [llr_id, 2]]
+cascade_lut_f1_inSrc = [[0+inSrc_offset, 1], [0+inSrc_offset, 2], [1+inSrc_offset, 1]]
+'''-------------------------------------------------------------------------------------------------'''
 
 # There are six members in the Group f['dde_results']
 print(dset2.keys())
@@ -426,7 +440,7 @@ def lut_symmetric_cascade_out(iter, m, forward_sign, y0, y1):
     mag, s = inv_mux(1, (2 ** mag_bitwidth) * 2 * msb_y0 + t_c)
     t_c = int(mag)
 
-    return t_c
+    return t_c, msb_y0
 
 def symmetric_cascade_lut(iter, c2v_vec):
     t_c = [0] * M
@@ -437,13 +451,12 @@ def symmetric_cascade_lut(iter, c2v_vec):
         elif m < (M - 1) and m > 0:
             t_c[m], sign_forward[m] = lut_symmetric_cascade_internal(iter, m, sign_forward[m-1], t_c[m - 1], c2v_vec[m + 1])
         elif m == (M - 1):
-            t_c[m] = lut_symmetric_cascade_out(iter, m, sign_forward[m-1], t_c[m - 1], c2v_vec[m + 1])
+            t_c[m], rotate_en = lut_symmetric_cascade_out(iter, m, sign_forward[m-1], t_c[m - 1], c2v_vec[m + 1])
         else:
             print("Wrong configuration on Symmetric Cascading LUT due to a mismatch of M")
             return -1
 
     return int(t_c[M - 1])
-
 
 def lut_baseline(iter, m, y0, y1):
     offset = ptr(iter, m)
@@ -467,6 +480,95 @@ def cascade_lut_pattern_gen():
     ch_msg_test_pattern = gng.ib_mapping(awgn_test_pattern, ch_msg_filename)
     return ch_msg_test_pattern
 
+## Generate output patterns of f0 LUTs
+def vnu3_f01_dut_sample_gen(c2v_vec, ch_msg_in, tc_vec, m):
+    tc_num = len(tc_vec)
+    if m == 0:
+        vnu_f0_dut_file.write(
+            str(hex(int(c2v_vec[0]))[2]) + "," +
+            str(hex(int(c2v_vec[1]))[2]) + "," +
+            str(hex(int(c2v_vec[2]))[2]) + "," +
+            str(hex(int(ch_msg_in))[2]) + ","
+        )
+
+        for f_m in range(tc_num-1):
+            vnu_f0_dut_file.write(str(hex(int(tc_vec[f_m]))[2]) + ",")
+        vnu_f0_dut_file.write(str(hex(int(tc_vec[tc_num-1]))[2]) + "\n")
+
+    elif m == 1:
+        vnu_f1_dut_file.write(
+            str(hex(int(c2v_vec[0]))[2]) + "," +
+            str(hex(int(c2v_vec[1]))[2]) + "," +
+            str(hex(int(c2v_vec[2]))[2]) + "," +
+            str(hex(int(ch_msg_in))[2]) + ","
+        )
+
+        for f_m in range(tc_num-1):
+            vnu_f1_dut_file.write(str(hex(int(tc_vec[f_m]))[2]) + ",")
+        vnu_f1_dut_file.write(str(hex(int(tc_vec[tc_num-1]))[2]) + "\n")
+
+    else:
+        print("Wrong parameter is passed, the M is only until %d but the actual passed M is %d" % (M - 2, m))
+        sys.exit()
+
+## Datapath of one check node unit in d_c=6
+def cascaded_vnu3_sym_sw(iter, c2v_vec, ch_msg_in):
+    # Declare the number of decomposed LUTs output sources
+    f0_tc = np.empty(cascade_lut_num[0], dtype=np.int8)
+    f1_tc = np.empty(cascade_lut_num[1], dtype=np.int8)
+    f0_sign_forward = np.empty(cascade_lut_num[0], dtype=np.int8)
+    f1_sign_forward = np.empty(cascade_lut_num[1], dtype=np.int8)
+
+    for m in range(M):
+        if m == 0:
+            for f0_m in range(cascade_lut_num[m]):
+                in_id_1 = cascade_lut_f0_inSrc[f0_m][1]
+                f0_tc[f0_m], f0_sign_forward[f0_m] = lut_symmetric_cascade_in(iter, 0, ch_msg_in, c2v_vec[in_id_1])
+
+            vnu3_f01_dut_sample_gen(c2v_vec, ch_msg_in, f0_tc, m) # write the input-output log file for RTL DUTs
+
+        elif m == 1:
+            for f1_m in range(cascade_lut_num[m]):
+                # To assign the input source 0
+                if(cascade_lut_f1_inSrc[f1_m][0] >= inSrc_offset):
+                    in_id_0 = cascade_lut_f1_inSrc[f1_m][0] - inSrc_offset
+                    inSrc_0 = f0_tc[in_id_0] % (2**(q-1))
+                    inSign_0 = f0_sign_forward[in_id_0]
+                else:
+                    in_id_0 = cascade_lut_f1_inSrc[f1_m][0]
+                    inSrc_0 = c2v_vec[in_id_0]
+
+                # TO assign the input source 1
+                if(cascade_lut_f1_inSrc[f1_m][1] >= inSrc_offset):
+                    in_id_1 = cascade_lut_f1_inSrc[f1_m][1] - inSrc_offset
+                    inSrc_1 = f0_tc[in_id_1]
+                else:
+                    in_id_1 = cascade_lut_f1_inSrc[f1_m][1]
+                    inSrc_1 = c2v_vec[in_id_1]
+
+                f1_tc[f1_m], f1_sign_forward[f1_m] = lut_symmetric_cascade_out(iter, m, inSign_0, inSrc_0, inSrc_1)
+            vnu3_f01_dut_sample_gen(c2v_vec, ch_msg_in, f1_tc, m) # write the input-output log file for RTL DUTs
+            #v2c_dut_sample_gen(c2v_vec, ch_msg_in, f1_tc)
+
+        else:
+            print("Wrong parameter is passed, the M is only until %d but the actual passed M is %d" % (M-2, m))
+            sys.exit()
+
+    return f1_tc
+
+## Generate check-to-variable message samples for DUT
+def v2c_dut_sample_gen(c2v_vec, ch_msg_in, v2c_vec):
+    c2v_dut_file.write(
+        str(hex(int(c2v_vec[0]))[2]) + "," +
+        str(hex(int(c2v_vec[1]))[2]) + "," +
+        str(hex(int(c2v_vec[2]))[2]) + "," +
+        str(hex(int(ch_msg_in))[2]) + "," +
+
+        str(hex(int(v2c_vec[0]))[2]) + "," +
+        str(hex(int(v2c_vec[1]))[2]) + "," +
+        str(hex(int(v2c_vec[2]))[2]) + "\n"
+    )
+
 
 def main():
     # exportVNU_LUT_COE()
@@ -477,8 +579,9 @@ def main():
 
     #lut_symmetric_vis() # visualise the symmetry of LUT for ease of observation
 
+    '''
     single_lut_symmetry_eval(iter=0) # evaluate 2-input LUT solely
-    #'''
+
     t0 = [0] * test_set_num
     t1 = [0] * test_set_num
     ch_msg_vec = [0] * test_sample_num
@@ -505,7 +608,7 @@ def main():
         print("Verification is passed")
     else:
         print("Err: %d" % (err))
-    #'''
+    '''
     '''
     for iter in range(1):
         for m in range(1):
@@ -516,6 +619,25 @@ def main():
                     t = lut_baseline(iter,  m, y0, y1)
                     print("(%s, %s) = %s" % (format(int(y0), '04b'), format(int(y1), '04b'), format(int(t), '04b')))
     '''
+
+    c2v_sample = np.zeros(VN_DEGREE-1, dtype=np.int8)
+    v2c_sample = np.zeros(VN_DEGREE-1, dtype=np.int8)
+    for iter in range(1): # only do the DUT of 0th iteration
+        for c2v_aggregate in range(2**16 - 1):
+            for i in range(VN_DEGREE):
+                right_shift = c2v_aggregate >> (i*q)
+                if i == 0:
+                    ch_msg_in = right_shift % (2**q)
+                else:
+                    c2v_sample[i-1] = right_shift % (2**q)
+
+                v2c_sample = cascaded_vnu3_sym_sw(iter, c2v_sample, ch_msg_in)
+
 if __name__ == "__main__":
-    #main()
-    lut_symmetric_vis() # visualise the symmetry of LUT for ease of observation
+    v2c_dut_file = open(v2c_dut_filename, "w")
+    vnu_f0_dut_file = open(vnu_f0_dut_filename, "w")
+    vnu_f1_dut_file = open(vnu_f1_dut_filename, "w")
+    main()
+    v2c_dut_file.close()
+    vnu_f0_dut_file.close()
+    vnu_f1_dut_file.close()
