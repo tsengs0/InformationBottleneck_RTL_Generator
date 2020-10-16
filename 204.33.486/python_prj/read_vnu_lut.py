@@ -427,8 +427,8 @@ def lut_symmetric_cascade_out(iter, m, forward_sign, y0, y1):
     offset = ptr(iter, m)
 
     # Convert the y0 and y1 LUTs read addresses
-    operand_com = int(y0 / (2**mag_bitwidth)) % 2
-    vec_in = (y0 % (2**mag_bitwidth)) + (forward_sign*(2**mag_bitwidth))
+    operand_com = int(y0 >> mag_bitwidth)
+    vec_in = (y0 % (2**mag_bitwidth)) + (forward_sign << mag_bitwidth)
     formed_y0 = burst_xor(q, vec_in, operand_com)
     msb_y0, y0_addr = sign_mag_extract(q, formed_y0)
     y1_addr, msb_y1 = inv_mux(1, (2**mag_bitwidth)*2*msb_y0 + y1)
@@ -485,10 +485,10 @@ def vnu3_f01_dut_sample_gen(c2v_vec, ch_msg_in, tc_vec, m):
     tc_num = len(tc_vec)
     if m == 0:
         vnu_f0_dut_file.write(
+            str(hex(int(ch_msg_in))[2]) + ","  +
             str(hex(int(c2v_vec[0]))[2]) + "," +
             str(hex(int(c2v_vec[1]))[2]) + "," +
-            str(hex(int(c2v_vec[2]))[2]) + "," +
-            str(hex(int(ch_msg_in))[2]) + ","
+            str(hex(int(c2v_vec[2]))[2]) + ","
         )
 
         for f_m in range(tc_num-1):
@@ -497,10 +497,10 @@ def vnu3_f01_dut_sample_gen(c2v_vec, ch_msg_in, tc_vec, m):
 
     elif m == 1:
         vnu_f1_dut_file.write(
+            str(hex(int(ch_msg_in))[2]) + ","  +
             str(hex(int(c2v_vec[0]))[2]) + "," +
             str(hex(int(c2v_vec[1]))[2]) + "," +
-            str(hex(int(c2v_vec[2]))[2]) + "," +
-            str(hex(int(ch_msg_in))[2]) + ","
+            str(hex(int(c2v_vec[2]))[2]) + ","
         )
 
         for f_m in range(tc_num-1):
@@ -532,7 +532,7 @@ def cascaded_vnu3_sym_sw(iter, c2v_vec, ch_msg_in):
                 # To assign the input source 0
                 if(cascade_lut_f1_inSrc[f1_m][0] >= inSrc_offset):
                     in_id_0 = cascade_lut_f1_inSrc[f1_m][0] - inSrc_offset
-                    inSrc_0 = f0_tc[in_id_0] % (2**(q-1))
+                    inSrc_0 = f0_tc[in_id_0]# % (2**(q-1))
                     inSign_0 = f0_sign_forward[in_id_0]
                 else:
                     in_id_0 = cascade_lut_f1_inSrc[f1_m][0]
@@ -547,7 +547,13 @@ def cascaded_vnu3_sym_sw(iter, c2v_vec, ch_msg_in):
                     inSrc_1 = c2v_vec[in_id_1]
 
                 f1_tc[f1_m], f1_sign_forward[f1_m] = lut_symmetric_cascade_out(iter, m, inSign_0, inSrc_0, inSrc_1)
-            vnu3_f01_dut_sample_gen(c2v_vec, ch_msg_in, f1_tc, m) # write the input-output log file for RTL DUTs
+
+
+            # Since the any indexed V2C message is summation of all incoming C2V messages and channel message expluding the C2V in the same index
+            # Therefore the C2V-order F1 outgoing messages is reversed order, e.g.,
+            # F1 LUTs following the permuation {C2V_0, C2V_1, C2V_2} generates set of V2C messages in the order of {V2C_2, V2C_1, V2C_0} respective
+            f1_tc_flip = np.flipud(f1_tc)
+            vnu3_f01_dut_sample_gen(c2v_vec, ch_msg_in, f1_tc_flip, m) # write the input-output log file for RTL DUTs
             #v2c_dut_sample_gen(c2v_vec, ch_msg_in, f1_tc)
 
         else:
@@ -631,7 +637,7 @@ def main():
                 else:
                     c2v_sample[i-1] = right_shift % (2**q)
 
-                v2c_sample = cascaded_vnu3_sym_sw(iter, c2v_sample, ch_msg_in)
+            v2c_sample = cascaded_vnu3_sym_sw(iter, c2v_sample, ch_msg_in)
 
 if __name__ == "__main__":
     v2c_dut_file = open(v2c_dut_filename, "w")
@@ -641,3 +647,13 @@ if __name__ == "__main__":
     v2c_dut_file.close()
     vnu_f0_dut_file.close()
     vnu_f1_dut_file.close()
+    #vec = [7, 8, 9, 10, 11]
+    #for i in range(len(vec)):
+    #    t_c = lut_baseline(0, 0, vec[i], 0)
+    #    t_c1 = lut_baseline(0, 1, t_c, 0)
+
+     #   t, s = lut_symmetric_cascade_in(0, 0, int(vec[i]), int(0))
+     #   t1, s1 = lut_symmetric_cascade_out(0, 1, int(s), int(t), int(0))
+     #   print(t, s, '-->', t1, s1)
+
+    #t_c2, sign_1 = lut_symmetric_cascade_out(0, 1, 0, 1, 0)
