@@ -50,6 +50,20 @@ f = h5py.File(file_204_102, 'r')
 list(f.keys())
 dset1 = f['config']
 dset2 = f['dde_results']
+'''-------------------------------------------------------------------------------------------------'''
+## The configuration of cascading datapath structure
+dnu_f2_dut_filename = 'dnu_f2_baseline_dut' + '.csv'
+cascade_lut_num = [2, 3, 1] # the number of decomposed LUTs over each m, where m in {0, 1 ,2, 3}
+# the pair of input sources (variable-to-check msg) for each F0 decomposed LUT
+# the pair of input sources (variable-to-check msg) for each F1 to F3 decomposed LUT
+# Note that any value + 128 accounts for the input source from the outputs of its precedent decomposed LUTs,
+# e.g., "0+128" of F1 indicates one input of F1 LUT is fed by the ouput of 0th decomposed LUT
+inSrc_offset = 128
+llr_id = 256
+cascade_lut_f0_inSrc = [[llr_id, 0], [llr_id, 2]]
+cascade_lut_f1_inSrc = [[0+inSrc_offset, 1], [0+inSrc_offset, 2], [1+inSrc_offset, 1]]
+cascade_lut_f2_inSrc = [[0+inSrc_offset, 2]] # the f2 accounts for the decision node as the last stage of cascading structure
+'''-------------------------------------------------------------------------------------------------'''
 
 # There are six members in the Group f['dde_results']
 print(dset2.keys())
@@ -414,8 +428,8 @@ def lut_symmetric_cascade_out(iter, m, forward_sign, y0, y1):
     offset = ptr(iter, m)
 
     # Convert the y0 and y1 LUTs read addresses
-    operand_com = int(y0 / (2**mag_bitwidth)) % 2
-    vec_in = (y0 % (2**mag_bitwidth)) + (forward_sign*(2**mag_bitwidth))
+    operand_com = int(y0 >> mag_bitwidth)
+    vec_in = (y0 % (2**mag_bitwidth)) + (forward_sign << mag_bitwidth)
     formed_y0 = burst_xor(q, vec_in, operand_com)
     msb_y0, y0_addr = sign_mag_extract(q, formed_y0)
     y1_addr, msb_y1 = inv_mux(1, (2**mag_bitwidth)*2*msb_y0 + y1)
@@ -442,8 +456,8 @@ def lut_symmetric_cascade_hardDecision(iter, m, forward_sign, y0, y1):
     #y0_addr, y1_addr, msb_y0, msb_y1 = inv_mux_in2(formed_y0, y1)
 
     # Read magnitude from LUT
-    t_c = lut_out(y0_addr, y1_addr, offset)
-    t_c = int(t_c / (2**mag_bitwidth))
+    t_c = int(lut_out(y0_addr, y1_addr, offset))
+    t_c = int(t_c >> mag_bitwidth)
     t_c = XOR(t_c, msb_y0)
     if t_c == True:
         return int(1)
@@ -494,6 +508,67 @@ def cascade_lut_pattern_gen():
     ch_msg_test_pattern = gng.ib_mapping(awgn_test_pattern, ch_msg_filename)
     return ch_msg_test_pattern
 
+## Generate output patterns of f0 LUTs
+def dnu3_f2_dut_sample_gen(c2v_vec, ch_msg_in, hard_val):
+    dnu_f2_dut_file.write(
+        str(hex(int(ch_msg_in))[2]) + ","  +
+        str(hex(int(c2v_vec[0]))[2]) + "," +
+        str(hex(int(c2v_vec[1]))[2]) + "," +
+        str(hex(int(c2v_vec[2]))[2]) + "," +
+        str(hex(int(hard_val))[2]) + "\n"
+    )
+
+## Datapath of one check node unit in d_c=6
+def cascaded_dnu3_sym_sw(iter, c2v_vec, ch_msg_in):
+    # Declare the number of decomposed LUTs output sources
+    f0_tc = np.empty(cascade_lut_num[0], dtype=np.int8)
+    f1_tc = np.empty(cascade_lut_num[1], dtype=np.int8)
+    f0_sign_forward = np.empty(cascade_lut_num[0], dtype=np.int8)
+    f1_sign_forward = np.empty(cascade_lut_num[1], dtype=np.int8)
+
+    for m in range(M+1):
+        if m == 0:
+            for f0_m in range(cascade_lut_num[m]):
+                in_id_1 = cascade_lut_f0_inSrc[f0_m][1]
+                f0_tc[f0_m], f0_sign_forward[f0_m] = lut_symmetric_cascade_in(iter, 0, ch_msg_in, c2v_vec[in_id_1])
+
+        elif m == 1:
+            for f1_m in range(cascade_lut_num[m]):
+                # To assign the input source 0
+                if(cascade_lut_f1_inSrc[f1_m][0] >= inSrc_offset):
+                    in_id_0 = cascade_lut_f1_inSrc[f1_m][0] - inSrc_offset
+                    inSrc_0 = f0_tc[in_id_0]# % (2**(q-1))
+                    inSign_0 = f0_sign_forward[in_id_0]
+                else:
+                    in_id_0 = cascade_lut_f1_inSrc[f1_m][0]
+                    inSrc_0 = c2v_vec[in_id_0]
+
+                # TO assign the input source 1
+                if(cascade_lut_f1_inSrc[f1_m][1] >= inSrc_offset):
+                    in_id_1 = cascade_lut_f1_inSrc[f1_m][1] - inSrc_offset
+                    inSrc_1 = f0_tc[in_id_1]
+                else:
+                    in_id_1 = cascade_lut_f1_inSrc[f1_m][1]
+                    inSrc_1 = c2v_vec[in_id_1]
+
+                f1_tc[f1_m], f1_sign_forward[f1_m], dnu_in = lut_symmetric_cascade_out(iter, m, inSign_0, inSrc_0, inSrc_1)
+
+        elif m == 2:
+            # First input source of DNU
+            in_id_0 = cascade_lut_f2_inSrc[0][0] - inSrc_offset
+            inSrc_0 = f1_tc[in_id_0]
+            inSign_0 = f1_sign_forward[in_id_0]
+
+            # Second input source of DNU
+            in_id_1 = cascade_lut_f2_inSrc[0][1]
+            inSrc_1 = c2v_vec[in_id_1]
+
+            hard_val = lut_symmetric_cascade_hardDecision(iter, 2, inSign_0, dnu_in, inSrc_1)
+            dnu3_f2_dut_sample_gen(c2v_vec, ch_msg_in, hard_val)
+
+        else:
+            print("Wrong parameter is passed, the M is only until %d but the actual passed M is %d" % (M-2, m))
+            sys.exit()
 
 def main():
     # exportVNU_LUT_COE()
@@ -504,8 +579,9 @@ def main():
 
     #lut_symmetric_vis() # visualise the symmetry of LUT for ease of observation
 
+    '''
     single_lut_symmetry_eval(iter=0) # evaluate 2-input LUT solely
-    #'''
+
     t0 = [0] * test_set_num
     t1 = [0] * test_set_num
     ch_msg_vec = [0] * test_sample_num
@@ -532,6 +608,42 @@ def main():
         print("Verification is passed")
     else:
         print("Err: %d" % (err))
-    #'''
+    '''
+    c2v_sample = np.zeros(VN_DEGREE-1, dtype=np.int8)
+    v2c_sample = np.zeros(VN_DEGREE-1, dtype=np.int8)
+    for iter in range(1): # only do the DUT of 0th iteration
+        for c2v_aggregate in range(2**16 - 1):
+            for i in range(VN_DEGREE):
+                right_shift = c2v_aggregate >> (i*q)
+                if i == 0:
+                    ch_msg_in = right_shift % (2**q)
+                else:
+                    c2v_sample[i-1] = right_shift % (2**q)
+
+            cascaded_dnu3_sym_sw(iter, c2v_sample, ch_msg_in)
+
 if __name__ == "__main__":
-    main()
+    #dnu_f2_dut_file = open(dnu_f2_dut_filename, "w")
+    #main()
+    #dnu_f2_dut_file.close()
+    error = 0
+    vec = [0, 0, 0, 0]
+    for c2v_aggregate in range(2**16 - 1):
+        for i in range(VN_DEGREE):
+            right_shift = c2v_aggregate >> (i*q)
+            if i == 0:
+                vec[0] = right_shift % (2**q)
+            else:
+                vec[i] = right_shift % (2**q)
+
+        t_c = lut_baseline(0, 0, vec[0], vec[1])
+        t_c1 = lut_baseline(0, 1, t_c, vec[2])
+        t_c2 = int(lut_baseline(0, 2, t_c1, vec[3]))
+
+        t, s = lut_symmetric_cascade_in(0, 0, int(vec[0]), int(vec[1]))
+        t1, s1, dnu_in = lut_symmetric_cascade_out(0, 1, int(s), int(t), int(vec[2]))
+        hard_val = lut_symmetric_cascade_hardDecision(0, 2, int(s1), dnu_in, int(vec[3]))
+
+        if hard_val != t_c2 >> mag_bitwidth:
+            error = error + 1
+        print(t_c2, '(', t_c2 >> mag_bitwidth, ') -->', hard_val, 'Error: ', error)
