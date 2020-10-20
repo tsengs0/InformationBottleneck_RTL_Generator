@@ -19,6 +19,7 @@
 // Pipeline stage: 3, i.e., two set of pipeline registers
 // 
 //////////////////////////////////////////////////////////////////////////////////
+`include "define.vh"
 module vnu3_f0 #(
 	parameter QUAN_SIZE  = 4,
 	parameter PIPELINE_DEPTH = 3,
@@ -32,6 +33,10 @@ module vnu3_f0 #(
     output wire [QUAN_SIZE-1:0] vnu0_tPort1, // internal signals accounting for each 128-entry partial LUT's output
 	output wire [QUAN_SIZE-1:0] vnu0_c2v1,
 	output wire [QUAN_SIZE-1:0] vnu0_c2v2,
+`ifdef V2C_C2V_PROBE
+	output wire [QUAN_SIZE-1:0] vnu0_c2v0,
+	output wire [QUAN_SIZE-1:0] vnu0_ch_llr_probe,
+`endif	
     // For the second VNU       
     output wire [QUAN_SIZE-1:0] vnu1_tPort0, // internal signals accounting for each 128-entry partial LUT's output
     output wire [QUAN_SIZE-1:0] vnu1_tPort1, // internal signals accounting for each 128-entry partial LUT's output
@@ -157,6 +162,13 @@ ib_f0_c2v_pipeline #(
 	.E1_reg (vnu0_c2v1[QUAN_SIZE-1:0]),
 	.E2_reg (vnu0_c2v2[QUAN_SIZE-1:0]),
 	
+`ifdef V2C_C2V_PROBE
+	.E0_reg (vnu0_c2v0[QUAN_SIZE-1:0]),
+	.ch_llr_reg (vnu0_ch_llr_probe[QUAN_SIZE-1:0]),
+	
+	.c2v0_in (vnu0_c2v_0[QUAN_SIZE-1:0]),
+	.ch_llr_in (vnu0_ch_llr[QUAN_SIZE-1:0]),
+`endif	
 	.c2v1_in  (vnu0_c2v_1[QUAN_SIZE-1:0]),
 	.c2v2_in  (vnu0_c2v_2[QUAN_SIZE-1:0]),
 	.read_clk (read_clk)

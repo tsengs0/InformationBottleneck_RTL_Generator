@@ -1,3 +1,4 @@
+`include "define.vh"
 module vnu3_f1 #(
 	parameter QUAN_SIZE  = 4,
 	parameter PIPELINE_DEPTH = 3,
@@ -10,22 +11,32 @@ module vnu3_f1 #(
     output wire [QUAN_SIZE-1:0] vnu0_v2c0, // internal signals accounting for each 128-entry partial LUT's output
     output wire [QUAN_SIZE-1:0] vnu0_v2c1, // internal signals accounting for each 128-entry partial LUT's output
 	output wire [QUAN_SIZE-1:0] vnu0_v2c2, // internal signals accounting for each 128-entry partial LUT's output
+	output wire [QUAN_SIZE-1:0] vnu0_dn_in, // the input source to decision node in the next step
 	output wire [QUAN_SIZE-1:0] vnu0_E_reg2,
+`ifdef V2C_C2V_PROBE
+	output wire [QUAN_SIZE-1:0] vnu0_E_reg0,
+	output wire [QUAN_SIZE-1:0] vnu0_E_reg1,
+	output wire [QUAN_SIZE-1:0] vnu0_ch_llr_probe,
+`endif		
+	
     // For the second VNU       
     output wire [QUAN_SIZE-1:0] vnu1_v2c0, // internal signals accounting for each 128-entry partial LUT's output
     output wire [QUAN_SIZE-1:0] vnu1_v2c1, // internal signals accounting for each 128-entry partial LUT's output
 	output wire [QUAN_SIZE-1:0] vnu1_v2c2, // internal signals accounting for each 128-entry partial LUT's output
 	output wire [QUAN_SIZE-1:0] vnu1_E_reg2,
+	output wire [QUAN_SIZE-1:0] vnu1_dn_in, // the input source to decision node in the next step
     // For the third VNU        
     output wire [QUAN_SIZE-1:0] vnu2_v2c0, // internal signals accounting for each 128-entry partial LUT's output
     output wire [QUAN_SIZE-1:0] vnu2_v2c1, // internal signals accounting for each 128-entry partial LUT's output
 	output wire [QUAN_SIZE-1:0] vnu2_v2c2, // internal signals accounting for each 128-entry partial LUT's output
 	output wire [QUAN_SIZE-1:0] vnu2_E_reg2,
+	output wire [QUAN_SIZE-1:0] vnu2_dn_in, // the input source to decision node in the next step
 	// For the fourth VNU       
     output wire [QUAN_SIZE-1:0] vnu3_v2c0, // internal signals accounting for each 128-entry partial LUT's output
     output wire [QUAN_SIZE-1:0] vnu3_v2c1, // internal signals accounting for each 128-entry partial LUT's output
 	output wire [QUAN_SIZE-1:0] vnu3_v2c2, // internal signals accounting for each 128-entry partial LUT's output
 	output wire [QUAN_SIZE-1:0] vnu3_E_reg2,
+	output wire [QUAN_SIZE-1:0] vnu3_dn_in, // the input source to decision node in the next step
 
 	output wire vnu0_tranEn_out0, // for the decision node in the next stage
 	output wire vnu1_tranEn_out0, // for the decision node in the next stage
@@ -37,6 +48,10 @@ module vnu3_f1 #(
     input wire [QUAN_SIZE-1:0] vnu0_t01,
     input wire [QUAN_SIZE-1:0] vnu0_c2v_1,
     input wire [QUAN_SIZE-1:0] vnu0_c2v_2,
+`ifdef V2C_C2V_PROBE
+	input wire [QUAN_SIZE-1:0] vnu0_c2v_0,
+	input wire [QUAN_SIZE-1:0] vnu0_ch_llr,
+`endif
 	input wire vnu0_tranEn_in0,
 	input wire vnu0_tranEn_in1,
 
@@ -143,6 +158,15 @@ ib_f1_c2v_pipeline #(
 	.PIPELINE_DEPTH (PIPELINE_DEPTH)
 ) vnu0_c2v_pipe (
 	.E2_reg   (vnu0_E_reg2[QUAN_SIZE-1:0]),
+`ifdef V2C_C2V_PROBE
+	.E0_reg     (vnu0_E_reg0[QUAN_SIZE-1:0]),
+	.E1_reg     (vnu0_E_reg1[QUAN_SIZE-1:0]),
+	.ch_llr_reg (vnu0_ch_llr_probe[QUAN_SIZE-1:0]),
+	
+	.c2v0_in   (vnu0_c2v_0[QUAN_SIZE-1:0]),
+	.c2v1_in   (vnu0_c2v_1[QUAN_SIZE-1:0]),
+	.ch_llr_in (vnu0_ch_llr[QUAN_SIZE-1:0]),
+`endif
 	.c2v2_in  (vnu0_c2v_2[QUAN_SIZE-1:0]),
 	.read_clk (read_clk)
 );
@@ -174,6 +198,10 @@ sym_vn_lut_out func_ram_10(
     .t_c_B (vnu0_v2c1[QUAN_SIZE-1:0]), // For second reader (B) 
     .t_c_C (vnu0_v2c0[QUAN_SIZE-1:0]), // For third reader  (C)  
     .t_c_D (vnu1_v2c2[QUAN_SIZE-1:0]), // For fourth reader (D)
+	.t_c_dinA (vnu0_dn_in[QUAN_SIZE-1:0]), // the input source to decision node in the next step (without complement conversion)
+	//.t_c_dinB (), // the input source to decision node in the next step (without complement conversion)
+	//.t_c_dinC (), // the input source to decision node in the next step (without complement conversion)
+	.t_c_dinD (vnu1_dn_in[QUAN_SIZE-1:0]), // the input source to decision node in the next step (without complement conversion)
 	.transpose_en_outA (vnu0_tranEn_out0),
 	.transpose_en_outB (vnu1_tranEn_out0),
 	.transpose_en_outC (vnu2_tranEn_out0),
@@ -211,6 +239,10 @@ sym_vn_lut_out func_ram_11(
     .t_c_B (vnu1_v2c0[QUAN_SIZE-1:0]), // For second reader (B) 
     .t_c_C (vnu2_v2c2[QUAN_SIZE-1:0]), // For third reader  (C)  
     .t_c_D (vnu2_v2c1[QUAN_SIZE-1:0]), // For fourth reader (D)
+	//.t_c_dinA (), // the input source to decision node in the next step (without complement conversion)
+	//.t_c_dinB (), // the input source to decision node in the next step (without complement conversion)
+	.t_c_dinC (vnu2_dn_in[QUAN_SIZE-1:0]), // the input source to decision node in the next step (without complement conversion)
+	//.t_c_dinD (), // the input source to decision node in the next step (without complement conversion)
 	//.read_addr_offset_out (read_addr_offset_out), // done by func_ram_10 is enough
 	
 	.transpose_en_inA (vnu1_tranEn_in0),
@@ -244,6 +276,10 @@ sym_vn_lut_out func_ram_12(
     .t_c_B (vnu3_v2c2[QUAN_SIZE-1:0]), // For second reader (B) 
     .t_c_C (vnu3_v2c1[QUAN_SIZE-1:0]), // For third reader  (C)  
     .t_c_D (vnu3_v2c0[QUAN_SIZE-1:0]), // For fourth reader (D)
+	//.t_c_dinA (), // the input source to decision node in the next step (without complement conversion)
+	.t_c_dinB (vnu3_dn_in[QUAN_SIZE-1:0]), // the input source to decision node in the next step (without complement conversion)
+	//.t_c_dinC (), // the input source to decision node in the next step (without complement conversion)
+	//.t_c_dinD (), // the input source to decision node in the next step (without complement conversion)
 	//.read_addr_offset_out (read_addr_offset_out), // done by func_ram_10 is enough
 	
 	.transpose_en_inA (vnu2_tranEn_in1),

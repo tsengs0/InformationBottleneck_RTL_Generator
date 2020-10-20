@@ -23,6 +23,7 @@ module sym_vn_lut_out (
 	// For read operation
 	// Port A
 	output wire [3:0] t_c_A,
+	output wire [3:0] t_c_dinA, // the input source to decision node in the next step (without complement conversion)
 	output wire transpose_en_outA,
 	input wire transpose_en_inA,
 	input wire [3:0] y0_in_A,
@@ -30,6 +31,7 @@ module sym_vn_lut_out (
 
 	// Port B
 	output wire [3:0] t_c_B,
+	output wire [3:0] t_c_dinB, // the input source to decision node in the next step (without complement conversion)
 	output wire transpose_en_outB,
 	input wire transpose_en_inB,
 	input wire [3:0] y0_in_B,
@@ -37,6 +39,7 @@ module sym_vn_lut_out (
 
 	// Port C
 	output wire [3:0] t_c_C,
+	output wire [3:0] t_c_dinC, // the input source to decision node in the next step (without complement conversion)
 	output wire transpose_en_outC,
 	input wire transpose_en_inC,
 	input wire [3:0] y0_in_C,
@@ -44,6 +47,7 @@ module sym_vn_lut_out (
 
 	// Port D
 	output wire [3:0] t_c_D,
+	output wire [3:0] t_c_dinD, // the input source to decision node in the next step (without complement conversion)
 	output wire transpose_en_outD,
 	input wire transpose_en_inD,
 	input wire [3:0] y0_in_D,
@@ -208,7 +212,7 @@ module sym_vn_lut_out (
 		OutA_pipe1[3:0]        <= 0;
 		OutB_pipe1[3:0]        <= 0;
 		OutC_pipe1[3:0]        <= 0;
-		OutD_pipe1[3:0]        <= 0;
+		OutD_pipe1[3:0]        <= 0;	
 		msb_pipe1_A <= 0;
 		msb_pipe1_B <= 0;
 		msb_pipe1_C <= 0;
@@ -232,6 +236,11 @@ module sym_vn_lut_out (
 	assign t_c_B[3:0] = (msb_pipe1_B == 1'b1) ? ~OutB_pipe1[3:0] : OutB_pipe1[3:0];
 	assign t_c_C[3:0] = (msb_pipe1_C == 1'b1) ? ~OutC_pipe1[3:0] : OutC_pipe1[3:0];
 	assign t_c_D[3:0] = (msb_pipe1_D == 1'b1) ? ~OutD_pipe1[3:0] : OutD_pipe1[3:0];
+	assign t_c_dinA[3:0] = OutA_pipe1[3:0];
+	assign t_c_dinB[3:0] = OutB_pipe1[3:0];
+	assign t_c_dinC[3:0] = OutC_pipe1[3:0];
+	assign t_c_dinD[3:0] = OutD_pipe1[3:0];	
+	
 	assign transpose_en_outA = msb_pipe1_A; // for the decision node in the next stage
 	assign transpose_en_outB = msb_pipe1_B; // for the decision node in the next stage
 	assign transpose_en_outC = msb_pipe1_C; // for the decision node in the next stage
