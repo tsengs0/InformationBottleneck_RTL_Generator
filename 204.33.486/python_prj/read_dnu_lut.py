@@ -523,6 +523,7 @@ def cascaded_dnu3_sym_sw(iter, c2v_vec, ch_msg_in):
     # Declare the number of decomposed LUTs output sources
     f0_tc = np.empty(cascade_lut_num[0], dtype=np.int8)
     f1_tc = np.empty(cascade_lut_num[1], dtype=np.int8)
+    dnu_in = np.empty(cascade_lut_num[1], dtype=np.int8)
     f0_sign_forward = np.empty(cascade_lut_num[0], dtype=np.int8)
     f1_sign_forward = np.empty(cascade_lut_num[1], dtype=np.int8)
 
@@ -551,19 +552,19 @@ def cascaded_dnu3_sym_sw(iter, c2v_vec, ch_msg_in):
                     in_id_1 = cascade_lut_f1_inSrc[f1_m][1]
                     inSrc_1 = c2v_vec[in_id_1]
 
-                f1_tc[f1_m], f1_sign_forward[f1_m], dnu_in = lut_symmetric_cascade_out(iter, m, inSign_0, inSrc_0, inSrc_1)
+                f1_tc[f1_m], f1_sign_forward[f1_m], dnu_in[f1_m] = lut_symmetric_cascade_out(iter, m, inSign_0, inSrc_0, inSrc_1)
 
         elif m == 2:
             # First input source of DNU
             in_id_0 = cascade_lut_f2_inSrc[0][0] - inSrc_offset
-            inSrc_0 = f1_tc[in_id_0]
+            inSrc_0 = dnu_in[in_id_0]
             inSign_0 = f1_sign_forward[in_id_0]
 
             # Second input source of DNU
             in_id_1 = cascade_lut_f2_inSrc[0][1]
             inSrc_1 = c2v_vec[in_id_1]
 
-            hard_val = lut_symmetric_cascade_hardDecision(iter, 2, inSign_0, dnu_in, inSrc_1)
+            hard_val = lut_symmetric_cascade_hardDecision(iter, 2, inSign_0, inSrc_0, inSrc_1)
             dnu3_f2_dut_sample_gen(c2v_vec, ch_msg_in, hard_val)
 
         else:
@@ -623,9 +624,10 @@ def main():
             cascaded_dnu3_sym_sw(iter, c2v_sample, ch_msg_in)
 
 if __name__ == "__main__":
-    #dnu_f2_dut_file = open(dnu_f2_dut_filename, "w")
-    #main()
-    #dnu_f2_dut_file.close()
+    dnu_f2_dut_file = open(dnu_f2_dut_filename, "w")
+    main()
+    dnu_f2_dut_file.close()
+
     error = 0
     vec = [0, 0, 0, 0]
     for c2v_aggregate in range(2**16 - 1):
