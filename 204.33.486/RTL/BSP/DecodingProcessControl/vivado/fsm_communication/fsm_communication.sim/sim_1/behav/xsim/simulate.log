@@ -1,0 +1,3 @@
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+$finish called at time : 798 ns : File "/mnt/fs800/home/s1610105/Documents/research/Doctor/LDPC_MinorResearch/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/sim_1/new/cnu_wr_update_handshake_tb.sv" Line 102
