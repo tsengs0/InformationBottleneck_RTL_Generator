@@ -39,4 +39,4 @@ Reposity: https://github.com/aff3ct/aff3ct.git
 
 ##Misc. (10.NOV, 2020)
 The Working Progress is noted in the following directory.
-/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/Doc/WorkReport
+https://github.com/tsengs0/InformationBottleneck_RTL_Generator/tree/master/Doc/WorkReport
