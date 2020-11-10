@@ -12,17 +12,13 @@ In the above IP, there is one FIFO buffer in between PL and PS. Once the computa
 (N=204)
 Module | LUTRAM (origin) | LUT Logic (origin) 
 ------ | ------ | ---------
-vnu3   | 16,320 (16,320)	| 9680
-vnu3+dnu | 17,136 (17,952) | 11,584
+vnu3+dnu | 17,136 (17,952) | 11,584 (12,238)
 cnu6   | 8,568 (22,848)	| 5206 (14,792)
 symbol_generator(x100) | 4400 | 28500
 ------ | ------ | ---------
-total (without DNUs) | 29,288  | 43,329
-total (with DNUs) | 30,104 | 43,605
-utilisation (without decision nodes) | 28.781% | 33.612%
-utilisation (with DNUs) | 29.5833% | 33.8969%
-utilisation of LUT (without DNUs) | 31.478% ||
-utilisation of LUT (with DNUs) | 31.9918% ||
+total (with DNUs) | 30,104 (45,200) | 43,605 (55,530)
+utilisation (with DNUs) | 29.5833% (44.418%) | 33.8969% (43.167%)
+utilisation of LUT (with DNUs) | 31.936% (43.644%) ||
 
 (N=204*3=612)	
 Module | LUTRAM | LUT Logic
@@ -35,18 +31,12 @@ utilisation of LUT (without DNUs) | 65.876% ||
 utilisation of LUT (with DNUs) | 67.4162% ||
 
 
-Module | LUTRAM (origin) | LUT Logic (origin) 
------- | ------ | ---------
-vnu3+dnu | 17,136 (17,952) | 11,584 (12,238)
-cnu6   | 8,568 (22,848)	| 5206 (14,792)
-symbol_generator(x100) | 4400 | 28500
------- | ------ | ---------
-total (with DNUs) | 30,104 (45,200) | 43,605 (55,530)
-utilisation (with DNUs) | 29.5833% (44.418%) | 33.8969% (43.167%)
-utilisation of LUT (with DNUs) | 31.936% (43.644%) ||
 
 ###Misc. (27.OCT, 2020)
 One interesting C++ and SystemC based FEC Toolbox, the decription is as follow:
 AFF3CT is a simulator and a library dedicated to the Forward Error Correction (FEC or channel coding). It is written in C++ and it supports a large range of codes: from the well-spread Turbo codes to the new Polar codes including the Low-Density Parity-Check (LDPC) codes. AFF3CT can be used as a command line program and it simulates communication chains based on a Monte Carlo method.
-
 Reposity: https://github.com/aff3ct/aff3ct.git 
+
+##Misc. (10.NOV, 2020)
+The Working Progress is noted in the following directory.
+/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/Doc/WorkReport
