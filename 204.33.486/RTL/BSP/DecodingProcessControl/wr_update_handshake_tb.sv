@@ -102,4 +102,3 @@ module cnu_wr_update_handshake_tb;
 		##200 $finish;
 	end
 endmodule
-

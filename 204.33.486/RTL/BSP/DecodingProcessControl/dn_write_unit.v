@@ -19,14 +19,14 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module cnu6_wr_fsm #(
-	parameter LOAD_CYCLE = 32 // 64-entry with two interleaving banks requires 32 clock cycle to finish iteration update 
+module dnu3_wr_fsm #(
+	parameter LOAD_CYCLE = 64 // 128-entry with two interleaving banks requires 64 clock cycle to finish iteration update 
 ) (
 	output wire rom_port_fetch, // to enable the ib-map starting to fetch data from read port of IB ROM
     output wire ram_write_en,
     output wire ram_mux_en,
     output wire iter_update,
-    output wire c6ib_rom_rst,
+    output wire v3ib_rom_rst,
 	output wire [1:0] busy, // 00b: not busy at IDLE state; 01b: busy with update operations; 10b: not busy at FINISH state
     output reg [2:0] state,
     
@@ -111,14 +111,14 @@ initial ram_write_en_latch <= 1'b0;
 always @(posedge sys_clk) begin
     ram_write_en_latch <= rom_port_fetch;
 end
-assign {rom_port_fetch, iter_update, c6ib_rom_rst, ram_write_en} = (state[2:0] == IDLE        ) ? {3'b001, ram_write_en_latch} :
+assign {rom_port_fetch, iter_update, v3ib_rom_rst, ram_write_en} = (state[2:0] == IDLE        ) ? {3'b001, ram_write_en_latch} :
                                                                    (state[2:0] == PRELOAD_ADDR) ? {3'b110, ram_write_en_latch} :
                                                                    (state[2:0] == PRELOAD_DATA) ? {3'b110, ram_write_en_latch} :
                                                                    (state[2:0] == RAM_LOAD    ) ? {3'b110, ram_write_en_latch} :
                                                                    (state[2:0] == BATCH_WRITE ) ? {3'b110, ram_write_en_latch} : 
                                                                                                   {3'b001, ram_write_en_latch};
 */
-assign {rom_port_fetch, ram_mux_en, ram_write_en, iter_update, c6ib_rom_rst, busy[1:0]} = 
+assign {rom_port_fetch, ram_mux_en, ram_write_en, iter_update, v3ib_rom_rst, busy[1:0]} = 
                                                                    /*State 0*/ (state[2:0] == IDLE      ) ? 7'b0000100 :
                                                                    /*State 1*/ (state[2:0] == ROM_FETCH0) ? 7'b1001001 :
                                                                    /*State 2*/ (state[2:0] == RAM_LOAD0 ) ? 7'b1101001 :
@@ -128,6 +128,6 @@ assign {rom_port_fetch, ram_mux_en, ram_write_en, iter_update, c6ib_rom_rst, bus
 // Optimisation by Karnaugh maps                                                  
 assign ram_write_en = ~state[2] & state[1];
 assign iter_update = (state[2] & ~state[1] & ~state[0]) | (~state[2] & state[1]) | (~state[2] & state[0]);
-assign c6ib_rom_rst = (~state[2] & ~state[1] & ~state[0]) | (state[2] & ~state[1] & state[0]); 
+assign v3ib_rom_rst = (~state[2] & ~state[1] & ~state[0]) | (state[2] & ~state[1] & state[0]); 
 */     
 endmodule

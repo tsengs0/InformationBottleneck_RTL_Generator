@@ -13,7 +13,7 @@ module cnu_wr_update_handshake #(
 	input wire read_clk,
 	input wire rstn 
 );
-	wire iter_update;
+	wire iter_update, cnu_wr_fd;
 	reg [CDC_DEPTH-1:0] syncIterUp;
 	initial syncIterUp <= 0;
 	always @(posedge read_clk, negedge rstn) begin
@@ -46,10 +46,11 @@ module cnu_wr_update_handshake #(
 		else cnu_init_load_en <= cnu_init_load_en_i;
 	end
 	
-	wire sig_0, sig_1, sig_2, sig_3, sig_4, sig_5, sig_6, sig_7;
-	xnor u0(sig_0, cnu_wr_o, iter_update);
+	wire sig_0, sig_1, sig_2, sig_2_0, sig_3, sig_4, sig_5, sig_6, sig_7;
+	xnor u0(sig_0, cnu_wr_fd, iter_update);
 	or   u1(sig_1, init_load_o, pipe_load_o);
-	and  u2(sig_2, sig_0, sig_1);
+	and  u2_0(sig_2_0, sig_0, sig_1); //
+	or   u2(sig_2, sig_2_0, ((~syncIterUp[0] || iter_update) && cnu_wr_fd));
 	
 	xnor u3(sig_3, sig_2, cnu_wr_o);
 	and  u4(sig_4, sig_2, ~cnu_wr_o);
@@ -57,14 +58,15 @@ module cnu_wr_update_handshake #(
 	and  u6(sig_6, sig_5, cnu_init_load_en_i);
 	and  u7(sig_7, sig_5, cnu_rd_finish_i);
 
-	reg cnu_wr_reg; initial cnu_wr_reg <= 0;
+	reg [CDC_DEPTH-1:0] cnu_wr_reg; initial cnu_wr_reg <= 0;
 	always @(posedge read_clk, negedge rstn) begin
 		if(rstn == 1'b0)
-			cnu_wr_reg <= 1'b0;
+			cnu_wr_reg <= 0;
 		else
-			cnu_wr_reg <= sig_2;
+			cnu_wr_reg[CDC_DEPTH-1:0] <= {cnu_wr_reg[CDC_DEPTH-2:0], sig_2};
 	end
-	assign cnu_wr_o = cnu_wr_reg;
+	assign cnu_wr_o = cnu_wr_reg[0];
+	assign cnu_wr_fd = cnu_wr_reg[0];//cnu_wr_reg[CDC_DEPTH-1];
 	
 	reg [1:0] wr_trace; initial wr_trace[1:0] <= 2'd0;
 	always @(negedge read_clk, negedge rstn) begin
@@ -72,25 +74,25 @@ module cnu_wr_update_handshake #(
 	   else wr_trace[1:0] <= {wr_trace[0], cnu_wr_o};
 	end
 
-	reg init_load_reg; initial init_load_reg <= 0;
+	reg [CDC_DEPTH-1:0] init_load_reg; initial init_load_reg <= 0;
 	always @(posedge read_clk, negedge rstn) begin
 		if(rstn == 1'b0)
-			init_load_reg <= 1'b0;
+			init_load_reg <= 0;
 		else begin
-            if(wr_trace[1:0] == 2'b10) init_load_reg <= 1'b0;
-            else init_load_reg <= sig_6;
+            if(wr_trace[1:0] == 2'b10) init_load_reg <= 0;
+            else init_load_reg[CDC_DEPTH-1:0] <= {init_load_reg[CDC_DEPTH-2:0], sig_6};
 		end
 	end
-	assign init_load_o = init_load_reg;
+	assign init_load_o = init_load_reg[0];
 	
-	reg pipe_load_reg; initial pipe_load_reg <= 0;
+	reg [CDC_DEPTH-1:0] pipe_load_reg; initial pipe_load_reg <= 0;
 	always @(posedge read_clk, negedge rstn) begin
 		if(rstn == 1'b0)
-			pipe_load_reg <= 1'b0;
+			pipe_load_reg <= 0;
 		else begin
-            if(wr_trace[1:0] == 2'b10) pipe_load_reg <= 1'b0;
-            else pipe_load_reg <= sig_7;
+            if(wr_trace[1:0] == 2'b10) pipe_load_reg <= 0;
+            else pipe_load_reg[CDC_DEPTH-1:0] <= {pipe_load_reg[CDC_DEPTH-2:0], sig_7};
 		end
 	end
-	assign pipe_load_o = pipe_load_reg;
+	assign pipe_load_o = pipe_load_reg[0];
 endmodule
