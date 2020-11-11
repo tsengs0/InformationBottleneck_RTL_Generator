@@ -101,7 +101,8 @@ always @(posedge write_clk) begin
 				state <= RAM_LOAD1;
          end
          FINISH : begin
-            state <= IDLE;
+	    if(iter_rqst == 1'b1) state <= FINISH; // intentionally suspending at current state when iter_rqst is still asserted due to the asynchronous timing
+            else state <= IDLE;
          end                     
       endcase	
 end	
@@ -117,6 +118,14 @@ assign {rom_port_fetch, iter_update, v3ib_rom_rst, ram_write_en} = (state[2:0] =
                                                                    (state[2:0] == RAM_LOAD    ) ? {3'b110, ram_write_en_latch} :
                                                                    (state[2:0] == BATCH_WRITE ) ? {3'b110, ram_write_en_latch} : 
                                                                                                   {3'b001, ram_write_en_latch};
+*/
+
+/*
+reg iter_update_pipe; // CDC
+always @(posedge write_clk, negedge rstn) begin
+	if(rstn == 1'b0) iter_update_pipe <= 0;
+	else iter_update_pipe <= iter_update;
+end
 */
 assign {rom_port_fetch, ram_mux_en, ram_write_en, iter_update, v3ib_rom_rst, busy[1:0]} = 
                                                                    /*State 0*/ (state[2:0] == IDLE      ) ? 7'b0000100 :

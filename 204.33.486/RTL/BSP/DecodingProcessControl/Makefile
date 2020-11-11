@@ -16,6 +16,9 @@ run:
 	./${SIM_FILE} &
 	gtkwave sys_fsm.vcd & 
 
+sync:
+	scp -r *.v *.sv *.vh Makefile Note *.sav *.vcd s1820419@lmpcc.jaist.ac.jp:/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/
+
 clean:
 	rm -rf $(SIM_FILE) $(SIM_FILE).daidir csrc ucli.key
 	rm sys_fsm.vcd

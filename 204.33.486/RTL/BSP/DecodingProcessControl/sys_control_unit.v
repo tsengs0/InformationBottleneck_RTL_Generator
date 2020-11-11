@@ -189,9 +189,9 @@ reg [CNU_PIPELINE_LEVEL-1:0] cnu_pipeline_level;
 reg [VNU_PIPELINE_LEVEL-1:0] vnu_pipeline_level;
 reg [`QUAN_SIZE:0] v2c_msg_psp;
 reg [`QUAN_SIZE:0] c2v_msg_psp;
-reg [2:0] cnu_init_load_cnt; // to account for the remaining clock cycles until the "BUSY" signal is asserted
-reg [2:0] vnu_init_load_cnt; // to account for the remaining clock cycles until the "BUSY" signal is asserted
-reg [2:0] dnu_init_load_cnt; // to account for the remaining clock cycles until the "BUSY" signal is asserted
+/*(no longer be used)*///reg [2:0] cnu_init_load_cnt; // to account for the remaining clock cycles until the "BUSY" signal is asserted
+/*(no longer be used)*///reg [2:0] vnu_init_load_cnt; // to account for the remaining clock cycles until the "BUSY" signal is asserted
+/*(no longer be used)*///reg [2:0] dnu_init_load_cnt; // to account for the remaining clock cycles until the "BUSY" signal is asserted
 //------------------------------------------------------------------------------------
 // Control signals for handshaking scheme between System.FSM and WR.FSM
 // Inital-Load operation
@@ -524,7 +524,11 @@ generate
 		always @(posedge read_clk, negedge rstn) begin	
 			if(rstn == 1'b0) vnu_init_load_en[j] <= 1'b0;
 			else if(init_load_cnt > LOAD_HANDSHAKE_LATENCY) vnu_init_load_en[j] <= vnu_init_load_busy[j];
-			else if(init_load_start && ~init_load_finish) vnu_init_load_en[j] <= 1'b1;
+			
+			// Two cases:
+			// 1) start=1, finish=0 but wr_o=0 -> beginning of Init-Load operation
+			// 2) start=1, finish=0 buy wr_o=1 -> finish tim of Init-Load Opeartion for VNUs however the reset of IB-RAMs may not complete yet
+			else if(init_load_start && ~init_load_finish) vnu_init_load_en[j] <= 1'b1; 
 			else vnu_init_load_en[j] <= 1'b0;
 		end
 		

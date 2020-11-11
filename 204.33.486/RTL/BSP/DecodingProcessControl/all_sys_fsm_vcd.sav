@@ -1,0 +1,61 @@
+[timestart] 1658300
+[size] 1920 1177
+[pos] 2623 -113
+*-15.432086 1907500 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] sys_fsm_tb.
+[treeopen] sys_fsm_tb.cn_wr_fsm_inst[0].
+[treeopen] sys_fsm_tb.vn_wr_fsm_inst[0].
+@28
+sys_fsm_tb.rstn
+sys_fsm_tb.read_clk
+@29
+sys_fsm_tb.frame_fsm_0.init_load_start
+sys_fsm_tb.frame_fsm_0.init_load_finish
+@23
+#{sys_fsm_tb.cn_ram_write_en[3:0]} sys_fsm_tb.cn_ram_write_en[3] sys_fsm_tb.cn_ram_write_en[2] sys_fsm_tb.cn_ram_write_en[1] sys_fsm_tb.cn_ram_write_en[0]
+@28
+sys_fsm_tb.cn_write_clk
+@22
+sys_fsm_tb.cn_wr_fsm_inst[0].cnu6_wr_fsm_u0.write_cnt[4:0]
+sys_fsm_tb.frame_fsm_0.cn_ram_we[3:0]
+@23
+sys_fsm_tb.frame_fsm_0.cnu_wr[3:0]
+@22
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_rdy[3:0]
+@23
+sys_fsm_tb.frame_fsm_0.cnu_init_load_en[3:0]
+@22
+sys_fsm_tb.frame_fsm_0.cnu_pipe_load_en[3:0]
+@28
+sys_fsm_tb.vn_write_clk
+@22
+sys_fsm_tb.vn_wr_fsm_inst[0].vnu3_wr_fsm_u0.write_cnt[5:0]
+@29
+#{sys_fsm_tb.vn_ram_write_en[1:0]} sys_fsm_tb.vn_ram_write_en[1] sys_fsm_tb.vn_ram_write_en[0]
+@28
+sys_fsm_tb.frame_fsm_0.vn_ram_we[1:0]
+@29
+sys_fsm_tb.frame_fsm_0.vnu_wr[1:0]
+@28
+sys_fsm_tb.frame_fsm_0.vn_slave_wr_rdy[1:0]
+@29
+sys_fsm_tb.frame_fsm_0.vnu_init_load_en[1:0]
+@28
+sys_fsm_tb.frame_fsm_0.vnu_pipe_load_en[1:0]
+sys_fsm_tb.dn_write_clk
+@22
+sys_fsm_tb.dnu3_wr_fsm_u0.write_cnt[5:0]
+@29
+sys_fsm_tb.dn_ram_write_en
+@28
+sys_fsm_tb.frame_fsm_0.dn_ram_we
+@29
+sys_fsm_tb.frame_fsm_0.dnu_wr
+@28
+sys_fsm_tb.frame_fsm_0.dn_slave_wr_rdy
+@29
+sys_fsm_tb.frame_fsm_0.dnu_init_load_en
+@28
+sys_fsm_tb.frame_fsm_0.dnu_pipe_load_en
+[pattern_trace] 1
+[pattern_trace] 0

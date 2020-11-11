@@ -101,7 +101,8 @@ always @(posedge write_clk) begin
 				state <= RAM_LOAD1;
          end
          FINISH : begin
-            state <= IDLE;
+	    if(iter_rqst == 1'b1) state <= FINISH; // intentionally suspending at current state when iter_rqst is still asserted due to the asynchronous timing
+            else state <= IDLE;
          end                     
       endcase	
 end	
