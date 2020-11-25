@@ -1,0 +1,18 @@
+[timestart] 0
+[size] 1920 1057
+[pos] 2649 -87
+*-6.767255 195 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+@28
+cnu_wr_update_handshake_tb.read_clk
+cnu_wr_update_handshake_tb.rstn
+cnu_wr_update_handshake_tb.cnu_init_load_en_i
+cnu_wr_update_handshake_tb.cnu_rd_finish_i
+cnu_wr_update_handshake_tb.init_load_o
+cnu_wr_update_handshake_tb.pipe_load_o
+cnu_wr_update_handshake_tb.cnu_wr_o
+cnu_wr_update_handshake_tb.iter_update_i
+cnu_wr_update_handshake_tb.write_clk
+@25
+cnu_wr_update_handshake_tb.update_cnt[4:0]
+[pattern_trace] 1
+[pattern_trace] 0

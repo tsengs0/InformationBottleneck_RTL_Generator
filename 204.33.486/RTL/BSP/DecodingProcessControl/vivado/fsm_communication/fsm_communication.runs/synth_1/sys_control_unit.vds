@@ -1,0 +1,705 @@
+#-----------------------------------------------------------
+# Vivado v2019.2 (64-bit)
+# SW Build 2708876 on Wed Nov  6 21:39:14 MST 2019
+# IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
+# Start of session at: Wed Nov 11 10:21:18 2020
+# Process ID: 15082
+# Current directory: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.runs/synth_1
+# Command line: vivado -log sys_control_unit.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source sys_control_unit.tcl
+# Log file: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.runs/synth_1/sys_control_unit.vds
+# Journal file: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.runs/synth_1/vivado.jou
+#-----------------------------------------------------------
+source sys_control_unit.tcl -notrace
+Command: synth_design -top sys_control_unit -part xczu7ev-ffvc1156-2-e
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xczu7ev'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xczu7ev'
+INFO: [Device 21-403] Loading part xczu7ev-ffvc1156-2-e
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 15328 
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:05 . Memory (MB): peak = 2504.484 ; gain = 0.000 ; free physical = 2198 ; free virtual = 146839
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'sys_control_unit' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/sources_1/imports/DecodingProcessControl/sys_control_unit.v:23]
+	Parameter RESET_CYCLE bound to: 100 - type: integer 
+	Parameter CN_LOAD_CYCLE bound to: 32 - type: integer 
+	Parameter VN_LOAD_CYCLE bound to: 64 - type: integer 
+	Parameter DN_LOAD_CYCLE bound to: 64 - type: integer 
+	Parameter CNU_PIPELINE_LEVEL bound to: 4 - type: integer 
+	Parameter VNU_PIPELINE_LEVEL bound to: 2 - type: integer 
+	Parameter INIT_INTER_FRAME_EN bound to: 0 - type: integer 
+	Parameter INIT_LOAD bound to: 4'b0000 
+	Parameter LLR_FETCH bound to: 4'b0001 
+	Parameter LLR_FETCH_OUT bound to: 4'b0010 
+	Parameter CNU_PIPE bound to: 4'b0011 
+	Parameter CNU_OUT bound to: 4'b0100 
+	Parameter P2P_C bound to: 4'b0101 
+	Parameter P2P_C_OUT bound to: 4'b0110 
+	Parameter VNU_PIPE bound to: 4'b0111 
+	Parameter VNU_OUT bound to: 4'b1000 
+	Parameter P2P_V bound to: 4'b1001 
+	Parameter P2P_V_OUT bound to: 4'b1010 
+	Parameter LOAD_HANDSHAKE_LATENCY bound to: 3 - type: integer 
+	Parameter RESET_CYCLE_BITWIDTH bound to: 7 - type: integer 
+	Parameter interFrame_enStart bound to: 8 - type: integer 
+	Parameter interFrame_enStart_v bound to: 1 - type: integer 
+	Parameter msg_overflow bound to: 8 - type: integer 
+	Parameter cnu_shift_overflow bound to: 8 - type: integer 
+	Parameter vnu_shift_overflow bound to: 2 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'cnu_wr_update_handshake' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/sources_1/new/cnu_wr_update_handshake.v:2]
+	Parameter CDC_DEPTH bound to: 2 - type: integer 
+WARNING: [Synth 8-6014] Unused sequential element cnu_cdc_inst[1].syncIterUp_reg was removed.  [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/sources_1/new/cnu_wr_update_handshake.v:27]
+WARNING: [Synth 8-6014] Unused sequential element syncIterUp_reg was removed.  [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/sources_1/new/cnu_wr_update_handshake.v:20]
+WARNING: [Synth 8-6014] Unused sequential element cnu_rd_finish_reg was removed.  [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/sources_1/new/cnu_wr_update_handshake.v:40]
+WARNING: [Synth 8-6014] Unused sequential element cnu_init_load_en_reg was removed.  [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/sources_1/new/cnu_wr_update_handshake.v:45]
+INFO: [Synth 8-6155] done synthesizing module 'cnu_wr_update_handshake' (1#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/sources_1/new/cnu_wr_update_handshake.v:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu_wr_update_handshake' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/sources_1/imports/DecodingProcessControl/vnu_wr_update_handshake.v:2]
+	Parameter CDC_DEPTH bound to: 2 - type: integer 
+WARNING: [Synth 8-6014] Unused sequential element vnu_rd_finish_reg was removed.  [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/sources_1/imports/DecodingProcessControl/vnu_wr_update_handshake.v:40]
+WARNING: [Synth 8-6014] Unused sequential element vnu_init_load_en_reg was removed.  [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/sources_1/imports/DecodingProcessControl/vnu_wr_update_handshake.v:45]
+INFO: [Synth 8-6155] done synthesizing module 'vnu_wr_update_handshake' (2#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/sources_1/imports/DecodingProcessControl/vnu_wr_update_handshake.v:2]
+WARNING: [Synth 8-6014] Unused sequential element reset_cnt_reg was removed.  [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/sources_1/imports/DecodingProcessControl/sys_control_unit.v:93]
+WARNING: [Synth 8-6014] Unused sequential element decode_start_reg was removed.  [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/sources_1/imports/DecodingProcessControl/sys_control_unit.v:100]
+INFO: [Synth 8-6155] done synthesizing module 'sys_control_unit' (3#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/sources_1/imports/DecodingProcessControl/sys_control_unit.v:23]
+WARNING: [Synth 8-3917] design sys_control_unit has port cnu_rd[3] driven by constant 0
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 2562.184 ; gain = 57.699 ; free physical = 2227 ; free virtual = 146869
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:05 ; elapsed = 00:00:07 . Memory (MB): peak = 2565.152 ; gain = 60.668 ; free physical = 2223 ; free virtual = 146865
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:05 ; elapsed = 00:00:07 . Memory (MB): peak = 2565.152 ; gain = 60.668 ; free physical = 2223 ; free virtual = 146865
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 2565.152 ; gain = 0.000 ; free physical = 2216 ; free virtual = 146858
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc]
+WARNING: [Vivado 12-584] No ports matched 'UART2_TXD_FPGA_RXD'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:30]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:30]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'UART2_TXD_FPGA_RXD'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:31]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:31]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'UART2_RXD_FPGA_TXD'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:32]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:32]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'UART2_RXD_FPGA_TXD'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:33]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:33]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'UART2_RTS_B'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:34]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:34]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'UART2_RTS_B'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:35]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:35]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'UART2_CTS_B'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:36]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:36]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'UART2_CTS_B'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:37]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:37]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'CLK_125_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:64]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:64]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'CLK_125_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:65]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:65]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'CLK_125_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:66]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:66]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'CLK_125_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:67]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:67]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'HDMI_TX_LVDS_OUT_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:68]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:68]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'HDMI_TX_LVDS_OUT_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:69]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:69]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'HDMI_TX_LVDS_OUT_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:70]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:70]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'HDMI_TX_LVDS_OUT_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:71]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:71]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'HDMI_REC_CLOCK_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:72]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:72]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'HDMI_REC_CLOCK_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:73]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:73]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'HDMI_REC_CLOCK_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:74]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:74]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'HDMI_REC_CLOCK_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:75]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:75]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA23_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:121]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:121]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA23_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:122]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:122]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA23_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:123]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:123]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA23_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:124]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:124]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA27_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:125]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:125]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA27_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:126]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:126]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA27_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:127]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:127]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA27_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:128]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:128]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA21_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:129]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:129]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA21_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:130]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:130]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA21_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:131]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:131]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA21_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:132]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:132]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA24_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:133]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:133]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA24_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:134]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:134]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA24_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:135]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:135]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA24_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:136]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:136]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA26_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:137]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:137]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA26_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:138]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:138]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA26_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:139]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:139]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA26_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:140]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:140]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA25_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:141]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:141]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA25_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:142]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:142]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA25_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:143]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:143]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA25_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:144]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:144]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA19_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:149]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:149]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA19_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:150]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:150]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA19_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:151]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:151]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA19_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:152]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:152]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA20_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:153]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:153]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA20_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:154]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:154]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA20_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:155]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:155]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA20_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:156]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:156]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA18_CC_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:157]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:157]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA18_CC_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:158]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:158]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA18_CC_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:159]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:159]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA18_CC_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:160]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:160]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA22_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:161]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:161]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA22_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:162]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:162]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA22_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:163]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:163]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA22_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:164]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:164]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA17_CC_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:165]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:165]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA17_CC_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:166]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:166]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA17_CC_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:167]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:167]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA17_CC_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:168]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:168]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_CLK1_M2C_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:173]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:173]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_CLK1_M2C_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:174]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:174]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_CLK1_M2C_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:175]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:175]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_CLK1_M2C_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:176]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:176]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA30_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:181]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:181]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA30_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:182]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:182]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA30_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:183]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:183]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA30_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:184]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:184]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA32_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:185]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:185]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA32_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:186]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:186]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA32_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:187]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:187]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA32_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:188]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:188]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA33_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:189]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:189]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA33_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:190]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:190]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA33_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:191]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:191]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA33_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:192]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:192]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA31_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:193]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:193]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA31_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:194]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:194]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA31_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:195]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:195]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA31_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:196]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:196]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA29_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:217]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:217]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA29_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:218]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:218]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA29_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:219]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:219]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA29_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:220]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:220]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA28_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:221]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:221]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA28_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:222]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:222]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA28_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:223]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:223]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA28_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:224]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:224]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA04_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:226]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:226]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA04_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:227]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:227]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA04_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:228]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:228]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA04_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:229]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:229]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA03_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:230]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:230]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA03_N'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:231]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:231]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA03_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:232]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:232]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'FMC_LPC_LA03_P'. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:233]
+INFO: [Common 17-14] Message 'Vivado 12-584' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:233]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:233]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+CRITICAL WARNING: [Common 17-163] Missing value for option 'objects', please type 'set_property -help' for usage info. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:475]
+CRITICAL WARNING: [Designutils 20-1307] Command '3set_property' is not supported in the xdc constraint file. [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc:620]
+Finished Parsing XDC File [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.srcs/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc]
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2738.871 ; gain = 0.000 ; free physical = 2144 ; free virtual = 146785
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+WARNING: [Constraints 18-5210] No constraints selected for write.
+Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.07 ; elapsed = 00:00:00.11 . Memory (MB): peak = 2738.871 ; gain = 0.000 ; free physical = 2145 ; free virtual = 146786
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:13 ; elapsed = 00:00:19 . Memory (MB): peak = 2738.871 ; gain = 234.387 ; free physical = 2199 ; free virtual = 146841
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xczu7ev-ffvc1156-2-e
+INFO: [Synth 8-6742] Reading net delay rules and data
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:13 ; elapsed = 00:00:19 . Memory (MB): peak = 2738.871 ; gain = 234.387 ; free physical = 2198 ; free virtual = 146840
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:13 ; elapsed = 00:00:19 . Memory (MB): peak = 2738.871 ; gain = 234.387 ; free physical = 2199 ; free virtual = 146841
+---------------------------------------------------------------------------------
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'sys_control_unit'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+               INIT_LOAD |                      00000010000 |                             0000
+               LLR_FETCH |                      00001000000 |                             0001
+           LLR_FETCH_OUT |                      00000001000 |                             0010
+                CNU_PIPE |                      00000000001 |                             0011
+                 CNU_OUT |                      00000000010 |                             0100
+                   P2P_C |                      00000000100 |                             0101
+               P2P_C_OUT |                      10000000000 |                             0110
+                VNU_PIPE |                      00010000000 |                             0111
+                 VNU_OUT |                      00100000000 |                             1000
+                   P2P_V |                      01000000000 |                             1001
+               P2P_V_OUT |                      00000100000 |                             1010
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'one-hot' in module 'sys_control_unit'
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:14 ; elapsed = 00:00:19 . Memory (MB): peak = 2738.871 ; gain = 234.387 ; free physical = 2191 ; free virtual = 146833
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      3 Bit       Adders := 8     
++---XORs : 
+	   2 Input      1 Bit         XORs := 22    
++---Registers : 
+	                5 Bit    Registers := 2     
+	                4 Bit    Registers := 1     
+	                3 Bit    Registers := 8     
+	                2 Bit    Registers := 17    
+	                1 Bit    Registers := 54    
++---Muxes : 
+	  11 Input     11 Bit        Muxes := 1     
+	   2 Input     11 Bit        Muxes := 8     
+	   3 Input      5 Bit        Muxes := 1     
+	   2 Input      4 Bit        Muxes := 2     
+	  11 Input      4 Bit        Muxes := 1     
+	   2 Input      3 Bit        Muxes := 17    
+	   2 Input      2 Bit        Muxes := 8     
+	   2 Input      1 Bit        Muxes := 51    
+	   5 Input      1 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+Module sys_control_unit 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      3 Bit       Adders := 8     
++---XORs : 
+	   2 Input      1 Bit         XORs := 8     
++---Registers : 
+	                5 Bit    Registers := 2     
+	                4 Bit    Registers := 1     
+	                3 Bit    Registers := 8     
+	                2 Bit    Registers := 1     
+	                1 Bit    Registers := 39    
++---Muxes : 
+	  11 Input     11 Bit        Muxes := 1     
+	   2 Input     11 Bit        Muxes := 8     
+	   3 Input      5 Bit        Muxes := 1     
+	   2 Input      4 Bit        Muxes := 2     
+	  11 Input      4 Bit        Muxes := 1     
+	   2 Input      3 Bit        Muxes := 17    
+	   2 Input      2 Bit        Muxes := 2     
+	   2 Input      1 Bit        Muxes := 43    
+	   5 Input      1 Bit        Muxes := 1     
+Module vnu_wr_update_handshake 
+Detailed RTL Component Info : 
++---XORs : 
+	   2 Input      1 Bit         XORs := 2     
++---Registers : 
+	                2 Bit    Registers := 4     
+	                1 Bit    Registers := 1     
++---Muxes : 
+	   2 Input      2 Bit        Muxes := 2     
+Module cnu_wr_update_handshake 
+Detailed RTL Component Info : 
++---XORs : 
+	   2 Input      1 Bit         XORs := 2     
++---Registers : 
+	                2 Bit    Registers := 1     
+	                1 Bit    Registers := 3     
++---Muxes : 
+	   2 Input      1 Bit        Muxes := 2     
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 1728 (col length:144)
+BRAMs: 624 (col length: RAMB18 144 RAMB36 72)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+Warning: Parallel synthesis criteria is not met 
+WARNING: [Synth 8-3917] design sys_control_unit has port cnu_rd[3] driven by constant 0
+WARNING: [Synth 8-3917] design sys_control_unit has port cnu_rd[2] driven by constant 0
+WARNING: [Synth 8-3917] design sys_control_unit has port cnu_rd[1] driven by constant 0
+WARNING: [Synth 8-3917] design sys_control_unit has port vnu_rd[1] driven by constant 0
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:15 ; elapsed = 00:00:21 . Memory (MB): peak = 2738.871 ; gain = 234.387 ; free physical = 2178 ; free virtual = 146823
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:45 ; elapsed = 00:01:17 . Memory (MB): peak = 3196.457 ; gain = 691.973 ; free physical = 2123 ; free virtual = 146176
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:45 ; elapsed = 00:01:17 . Memory (MB): peak = 3196.457 ; gain = 691.973 ; free physical = 2123 ; free virtual = 146176
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:45 ; elapsed = 00:01:17 . Memory (MB): peak = 3216.488 ; gain = 712.004 ; free physical = 2267 ; free virtual = 146174
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:49 ; elapsed = 00:01:21 . Memory (MB): peak = 3222.426 ; gain = 717.941 ; free physical = 2267 ; free virtual = 146175
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:49 ; elapsed = 00:01:21 . Memory (MB): peak = 3222.426 ; gain = 717.941 ; free physical = 2267 ; free virtual = 146175
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:49 ; elapsed = 00:01:21 . Memory (MB): peak = 3222.426 ; gain = 717.941 ; free physical = 2267 ; free virtual = 146175
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:49 ; elapsed = 00:01:21 . Memory (MB): peak = 3222.426 ; gain = 717.941 ; free physical = 2267 ; free virtual = 146175
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:49 ; elapsed = 00:01:21 . Memory (MB): peak = 3222.426 ; gain = 717.941 ; free physical = 2267 ; free virtual = 146175
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:49 ; elapsed = 00:01:21 . Memory (MB): peak = 3222.426 ; gain = 717.941 ; free physical = 2267 ; free virtual = 146175
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-----+------+
+|      |Cell |Count |
++------+-----+------+
+|1     |BUFG |     1|
+|2     |LUT1 |     2|
+|3     |LUT2 |    45|
+|4     |LUT3 |    23|
+|5     |LUT4 |    26|
+|6     |LUT5 |    17|
+|7     |LUT6 |    21|
+|8     |FDCE |   103|
+|9     |FDRE |    22|
+|10    |FDSE |     3|
+|11    |IBUF |    12|
+|12    |OBUF |    33|
++------+-----+------+
+
+Report Instance Areas: 
++------+--------------------------------------------------+--------------------------+------+
+|      |Instance                                          |Module                    |Cells |
++------+--------------------------------------------------+--------------------------+------+
+|1     |top                                               |                          |   308|
+|2     |  \cn_slave_wr_handshake_inst[0].cn_wr_handshake  |cnu_wr_update_handshake   |    11|
+|3     |  \cn_slave_wr_handshake_inst[1].cn_wr_handshake  |cnu_wr_update_handshake_0 |    11|
+|4     |  \cn_slave_wr_handshake_inst[2].cn_wr_handshake  |cnu_wr_update_handshake_1 |    11|
+|5     |  \cn_slave_wr_handshake_inst[3].cn_wr_handshake  |cnu_wr_update_handshake_2 |    13|
+|6     |  dn_wr_handshake                                 |vnu_wr_update_handshake   |    12|
+|7     |  \vn_slave_wr_handshake_inst[0].vn_wr_handshake  |vnu_wr_update_handshake_3 |    12|
+|8     |  \vn_slave_wr_handshake_inst[1].vn_wr_handshake  |vnu_wr_update_handshake_4 |    13|
++------+--------------------------------------------------+--------------------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:49 ; elapsed = 00:01:21 . Memory (MB): peak = 3222.426 ; gain = 717.941 ; free physical = 2267 ; free virtual = 146175
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 4 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:45 ; elapsed = 00:01:14 . Memory (MB): peak = 3222.426 ; gain = 544.223 ; free physical = 2305 ; free virtual = 146212
+Synthesis Optimization Complete : Time (s): cpu = 00:00:49 ; elapsed = 00:01:21 . Memory (MB): peak = 3222.434 ; gain = 717.941 ; free physical = 2305 ; free virtual = 146213
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 3236.363 ; gain = 0.000 ; free physical = 2376 ; free virtual = 146283
+INFO: [Netlist 29-17] Analyzing 13 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3283.254 ; gain = 0.000 ; free physical = 2314 ; free virtual = 146222
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 13 instances were transformed.
+  BUFG => BUFGCE: 1 instance 
+  IBUF => IBUF (IBUFCTRL, INBUF): 12 instances
+
+INFO: [Common 17-83] Releasing license: Synthesis
+21 Infos, 114 Warnings, 102 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:01:04 ; elapsed = 00:01:42 . Memory (MB): peak = 3283.254 ; gain = 1801.859 ; free physical = 2431 ; free virtual = 146339
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3283.254 ; gain = 0.000 ; free physical = 2431 ; free virtual = 146339
+WARNING: [Constraints 18-5210] No constraints selected for write.
+Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
+INFO: [Common 17-1381] The checkpoint '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.runs/synth_1/sys_control_unit.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file sys_control_unit_utilization_synth.rpt -pb sys_control_unit_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Wed Nov 11 10:23:12 2020...

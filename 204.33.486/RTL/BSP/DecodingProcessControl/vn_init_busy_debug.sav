@@ -1,0 +1,37 @@
+[timestart] 1795100
+[size] 1368 889
+[pos] -61 -61
+*-15.229986 1887500 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] sys_fsm_tb.
+[treeopen] sys_fsm_tb.cn_wr_fsm_inst[0].
+[treeopen] sys_fsm_tb.frame_fsm_0.
+[treeopen] sys_fsm_tb.vn_wr_fsm_inst[0].
+@28
+sys_fsm_tb.frame_fsm_0.rstn
+sys_fsm_tb.frame_fsm_0.read_clk
+@24
+sys_fsm_tb.cn_wr_fsm_inst[0].cnu6_wr_fsm_u0.write_cnt[4:0]
+@22
+sys_fsm_tb.frame_fsm_0.cnu_wr[3:0]
+@23
+sys_fsm_tb.frame_fsm_0.cnu_init_load_busy[3:0]
+@22
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_rdy[3:0]
+@24
+sys_fsm_tb.vn_wr_fsm_inst[0].vnu3_wr_fsm_u0.write_cnt[5:0]
+@28
+sys_fsm_tb.frame_fsm_0.vnu_wr[1:0]
+@29
+sys_fsm_tb.frame_fsm_0.vnu_init_load_busy[1:0]
+@28
+sys_fsm_tb.frame_fsm_0.vn_slave_wr_rdy[1:0]
+@24
+sys_fsm_tb.dnu3_wr_fsm_u0.write_cnt[5:0]
+@28
+sys_fsm_tb.frame_fsm_0.dnu_wr
+@29
+sys_fsm_tb.frame_fsm_0.dnu_init_load_busy
+@28
+sys_fsm_tb.frame_fsm_0.dn_slave_wr_rdy
+[pattern_trace] 1
+[pattern_trace] 0

@@ -27,8 +27,8 @@ module sys_control_unit #(
 	parameter VN_LOAD_CYCLE = 64, // 128-entry with two interleaving banks requires 64 clock cycle to finish iteration update
 	parameter DN_LOAD_CYCLE = 64, // 128-entry with two interleaving banks requires 64 clock cycle to finish iteration update
 	
-	parameter CNU_PIPELINE_LEVEL = 5-1, // the last pipeline register is actually shared with P2P_C
-	parameter VNU_PIPELINE_LEVEL = 3-1, // the last pipeline register is actually shared with P2P_V
+	parameter CNU_PIPELINE_LEVEL = 4, // the last pipeline register is actually shared with P2P_C
+	parameter VNU_PIPELINE_LEVEL = 2, // the last pipeline register is actually shared with P2P_V
 	parameter INIT_INTER_FRAME_EN = 0,
       
 	parameter [3:0] INIT_LOAD     = 4'b0000,
@@ -59,9 +59,9 @@ module sys_control_unit #(
     output wire v2c_load, // load enable signal to parallel-to-serial converter
     output reg inter_frame_en, // to enable the next frame's decoding process
     output reg de_frame_start, // to inform system that decoding process of current frame has already started. The given "termination" signal will be thereby deasserted by system 
-    output reg [`IB_CNU_DECOMP_funNum-1:0] cn_ram_we, // enable the pipelining of IB-CNU RAMs Iteration Update
-    output reg [`IB_VNU_DECOMP_funNum-1:0] vn_ram_we, // enable the pipelining of IB-VNU RAMs Iteration Update
-    output reg dn_ram_we, // enable the pipelining of IB-DNU RAMs Iteration Update
+    output reg [`IB_CNU_DECOMP_funNum-1:0] cn_ram_re, // enable the pipelining of IB-CNU RAMs Iteration Update
+    output reg [`IB_VNU_DECOMP_funNum-1:0] vn_ram_re, // enable the pipelining of IB-VNU RAMs Iteration Update
+    output reg dn_ram_re, // enable the pipelining of IB-DNU RAMs Iteration Update
 	output reg [3:0] state,
    
 	// Input port acknowledging from Write/Update FSMs
@@ -183,8 +183,8 @@ localparam interFrame_enStart = 2**(`QUAN_SIZE-1); // to make inter_frame_en be 
 						   // the INIT_LOAD state can thereby start at LLR_FETCH_OUT state of first frame's decoding process 
 localparam interFrame_enStart_v = 2**(VNU_PIPELINE_LEVEL-1-1);
 localparam msg_overflow = 2**(`QUAN_SIZE-1);
-localparam cnu_shift_overflow = 2**(CNU_PIPELINE_LEVEL-1); 
-localparam vnu_shift_overflow = 2**(VNU_PIPELINE_LEVEL-1);
+localparam cnu_shift_overflow = 2**(CNU_PIPELINE_LEVEL-1-1); 
+localparam vnu_shift_overflow = 2**(VNU_PIPELINE_LEVEL-1-1);
 reg [CNU_PIPELINE_LEVEL-1:0] cnu_pipeline_level;
 reg [VNU_PIPELINE_LEVEL-1:0] vnu_pipeline_level;
 reg [`QUAN_SIZE:0] v2c_msg_psp;
@@ -195,9 +195,15 @@ reg [`QUAN_SIZE:0] c2v_msg_psp;
 //------------------------------------------------------------------------------------
 // Control signals for handshaking scheme between System.FSM and WR.FSM
 // Inital-Load operation
-reg [2:0] init_load_cnt;
-reg init_load_start;  // to signal the "START" status of "Initial-Load" operation
-reg init_load_finish; // to enable the CNU_PIPE whilst "Initial-Load" operation completed
+reg [2:0] cnu_init_load_cnt [0:`IB_CNU_DECOMP_funNum-1];
+reg [`IB_CNU_DECOMP_funNum-1:0] cnu_init_load_start;  // to signal the "START" status of "Initial-Load" operation
+reg [`IB_CNU_DECOMP_funNum-1:0] cnu_init_load_finish; // to enable the CNU_PIPE whilst "Initial-Load" operation completed
+reg [2:0] vnu_init_load_cnt [0:`IB_VNU_DECOMP_funNum-1];
+reg [`IB_VNU_DECOMP_funNum-1:0] vnu_init_load_start;  // to signal the "START" status of "Initial-Load" operation
+reg [`IB_VNU_DECOMP_funNum-1:0] vnu_init_load_finish; // to enable the VNU_PIPE whilst "Initial-Load" operation completed
+reg [2:0] dnu_init_load_cnt;
+reg dnu_init_load_start;  // to signal the "START" status of "Initial-Load" operation
+reg dnu_init_load_finish; // to enable the DNU_PIPE whilst "Initial-Load" operation completed
 // Pipe-Load operation for CNUs
 reg [2:0] cnu_pipe_load_cnt [0:`IB_CNU_DECOMP_funNum-1];
 reg [`IB_CNU_DECOMP_funNum-1:0] cnu_pipe_load_start;  // to signal the "START" status of "PIPE-Load" operation
@@ -231,7 +237,7 @@ always @(posedge read_clk, negedge rstn) begin
     else if(state == CNU_PIPE) begin
 		if(cnu_pipeline_level[CNU_PIPELINE_LEVEL-1:0] == 0)
 			cnu_pipeline_level[CNU_PIPELINE_LEVEL-1:0] <= 1;
-		//else if({cn_ram_we && cnu_pipe_load_finish} == 0)
+		//else if({cn_ram_re && cnu_pipe_load_finish} == 0)
 		//	cnu_pipeline_level[CNU_PIPELINE_LEVEL-1:0] <= cnu_pipeline_level[CNU_PIPELINE_LEVEL-1:0];
 		else
 			cnu_pipeline_level[CNU_PIPELINE_LEVEL-1:0] <= {cnu_pipeline_level[CNU_PIPELINE_LEVEL-2:0], 1'b0};
@@ -246,7 +252,7 @@ always @(posedge read_clk, negedge rstn) begin
 	else if(state == VNU_PIPE) begin
 		if(vnu_pipeline_level[VNU_PIPELINE_LEVEL-1:0] == 0)
 			vnu_pipeline_level[VNU_PIPELINE_LEVEL-1:0] <= 1;
-		//else if({vn_ram_we && vnu_pipe_load_finish} == 0)
+		//else if({vn_ram_re && vnu_pipe_load_finish} == 0)
 		//	vnu_pipeline_level[VNU_PIPELINE_LEVEL-1:0] <= vnu_pipeline_level[VNU_PIPELINE_LEVEL-1:0];
 		else
 			vnu_pipeline_level[VNU_PIPELINE_LEVEL-1:0] <= {vnu_pipeline_level[VNU_PIPELINE_LEVEL-2:0], 1'b0};
@@ -255,24 +261,25 @@ always @(posedge read_clk, negedge rstn) begin
 		vnu_pipeline_level[VNU_PIPELINE_LEVEL-1:0] <= 0;
 end
 
-always @(posedge read_clk, negedge rstn) begin
-	if(rstn == 1'b0) 
-		init_load_cnt <= 0;
-	else if(init_load_start == 1'b1) begin
-		if(init_load_cnt == 0) 
-			init_load_cnt <= 1;
-		else if(init_load_cnt <= LOAD_HANDSHAKE_LATENCY) 
-			init_load_cnt <= init_load_cnt + 1;
-		else if(init_load_finish == 1'b1)
-			init_load_cnt <= 0;
-	end
-	else 
-		init_load_cnt <= 0;
-end
-
 generate
 	//genvar i;
-	for(i=0;i<`IB_CNU_DECOMP_funNum;i=i+1) begin : cnu_pipe_load_cnt_inst
+	for(i=0;i<`IB_CNU_DECOMP_funNum;i=i+1) begin : cnu_load_cnt_inst
+		// Init CNT
+		always @(posedge read_clk, negedge rstn) begin
+			if(rstn == 1'b0) 
+				cnu_init_load_cnt[i] <= 0;
+			else if(cnu_init_load_start[i] == 1'b1) begin
+				if(cnu_init_load_cnt[i] == 0) 
+					cnu_init_load_cnt[i] <= 1;
+				else if(cnu_init_load_cnt[i] <= LOAD_HANDSHAKE_LATENCY) 
+					cnu_init_load_cnt[i] <= cnu_init_load_cnt[i] + 1;
+				else if(cnu_init_load_finish[i] == 1'b1)
+					cnu_init_load_cnt[i] <= 0;
+			end
+			else 
+				cnu_init_load_cnt[i] <= 0;
+		end	
+		// Pipe Load CNT
 		always @(posedge read_clk, negedge rstn) begin
 			if(rstn == 1'b0) 
 				cnu_pipe_load_cnt[i] <= 0;
@@ -287,7 +294,23 @@ generate
 		end
 	end
 	
-	for(i=0;i<`IB_VNU_DECOMP_funNum;i=i+1) begin : vnu_pipe_load_cnt_inst
+	for(i=0;i<`IB_VNU_DECOMP_funNum;i=i+1) begin : vnu_load_cnt_inst
+		// Init CNT
+		always @(posedge read_clk, negedge rstn) begin
+			if(rstn == 1'b0) 
+				vnu_init_load_cnt[i] <= 0;
+			else if(vnu_init_load_start[i] == 1'b1) begin
+				if(vnu_init_load_cnt[i] == 0) 
+					vnu_init_load_cnt[i] <= 1;
+				else if(vnu_init_load_cnt[i] <= LOAD_HANDSHAKE_LATENCY) 
+					vnu_init_load_cnt[i] <= vnu_init_load_cnt[i] + 1;
+				else if(vnu_init_load_finish[i] == 1'b1)
+					vnu_init_load_cnt[i] <= 0;
+			end
+			else 
+				vnu_init_load_cnt[i] <= 0;
+		end	
+		// Pipe Load CNT
 		always @(posedge read_clk, negedge rstn) begin
 			if(rstn == 1'b0) 
 				vnu_pipe_load_cnt[i] <= 0;
@@ -302,6 +325,22 @@ generate
 		end
 	end
 endgenerate
+// Init CNT
+always @(posedge read_clk, negedge rstn) begin
+	if(rstn == 1'b0) 
+		dnu_init_load_cnt <= 0;
+	else if(dnu_init_load_start == 1'b1) begin
+		if(dnu_init_load_cnt == 0) 
+			dnu_init_load_cnt <= 1;
+		else if(dnu_init_load_cnt <= LOAD_HANDSHAKE_LATENCY) 
+			dnu_init_load_cnt <= dnu_init_load_cnt + 1;
+		else if(dnu_init_load_finish == 1'b1)
+			dnu_init_load_cnt <= 0;
+	end
+	else 
+		dnu_init_load_cnt <= 0;
+end
+// Pipe Load CNT
 always @(posedge read_clk, negedge rstn) begin
 	if(rstn == 1'b0) 
 		dnu_pipe_load_cnt <= 0;
@@ -342,7 +381,7 @@ always @(posedge read_clk) begin
 		// Proceeding to the CNU IB-RAM read operation if inital-load operation is completed,
 		// otherwise waiting for the completion of initial-load operation 
 		LLR_FETCH_OUT : begin
-			if(init_load_start == 1'b0 || init_load_finish == 1'b1) 
+			if(cnu_init_load_start == {`IB_CNU_DECOMP_funNum{1'b0}} || cnu_init_load_finish == {`IB_CNU_DECOMP_funNum{1'b1}}) 
 				state <= CNU_PIPE;
 			else begin 
 				state <= LLR_FETCH_OUT;
@@ -425,30 +464,30 @@ always @(posedge read_clk) begin
 		de_frame_start <= de_frame_start;
 end
 
-initial cn_ram_we[`IB_CNU_DECOMP_funNum-1:0] <= `IB_CNU_DECOMP_funNum'd0;
+initial cn_ram_re[`IB_CNU_DECOMP_funNum-1:0] <= `IB_CNU_DECOMP_funNum'd0;
 always @(posedge read_clk) begin
     if (!fsm_en) 
-        cn_ram_we[0] <= 1'b0;
-    else if(state[3:0] == CNU_PIPE && cnu_pipeline_level[CNU_PIPELINE_LEVEL-1:0] == 1)
-        cn_ram_we[0] <= 1'b1;
-    else if(state[3:0] == P2P_V_OUT)
-        cn_ram_we[0] <= 1'b0;
+        cn_ram_re[0] <= 1'b0;
+    else if(state[3:0] == CNU_PIPE && cnu_pipeline_level[CNU_PIPELINE_LEVEL-1:0] == 0)
+        cn_ram_re[0] <= 1'b1;
+    else// if(state[3:0] == P2P_V_OUT)
+        cn_ram_re[0] <= 1'b0;
 end
-initial vn_ram_we[`IB_VNU_DECOMP_funNum-1:0] <= `IB_VNU_DECOMP_funNum'd0;
+initial vn_ram_re[`IB_VNU_DECOMP_funNum-1:0] <= `IB_VNU_DECOMP_funNum'd0;
 always @(posedge read_clk) begin
     if (!fsm_en) 
-        vn_ram_we[0] <= 1'b0;
-    else if(state[3:0] == VNU_PIPE && vnu_pipeline_level[VNU_PIPELINE_LEVEL-1:0] == 1)
-        vn_ram_we[0] <= 1'b1;
-    else if(state[3:0] == P2P_C_OUT)
-        vn_ram_we[0] <= 1'b0;
+        vn_ram_re[0] <= 1'b0;
+    else if(state[3:0] == VNU_PIPE && vnu_pipeline_level[VNU_PIPELINE_LEVEL-1:0] == 0)
+        vn_ram_re[0] <= 1'b1;
+    else// if(state[3:0] == P2P_C_OUT)
+        vn_ram_re[0] <= 1'b0;
 end
-initial dn_ram_we <= 0;
+initial dn_ram_re <= 0;
 always @(posedge read_clk) begin
 	if(!fsm_en)
-		dn_ram_we <= 1'b0;
+		dn_ram_re <= 1'b0;
 	else 
-		dn_ram_we <= vn_ram_we[`IB_VNU_DECOMP_funNum-1];
+		dn_ram_re <= vn_ram_re[`IB_VNU_DECOMP_funNum-1];
 end
 
 generate
@@ -456,114 +495,158 @@ generate
     // for check nodes
     for(i=1;i<`IB_CNU_DECOMP_funNum;i=i+1) begin : gen_cn_ram_we
         always @(posedge read_clk) begin
-	    if(!fsm_en) cn_ram_we[i] <= 1'b0;
-            else cn_ram_we[i] <= cn_ram_we[i-1];
+	    if(!fsm_en) cn_ram_re[i] <= 1'b0;
+            else cn_ram_re[i] <= cn_ram_re[i-1];
         end
     end
     // for variable nodes
     for(i=1;i<`IB_VNU_DECOMP_funNum;i=i+1) begin : gen_vn_ram_we
         always @(posedge read_clk) begin
-	    if(!fsm_en) vn_ram_we[i] <= 1'b0;
-            else vn_ram_we[i] <= vn_ram_we[i-1];
+	    if(!fsm_en) vn_ram_re[i] <= 1'b0;
+            else vn_ram_re[i] <= vn_ram_re[i-1];
         end
     end
 endgenerate
 
-always @(posedge read_clk, negedge rstn) begin
-	if(rstn == 1'b0) 
-		init_load_start <= 0;
-	else if(state == INIT_LOAD)
-		init_load_start <= 1'b1;
-	else 
-		init_load_start <= init_load_start^init_load_finish;					
-end
-always @(posedge read_clk, negedge rstn) begin
-	if(rstn == 1'b0)
-		init_load_finish <= 1'b0;
-	else if({init_load_start, init_load_finish} == 2'b11) // to make init_load_finish only assert for one clock cycle
-		init_load_finish <= 1'b0;
-	else if(init_load_cnt > LOAD_HANDSHAKE_LATENCY)
-		init_load_finish <= ~{|cnu_init_load_busy}; // Reduction NOR
-	else 
-		init_load_finish <= 1'b0;
-end
-
 generate 
 	//genvar i, j;
 	for(i=0;i<`IB_CNU_DECOMP_funNum;i=i+1) begin : cn_load_en_inst
+		always @(posedge read_clk, negedge rstn) begin
+			if(rstn == 1'b0) 
+				cnu_init_load_start[i] <= 0;
+			else if(state == INIT_LOAD)
+				cnu_init_load_start[i] <= 1'b1;
+			else 
+				cnu_init_load_start[i] <= cnu_init_load_start[i]^cnu_init_load_finish[i];					
+		end
+		always @(posedge read_clk, negedge rstn) begin
+			if(rstn == 1'b0)
+				cnu_init_load_finish[i] <= 1'b0;
+			else if({cnu_init_load_start[i], cnu_init_load_finish[i]} == 2'b11) // to make init_load_finish only assert for one clock cycle
+				cnu_init_load_finish[i] <= 1'b0;
+			else if(cnu_init_load_cnt[i] > LOAD_HANDSHAKE_LATENCY)
+				cnu_init_load_finish[i] <= ~cnu_init_load_busy[i];
+			else 
+				cnu_init_load_finish[i] <= 1'b0;
+		end	
+	
 		// Enable signal control of "Initial-Load" operation
 		always @(posedge read_clk, negedge rstn) begin
 			if(rstn == 1'b0) cnu_init_load_en[i] <= 1'b0;
-			else if(init_load_cnt > LOAD_HANDSHAKE_LATENCY) cnu_init_load_en[i] <= cnu_init_load_busy[i];
-			else if(init_load_start && ~init_load_finish) cnu_init_load_en[i] <= 1'b1;
+			else if(cnu_init_load_cnt[i] > LOAD_HANDSHAKE_LATENCY) cnu_init_load_en[i] <= cnu_init_load_busy[i];
+			else if(cnu_init_load_start[i] && ~cnu_init_load_finish[i]) cnu_init_load_en[i] <= 1'b1;
 			else cnu_init_load_en[i] <= 1'b0;
 		end
 
 		// Enable signal controls of "Pipe-Load" operation
 		always @(posedge read_clk, negedge rstn) begin
 			if(rstn == 1'b0) cnu_pipe_load_en[i] <= 1'b0;
-			else if(cnu_pipe_load_start[i] && ~cnu_pipe_load_finish[i]) cnu_pipe_load_en[i] <= 1'b1;
+			else if(cnu_pipe_load_start[i] && ~cnu_pipe_load_finish[i]) begin
+				if(cnu_pipe_load_cnt[i] > LOAD_HANDSHAKE_LATENCY) cnu_pipe_load_en[i] <= cnu_pipe_load_busy[i];
+				else cnu_pipe_load_en[i] <= 1'b1;
+			end
 			else cnu_pipe_load_en[i] <= 1'b0;
 		end
 		
 		always @(posedge read_clk, negedge rstn) begin
 			if(rstn == 1'b0) cnu_pipe_load_start[i] <= 1'b0;
-			else if(state == CNU_PIPE && cnu_pipeline_level >= (2**(i+0))) cnu_pipe_load_start[i] <= 1'b1; 
+			else if((state == CNU_PIPE || state == CNU_OUT) && cnu_pipeline_level >= (2**(i+0))) cnu_pipe_load_start[i] <= 1'b1;
 			else cnu_pipe_load_start[i] <= (cnu_pipe_load_start[i]^cnu_pipe_load_finish[i]);
 		end								 
 										 
 		always @(posedge read_clk, negedge rstn) begin		
 			if(rstn == 1'b0) cnu_pipe_load_finish[i] <= 1'b0;
+			else if({cnu_pipe_load_start[i], cnu_pipe_load_finish[i]} == 2'b11) cnu_pipe_load_finish[i] <= 1'b0; // to make pipe_load_finish only assert for one clock cycle
 			else if(cnu_pipe_load_cnt[i] > LOAD_HANDSHAKE_LATENCY) cnu_pipe_load_finish[i] <= ~cnu_pipe_load_busy[i];
 			else cnu_pipe_load_finish[i] <= 1'b0;
 		end
 	end
 	
 	for(j=0;j<`IB_VNU_DECOMP_funNum;j=j+1) begin : vn_load_en_inst
-		// Enable signal control of "Initial-Load" operation
-		always @(posedge read_clk, negedge rstn) begin	
-			if(rstn == 1'b0) vnu_init_load_en[j] <= 1'b0;
-			else if(init_load_cnt > LOAD_HANDSHAKE_LATENCY) vnu_init_load_en[j] <= vnu_init_load_busy[j];
-			
-			// Two cases:
-			// 1) start=1, finish=0 but wr_o=0 -> beginning of Init-Load operation
-			// 2) start=1, finish=0 buy wr_o=1 -> finish tim of Init-Load Opeartion for VNUs however the reset of IB-RAMs may not complete yet
-			else if(init_load_start && ~init_load_finish) vnu_init_load_en[j] <= 1'b1; 
-			else vnu_init_load_en[j] <= 1'b0;
+		always @(posedge read_clk, negedge rstn) begin
+			if(rstn == 1'b0) 
+				vnu_init_load_start[j] <= 0;
+			else if(state == INIT_LOAD)
+				vnu_init_load_start[j] <= 1'b1;
+			else 
+				vnu_init_load_start[j] <= vnu_init_load_start[j]^vnu_init_load_finish[j];					
 		end
+		always @(posedge read_clk, negedge rstn) begin
+			if(rstn == 1'b0)
+				vnu_init_load_finish[j] <= 1'b0;
+			else if({vnu_init_load_start[j], vnu_init_load_finish[j]} == 2'b11) // to make init_load_finish only assert for one clock cycle
+				vnu_init_load_finish[j] <= 1'b0;
+			else if(vnu_init_load_cnt[j] > LOAD_HANDSHAKE_LATENCY)
+				vnu_init_load_finish[j] <= ~vnu_init_load_busy[j];
+			else 
+				vnu_init_load_finish[j] <= 1'b0;
+		end	
+		
+		// Enable signal control of "Initial-Load" operation
+		always @(posedge read_clk, negedge rstn) begin
+			if(rstn == 1'b0) vnu_init_load_en[j] <= 1'b0;
+			else if(vnu_init_load_cnt[j] > LOAD_HANDSHAKE_LATENCY) vnu_init_load_en[j] <= vnu_init_load_busy[j];
+			else if(vnu_init_load_start[j] && ~vnu_init_load_finish[j]) vnu_init_load_en[j] <= 1'b1;
+			else vnu_init_load_en[j] <= 1'b0;
+		end	
 		
 		// Enable signal controls of "Pipe-Load" operation
 		always @(posedge read_clk, negedge rstn) begin
 			if(rstn == 1'b0) vnu_pipe_load_en[j] <= 1'b0;
-			else if(vnu_pipe_load_start[j] && ~vnu_pipe_load_finish[j]) vnu_pipe_load_en[j] <= 1'b1;
+			else if(vnu_pipe_load_start[j] && ~vnu_pipe_load_finish[j]) begin
+				if(vnu_pipe_load_cnt[j] > LOAD_HANDSHAKE_LATENCY) vnu_pipe_load_en[j] <= vnu_pipe_load_busy[j];
+				else vnu_pipe_load_en[j] <= 1'b1;
+			end
 			else vnu_pipe_load_en[j] <= 1'b0;
 		end
 		
 		always @(posedge read_clk, negedge rstn) begin
 			if(rstn == 1'b0) vnu_pipe_load_start[j] <= 1'b0;
-			else if(state == VNU_PIPE && vnu_pipeline_level >= (2**(j+0))) vnu_pipe_load_start[j] <= 1'b1;
+			else if((state == VNU_PIPE || state == VNU_OUT) && vnu_pipeline_level >= (2**(j+0))) vnu_pipe_load_start[j] <= 1'b1;
 			else vnu_pipe_load_start[j] <= vnu_pipe_load_start[j]^vnu_pipe_load_finish[j];
 		end
 		
 		always @(posedge read_clk, negedge rstn) begin
 			if(rstn == 1'b0) vnu_pipe_load_finish[j] <= 1'b0;
+			else if({vnu_pipe_load_start[j], vnu_pipe_load_finish[j]} == 2'b11) vnu_pipe_load_finish[j] <= 1'b0; // to make pipe_load_finish only assert for one clock cycle
 			else if(vnu_pipe_load_cnt[j] > LOAD_HANDSHAKE_LATENCY) vnu_pipe_load_finish[j] <= ~vnu_pipe_load_busy[j];
 			else vnu_pipe_load_finish[j] <= 1'b0;
 		end
 	end
 endgenerate
+always @(posedge read_clk, negedge rstn) begin
+	if(rstn == 1'b0) 
+		dnu_init_load_start <= 0;
+	else if(state == INIT_LOAD)
+		dnu_init_load_start <= 1'b1;
+	else 
+		dnu_init_load_start <= dnu_init_load_start^dnu_init_load_finish;					
+end
+always @(posedge read_clk, negedge rstn) begin
+	if(rstn == 1'b0)
+		dnu_init_load_finish <= 1'b0;
+	else if({dnu_init_load_start, dnu_init_load_finish} == 2'b11) // to make init_load_finish only assert for one clock cycle
+		dnu_init_load_finish <= 1'b0;
+	else if(dnu_init_load_cnt > LOAD_HANDSHAKE_LATENCY)
+		dnu_init_load_finish <= ~dnu_init_load_busy; // Reduction NOR
+	else 
+		dnu_init_load_finish <= 1'b0;
+end
 // Enable signal control of "Initial-Load" operation
 always @(posedge read_clk, negedge rstn) begin
 	if(rstn == 1'b0) dnu_init_load_en <= 1'b0;
-	else if(init_load_cnt > LOAD_HANDSHAKE_LATENCY) dnu_init_load_en <= dnu_init_load_busy;
-	else if(init_load_start && ~init_load_finish) dnu_init_load_en <= 1'b1;
+	else if(dnu_init_load_cnt > LOAD_HANDSHAKE_LATENCY) dnu_init_load_en <= dnu_init_load_busy;
+	else if(dnu_init_load_start && ~dnu_init_load_finish) dnu_init_load_en <= 1'b1;
 	else dnu_init_load_en <= 1'b0;
 end
 
 // Enable signal controls of "Pipe-Load" operation
 always @(posedge read_clk, negedge rstn) begin
 	if(rstn == 1'b0) dnu_pipe_load_en <= 1'b0;
-	else if(dnu_pipe_load_start && ~dnu_pipe_load_finish) dnu_pipe_load_en <= 1'b1;
+	else if(dnu_pipe_load_start && ~dnu_pipe_load_finish) begin
+		if(dnu_pipe_load_cnt > LOAD_HANDSHAKE_LATENCY) dnu_pipe_load_en <= dnu_pipe_load_busy;
+		else dnu_pipe_load_en <= 1'b1;
+	end
 	else dnu_pipe_load_en <= 1'b0;
 end
 
@@ -575,6 +658,7 @@ end
 
 always @(posedge read_clk, negedge rstn) begin
 	if(rstn == 1'b0) dnu_pipe_load_finish <= 1'b0;
+	else if({dnu_pipe_load_start, dnu_pipe_load_finish} == 2'b11) dnu_pipe_load_finish <= 1'b0; // to make pipe_load_finish only assert for one clock cycle
 	else if(dnu_pipe_load_cnt > LOAD_HANDSHAKE_LATENCY) dnu_pipe_load_finish <= ~dnu_pipe_load_busy;
 	else dnu_pipe_load_finish <= 1'b0;
 end							  

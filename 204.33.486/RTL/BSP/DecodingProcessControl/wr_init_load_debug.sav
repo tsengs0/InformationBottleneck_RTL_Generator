@@ -1,0 +1,48 @@
+[timestart] 1457600
+[size] 1920 1177
+[pos] 2701 -35
+*-16.433361 1877500 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] sys_fsm_tb.
+[treeopen] sys_fsm_tb.cn_wr_fsm_inst[0].
+[treeopen] sys_fsm_tb.frame_fsm_0.
+[treeopen] sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].
+@28
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.read_clk
+@24
+sys_fsm_tb.cn_wr_fsm_inst[0].cnu6_wr_fsm_u0.write_cnt[4:0]
+@29
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.cnu_init_load_en
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.cnu_init_load_en_i
+@28
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.cnu_rd_finish
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.cnu_rd_finish_i
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.cnu_wr_fd
+@29
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.cnu_wr_o
+@28
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.cnu_wr_reg[1:0]
+@29
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.init_load_o
+@28
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.init_load_reg[1:0]
+@29
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.iter_update
+@28
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.iter_update_i
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.pipe_load_o
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.pipe_load_reg[1:0]
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.read_clk
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.rstn
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.sig_0
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.sig_1
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.sig_2
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.sig_2_0
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.sig_3
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.sig_4
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.sig_5
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.sig_6
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.sig_7
+#{sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.syncIterUp[1:0]} sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.syncIterUp[1] sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.syncIterUp[0]
+sys_fsm_tb.frame_fsm_0.cn_slave_wr_handshake_inst[0].cn_wr_handshake.wr_trace[1:0]
+[pattern_trace] 1
+[pattern_trace] 0

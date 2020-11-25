@@ -3,24 +3,24 @@
 # 
 # Vivado(TM)
 # runme.sh: a Vivado-generated Runs Script for UNIX
-# Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+# Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 # 
 
 if [ -z "$PATH" ]; then
-  PATH=/mnt/fs800/Xilinx/SDK/2018.3/bin:/mnt/fs800/Xilinx/Vivado/2018.3/ids_lite/ISE/bin/lin64:/mnt/fs800/Xilinx/Vivado/2018.3/bin
+  PATH=/home/s1820419/Xilinx/Vitis/2019.2/bin:/home/s1820419/Xilinx/Vivado/2019.2/ids_lite/ISE/bin/lin64:/home/s1820419/Xilinx/Vivado/2019.2/bin
 else
-  PATH=/mnt/fs800/Xilinx/SDK/2018.3/bin:/mnt/fs800/Xilinx/Vivado/2018.3/ids_lite/ISE/bin/lin64:/mnt/fs800/Xilinx/Vivado/2018.3/bin:$PATH
+  PATH=/home/s1820419/Xilinx/Vitis/2019.2/bin:/home/s1820419/Xilinx/Vivado/2019.2/ids_lite/ISE/bin/lin64:/home/s1820419/Xilinx/Vivado/2019.2/bin:$PATH
 fi
 export PATH
 
 if [ -z "$LD_LIBRARY_PATH" ]; then
-  LD_LIBRARY_PATH=/mnt/fs800/Xilinx/Vivado/2018.3/ids_lite/ISE/lib/lin64
+  LD_LIBRARY_PATH=
 else
-  LD_LIBRARY_PATH=/mnt/fs800/Xilinx/Vivado/2018.3/ids_lite/ISE/lib/lin64:$LD_LIBRARY_PATH
+  LD_LIBRARY_PATH=:$LD_LIBRARY_PATH
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='/mnt/fs800/home/s1610105/Documents/research/Doctor/LDPC_MinorResearch/DecodingProcessControl/vivado/fsm_communication/fsm_communication.runs/synth_1'
+HD_PWD='/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/vivado/fsm_communication/fsm_communication.runs/synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log
@@ -36,4 +36,4 @@ EAStep()
      fi
 }
 
-EAStep vivado -log cnu_wr_update_handshake.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source cnu_wr_update_handshake.tcl
+EAStep vivado -log sys_control_unit.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source sys_control_unit.tcl

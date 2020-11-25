@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7k325tffg900-2" LaunchTime="1603725028">
-  <File Type="VDS-TIMING-PB" Name="cnu_wr_update_handshake_timing_summary_synth.pb"/>
-  <File Type="VDS-TIMINGSUMMARY" Name="cnu_wr_update_handshake_timing_summary_synth.rpt"/>
-  <File Type="RDS-DCP" Name="cnu_wr_update_handshake.dcp"/>
-  <File Type="RDS-UTIL-PB" Name="cnu_wr_update_handshake_utilization_synth.pb"/>
-  <File Type="RDS-UTIL" Name="cnu_wr_update_handshake_utilization_synth.rpt"/>
-  <File Type="RDS-PROPCONSTRS" Name="cnu_wr_update_handshake_drc_synth.rpt"/>
-  <File Type="RDS-RDS" Name="cnu_wr_update_handshake.vds"/>
-  <File Type="REPORTS-TCL" Name="cnu_wr_update_handshake_reports.tcl"/>
-  <File Type="PA-TCL" Name="cnu_wr_update_handshake.tcl"/>
+<GenRun Id="synth_1" LaunchPart="xczu7ev-ffvc1156-2-e" LaunchTime="1605057676">
+  <File Type="VDS-TIMING-PB" Name="sys_control_unit_timing_summary_synth.pb"/>
+  <File Type="VDS-TIMINGSUMMARY" Name="sys_control_unit_timing_summary_synth.rpt"/>
+  <File Type="RDS-DCP" Name="sys_control_unit.dcp"/>
+  <File Type="RDS-UTIL-PB" Name="sys_control_unit_utilization_synth.pb"/>
+  <File Type="RDS-UTIL" Name="sys_control_unit_utilization_synth.rpt"/>
+  <File Type="RDS-PROPCONSTRS" Name="sys_control_unit_drc_synth.rpt"/>
+  <File Type="RDS-RDS" Name="sys_control_unit.vds"/>
+  <File Type="REPORTS-TCL" Name="sys_control_unit_reports.tcl"/>
+  <File Type="PA-TCL" Name="sys_control_unit.tcl"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/new/cnu_wr_update_handshake.v">
@@ -18,22 +18,91 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
+    <File Path="$PSRCDIR/sources_1/imports/DecodingProcessControl/vnu_wr_update_handshake.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../vnu_wr_update_handshake.v"/>
+        <Attr Name="ImportTime" Val="1605055952"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/DecodingProcessControl/sys_control_unit.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../sys_control_unit.v"/>
+        <Attr Name="ImportTime" Val="1605055952"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/DecodingProcessControl/cnu_wr_update_handshake.v">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../cnu_wr_update_handshake.v"/>
+        <Attr Name="ImportTime" Val="1605055952"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/DecodingProcessControl/cn_write_unit.v">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../cn_write_unit.v"/>
+        <Attr Name="ImportTime" Val="1605055952"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/DecodingProcessControl/dn_write_unit.v">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../dn_write_unit.v"/>
+        <Attr Name="ImportTime" Val="1605055952"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/DecodingProcessControl/global_async_reset.v">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../global_async_reset.v"/>
+        <Attr Name="ImportTime" Val="1605055952"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/DecodingProcessControl/vn_write_unit.v">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../vn_write_unit.v"/>
+        <Attr Name="ImportTime" Val="1605055952"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
     <Config>
       <Option Name="DesignMode" Val="RTL"/>
-      <Option Name="TopModule" Val="cnu_wr_update_handshake"/>
+      <Option Name="TopModule" Val="sys_control_unit"/>
       <Option Name="TopAutoSet" Val="TRUE"/>
     </Config>
   </FileSet>
   <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">
     <Filter Type="Constrs"/>
-    <File Path="$PSRCDIR/constrs_1/new/test0.xdc">
+    <File Path="$PSRCDIR/constrs_1/imports/zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc">
       <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../zcu104_kit/zcu104_Rev1.0_U1_01302018.xdc"/>
+        <Attr Name="ImportTime" Val="1584964702"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
       </FileInfo>
     </File>
     <Config>
-      <Option Name="TargetConstrsFile" Val="$PSRCDIR/constrs_1/new/test0.xdc"/>
       <Option Name="ConstrsType" Val="XDC"/>
     </Config>
   </FileSet>

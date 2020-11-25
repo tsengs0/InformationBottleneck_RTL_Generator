@@ -119,6 +119,14 @@ assign {rom_port_fetch, iter_update, v3ib_rom_rst, ram_write_en} = (state[2:0] =
                                                                    (state[2:0] == BATCH_WRITE ) ? {3'b110, ram_write_en_latch} : 
                                                                                                   {3'b001, ram_write_en_latch};
 */
+
+/*
+reg iter_update_pipe; // CDC
+always @(posedge write_clk, negedge rstn) begin
+	if(rstn == 1'b0) iter_update_pipe <= 0;
+	else iter_update_pipe <= iter_update;
+end
+*/
 assign {rom_port_fetch, ram_mux_en, ram_write_en, iter_update, v3ib_rom_rst, busy[1:0]} = 
                                                                    /*State 0*/ (state[2:0] == IDLE      ) ? 7'b0000100 :
                                                                    /*State 1*/ (state[2:0] == ROM_FETCH0) ? 7'b1001001 :

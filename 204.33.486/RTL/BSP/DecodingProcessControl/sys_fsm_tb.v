@@ -35,14 +35,15 @@ wire [INTER_FRAME_LEVEL-1:0] v2c_src;
 wire [INTER_FRAME_LEVEL-1:0] v2c_msg_en;
 wire [`IB_CNU_DECOMP_funNum-1:0] cnu_rd [0:INTER_FRAME_LEVEL-1];
 wire [INTER_FRAME_LEVEL-1:0] c2v_msg_en;
-wire [`IB_CNU_DECOMP_funNum-1:0] vnu_rd [0:INTER_FRAME_LEVEL-1];
+wire [`IB_VNU_DECOMP_funNum-1:0] vnu_rd [0:INTER_FRAME_LEVEL-1];
+wire dnu_rd [0:INTER_FRAME_LEVEL-1];
 wire [INTER_FRAME_LEVEL-1:0] de_frame_start;
 wire [INTER_FRAME_LEVEL-1:0] inter_frame_en;
 wire [3:0] sys_fsm_state [0:INTER_FRAME_LEVEL-1];
 wire [INTER_FRAME_LEVEL-1:0] fsm_en;
-wire [`IB_CNU_DECOMP_funNum-1:0] fsm_cn_ram_we [0:INTER_FRAME_LEVEL-1];
-wire [`IB_VNU_DECOMP_funNum-1:0] fsm_vn_ram_we [0:INTER_FRAME_LEVEL-1];
-wire [INTER_FRAME_LEVEL-1:0] fsm_dn_ram_we;
+wire [`IB_CNU_DECOMP_funNum-1:0] fsm_cn_ram_re [0:INTER_FRAME_LEVEL-1];
+wire [`IB_VNU_DECOMP_funNum-1:0] fsm_vn_ram_re [0:INTER_FRAME_LEVEL-1];
+wire [INTER_FRAME_LEVEL-1:0] fsm_dn_ram_re;
 reg [INTER_FRAME_LEVEL-1:0] iter_termination;
 reg read_clk, rstn; // shared with all FSMs
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,11 +82,14 @@ sys_control_unit #(
     .cnu_rd     (cnu_rd[0]),
     .c2v_msg_en (c2v_msg_en[0]),
     .vnu_rd     (vnu_rd[0]),
+	.dnu_rd		(dnu_rd[0]),
+	//.c2v_load	(), // load enable signal to parallel-to-serial converter
+	//.v2c_load	(), // load enable signal to parallel-to-serial converter
     .inter_frame_en (inter_frame_en[0]),
     .de_frame_start (de_frame_start[0]),
-    .cn_ram_we (fsm_cn_ram_we[0]),
-    .vn_ram_we (fsm_vn_ram_we[0]),
-	.dn_ram_we (fsm_dn_ram_we[0]),
+    .cn_ram_re (fsm_cn_ram_re[0]),
+    .vn_ram_re (fsm_vn_ram_re[0]),
+	.dn_ram_re (fsm_dn_ram_re[0]),
     .state (sys_fsm_state[0]),
     
 	// Input port acknowledging from Write/Update FSMs
@@ -242,10 +246,10 @@ end
 
 localparam iter_cnt_bitwidth = $clog2(simulate_iteration);
 reg [iter_cnt_bitwidth-1:0] iter_cnt;
-always @(posedge dn_write_clk, negedge rstn) begin
+always @(posedge read_clk, negedge rstn) begin
 	if(rstn == 1'b0) 
 		iter_cnt <= 0;
-	else if(dn_write_fsm_state[0] == FINISH)
+	else if(sys_fsm_state[0] == VNU_OUT)
 		iter_cnt <= iter_cnt + 1'b1;
 	else
 		iter_cnt <= iter_cnt;
@@ -342,7 +346,7 @@ initial begin
 	//wait(iter_cnt == simulate_iteration);  //#(10*144);
 	#5000;
 	iter_termination <= 2'b11;
-	
+	#100;
 	//$fclose(fsm_log);
 	//$fclose(fsm_out[0]);
 	////$fclose(fsm_out[1]);
