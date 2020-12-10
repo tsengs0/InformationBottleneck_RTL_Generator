@@ -21,6 +21,8 @@ const char *cnu_bitSerial_prot_filename = "cnu_bitSerial_port.v";
 const char *vnu_bitSerial_prot_filename = "vnu_bitSerial_port.v";
 const char *cnu_ib_ram_wrapper_filename = "cnu6_ib_ram_wrapper.v";
 const char *vnu_ib_ram_wrapper_filename = "vnu3_ib_ram_wrapper.v";
+const char *cnu6_ib_ram_cascade_template_filename = "template/cnu6_ib_ram_cascade_template.v";
+const char *vnu3_ib_ram_cascade_template_filename = "template/vnu3_ib_ram_cascade_template.v";
 verilog_gen::verilog_gen(const char *read_filename)
 {
   	string str;
@@ -480,7 +482,10 @@ void verilog_gen::ib_ram_wrapper ()
 {
 	// Wrapper of CNU
 	ofstream cnu_wrapper;
+	ifstream cnu_template;
+	
 	cnu_wrapper.open(cnu_ib_ram_wrapper_filename);
+	cnu_template.open(cnu6_ib_ram_cascade_template_filename);
 	cnu_wrapper << "module cnu" << max_dc << "_ib_ram_wrapper #(" << endl
 				<< "\tparameter CN_ROM_RD_BW = 6," << endl
 				<< "\tparameter CN_ROM_ADDR_WB = 10," << endl
@@ -496,13 +501,13 @@ void verilog_gen::ib_ram_wrapper ()
 	cnu_wrapper << "\toutput wire read_addr_offset_out," << endl;
 	for(unsigned int i = 0; i < M; i++) {
 		for(unsigned int j = 0; j < max_dc; j++) {
-			cnu_wrapper << "\toutput wire [DATAPATH_WIDTH-1:0] c2v_out" << j << "[" << i << "]," << endl;
+			cnu_wrapper << "\toutput wire [DATAPATH_WIDTH-1:0] c2v_" << i << "_out" << j << endl;
 		}
 	}
 	cnu_wrapper << endl;
 	for(unsigned int i = 0; i < M; i++) {
 		for(unsigned int j = 0; j < max_dc; j++) {
-			cnu_wrapper << "\tinput wire [DATAPATH_WIDTH-1:0] v2c_in" << j << "[" << i << "]," << endl;
+			cnu_wrapper << "\tinput wire [DATAPATH_WIDTH-1:0] v2c_" << i << "_in" << j << endl;
 		}
 	}
 	cnu_wrapper << endl 
@@ -520,11 +525,36 @@ void verilog_gen::ib_ram_wrapper ()
 	for(unsigned int j = 0; j < cnu_decompose_num; j++) cnu_wrapper << "\tinput wire ib_ram_we_" << j << "," << endl;
 	cnu_wrapper << "\tinput wire write_clk" << endl
 				<< ");";
-	cnu_wrapper.close();
+
+	cnu_wrapper << endl;
+	cnu_wrapper << "// Input sources of check node units" << endl;
+	for(unsigned int i = 0; i < max_dc; i++) 
+		cnu_wrapper << "wire [QUAN_SIZE-1:0] v2c_" << i << " [0:CN_NUM-1];" << endl;
+	cnu_wrapper << "// Output sources of check node units" << endl;
+	for(unsigned int i = 0; i < max_dc; i++) 
+		cnu_wrapper << "wire [QUAN_SIZE-1:0] c2v_" << i << " [0:CN_NUM-1];" << endl;
+
+	cnu_wrapper << endl;
+	string str;
+	// Appending the template of CNU cascading instantiation
+	while(getline(cnu_template, str)) cnu_wrapper << str << endl;
+
+	cnu_wrapper << endl;
+	for(unsigned int i = 0; i < M; i++) {
+		for(unsigned int j = 0; j < max_dc; j++) {
+			cnu_wrapper << "assign c2v_" << i << "_out" << j << "[QUAN_SIZE-1:0] = c2v_" << j << "[" << i << "];" << endl;
+			cnu_wrapper << "assign v2c_" << j << "[" << i << "] = v2c_" << i << "_in" << j << "[QUAN_SIZE-1:0];" << endl;
+		}
+	}
+	cnu_wrapper << "endmodule";
+	cnu_wrapper.close(); cnu_template.close();
 
 	// Wrapper of VNU and DNU
 	ofstream vnu_wrapper;
+	ifstream vnu_template;
+
 	vnu_wrapper.open(vnu_ib_ram_wrapper_filename);
+	vnu_template.open(vnu3_ib_ram_cascade_template_filename);
 	vnu_wrapper << "module vnu" << max_dv << "_ib_ram_wrapper #(" << endl
 				<< "\tparameter VN_ROM_RD_BW = 8," << endl
 				<< "\tparameter VN_ROM_ADDR_WB = 11," << endl
@@ -543,13 +573,13 @@ void verilog_gen::ib_ram_wrapper ()
 	for(unsigned int i = 0; i < N; i++) {
 		vnu_wrapper << "\toutput wire hard_decision_" << i << "," << endl;
 		for(unsigned int j = 0; j < max_dv; j++) {
-			vnu_wrapper << "\toutput wire [DATAPATH_WIDTH-1:0] v2c_out" << j << "[" << i << "]," << endl;
+			vnu_wrapper << "\toutput wire [DATAPATH_WIDTH-1:0] v2c_" << i << "_out" << j << endl;
 		}
 	}
 	vnu_wrapper << endl;
 	for(unsigned int i = 0; i < N; i++) {
 		for(unsigned int j = 0; j < max_dv; j++) {
-			vnu_wrapper << "\tinput wire [DATAPATH_WIDTH-1:0] c2v_in" << j << "[" << i << "]," << endl;
+			vnu_wrapper << "\tinput wire [DATAPATH_WIDTH-1:0] c2v_" << i << "_in" << j << endl;
 		}
 	}
 	vnu_wrapper << endl 
@@ -570,5 +600,29 @@ void verilog_gen::ib_ram_wrapper ()
 	for(unsigned int j = 0; j < vnu_decompose_num+1; j++) vnu_wrapper << "\tinput wire ib_ram_we_" << j << "," << endl;
 	vnu_wrapper << "\tinput wire write_clk" << endl
 				<< ");";
-	vnu_wrapper.close();
+
+	vnu_wrapper << endl;
+	vnu_wrapper << "// Input sources of vaiable node units" << endl;
+	for(unsigned int i = 0; i < max_dv; i++) 
+		vnu_wrapper << "wire [QUAN_SIZE-1:0] c2v_" << i << " [0:VN_NUM-1];" << endl;
+	vnu_wrapper << "// Output sources of check node units" << endl;
+	for(unsigned int i = 0; i < max_dv; i++) 
+		vnu_wrapper << "wire [QUAN_SIZE-1:0] v2c_" << i << " [0:VN_NUM-1];" << endl;
+	vnu_wrapper << "// Output sources of check node units" << endl;
+	for(unsigned int i = 0; i < N; i++)
+		vnu_wrapper << "wire [VN_NUM-1:0] hard_decision;" << endl; 
+
+	vnu_wrapper << endl;
+	// Appending the template of VNU (along with DNU) cascading instantiation
+	while(getline(vnu_template, str)) vnu_wrapper << str << endl;
+
+	vnu_wrapper << endl;
+	for(unsigned int i = 0; i < N; i++) {
+		vnu_wrapper << "assign hard_decision_" << i << " = hard_decision[" << i << "];" << endl;
+		for(unsigned int j = 0; j < max_dv; j++) {
+			vnu_wrapper << "assign v2c_" << i << "_out" << j << "[QUAN_SIZE-1:0] = v2c_" << j << "[" << i << "];" << endl;
+			vnu_wrapper << "assign c2v_" << j << "[" << i << "] = c2v_" << i << "_in" << j << "[QUAN_SIZE-1:0];" << endl;
+		}
+	}
+	vnu_wrapper.close(); vnu_template.close();
 }
