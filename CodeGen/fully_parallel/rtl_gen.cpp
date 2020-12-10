@@ -18,6 +18,7 @@ const char *vnu_s2p_inst_filename = "vnu_s2p_instantiate.v";
 const char *fully_parallel_filename = "fully_parallel_route_instantiate.v";
 const char *fully_parallel_imple_filename = "fully_parallel_route.v";
 const char *cnu_bitSerial_prot_filename = "cnu_bitSerial_port.v";
+const char *vnu_bitSerial_prot_filename = "vnu_bitSerial_port.v";
 verilog_gen::verilog_gen(const char *read_filename)
 {
   	string str;
@@ -36,6 +37,8 @@ verilog_gen::verilog_gen(const char *read_filename)
 	cnu_p2s_file.open(cnu_p2s_inst_filename); cnu_s2p_file.open(cnu_s2p_inst_filename);
 	vnu_p2s_file.open(vnu_p2s_inst_filename); vnu_s2p_file.open(vnu_s2p_inst_filename);
 	fully_parallel_imple_file.open(fully_parallel_imple_filename);
+	cnu_bitSerial_port_file.open(cnu_bitSerial_prot_filename);
+	vnu_bitSerial_port_file.open(vnu_bitSerial_prot_filename);
 
 	//Reading file line by line
 	while(getline(pcm_file,str)) {
@@ -107,6 +110,10 @@ verilog_gen::verilog_gen(const char *read_filename)
 		line_cnt += 1;
 	}
 
+	// Generating the implementation template of parallel-to-erial-to-parallel converter
+	cnu_bitSerial_port(cnu_bitSerial_port_file);
+	vnu_bitSerial_port(vnu_bitSerial_port_file);
+
 	cout << "Finished RTL code generation" << endl;
 	close_file();
 }
@@ -117,7 +124,8 @@ void verilog_gen::close_file()
 	cnu_p2s_file.close(); cnu_s2p_file.close();
 	vnu_p2s_file.close(); vnu_s2p_file.close();
 	fully_parallel_file.close();
-
+	cnu_bitSerial_port_file.close();
+	vnu_bitSerial_port_file.close();
 }
 
 void verilog_gen::show_param(void) 
@@ -179,13 +187,86 @@ void verilog_gen::cnu_s2p_instantiate(unsigned int line_cnt, unsigned int entry_
 		 << endl << ");" << endl;   
 }
 
-// Not finished yet
-void verilog_gen::cnu_bitSerial_port(const char *filename)
+void verilog_gen::cnu_bitSerial_port(ofstream &fd)
 {
-	cnu_bitSerial_port_file.open(filename);
-	cnu_bitSerial_port_file << "`include \"define.v\"" << endl << endl
-		<< "module cnu_bitSerial_port (" << endl << "\t"
-		<< "inout wire [`CN_DEGREE-1]";		
+	fd << "`include \"define.vh\"" << endl << endl
+		<< "module cnu_bitSerial_port #(" << endl << "\tparameter MSG_WIDTH = 4" << endl << ") (" << endl
+		<< "\tinout wire [`CN_DEGREE-1] serialInOut," << endl;
+
+	// Output port of d_c number of variable-to-check messages
+	for(unsigned int i = 0; i < max_dc; i++) 
+		fd << "\toutput wire [MSG_WIDTH-1:0] v2c_parallelOut_" << i << "," << endl;
+	fd << endl;
+
+	// Input port of d_c number of check-to-variable messages
+	for(unsigned int i = 0; i < max_dc; i++) 
+		fd << "\tinput wire [MSG_WIDTH-1:0] c2v_parallelIn_" << i << "," << endl;
+
+	fd << "\tinput wire load," << endl
+							<< "\tinput wire parallel_en," << endl
+							<< "\tinput wire serial_clk" << endl
+							<< ");";
+	fd << endl;
+
+	// Implementation
+	cnu_bitSerial_port_implementation(fd);
+}
+void verilog_gen::cnu_bitSerial_port_implementation(ofstream &fd)
+{
+	for(unsigned int i = 0; i < max_dc; i++) {
+		fd << endl << "halfDuplex_parallel2serial #(" << endl
+								 << "\t.MSG_WIDTH(MSG_WIDTH) // the default bit width of one message is 4-bit" << endl
+								 << ") cnu_interface_u" << i << "(" << endl
+								 << "\t.serial_inout (serialInOut[i])," << endl
+								 << "\t.parallel_out (v2c_parallelOut_" << i << "[MSG_WIDTH-1:0])," << endl << endl
+								 << "\t.parallen_in (c2v_parallelIn_" << i << "[MSG_WIDTH-1:0])," << endl
+								 << "\t.load (load)," << endl
+								 << "\t.parallel_en (parallel_en)," << endl
+								 << "\t.sys_clk (serial_clk)" << endl
+								 << ");";
+	}
+	fd << endl << "endmodule";
+}
+
+void verilog_gen::vnu_bitSerial_port(ofstream &fd)
+{
+	fd << "`include \"define.vh\"" << endl << endl
+		<< "module vnu_bitSerial_port #(" << endl << "\tparameter MSG_WIDTH = 4" << endl << ") (" << endl
+		<< "\tinout wire [`VN_DEGREE-1] serialInOut," << endl;
+
+	// Output port of d_c number of check-to-variable messages
+	for(unsigned int i = 0; i < max_dv; i++) 
+		fd << "\toutput wire [MSG_WIDTH-1:0] c2v_parallelOut_" << i << "," << endl;
+	fd << endl;
+
+	// Input port of d_c number of variable-to-check messages
+	for(unsigned int i = 0; i < max_dv; i++) 
+		fd << "\tinput wire [MSG_WIDTH-1:0] v2c_parallelIn_" << i << "," << endl;
+
+	fd << "\tinput wire load," << endl
+							<< "\tinput wire parallel_en," << endl
+							<< "\tinput wire serial_clk" << endl
+							<< ");";
+	fd << endl;
+
+	// Implementation
+	vnu_bitSerial_port_implementation(fd);
+}
+void verilog_gen::vnu_bitSerial_port_implementation(ofstream &fd)
+{
+	for(unsigned int i = 0; i < max_dv; i++) {
+		fd << endl << "halfDuplex_parallel2serial #(" << endl
+								 << "\t.MSG_WIDTH(MSG_WIDTH) // the default bit width of one message is 4-bit" << endl
+								 << ") vnu_interface_u" << i << "(" << endl
+								 << "\t.serial_inout (serialInOut[i])," << endl
+								 << "\t.parallel_out (c2v_parallelOut_" << i << "[MSG_WIDTH-1:0])," << endl << endl
+								 << "\t.parallen_in (v2c_parallelIn_" << i << "[MSG_WIDTH-1:0])," << endl
+								 << "\t.load (load)," << endl
+								 << "\t.parallel_en (parallel_en)," << endl
+								 << "\t.sys_clk (serial_clk)" << endl
+								 << ");";
+	}
+	fd << endl << "endmodule";
 }
 
 void verilog_gen::fully_route_instantiate(const char *filename)
@@ -226,7 +307,7 @@ void verilog_gen::fully_route_instantiate(const char *filename)
 	fully_parallel_file << endl << "\t";
 	fully_parallel_file << ".load()," << endl << "\t"
 			    << ".parallel_en ()," << endl << "\t"
-			    << ".serial_clk (ram_clk)" << endl
+			    << ".serial_clk (read_clk)" << endl
 			    << "};"; 
 }
 		
@@ -251,11 +332,24 @@ void verilog_gen::fully_route_implementation(unsigned line_cnt, unsigned int ent
 	}
 	else {
 	        fully_parallel_imple_file << " cn_serialInOut_" << coordinate << "[" 
-					  << list_dc[coordinate]-dc_count[coordinate] << "]})," << endl << "\t\t"
-					  << ".load (load[1])," << endl << "\t\t"
-					  << ".parallel_en (parallel_en[1])," << endl << "\t\t"
-				          << ".serial_clk (serial_clk)" << endl << "\t"
-					  << ");" << endl;
+					  << list_dc[coordinate]-dc_count[coordinate] << "]})," << endl << "\t\t";
+
+			// Instantiation of check-to-variable outgoing message (after PSP converter, i.e., completion of message passing)
+			for(unsigned int i = 0; i < list_dv[line_cnt]; i++) {
+				fully_parallel_imple_file << ".c2v_parallelOut_" << line_cnt << "(c2v_parallelOut_" << line_cnt << i 
+										  << "[`DATAPATH_WIDTH-1:0])," << endl << "\t\t";
+			}
+			fully_parallel_imple_file << endl << "\t\t";
+			// Instantiation of variable-to-check incoming message (after PSP converter, i.e., completion of message passing)
+			for(unsigned int i = 0; i < list_dv[line_cnt]; i++) {
+				fully_parallel_imple_file << ".v2c_parallelIn_" << line_cnt << "(v2c_parallelIn_" << line_cnt << i 
+										  << "[`DATAPATH_WIDTH-1:0])," << endl << "\t\t";
+			}
+
+			fully_parallel_imple_file << ".load (load[1])," << endl << "\t\t"
+									  << ".parallel_en (parallel_en[1])," << endl << "\t\t"
+									  << ".serial_clk (serial_clk)" << endl << "\t"
+									  << ");" << endl;
 		dc_count[coordinate]-=1;
 		if(line_cnt == (N-1)) fully_parallel_imple_file << "endmodule";
 	}

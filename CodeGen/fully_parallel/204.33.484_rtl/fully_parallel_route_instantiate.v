@@ -2455,5 +2455,5 @@ fully_parallel_route routing_network(
 	
 	.load(),
 	.parallel_en (),
-	.serial_clk (ram_clk)
+	.serial_clk (read_clk)
 };

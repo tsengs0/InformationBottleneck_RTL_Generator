@@ -20,7 +20,8 @@ class verilog_gen {
 		char *filename;
 		ifstream pcm_file;
 		ofstream cnu_file, vnu_file, cnu_p2s_file, cnu_s2p_file, vnu_p2s_file, vnu_s2p_file;
-		ofstream cnu_bitSerial_port_file, fully_parallel_file, fully_parallel_imple_file;
+		ofstream cnu_bitSerial_port_file, vnu_bitSerial_port_file;
+		ofstream fully_parallel_file, fully_parallel_imple_file;
 		char regular_irr; // regular: 0x00; irregular: 0x01
 		unsigned int N, K, M;
 		unsigned int max_dc, max_dv; // maxumum number of row weight and column weight
@@ -42,8 +43,11 @@ class verilog_gen {
 		void cnu_p2s_instantiate(unsigned int line_cnt, unsigned int entry_cnt, unsigned int coordinate);
 		void cnu_s2p_instantiate(unsigned int line_cnt, unsigned int entry_cnt, unsigned int coordinate);
 		// 2) Bit-serial fully-parallel route which will be used in top.v
-		/*Not Finished Yet*/void cnu_bitSerial_port(const char *filename);
-		/*Not Finished Yet*/void vnu_bitSerial_port(const char *filename);
+		void cnu_bitSerial_port(ofstream &fd);
+		void cnu_bitSerial_port_implementation(ofstream &fd);
+		void vnu_bitSerial_port(ofstream &fd);
+		void vnu_bitSerial_port_implementation(ofstream &fd);
+
 		void fully_route_instantiate(const char *filename); // only for regular codes
 		void fully_route_implementation(unsigned line_cnt, unsigned int entry_cnt, unsigned int coordinate); // only for regular codes
 		void fully_route_implementation_port();
