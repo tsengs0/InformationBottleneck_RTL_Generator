@@ -9,16 +9,18 @@
 		unsigned int **cnu_list, **vnc_list;
 		unsigned int *index_cnt_cnu, *index_cnt_vnu;
 */
-const char *cnu_inst_filename = "cnu_instantiate.v";
-const char *cnu_p2s_inst_filename = "cnu_p2s_instantiate.v";
-const char *cnu_s2p_inst_filename = "cnu_s2p_instantiate.v";
-const char *vnu_inst_filename = "vnu_instantiate.v";
-const char *vnu_p2s_inst_filename = "vnu_p2s_instantiate.v";
-const char *vnu_s2p_inst_filename = "vnu_s2p_instantiate.v";
+/*legacy*/ const char *cnu_inst_filename = "cnu_instantiate.v";
+/*legacy*/ const char *cnu_p2s_inst_filename = "cnu_p2s_instantiate.v";
+/*legacy*/ const char *cnu_s2p_inst_filename = "cnu_s2p_instantiate.v";
+/*legacy*/ const char *vnu_inst_filename = "vnu_instantiate.v";
+/*legacy*/ const char *vnu_p2s_inst_filename = "vnu_p2s_instantiate.v";
+/*legacy*/ const char *vnu_s2p_inst_filename = "vnu_s2p_instantiate.v";
 const char *fully_parallel_filename = "fully_parallel_route_instantiate.v";
 const char *fully_parallel_imple_filename = "fully_parallel_route.v";
 const char *cnu_bitSerial_prot_filename = "cnu_bitSerial_port.v";
 const char *vnu_bitSerial_prot_filename = "vnu_bitSerial_port.v";
+const char *cnu_ib_ram_wrapper_filename = "cnu6_ib_ram_wrapper.v";
+const char *vnu_ib_ram_wrapper_filename = "vnu3_ib_ram_wrapper.v";
 verilog_gen::verilog_gen(const char *read_filename)
 {
   	string str;
@@ -113,6 +115,10 @@ verilog_gen::verilog_gen(const char *read_filename)
 	// Generating the implementation template of parallel-to-erial-to-parallel converter
 	cnu_bitSerial_port(cnu_bitSerial_port_file);
 	vnu_bitSerial_port(vnu_bitSerial_port_file);
+
+	// Generating CNU, VNU and DNU IB-RAM Wrappers
+	cnu_decompose_num = max_dc-2; vnu_decompose_num = max_dv+1-2;
+	ib_ram_wrapper();
 
 	cout << "Finished RTL code generation" << endl;
 	close_file();
@@ -468,4 +474,101 @@ void verilog_gen::vnu_s2p_instantiate(unsigned int line_cnt, unsigned int entry_
 		 //<< ".serial_en()," << endl << "\t" 
 		 << ".data_in (m_" << coordinate << "_" << line_cnt << "_s)"
 		 << endl << ");" << endl;   
+}
+
+void verilog_gen::ib_ram_wrapper ()
+{
+	// Wrapper of CNU
+	ofstream cnu_wrapper;
+	cnu_wrapper.open(cnu_ib_ram_wrapper_filename);
+	cnu_wrapper << "module cnu" << max_dc << "_ib_ram_wrapper #(" << endl
+				<< "\tparameter CN_ROM_RD_BW = 6," << endl
+				<< "\tparameter CN_ROM_ADDR_WB = 10," << endl
+				<< "\tparameter CN_DEGREE = 6," << endl
+				<< "\tparameter IB_CNU_DECOMP_funNum = 4," << endl
+				<< "\tparameter CN_NUM = 102," << endl
+				<< "\tparameter CNU6_INSTANTIATE_NUM = 51," << endl
+				<< "\tparameter CNU6_INSTANTIATE_UNIT = 2," << endl				
+				<< "\tparameter QUAN_SIZE = 4," << endl
+				<< "\tparameter DATAPATH_WIDTH = 4" << endl
+				<< ") (" << endl;
+
+	cnu_wrapper << "\toutput wire read_addr_offset_out," << endl;
+	for(unsigned int i = 0; i < M; i++) {
+		for(unsigned int j = 0; j < max_dc; j++) {
+			cnu_wrapper << "\toutput wire [DATAPATH_WIDTH-1:0] c2v_out" << j << "[" << i << "]," << endl;
+		}
+	}
+	cnu_wrapper << endl;
+	for(unsigned int i = 0; i < M; i++) {
+		for(unsigned int j = 0; j < max_dc; j++) {
+			cnu_wrapper << "\tinput wire [DATAPATH_WIDTH-1:0] v2c_in" << j << "[" << i << "]," << endl;
+		}
+	}
+	cnu_wrapper << endl 
+				<< "\tinput wire read_clk," << endl
+				<< "\tinput wire read_addr_offset," << endl
+				<< endl;
+
+	cnu_wrapper << "\t// Iteration-Refresh Page Address" << endl;
+	for(unsigned int j = 0; j < cnu_decompose_num; j++) cnu_wrapper << "\tinput wire [CN_ROM_ADDR_BW-1:0] page_addr_ram_" << j << "," << endl;
+	
+	cnu_wrapper << "\t//Iteration-Refresh Page Data" << endl;
+	for(unsigned int j = 0; j < cnu_decompose_num; j++) cnu_wrapper << "\tinput wire [CN_ROM_RD_BW-1:0] ram_write_data_" << j << "," << endl;
+
+	cnu_wrapper << endl;
+	for(unsigned int j = 0; j < cnu_decompose_num; j++) cnu_wrapper << "\tinput wire ib_ram_we_" << j << "," << endl;
+	cnu_wrapper << "\tinput wire write_clk" << endl
+				<< ");";
+	cnu_wrapper.close();
+
+	// Wrapper of VNU and DNU
+	ofstream vnu_wrapper;
+	vnu_wrapper.open(vnu_ib_ram_wrapper_filename);
+	vnu_wrapper << "module vnu" << max_dv << "_ib_ram_wrapper #(" << endl
+				<< "\tparameter VN_ROM_RD_BW = 8," << endl
+				<< "\tparameter VN_ROM_ADDR_WB = 11," << endl
+				<< "\tparameter DN_ROM_RD_BW = 8," << endl
+				<< "\tparameter DN_ROM_ADDR_WB = 11," << endl				
+				<< "\tparameter VN_DEGREE = 3," << endl
+				<< "\tparameter IB_VNU_DECOMP_funNum = 2," << endl
+				<< "\tparameter VN_NUM = 204," << endl
+				<< "\tparameter VNU3_INSTANTIATE_NUM = 51," << endl
+				<< "\tparameter VNU3_INSTANTIATE_UNIT = 4," << endl
+				<< "\tparameter QUAN_SIZE = 4," << endl
+				<< "\tparameter DATAPATH_WIDTH = 4" << endl
+				<< ") (" << endl;
+
+	vnu_wrapper << "\toutput wire read_addr_offset_out," << endl;
+	for(unsigned int i = 0; i < N; i++) {
+		vnu_wrapper << "\toutput wire hard_decision_" << i << "," << endl;
+		for(unsigned int j = 0; j < max_dv; j++) {
+			vnu_wrapper << "\toutput wire [DATAPATH_WIDTH-1:0] v2c_out" << j << "[" << i << "]," << endl;
+		}
+	}
+	vnu_wrapper << endl;
+	for(unsigned int i = 0; i < N; i++) {
+		for(unsigned int j = 0; j < max_dv; j++) {
+			vnu_wrapper << "\tinput wire [DATAPATH_WIDTH-1:0] c2v_in" << j << "[" << i << "]," << endl;
+		}
+	}
+	vnu_wrapper << endl 
+				<< "\tinput wire read_clk," << endl
+				<< "\tinput wire read_addr_offset," << endl
+				<< endl;
+
+	vnu_wrapper << "\t// Iteration-Refresh Page Address" << endl;
+	/*The last loop iteratin is for DNU*/
+	for(unsigned int j = 0; j < vnu_decompose_num+1; j++) vnu_wrapper << "\tinput wire [VN_ROM_ADDR_BW-1:0] page_addr_ram_" << j << "," << endl;
+	
+	vnu_wrapper << "\t//Iteration-Refresh Page Data" << endl;
+	/*The last loop iteration is for DNU*/
+	for(unsigned int j = 0; j < vnu_decompose_num+1; j++) vnu_wrapper << "\tinput wire [VN_ROM_RD_BW-1:0] ram_write_data_" << j << "," << endl;
+
+	vnu_wrapper << endl;
+	/*The last loop iteration is for DNU*/
+	for(unsigned int j = 0; j < vnu_decompose_num+1; j++) vnu_wrapper << "\tinput wire ib_ram_we_" << j << "," << endl;
+	vnu_wrapper << "\tinput wire write_clk" << endl
+				<< ");";
+	vnu_wrapper.close();
 }

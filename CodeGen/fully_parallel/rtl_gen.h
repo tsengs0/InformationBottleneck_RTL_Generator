@@ -26,6 +26,7 @@ class verilog_gen {
 		unsigned int N, K, M;
 		unsigned int max_dc, max_dv; // maxumum number of row weight and column weight
 		unsigned int *list_dc, *list_dv; // the list of wights/degrees of all rows and columns respectively.
+		unsigned int cnu_decompose_num, vnu_decompose_num;
 		// the list of interger coordinates in the m and direction where non-zero entries of row and column are
 		unsigned int **cnu_list, **vnc_list;
 		unsigned int *index_cnt_cnu, *index_cnt_vnu;
@@ -47,6 +48,9 @@ class verilog_gen {
 		void cnu_bitSerial_port_implementation(ofstream &fd);
 		void vnu_bitSerial_port(ofstream &fd);
 		void vnu_bitSerial_port_implementation(ofstream &fd);
+
+		// 3) IB-RAM Wrapper Generation
+		void ib_ram_wrapper();
 
 		void fully_route_instantiate(const char *filename); // only for regular codes
 		void fully_route_implementation(unsigned line_cnt, unsigned int entry_cnt, unsigned int coordinate); // only for regular codes
