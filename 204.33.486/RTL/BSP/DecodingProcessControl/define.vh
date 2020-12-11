@@ -23,3 +23,46 @@
 
 `define QUAN_SIZE 4
 `define DATAPATH_WIDTH 4
+
+/*CNUs*/
+parameter CN_ROM_RD_BW = 6;    // bit-width of one read port of BRAM based IB-ROM
+parameter CN_ROM_ADDR_BW = 10;  // bit-width of read address of BRAM based IB-ROM
+							// #Entry: (64-entry*3-bit) / ROM_RD_BW)*25-iteration
+							// ceil(log2(#Entry)) = 10-bit
+						    
+parameter CN_PAGE_ADDR_BW = 5; // bit-width of addressing (64-entry*3-bit)/ROM_RD_BW), i.e., ceil(log2((64-entry*3-bit)/ROM_RD_BW)))								
+parameter CN_ITER_ADDR_BW = 5;  // bit-width of addressing 25 iterationss
+//parameter CN_TYPE_A = 1;    // the number of check node type in terms of its check node degree   
+//parameter CN_TYPE_B = 1;     // the number of check node type in terms of its check node degree
+parameter CN_LOAD_CYCLE = 32; // 64-entry with two interleaving banks requires 32 clock cycle to finish iteration update
+parameter CN_RD_BW = 6;
+parameter CN_ADDR_BW = 10;
+parameter PIPELINE_DEPTH = 3;
+
+/*VNUs and DNUs*/
+parameter VN_QUAN_SIZE = 4;
+parameter VN_ROM_RD_BW = 8;    // bit-width of one read port of BRAM based IB-ROM
+parameter VN_ROM_ADDR_BW = 11;  // bit-width of read address of BRAM based IB-ROM
+							// #Entry: (128-entry*4-bit) / ROM_RD_BW)*25-iteration
+							// ceil(log2(#Entry)) = 11-bit
+parameter DN_QUAN_SIZE = 4;
+parameter DN_ROM_RD_BW = 8;    // bit-width of one read port of BRAM based IB-ROM
+parameter DN_ROM_ADDR_BW = 11;  // bit-width of read address of BRAM based IB-ROM
+							// #Entry: (128-entry*4-bit) / ROM_RD_BW)*25-iteration
+							// ceil(log2(#Entry)) = 11-bit
+						    
+parameter VN_PAGE_ADDR_BW = 6; // bit-width of addressing (128-entry*4-bit)/ROM_RD_BW), i.e., ceil(log2((128-entry*4-bit)/ROM_RD_BW)))								
+parameter VN_ITER_ADDR_BW = 5;  // bit-width of addressing 25 iterationss
+//parameter VN_TYPE_A = 1;    // the number of check node type in terms of its check node degree   
+//parameter VN_TYPE_B = 1;     // the number of check node type in terms of its check node degree
+parameter DN_PAGE_ADDR_BW = 6; // bit-width of addressing (128-entry*4-bit)/ROM_RD_BW), i.e., ceil(log2((128-entry*4-bit)/ROM_RD_BW)))								
+parameter DN_ITER_ADDR_BW = 5;  // bit-width of addressing 25 iterationss
+//parameter DN_TYPE_A = 1;    // the number of check node type in terms of its check node degree   
+//parameter DN_TYPE_B = 1;     // the number of check node type in terms of its check node degree
+parameter VN_LOAD_CYCLE = 64; // 128-entry with two interleaving banks requires 64 clock cycle to finish iteration update
+parameter DN_LOAD_CYCLE = 64; // 128-entry with two interleaving banks requires 64 clock cycle to finish iteration update
+parameter VN_RD_BW = 8;
+parameter DN_RD_BW = 2;
+parameter VN_ADDR_BW = 11;
+parameter DN_ADDR_BW = 11;
+parameter PIPELINE_DEPTH = 3;

@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version      : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-| Date              : Wed Nov 11 10:27:29 2020
+| Date              : Thu Dec  3 19:05:35 2020
 | Host              : lmpcc running 64-bit SUSE Linux Enterprise Server 15 SP1
 | Command           : report_timing_summary -max_paths 10 -file sys_control_unit_timing_summary_routed.rpt -pb sys_control_unit_timing_summary_routed.pb -rpx sys_control_unit_timing_summary_routed.rpx -warn_on_violation
 | Design            : sys_control_unit
@@ -55,7 +55,7 @@ Table of Contents
 
 1. checking no_clock
 --------------------
- There are 132 register/latch pins with no clock driven by root clock pin: read_clk (HIGH)
+ There are 182 register/latch pins with no clock driven by root clock pin: read_clk (HIGH)
 
 
 2. checking constant_clock
@@ -70,7 +70,7 @@ Table of Contents
 
 4. checking unconstrained_internal_endpoints
 --------------------------------------------
- There are 298 pins that are not constrained for maximum delay. (HIGH)
+ There are 404 pins that are not constrained for maximum delay. (HIGH)
 
  There are 0 pins that are not constrained for maximum delay due to constant clock.
 
@@ -84,7 +84,7 @@ Table of Contents
 
 6. checking no_output_delay
 ---------------------------
- There are 29 ports with no output delay specified. (HIGH)
+ There are 33 ports with no output delay specified. (HIGH)
 
  There are 0 ports with no output delay but user has a false path constraint
 

@@ -5,9 +5,13 @@ SOURCES  = sys_fsm_tb.v \
 	sys_control_unit.v \
 	cnu_wr_update_handshake.v \
 	vnu_wr_update_handshake.v \
-	cn_write_unit.v \
-	vn_write_unit.v \
-	dn_write_unit.v
+	cnu6_wr_fsm.v \
+	dnu3_wr_fsm.v \
+	vnu3_wr_fsm.v \
+	halfDuplex_parallel2serial.v
+	#cn_write_unit.v \
+	#vn_write_unit.v \
+	#dn_write_unit.v
 
 all:
 	$(SIMPRG) $(SOURCES) -o $(SIM_FILE)
@@ -16,8 +20,11 @@ run:
 	./${SIM_FILE} &
 	gtkwave sys_fsm.vcd & 
 
+sync_doc:
+	scp -r Control_Signal_Verification s1820419@lmpcc.jaist.ac.jp:/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/
+
 sync:
-	scp -r *.v *.sv *.vh Makefile Note *.sav *.vcd s1820419@lmpcc.jaist.ac.jp:/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/
+	scp -r *.v *.sv *.vh Makefile Note *.sav  s1820419@lmpcc.jaist.ac.jp:/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/204.33.486/RTL/BSP/DecodingProcessControl/
 
 clean:
 	rm -rf $(SIM_FILE) $(SIM_FILE).daidir csrc ucli.key

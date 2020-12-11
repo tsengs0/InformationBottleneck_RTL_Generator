@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-| Date             : Wed Nov 11 10:27:29 2020
+| Date             : Thu Dec  3 19:05:35 2020
 | Host             : lmpcc running 64-bit SUSE Linux Enterprise Server 15 SP1
 | Command          : report_power -file sys_control_unit_power_routed.rpt -pb sys_control_unit_power_summary_routed.pb -rpx sys_control_unit_power_routed.rpx
 | Design           : sys_control_unit
@@ -30,14 +30,14 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 7.234        |
+| Total On-Chip Power (W)  | 9.411        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 6.604        |
-| Device Static (W)        | 0.630        |
+| Dynamic (W)              | 8.766        |
+| Device Static (W)        | 0.645        |
 | Effective TJA (C/W)      | 1.0          |
-| Max Ambient (C)          | 92.9         |
-| Junction Temperature (C) | 32.1         |
+| Max Ambient (C)          | 90.8         |
+| Junction Temperature (C) | 34.2         |
 | Confidence Level         | Low          |
 | Setting File             | ---          |
 | Simulation Activity File | ---          |
@@ -52,15 +52,15 @@ Table of Contents
 +----------------+-----------+----------+-----------+-----------------+
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
-| CLB Logic      |     0.542 |      275 |       --- |             --- |
-|   LUT as Logic |     0.476 |       94 |    230400 |            0.04 |
-|   Register     |     0.065 |      132 |    460800 |            0.03 |
+| CLB Logic      |     0.604 |      393 |       --- |             --- |
+|   LUT as Logic |     0.531 |      134 |    230400 |            0.06 |
+|   Register     |     0.073 |      182 |    460800 |            0.04 |
 |   BUFG         |    <0.001 |        1 |        64 |            1.56 |
 |   Others       |     0.000 |       10 |       --- |             --- |
-| Signals        |     0.456 |      194 |       --- |             --- |
-| I/O            |     5.606 |       45 |       360 |           12.50 |
-| Static Power   |     0.630 |          |           |                 |
-| Total          |     7.234 |          |           |                 |
+| Signals        |     0.431 |      270 |       --- |             --- |
+| I/O            |     7.730 |       45 |       360 |           12.50 |
+| Static Power   |     0.645 |          |           |                 |
+| Total          |     9.411 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 
@@ -70,14 +70,14 @@ Table of Contents
 +-----------------+-------------+-----------+-------------+------------+
 | Source          | Voltage (V) | Total (A) | Dynamic (A) | Static (A) |
 +-----------------+-------------+-----------+-------------+------------+
-| Vccint          |       0.850 |     1.410 |       1.233 |      0.177 |
-| Vccint_io       |       0.850 |     0.072 |       0.000 |      0.072 |
+| Vccint          |       0.850 |     1.490 |       1.297 |      0.193 |
+| Vccint_io       |       0.850 |     0.073 |       0.000 |      0.073 |
 | Vccbram         |       0.850 |     0.002 |       0.000 |      0.002 |
-| Vccaux          |       1.800 |     0.146 |       0.000 |      0.146 |
-| Vccaux_io       |       1.800 |     0.779 |       0.724 |      0.055 |
+| Vccaux          |       1.800 |     0.145 |       0.000 |      0.145 |
+| Vccaux_io       |       1.800 |     1.056 |       1.001 |      0.055 |
 | Vcco33          |       3.300 |     0.000 |       0.000 |      0.000 |
 | Vcco25          |       2.500 |     0.000 |       0.000 |      0.000 |
-| Vcco18          |       1.800 |     2.362 |       2.362 |      0.000 |
+| Vcco18          |       1.800 |     3.256 |       3.256 |      0.000 |
 | Vcco15          |       1.500 |     0.000 |       0.000 |      0.000 |
 | Vcco135         |       1.350 |     0.000 |       0.000 |      0.000 |
 | Vcco12          |       1.200 |     0.000 |       0.000 |      0.000 |
@@ -98,7 +98,7 @@ Table of Contents
 | VCCO_PSIO2_502  |       3.300 |     0.000 |       0.000 |      0.000 |
 | VCCO_PSIO3_503  |       3.300 |     0.000 |       0.000 |      0.000 |
 | VCC_PSADC       |       1.800 |     0.002 |       0.000 |      0.002 |
-| VCCINT_VCU      |       0.900 |     0.030 |       0.000 |      0.030 |
+| VCCINT_VCU      |       0.900 |     0.032 |       0.000 |      0.032 |
 | MGTAVcc         |       0.900 |     0.000 |       0.000 |      0.000 |
 | MGTAVtt         |       1.200 |     0.000 |       0.000 |      0.000 |
 | MGTVccaux       |       1.800 |     0.000 |       0.000 |      0.000 |
@@ -156,24 +156,24 @@ Table of Contents
 +-------------------------------------------------+-----------+
 | Name                                            | Power (W) |
 +-------------------------------------------------+-----------+
-| sys_control_unit                                |     6.604 |
-|   cn_iter_update_IBUF[0]_inst                   |     0.008 |
-|   cn_iter_update_IBUF[1]_inst                   |     0.007 |
-|   cn_iter_update_IBUF[2]_inst                   |     0.007 |
-|   cn_iter_update_IBUF[3]_inst                   |     0.009 |
-|   cn_slave_wr_handshake_inst[0].cn_wr_handshake |     0.070 |
-|   cn_slave_wr_handshake_inst[1].cn_wr_handshake |     0.077 |
-|   cn_slave_wr_handshake_inst[2].cn_wr_handshake |     0.070 |
-|   cn_slave_wr_handshake_inst[3].cn_wr_handshake |     0.081 |
+| sys_control_unit                                |     8.766 |
+|   cn_iter_update_IBUF[0]_inst                   |     0.009 |
+|   cn_iter_update_IBUF[1]_inst                   |     0.010 |
+|   cn_iter_update_IBUF[2]_inst                   |     0.009 |
+|   cn_iter_update_IBUF[3]_inst                   |     0.010 |
+|   cn_slave_wr_handshake_inst[0].cn_wr_handshake |     0.068 |
+|   cn_slave_wr_handshake_inst[1].cn_wr_handshake |     0.072 |
+|   cn_slave_wr_handshake_inst[2].cn_wr_handshake |     0.064 |
+|   cn_slave_wr_handshake_inst[3].cn_wr_handshake |     0.056 |
 |   dn_iter_update_IBUF_inst                      |     0.007 |
-|   dn_wr_handshake                               |     0.048 |
-|   inter_frame_align_IBUF_inst                   |     0.005 |
+|   dn_wr_handshake                               |     0.052 |
+|   inter_frame_align_IBUF_inst                   |     0.006 |
 |   read_clk_IBUF_inst                            |     0.004 |
-|   termination_IBUF_inst                         |     0.006 |
+|   termination_IBUF_inst                         |     0.005 |
 |   vn_iter_update_IBUF[0]_inst                   |     0.008 |
-|   vn_iter_update_IBUF[1]_inst                   |     0.007 |
-|   vn_slave_wr_handshake_inst[0].vn_wr_handshake |     0.055 |
-|   vn_slave_wr_handshake_inst[1].vn_wr_handshake |     0.046 |
+|   vn_iter_update_IBUF[1]_inst                   |     0.008 |
+|   vn_slave_wr_handshake_inst[0].vn_wr_handshake |     0.051 |
+|   vn_slave_wr_handshake_inst[1].vn_wr_handshake |     0.040 |
 +-------------------------------------------------+-----------+
 
 

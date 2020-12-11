@@ -68,7 +68,7 @@ set ACTIVE_STEP init_design
 set rc [catch {
   create_msg_db init_design.pb
   set_param chipscope.maxJobs 9
-  set_param synth.incrementalSynthesisCache ./.Xil/Vivado-5305-lmpcc/incrSyn
+  set_param synth.incrementalSynthesisCache ./.Xil/Vivado-10960-lmpcc/incrSyn
   create_project -in_memory -part xczu7ev-ffvc1156-2-e
   set_property board_part xilinx.com:zcu104:part0:1.1 [current_project]
   set_property design_mode GateLvl [current_fileset]

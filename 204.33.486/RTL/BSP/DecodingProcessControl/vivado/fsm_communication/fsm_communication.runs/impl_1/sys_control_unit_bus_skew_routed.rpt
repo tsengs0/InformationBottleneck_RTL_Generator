@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version      : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-| Date              : Wed Nov 11 10:27:32 2020
+| Date              : Thu Dec  3 19:05:37 2020
 | Host              : lmpcc running 64-bit SUSE Linux Enterprise Server 15 SP1
 | Command           : report_bus_skew -warn_on_violation -file sys_control_unit_bus_skew_routed.rpt -pb sys_control_unit_bus_skew_routed.pb -rpx sys_control_unit_bus_skew_routed.rpx
 | Design            : sys_control_unit

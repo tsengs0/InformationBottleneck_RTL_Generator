@@ -28,19 +28,8 @@ module sys_control_unit #(
 	parameter DN_LOAD_CYCLE = 64, // 128-entry with two interleaving banks requires 64 clock cycle to finish iteration update
 	parameter MSG_PASS_CYCLE = 5, // the message passing (v2c and c2v) via Parallel-to-Serial-Parallel converter takes 5 clock cycles
 	
-	parameter CNU_FUNC_CYCLE = 3, // the latency of one CNU 2-LUT function based on symmetrical design
-	parameter VNU_FUNC_CYCLE = 3, // the latency of one VNU 2-LUT function based on symmetrical design
-	parameter DNU_FUNC_CYCLE = 3, // the latency of one DNU 2-LUT function based on symmetrical design
-	parameter CNU_FUNC_MEM_END = 2, // the Memory Read ends at rising edge of 2nd clock (indexed from 0th cycle)
-	parameter VNU_FUNC_MEM_END = 2, // the Memory Read ends at rising edge of 2nd clock (indexed from 0th cycle)
-	parameter DNU_FUNC_MEM_END = 2, // the Memory Read ends at rising edge of 2nd clock (indexed from 0th cycle)
-	parameter CNU_WR_HANDSHAKE_RESPONSE = 2, // response time from assertion of pipe_load_start until rising edge of cnu_wr
-	parameter VNU_WR_HANDSHAKE_RESPONSE = 2, // response time from assertion of pipe_load_start until rising edge of vnu_wr
-	parameter DNU_WR_HANDSHAKE_RESPONSE = 2, // response time from assertion of pipe_load_start until rising edge of vnu_wr
-	
-	parameter CNU_PIPELINE_LEVEL = 4*CNU_FUNC_CYCLE, // the last pipeline register is actually shared with P2P_C
-	parameter VNU_PIPELINE_LEVEL = 2*VNU_FUNC_CYCLE, // the last pipeline register is actually shared with P2P_V
-	parameter DNU_PIPELINE_LEVEL = 1*DNU_FUNC_CYCLE, 
+	parameter CNU_PIPELINE_LEVEL = 4, // the last pipeline register is actually shared with P2P_C
+	parameter VNU_PIPELINE_LEVEL = 2, // the last pipeline register is actually shared with P2P_V
 	parameter INIT_INTER_FRAME_EN = 0,
       
 	parameter [3:0] INIT_LOAD     = 4'b0000,
@@ -71,9 +60,9 @@ module sys_control_unit #(
     output wire v2c_load, // load enable signal to parallel-to-serial converter
     output reg inter_frame_en, // to enable the next frame's decoding process
     output reg de_frame_start, // to inform system that decoding process of current frame has already started. The given "termination" signal will be thereby deasserted by system 
-    /*Obsoleted*///output reg [`IB_CNU_DECOMP_funNum-1:0] cn_ram_re, // enable the pipelining of IB-CNU RAMs Iteration Update
-    /*Obsoleted*///output reg [`IB_VNU_DECOMP_funNum-1:0] vn_ram_re, // enable the pipelining of IB-VNU RAMs Iteration Update
-    /*Obsoleted*///output reg dn_ram_re, // enable the pipelining of IB-DNU RAMs Iteration Update
+    output reg [`IB_CNU_DECOMP_funNum-1:0] cn_ram_re, // enable the pipelining of IB-CNU RAMs Iteration Update
+    output reg [`IB_VNU_DECOMP_funNum-1:0] vn_ram_re, // enable the pipelining of IB-VNU RAMs Iteration Update
+    output reg dn_ram_re, // enable the pipelining of IB-DNU RAMs Iteration Update
 	output reg [3:0] state,
    
 	// Input port acknowledging from Write/Update FSMs
@@ -488,7 +477,6 @@ always @(posedge read_clk) begin
 	else if(state[3:0] == P2P_V && v2c_msg_psp == interFrame_enStart) inter_frame_en <= 1'b1; // for the iteration > 0, and it is for second frame
 	else if(state[3:0] == VNU_PIPE && vnu_pipeline_level == interFrame_enStart_v) inter_frame_en <= 1'b1; // for the iteration > 0, and it is for first frame
 	else if(inter_frame_align == 1'b1) inter_frame_en <= 1'b0;
-	else if(termination == 1'b1) inter_frame_en <= 1'b0;
 end
 
 initial de_frame_start <= 1'b0;
@@ -502,8 +490,6 @@ always @(posedge read_clk) begin
 		de_frame_start <= de_frame_start;
 end
 
-//**************************************************************************************//
-/* Deprecated and Obsoleted
 initial cn_ram_re[`IB_CNU_DECOMP_funNum-1:0] <= `IB_CNU_DECOMP_funNum'd0;
 always @(posedge read_clk) begin
     if (!fsm_en) 
@@ -547,8 +533,6 @@ generate
         end
     end
 endgenerate
-*/
-//**************************************************************************************//
 
 generate 
 	//genvar i, j;
@@ -592,10 +576,7 @@ generate
 		
 		always @(posedge read_clk, negedge rstn) begin
 			if(rstn == 1'b0) cnu_pipe_load_start[i] <= 1'b0;
-			else if(
-				(state == CNU_PIPE || state == CNU_OUT) && 
-				cnu_pipeline_level >= ((2**(CNU_FUNC_CYCLE*(i+1))) >> (CNU_FUNC_MEM_END+CNU_FUNC_MEM_END))
-			) cnu_pipe_load_start[i] <= 1'b1;
+			else if((state == CNU_PIPE || state == CNU_OUT) && cnu_pipeline_level >= (2**(i+0))) cnu_pipe_load_start[i] <= 1'b1;
 			else cnu_pipe_load_start[i] <= (cnu_pipe_load_start[i]^cnu_pipe_load_finish[i]);
 		end								 
 										 
@@ -647,10 +628,7 @@ generate
 		
 		always @(posedge read_clk, negedge rstn) begin
 			if(rstn == 1'b0) vnu_pipe_load_start[j] <= 1'b0;
-			else if(
-				(state == VNU_PIPE || state == VNU_OUT) && 
-				vnu_pipeline_level >= ((2**(VNU_FUNC_CYCLE*(j+1))) >> (VNU_FUNC_MEM_END+CNU_FUNC_MEM_END))
-			) vnu_pipe_load_start[j] <= 1'b1;
+			else if((state == VNU_PIPE || state == VNU_OUT) && vnu_pipeline_level >= (2**(j+0))) vnu_pipe_load_start[j] <= 1'b1;
 			else vnu_pipe_load_start[j] <= vnu_pipe_load_start[j]^vnu_pipe_load_finish[j];
 		end
 		
@@ -700,7 +678,7 @@ end
 
 always @(posedge read_clk, negedge rstn) begin
 	if(rstn == 1'b0) dnu_pipe_load_start <= 1'b0;
-	else if(state == VNU_OUT) dnu_pipe_load_start <= 1'b1;
+	else if(state == P2P_V && v2c_msg_psp >= 1) dnu_pipe_load_start <= 1'b1;
 	else dnu_pipe_load_start <= dnu_pipe_load_start^dnu_pipe_load_finish;
 end
 
@@ -718,18 +696,12 @@ assign v2c_msg_en = (state == LLR_FETCH    ) ? 1'b1 :
 					(state == LLR_FETCH_OUT) ? v2c_msg_busy : 
                     (state == P2P_V        ) ? 1'b1 : 
 					(state == P2P_V_OUT    ) ? v2c_msg_busy : 1'b0;
-generate 
-	for(i=0;i<`IB_CNU_DECOMP_funNum;i=i+1) begin : cn_rd_inst
-		assign cnu_rd[i] = |cnu_pipeline_level[CNU_FUNC_CYCLE*(i+1)-1:CNU_FUNC_CYCLE*i];//(state == CNU_PIPE || state == CNU_OUT) ? 1'b1 : 1'b0;
-	end
-	for(j=0;j<`IB_VNU_DECOMP_funNum;j=j+1) begin : vn_rd_inst
-		assign vnu_rd[j] = |vnu_pipeline_level[VNU_FUNC_CYCLE*(j+1)-1:VNU_FUNC_CYCLE*j];//(state == VNU_PIPE || VNU_OUT) ? 1'b1 : 1'b0;
-	end
-endgenerate
-assign dnu_rd = (state == P2P_V && v2c_msg_psp < 2**DNU_FUNC_CYCLE) ? 1'b1 : 1'b0; // DNUs are enabled within first clock cycle of P2P_V message passing 
-
+assign cnu_rd = cnu_pipeline_level;//(state == CNU_PIPE || state == CNU_OUT) ? 1'b1 : 1'b0;
 assign c2v_msg_en = (state == P2P_C) ? 1'b1 : 
 					(state == P2P_C_OUT) ? c2v_msg_busy : 1'b0;
+assign vnu_rd = vnu_pipeline_level;//(state == VNU_PIPE || VNU_OUT) ? 1'b1 : 1'b0;
+assign dnu_rd = (state == P2P_V && v2c_msg_psp == 1) ? 1'b1 : 1'b0; // DNUs are enabled within first clock cycle of P2P_V message passing 
+
 assign v2c_load = v2c_msg_psp[0];
 assign c2v_load = c2v_msg_psp[0]; 
   

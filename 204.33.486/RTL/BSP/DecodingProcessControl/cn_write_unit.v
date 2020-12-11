@@ -86,7 +86,7 @@ module rom_iter_selector #(
 	end
 endmodule
 
-module rom_iter_mux #(
+module c6rom_iter_mux #(
 	parameter ROM_RD_BW = 6 // bit-width of one read port of BRAM based IB-ROM
 )(
 	output wire [ROM_RD_BW-1:0] dout,
