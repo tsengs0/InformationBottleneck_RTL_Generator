@@ -519,7 +519,10 @@ void verilog_gen::ib_ram_wrapper ()
 	for(unsigned int j = 0; j < cnu_decompose_num; j++) cnu_wrapper << "\tinput wire [CN_ROM_ADDR_BW-1:0] page_addr_ram_" << j << "," << endl;
 	
 	cnu_wrapper << "\t//Iteration-Refresh Page Data" << endl;
-	for(unsigned int j = 0; j < cnu_decompose_num; j++) cnu_wrapper << "\tinput wire [CN_ROM_RD_BW-1:0] ram_write_data_" << j << "," << endl;
+	for(unsigned int j = 0; j < cnu_decompose_num; j++) {
+		cnu_wrapper << "\tinput wire [CN_ROM_RD_BW-1:0] ram_write_dataA_" << j << ", // from portA of IB-ROM" << endl;
+		cnu_wrapper << "\tinput wire [CN_ROM_RD_BW-1:0] ram_write_dataB_" << j << ", // from portB of IB-ROM" << endl;
+	}
 
 	cnu_wrapper << endl;
 	for(unsigned int j = 0; j < cnu_decompose_num; j++) cnu_wrapper << "\tinput wire ib_ram_we_" << j << "," << endl;
@@ -533,6 +536,8 @@ void verilog_gen::ib_ram_wrapper ()
 	cnu_wrapper << "// Output sources of check node units" << endl;
 	for(unsigned int i = 0; i < max_dc; i++) 
 		cnu_wrapper << "wire [QUAN_SIZE-1:0] c2v_" << i << " [0:CN_NUM-1];" << endl;
+	cnu_wrapper << "// Address related signals including the Net type" << endl;
+	cnu_wrapper << "wire [CN_DEGREE-2-1-1:0] read_addr_offset_internal;" << endl;
 
 	cnu_wrapper << endl;
 	string str;
@@ -573,27 +578,41 @@ void verilog_gen::ib_ram_wrapper ()
 	for(unsigned int i = 0; i < N; i++) {
 		vnu_wrapper << "\toutput wire hard_decision_" << i << "," << endl;
 		for(unsigned int j = 0; j < max_dv; j++) {
-			vnu_wrapper << "\toutput wire [DATAPATH_WIDTH-1:0] v2c_" << i << "_out" << j << endl;
+			vnu_wrapper << "\toutput wire [DATAPATH_WIDTH-1:0] v2c_" << i << "_out" << j << "," << endl;
 		}
 	}
 	vnu_wrapper << endl;
 	for(unsigned int i = 0; i < N; i++) {
+		vnu_wrapper << "\tinput wire [DATAPATH_WIDTH-1:0] ch_msg_" << i << "," << endl;
 		for(unsigned int j = 0; j < max_dv; j++) {
-			vnu_wrapper << "\tinput wire [DATAPATH_WIDTH-1:0] c2v_" << i << "_in" << j << endl;
+			vnu_wrapper << "\tinput wire [DATAPATH_WIDTH-1:0] c2v_" << i << "_in" << j << "," << endl;
 		}
 	}
 	vnu_wrapper << endl 
 				<< "\tinput wire read_clk," << endl
 				<< "\tinput wire read_addr_offset," << endl
+				<< "\tinput wire v2c_src," << endl
 				<< endl;
 
 	vnu_wrapper << "\t// Iteration-Refresh Page Address" << endl;
 	/*The last loop iteratin is for DNU*/
-	for(unsigned int j = 0; j < vnu_decompose_num+1; j++) vnu_wrapper << "\tinput wire [VN_ROM_ADDR_BW-1:0] page_addr_ram_" << j << "," << endl;
-	
+	for(unsigned int j = 0; j < vnu_decompose_num+1; j++) {
+		vnu_wrapper << "\tinput wire [VN_ROM_ADDR_BW-1:0] page_addr_ram_" << j << ",";
+		if(j == vnu_decompose_num) vnu_wrapper << " // the last one is for decision node" << endl;
+		else vnu_wrapper << endl;
+	}
+
 	vnu_wrapper << "\t//Iteration-Refresh Page Data" << endl;
 	/*The last loop iteration is for DNU*/
-	for(unsigned int j = 0; j < vnu_decompose_num+1; j++) vnu_wrapper << "\tinput wire [VN_ROM_RD_BW-1:0] ram_write_data_" << j << "," << endl;
+	for(unsigned int j = 0; j < vnu_decompose_num+1; j++) {
+		vnu_wrapper << "\tinput wire [VN_ROM_RD_BW-1:0] ram_write_dataA_" << j << ", // from portA of IB-ROM";
+		if(j == vnu_decompose_num) vnu_wrapper << " (for decision node)" << endl;
+		else vnu_wrapper << endl;
+
+		vnu_wrapper << "\tinput wire [VN_ROM_RD_BW-1:0] ram_write_dataB_" << j << ", // from portB of IB-ROM";	
+		if(j == vnu_decompose_num) vnu_wrapper << " (for decision node)" << endl;
+		else vnu_wrapper << endl;
+	}
 
 	vnu_wrapper << endl;
 	/*The last loop iteration is for DNU*/
@@ -605,12 +624,14 @@ void verilog_gen::ib_ram_wrapper ()
 	vnu_wrapper << "// Input sources of vaiable node units" << endl;
 	for(unsigned int i = 0; i < max_dv; i++) 
 		vnu_wrapper << "wire [QUAN_SIZE-1:0] c2v_" << i << " [0:VN_NUM-1];" << endl;
+	vnu_wrapper << "wire [QUAN_SIZE-1:0] ch_msg [0:VN_NUM-1];" << endl; 
+	
 	vnu_wrapper << "// Output sources of check node units" << endl;
 	for(unsigned int i = 0; i < max_dv; i++) 
 		vnu_wrapper << "wire [QUAN_SIZE-1:0] v2c_" << i << " [0:VN_NUM-1];" << endl;
-	vnu_wrapper << "// Output sources of check node units" << endl;
-	for(unsigned int i = 0; i < N; i++)
-		vnu_wrapper << "wire [VN_NUM-1:0] hard_decision;" << endl; 
+	vnu_wrapper << "wire [VN_NUM-1:0] hard_decision;" << endl;
+	vnu_wrapper << "// Address related signals including the Net type" << endl;
+	vnu_wrapper << "wire [VN_DEGREE+1-2-1-1:0] read_addr_offset_internal;" << endl;
 
 	vnu_wrapper << endl;
 	// Appending the template of VNU (along with DNU) cascading instantiation
@@ -619,10 +640,12 @@ void verilog_gen::ib_ram_wrapper ()
 	vnu_wrapper << endl;
 	for(unsigned int i = 0; i < N; i++) {
 		vnu_wrapper << "assign hard_decision_" << i << " = hard_decision[" << i << "];" << endl;
+		vnu_wrapper << "assign ch_msg[" << i << "] = ch_msg_" << i << "[QUAN_SIZE-1:0];" << endl;
 		for(unsigned int j = 0; j < max_dv; j++) {
 			vnu_wrapper << "assign v2c_" << i << "_out" << j << "[QUAN_SIZE-1:0] = v2c_" << j << "[" << i << "];" << endl;
 			vnu_wrapper << "assign c2v_" << j << "[" << i << "] = c2v_" << i << "_in" << j << "[QUAN_SIZE-1:0];" << endl;
 		}
 	}
+	vnu_wrapper << "endmodule";
 	vnu_wrapper.close(); vnu_template.close();
 }
