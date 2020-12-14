@@ -1254,10 +1254,7 @@ module cnu6_ib_ram_wrapper #(
 	input wire [CN_ROM_RD_BW-1:0] ram_write_dataA_3, // from portA of IB-ROM
 	input wire [CN_ROM_RD_BW-1:0] ram_write_dataB_3, // from portB of IB-ROM
 
-	input wire ib_ram_we_0,
-	input wire ib_ram_we_1,
-	input wire ib_ram_we_2,
-	input wire ib_ram_we_3,
+	input wire [3:0] ib_ram_we,
 	input wire write_clk
 );
 // Input sources of check node units

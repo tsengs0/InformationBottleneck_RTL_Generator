@@ -1,9 +1,8 @@
-`include "define.vh"
-
 module vnu_bitSerial_port #(
-	parameter MSG_WIDTH = 4
+	parameter MSG_WIDTH = 4,
+	parameter VN_DEGREE = 3
 ) (
-	inout wire [`VN_DEGREE-1] serialInOut,
+	inout wire [VN_DEGREE-1] serialInOut,
 	output wire [MSG_WIDTH-1:0] c2v_parallelOut_0,
 	output wire [MSG_WIDTH-1:0] c2v_parallelOut_1,
 	output wire [MSG_WIDTH-1:0] c2v_parallelOut_2,

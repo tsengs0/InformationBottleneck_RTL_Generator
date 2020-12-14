@@ -1662,10 +1662,8 @@ module vnu3_ib_ram_wrapper #(
 	input wire [VN_ROM_RD_BW-1:0] ram_write_dataA_2, // from portA of IB-ROM (for decision node)
 	input wire [VN_ROM_RD_BW-1:0] ram_write_dataB_2, // from portB of IB-ROM (for decision node)
 
-	input wire ib_ram_we_0,
-	input wire ib_ram_we_1,
-	input wire ib_ram_we_2,
-	input wire vn_write_clk
+	input wire [2:0] ib_ram_we,
+	input wire vn_write_clk,
 	input wire dn_write_clk
 );
 // Input sources of vaiable node units
@@ -1883,7 +1881,7 @@ generate
 			.ram_write_data_1 (ram_write_dataA_2[VN_ROM_RD_BW-1:0]),
 			
 			.write_clk (dn_write_clk),
-			.ib_ram_we (ib_dnu_ram_we)
+			.ib_ram_we (ib_ram_we[2])
 		);
 
 		ib_vnu_3_pipeOut u_v2c_out0(
@@ -2132,7 +2130,7 @@ generate
 			.ram_write_data_1 (ram_write_dataA_2[VN_ROM_RD_BW-1:0]),
 			
 			.write_clk (dn_write_clk),
-			.ib_ram_we (ib_dnu_ram_we)
+			.ib_ram_we (ib_ram_we[2])
 		);
 
 		ib_vnu_3_pipeOut u_v2c_out0(

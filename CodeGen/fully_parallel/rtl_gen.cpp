@@ -95,13 +95,13 @@ verilog_gen::verilog_gen(const char *read_filename)
         		while(getline(stream,token, '\t')) {
 				  if(dv_line_cnt < N && line_cnt > 3) { // generating the instantiation file for VNUs 
 					//vnu_instantiate(dv_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1); // index starts from '0'
-					vnu_p2s_instantiate(dv_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1);
+					//vnu_p2s_instantiate(dv_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1);
 					//vnu_s2p_instantiate(dv_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1);
 					fully_route_implementation(dv_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1);
 				  }
 				  else if(dc_line_cnt < M && line_cnt > (3+N)) { // generating the instantiation file for CNUs
 					//cnu_instantiate(dc_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1); // index starts from '0'
-					cnu_p2s_instantiate(dc_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1);
+					//cnu_p2s_instantiate(dc_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1);
 					//cnu_s2p_instantiate(dc_line_cnt, entry_cnt, std::stoul(token, nullptr, 0)-1);
 				  }
 				  else {
@@ -200,9 +200,8 @@ void verilog_gen::cnu_s2p_instantiate(unsigned int line_cnt, unsigned int entry_
 
 void verilog_gen::cnu_bitSerial_port(ofstream &fd)
 {
-	fd << "`include \"define.vh\"" << endl << endl
-		<< "module cnu_bitSerial_port #(" << endl << "\tparameter MSG_WIDTH = 4," << endl 
-		<< "\tparameter CN_DEGREE = 6 << " << endl
+	fd 	<< "module cnu_bitSerial_port #(" << endl << "\tparameter MSG_WIDTH = 4," << endl 
+		<< "\tparameter CN_DEGREE = 6" << endl
 		<< ") (" << endl
 		<< "\tinout wire [CN_DEGREE-1] serialInOut," << endl;
 
@@ -243,9 +242,10 @@ void verilog_gen::cnu_bitSerial_port_implementation(ofstream &fd)
 
 void verilog_gen::vnu_bitSerial_port(ofstream &fd)
 {
-	fd << "`include \"define.vh\"" << endl << endl
-		<< "module vnu_bitSerial_port #(" << endl << "\tparameter MSG_WIDTH = 4" << endl << ") (" << endl
-		<< "\tinout wire [`VN_DEGREE-1] serialInOut," << endl;
+	fd 	<< "module vnu_bitSerial_port #(" << endl << "\tparameter MSG_WIDTH = 4," << endl
+		<< "\tparameter VN_DEGREE = 3" << endl
+		<< ") (" << endl
+		<< "\tinout wire [VN_DEGREE-1] serialInOut," << endl;
 
 	// Output port of d_c number of check-to-variable messages
 	for(unsigned int i = 0; i < max_dv; i++) 
@@ -285,8 +285,13 @@ void verilog_gen::vnu_bitSerial_port_implementation(ofstream &fd)
 void verilog_gen::fully_route_instantiate(const char *filename)
 {
 	fully_parallel_file.open(filename);
-	fully_parallel_file << "fully_parallel_route routing_network(" << endl << "\t"
-			    << "// (N-K) number of check-to-Variable message buses, each of which is d_c bit width as input ports of this routing network" << endl << "\t"; 
+	fully_parallel_file << "fully_parallel_route #(" << endl
+					    << "\t.DATAPATH_WIDTH(DATAPATH_WIDTH)," << endl
+					    << "\t.CN_DEGREE     (CN_DEGREE)," << endl
+					    << "\t.VN_DEGREE     (VN_DEGREE)," << endl
+					    << "\t.MSG_WIDTH     (MSG_WIDTH)"  << endl
+						<< ") routing_network (" << endl
+			            << "// (N-K) number of check-to-Variable message buses, each of which is d_c bit width as input ports of this routing network" << endl << "\t"; 
 	// Generating the instantiation of output port
 	for(unsigned int i=0; i < M; i++) {
 		for(unsigned int j=0; j < max_dc; j++) {
@@ -333,7 +338,10 @@ void verilog_gen::fully_route_implementation(unsigned line_cnt, unsigned int ent
 		exit(1);
 	}
 	else if(entry_cnt == 0) {
-		fully_parallel_imple_file << endl << "\tvnu_bitSerial_port vnu_converter_port" << line_cnt << " (" << endl << "\t\t";
+		fully_parallel_imple_file << endl << "\tvnu_bitSerial_port #(" << endl
+		    << ".MSG_WIDTH (MSG_WIDTH)," << endl
+			<< ".VN_DEGREE (VN_DEGREE)" << endl
+			<< ") vnu_converter_port" << line_cnt << " (" << endl << "\t\t";
 	        fully_parallel_imple_file << ".serialInOut ({cn_serialInOut_" << coordinate << "[" 
 					  << list_dc[coordinate]-dc_count[coordinate] << "],";
 		dc_count[coordinate]-=1;
@@ -416,7 +424,10 @@ void verilog_gen::fully_route_implementation_port()
 	// Declare the internal wires
 	for(unsigned int i=0; i < M; i++) {
 		fully_parallel_imple_file << endl << "\t" << "wire [CN_DEGREE-1:0] cn_serialInOut_" << i << ";" << endl << "\t"
-			<< "cnu_bitSerial_port cnu_converter_port" << i << "(" << endl << "\t\t"
+			<< "cnu_bitSerial_port #(" << endl
+			<< "\t.MSG_WIDTH (MSG_WIDTH)," << endl
+			<< "\t.CN_DEGREE (CN_DEGREE)" << endl
+			<< ") cnu_converter_port" << i << "(" << endl << "\t\t"
 			<< ".serialInOut (cn_serialInOut_" << i << "[CN_DEGREE-1:0])," << endl << "\t\t";
 		for(unsigned int j=0; j < list_dc[i]; j++) {
 			fully_parallel_imple_file << ".v2c_parallelOut_" << j << " (v2c_parallelOut_" << i << j << "[`DATAPATH_WIDTH-1:0]),"
@@ -535,8 +546,8 @@ void verilog_gen::ib_ram_wrapper ()
 	}
 
 	cnu_wrapper << endl;
-	for(unsigned int j = 0; j < cnu_decompose_num; j++) cnu_wrapper << "\tinput wire ib_ram_we_" << j << "," << endl;
-	cnu_wrapper << "\tinput wire write_clk" << endl
+	cnu_wrapper << "\tinput wire [" << cnu_decompose_num-1 << ":0] ib_ram_we," << endl
+	            << "\tinput wire write_clk" << endl
 				<< ");";
 
 	cnu_wrapper << endl;
@@ -626,7 +637,7 @@ void verilog_gen::ib_ram_wrapper ()
 
 	vnu_wrapper << endl;
 	/*The last loop iteration is for DNU*/
-	vnu_wrapper << "\tinput wire [" << vnu_decompose_num << ":] ib_ram_we_" << j << "," << endl;
+	vnu_wrapper << "\tinput wire [" << vnu_decompose_num << ":0] ib_ram_we," << endl
 	            << "\tinput wire vn_write_clk," << endl
 				<< "\tinput wire dn_write_clk" << endl
 				<< ");";
@@ -674,9 +685,7 @@ void verilog_gen::ib_ram_wrapper ()
 				 << "\tparameter CN_NUM = 102," << endl
 				 << "\tparameter CNU6_INSTANTIATE_NUM = 51," << endl
 				 << "\tparameter CNU6_INSTANTIATE_UNIT = 2," << endl				
-				 << "\tparameter QUAN_SIZE = 4," << endl
-				 << endl
-				 << "\tparameter DATAPATH_WIDTH = 4" << endl	
+				 << endl	
 				 << "\tparameter VN_ROM_RD_BW = 8," << endl
 				 << "\tparameter VN_ROM_ADDR_WB = 11," << endl
 				 << "\tparameter DN_ROM_RD_BW = 8," << endl
@@ -723,36 +732,41 @@ void verilog_gen::ib_ram_wrapper ()
 	}
 	
 	proc_wrapper << endl;
-	for(unsigned int j = 0; j < cnu_decompose_num; j++) proc_wrapper << "\tinput cnu_wire ib_ram_we_" << j << "," << endl;
-	for(unsigned int j = 0; j < vnu_decompose_num+1; j++) proc_wrapper << "\tinput wire vnu_ib_ram_we_" << j << "," << endl; 	/*The last loop iteration is for DNU*/
+	proc_wrapper << "\tinput wire [" << cnu_decompose_num-1 << ":0] cnu_ib_ram_we," << endl;
+	proc_wrapper << "\tinput wire [" << vnu_decompose_num << ":0] vnu_ib_ram_we," << endl; 	/*The last loop iteration is for DNU*/
 	proc_wrapper << "\tinput wire cn_write_clk," << endl
 				 << "\tinput wire vn_write_clk," << endl
 				 << "\tinput wire dn_write_clk" << endl
 	             << ");" << endl;
 
 	proc_wrapper << endl 
-				 << "// Net-type interfaces" << endl
-				 << "//       ------" << endl
-				 << "//      |  cnu |" << endl
-				 << "//       ------" << endl
-				 << "//        |  ^        " << endl
-				 << "//c2v_in  |  | v2c_out" << endl
-				 << "//        v  |        " << endl
-				 << "//       ------" << endl
-				 << "//      | Route|" << endl
-				 << "//       ------" << endl
-				 << "//         |  ^       " << endl
-				 << "//c2v_out  |  | v2c_in" << endl
-				 << "//         v  |       " << endl
-				 << "//        ------" << endl
-				 << "//       |  vnu |" << endl
-				 << "//        ------" << endl;				 
+				 << "// Net-type interfaces (direction is RouteNetworkModule-centric)" << endl
+				 << "//        -------" << endl
+				 << "//       |  cnu  |" << endl
+				 << "//        -------" << endl
+				 << "//         |  ^        " << endl
+				 << "// c2v_in  |  | v2c_out" << endl
+				 << "//         v  |        " << endl
+				 << "//       ----------"  << endl
+				 << "//      |   Route  |" << endl
+				 << "//      | __    __ |" << endl
+				 << "//      |   \\  /   |" << endl
+				 << "//      |    \\/    |" << endl
+				 << "//      |    /\\    |" << endl
+				 << "//      | __/  \\__ |" << endl
+				 << "//       -----------"  << endl
+				 << "//          |  ^       " << endl
+				 << "// c2v_out  |  | v2c_in" << endl
+				 << "//          v  |       " << endl
+				 << "//         -------" << endl
+				 << "//        |  vnu  |" << endl
+				 << "//         -------" << endl;				 
 	for(unsigned int j = 0; j < max_dc; j++) {
-		proc_wrapper << "wire [DATAPATH_WIDTH-1:0] c2v_" << "out" << j << " [0:VN_NUM-1]; ";
 		proc_wrapper << "wire [DATAPATH_WIDTH-1:0] c2v_" << "in"  << j << " [0:CN_NUM-1];" << endl;
+		proc_wrapper << "wire [DATAPATH_WIDTH-1:0] v2c_" << "out" << j << " [0:CN_NUM-1];" << endl;
 	}
-	for(unsigned int j = 0; j < max_dc; j++) {
-		proc_wrapper << "wire [DATAPATH_WIDTH-1:0] v2c_" << "out" << j << " [0:CN_NUM-1]; ";
+	for(unsigned int j = 0; j < max_dv; j++) {
+		proc_wrapper << "wire [DATAPATH_WIDTH-1:0] c2v_" << "out" << j << " [0:VN_NUM-1]; " << endl;
 		proc_wrapper << "wire [DATAPATH_WIDTH-1:0] v2c_" << "in"  << j << " [0:VN_NUM-1];" << endl;
 	}
 
@@ -791,7 +805,7 @@ void verilog_gen::ib_ram_wrapper ()
 		proc_wrapper << "\t. ram_write_dataA_" << j << " (cnu_ram_write_dataA_" << j << "[CN_ROM_RD_BW-1:0]), // from portA of IB-ROM" << endl;
 		proc_wrapper << "\t. ram_write_dataB_" << j << " (cnu_ram_write_dataB_" << j << "[CN_ROM_RD_BW-1:0]), // from portB of IB-ROM" << endl;
 	}
-	for(unsigned int j = 0; j < cnu_decompose_num; j++) proc_wrapper << "\t.ib_ram_we_" << j << " (ib_ram_we_" << j << ")," << endl;
+	for(unsigned int j = 0; j < cnu_decompose_num; j++) proc_wrapper << "\t.ib_ram_we_" << j << " (cnu_ib_ram_we[" << j << "])," << endl;
 	proc_wrapper << "\t.write_clk (cn_write_clk)" << endl
 				 << ");" << endl << endl;	
 	
@@ -849,7 +863,7 @@ void verilog_gen::ib_ram_wrapper ()
 		else proc_wrapper << endl;
 	}
 	/*The last loop iteration is for DNU*/
-	for(unsigned int j = 0; j < vnu_decompose_num+1; j++) proc_wrapper << "\t.ib_ram_we_" << j << " (vnu_ib_ram_we_" << j << ")," << endl;
+	for(unsigned int j = 0; j < vnu_decompose_num+1; j++) proc_wrapper << "\t.ib_ram_we_" << j << " (vnu_ib_ram_we[" << j << "])," << endl;
 	proc_wrapper << "\t.vn_write_clk (vn_write_clk)," << endl
 				 << "\t.dn_write_clk (dn_write_clk)" << endl
 				 << ");" << endl << endl;

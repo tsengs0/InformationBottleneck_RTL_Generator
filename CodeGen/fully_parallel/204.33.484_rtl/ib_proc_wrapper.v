@@ -6,9 +6,7 @@ module ib_proc_wrapper #(
 	parameter CN_NUM = 102,
 	parameter CNU6_INSTANTIATE_NUM = 51,
 	parameter CNU6_INSTANTIATE_UNIT = 2,
-	parameter QUAN_SIZE = 4,
 
-	parameter DATAPATH_WIDTH = 4
 	parameter VN_ROM_RD_BW = 8,
 	parameter VN_ROM_ADDR_WB = 11,
 	parameter DN_ROM_RD_BW = 8,
@@ -256,46 +254,52 @@ module ib_proc_wrapper #(
 	input wire [VN_ROM_RD_BW-1:0] vnu_ram_write_dataA_2, // from portA of IB-ROM (for decision node)
 	input wire [VN_ROM_RD_BW-1:0] vnu_ram_write_dataB_2, // from portB of IB-ROM (for decision node)
 
-	input cnu_wire ib_ram_we_0,
-	input cnu_wire ib_ram_we_1,
-	input cnu_wire ib_ram_we_2,
-	input cnu_wire ib_ram_we_3,
-	input wire vnu_ib_ram_we_0,
-	input wire vnu_ib_ram_we_1,
-	input wire vnu_ib_ram_we_2,
-	input wire cn_write_clk
-	input wire vn_write_clk
+	input wire [3:0] cnu_ib_ram_we,
+	input wire [2:0] vnu_ib_ram_we,
+	input wire cn_write_clk,
+	input wire vn_write_clk,
 	input wire dn_write_clk
 );
 
-// Net-type interfaces
-//       ------
-//      |  cnu |
-//       ------
-//        |  ^        
-//c2v_in  |  | v2c_out
-//        v  |        
-//       ------
-//      | Route|
-//       ------
-//         |  ^       
-//c2v_out  |  | v2c_in
-//         v  |       
-//        ------
-//       |  vnu |
-//        ------
-wire [DATAPATH_WIDTH-1:0] c2v_out0 [0:CN_NUM-1]; wire [DATAPATH_WIDTH-1:0] c2v_in0 [0:CN_NUM-1];
-wire [DATAPATH_WIDTH-1:0] c2v_out1 [0:CN_NUM-1]; wire [DATAPATH_WIDTH-1:0] c2v_in1 [0:CN_NUM-1];
-wire [DATAPATH_WIDTH-1:0] c2v_out2 [0:CN_NUM-1]; wire [DATAPATH_WIDTH-1:0] c2v_in2 [0:CN_NUM-1];
-wire [DATAPATH_WIDTH-1:0] c2v_out3 [0:CN_NUM-1]; wire [DATAPATH_WIDTH-1:0] c2v_in3 [0:CN_NUM-1];
-wire [DATAPATH_WIDTH-1:0] c2v_out4 [0:CN_NUM-1]; wire [DATAPATH_WIDTH-1:0] c2v_in4 [0:CN_NUM-1];
-wire [DATAPATH_WIDTH-1:0] c2v_out5 [0:CN_NUM-1]; wire [DATAPATH_WIDTH-1:0] c2v_in5 [0:CN_NUM-1];
-wire [DATAPATH_WIDTH-1:0] v2c_out0 [0:CN_NUM-1]; wire [DATAPATH_WIDTH-1:0] v2c_in0 [0:CN_NUM-1];
-wire [DATAPATH_WIDTH-1:0] v2c_out1 [0:CN_NUM-1]; wire [DATAPATH_WIDTH-1:0] v2c_in1 [0:CN_NUM-1];
-wire [DATAPATH_WIDTH-1:0] v2c_out2 [0:CN_NUM-1]; wire [DATAPATH_WIDTH-1:0] v2c_in2 [0:CN_NUM-1];
-wire [DATAPATH_WIDTH-1:0] v2c_out3 [0:CN_NUM-1]; wire [DATAPATH_WIDTH-1:0] v2c_in3 [0:CN_NUM-1];
-wire [DATAPATH_WIDTH-1:0] v2c_out4 [0:CN_NUM-1]; wire [DATAPATH_WIDTH-1:0] v2c_in4 [0:CN_NUM-1];
-wire [DATAPATH_WIDTH-1:0] v2c_out5 [0:CN_NUM-1]; wire [DATAPATH_WIDTH-1:0] v2c_in5 [0:CN_NUM-1];
+// Net-type interfaces (direction is RouteNetworkModule-centric)
+//        -------
+//       |  cnu  |
+//        -------
+//         |  ^        
+// c2v_in  |  | v2c_out
+//         v  |        
+//       ----------
+//      |   Route  |
+//      | __    __ |
+//      |   \  /   |
+//      |    \/    |
+//      |    /\    |
+//      | __/  \__ |
+//       -----------
+//          |  ^       
+// c2v_out  |  | v2c_in
+//          v  |       
+//         -------
+//        |  vnu  |
+//         -------
+wire [DATAPATH_WIDTH-1:0] c2v_in0 [0:CN_NUM-1];
+wire [DATAPATH_WIDTH-1:0] v2c_out0 [0:CN_NUM-1];
+wire [DATAPATH_WIDTH-1:0] c2v_in1 [0:CN_NUM-1];
+wire [DATAPATH_WIDTH-1:0] v2c_out1 [0:CN_NUM-1];
+wire [DATAPATH_WIDTH-1:0] c2v_in2 [0:CN_NUM-1];
+wire [DATAPATH_WIDTH-1:0] v2c_out2 [0:CN_NUM-1];
+wire [DATAPATH_WIDTH-1:0] c2v_in3 [0:CN_NUM-1];
+wire [DATAPATH_WIDTH-1:0] v2c_out3 [0:CN_NUM-1];
+wire [DATAPATH_WIDTH-1:0] c2v_in4 [0:CN_NUM-1];
+wire [DATAPATH_WIDTH-1:0] v2c_out4 [0:CN_NUM-1];
+wire [DATAPATH_WIDTH-1:0] c2v_in5 [0:CN_NUM-1];
+wire [DATAPATH_WIDTH-1:0] v2c_out5 [0:CN_NUM-1];
+wire [DATAPATH_WIDTH-1:0] c2v_out0 [0:VN_NUM-1]; 
+wire [DATAPATH_WIDTH-1:0] v2c_in0 [0:VN_NUM-1];
+wire [DATAPATH_WIDTH-1:0] c2v_out1 [0:VN_NUM-1]; 
+wire [DATAPATH_WIDTH-1:0] v2c_in1 [0:VN_NUM-1];
+wire [DATAPATH_WIDTH-1:0] c2v_out2 [0:VN_NUM-1]; 
+wire [DATAPATH_WIDTH-1:0] v2c_in2 [0:VN_NUM-1];
 
 // Instantiation of CNU IB-RAM wrapper
 cnu6_ib_ram_wrapper #(
@@ -1552,10 +1556,10 @@ cnu6_ib_ram_wrapper #(
 	. ram_write_dataB_2 (cnu_ram_write_dataB_2[CN_ROM_RD_BW-1:0]), // from portB of IB-ROM
 	. ram_write_dataA_3 (cnu_ram_write_dataA_3[CN_ROM_RD_BW-1:0]), // from portA of IB-ROM
 	. ram_write_dataB_3 (cnu_ram_write_dataB_3[CN_ROM_RD_BW-1:0]), // from portB of IB-ROM
-	.ib_ram_we_0 (ib_ram_we_0),
-	.ib_ram_we_1 (ib_ram_we_1),
-	.ib_ram_we_2 (ib_ram_we_2),
-	.ib_ram_we_3 (ib_ram_we_3),
+	.ib_ram_we_0 (cnu_ib_ram_we[0]),
+	.ib_ram_we_1 (cnu_ib_ram_we[1]),
+	.ib_ram_we_2 (cnu_ib_ram_we[2]),
+	.ib_ram_we_3 (cnu_ib_ram_we[3]),
 	.write_clk (cn_write_clk)
 );
 
@@ -3222,11 +3226,13 @@ vnu3_ib_ram_wrapper #(
 	.ram_write_dataB_1 (vnu_ram_write_dataB_1[VN_ROM_RD_BW-1:0]), // from portB of IB-ROM
 	.ram_write_dataA_2 (vnu_ram_write_dataA_2[VN_ROM_RD_BW-1:0]), // from portA of IB-ROM (for decision node)
 	.ram_write_dataB_2 (vnu_ram_write_dataB_2[VN_ROM_RD_BW-1:0]), // from portB of IB-ROM (for decision node)
-	.ib_ram_we_0 (vnu_ib_ram_we_0),
-	.ib_ram_we_1 (vnu_ib_ram_we_1),
-	.ib_ram_we_2 (vnu_ib_ram_we_2),
+	.ib_ram_we_0 (vnu_ib_ram_we[0]),
+	.ib_ram_we_1 (vnu_ib_ram_we[1]),
+	.ib_ram_we_2 (vnu_ib_ram_we[2]),
 	.vn_write_clk (vn_write_clk),
 	.dn_write_clk (dn_write_clk)
-););
+);
 
+
+ // Instatiation of Routing Network and Port Mapping
 endmodule
