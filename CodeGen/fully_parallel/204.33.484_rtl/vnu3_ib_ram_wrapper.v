@@ -1665,7 +1665,8 @@ module vnu3_ib_ram_wrapper #(
 	input wire ib_ram_we_0,
 	input wire ib_ram_we_1,
 	input wire ib_ram_we_2,
-	input wire write_clk
+	input wire vn_write_clk
+	input wire dn_write_clk
 );
 // Input sources of vaiable node units
 wire [QUAN_SIZE-1:0] c2v_0 [0:VN_NUM-1];
@@ -1761,7 +1762,7 @@ generate
 			// Ieration-Update Data
 			.ram_write_data_0 (ram_write_dataA_0[VN_ROM_RD_BW-1:0]),
 		
-			.write_clk (write_clk),
+			.write_clk (vn_write_clk),
 			.ib_ram_we (ib_ram_we[0])
 		);
 
@@ -1842,7 +1843,7 @@ generate
 			// Ieration-Update Data
 			.ram_write_data_1 (ram_write_dataA_1[VN_ROM_RD_BW-1:0]),
 			
-			.write_clk (write_clk),
+			.write_clk (vn_write_clk),
 			.ib_ram_we (ib_ram_we[1])
 		);	
 	
@@ -1881,7 +1882,7 @@ generate
 			// Ieration-Update Data
 			.ram_write_data_1 (ram_write_dataA_2[VN_ROM_RD_BW-1:0]),
 			
-			.write_clk (write_clk),
+			.write_clk (dn_write_clk),
 			.ib_ram_we (ib_dnu_ram_we)
 		);
 
@@ -2010,7 +2011,7 @@ generate
 			// Ieration-Update Data
 			.ram_write_data_0 (ram_write_dataA_0[VN_ROM_RD_BW-1:0]),
 		
-			.write_clk (write_clk),
+			.write_clk (vn_write_clk),
 			.ib_ram_we (ib_ram_we[0])
 		);
 
@@ -2091,7 +2092,7 @@ generate
 			// Ieration-Update Data
 			.ram_write_data_1 (ram_write_dataA_1[VN_ROM_RD_BW-1:0]),
 			
-			.write_clk (write_clk),
+			.write_clk (vn_write_clk),
 			.ib_ram_we (ib_ram_we[1])
 		);	
 	
@@ -2130,7 +2131,7 @@ generate
 			// Ieration-Update Data
 			.ram_write_data_1 (ram_write_dataA_2[VN_ROM_RD_BW-1:0]),
 			
-			.write_clk (write_clk),
+			.write_clk (dn_write_clk),
 			.ib_ram_we (ib_dnu_ram_we)
 		);
 

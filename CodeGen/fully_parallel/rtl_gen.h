@@ -51,6 +51,7 @@ class verilog_gen {
 
 		// 3) IB-RAM Wrapper Generation
 		void ib_ram_wrapper();
+		void ib_ram_wrapper_instantiate(); // to port the IB-RAM wrapper onto the Nets of top module
 
 		void fully_route_instantiate(const char *filename); // only for regular codes
 		void fully_route_implementation(unsigned line_cnt, unsigned int entry_cnt, unsigned int coordinate); // only for regular codes

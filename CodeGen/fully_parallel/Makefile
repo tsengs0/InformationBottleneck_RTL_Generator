@@ -32,14 +32,14 @@ gen_204:
 	rm -rf 204.33.484_rtl
 	mkdir 204.33.484_rtl
 	./$(EXE_NAME) ../PCM/204.33.484.txt
-	mv cnu*.v vnu*.v 204.33.484_rtl/
+	mv cnu*.v vnu*.v ib*.v 204.33.484_rtl/
 	mv fully_parallel_*.v 204.33.484_rtl/
 
 gen_8000:
 	rm -rf 8000.4000.3.483_rtl
 	mkdir 8000.4000.3.483_rtl
 	./$(EXE_NAME) ../PCM/8000.4000.3.483.txt
-	mv cnu*.v vnu*.v 8000.4000.3.483_rtl/
+	mv cnu*.v vnu*.v ib*.v 8000.4000.3.483_rtl/
 
 clean: 
 	rm -f $(REBUILDABLES) *.dep *.deppo *~ *.o *.txt
