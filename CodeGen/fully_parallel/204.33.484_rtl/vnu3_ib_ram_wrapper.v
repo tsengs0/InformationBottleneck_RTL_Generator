@@ -1,8 +1,10 @@
 module vnu3_ib_ram_wrapper #(
 	parameter VN_ROM_RD_BW = 8,
-	parameter VN_ROM_ADDR_WB = 11,
+	parameter VN_ROM_ADDR_BW = 11,
+	parameter VN_PAGE_ADDR_BW = 6,
 	parameter DN_ROM_RD_BW = 8,
-	parameter DN_ROM_ADDR_WB = 11,
+	parameter DN_ROM_ADDR_BW = 11,
+	parameter DN_PAGE_ADDR_BW = 6,
 	parameter VN_DEGREE = 3,
 	parameter IB_VNU_DECOMP_funNum = 2,
 	parameter VN_NUM = 204,
@@ -1648,19 +1650,21 @@ module vnu3_ib_ram_wrapper #(
 
 	input wire read_clk,
 	input wire read_addr_offset,
+	input wire c2v_latch_en,
+	input wire c2v_parallel_load,
 	input wire v2c_src,
 
 	// Iteration-Refresh Page Address
-	input wire [VN_ROM_ADDR_BW-1:0] page_addr_ram_0,
-	input wire [VN_ROM_ADDR_BW-1:0] page_addr_ram_1,
-	input wire [VN_ROM_ADDR_BW-1:0] page_addr_ram_2, // the last one is for decision node
+	input wire [VN_PAGE_ADDR_BW+1-1:0] page_addr_ram_0,
+	input wire [VN_PAGE_ADDR_BW+1-1:0] page_addr_ram_1,
+	input wire [DN_PAGE_ADDR_BW+1-1:0] page_addr_ram_2, // the last one is for decision node
 	//Iteration-Refresh Page Data
 	input wire [VN_ROM_RD_BW-1:0] ram_write_dataA_0, // from portA of IB-ROM
-	input wire [VN_ROM_RD_BW-1:0] ram_write_dataB_0, // from portB of IB-ROM
+	input wire [VN_ROM_RD_BW-1:0] ram_write_dataB_0, // from portA of IB-ROM
 	input wire [VN_ROM_RD_BW-1:0] ram_write_dataA_1, // from portA of IB-ROM
-	input wire [VN_ROM_RD_BW-1:0] ram_write_dataB_1, // from portB of IB-ROM
-	input wire [VN_ROM_RD_BW-1:0] ram_write_dataA_2, // from portA of IB-ROM (for decision node)
-	input wire [VN_ROM_RD_BW-1:0] ram_write_dataB_2, // from portB of IB-ROM (for decision node)
+	input wire [VN_ROM_RD_BW-1:0] ram_write_dataB_1, // from portA of IB-ROM
+	input wire [DN_ROM_RD_BW-1:0] ram_write_dataA_2, // from portA of IB-ROM (for decision node)
+	input wire [DN_ROM_RD_BW-1:0] ram_write_dataB_2, // from portA of IB-ROM (for decision node)
 
 	input wire [2:0] ib_ram_we,
 	input wire vn_write_clk,
@@ -1677,12 +1681,126 @@ wire [QUAN_SIZE-1:0] v2c_1 [0:VN_NUM-1];
 wire [QUAN_SIZE-1:0] v2c_2 [0:VN_NUM-1];
 wire [VN_NUM-1:0] hard_decision;
 // Address related signals including the Net type
-wire [VN_DEGREE+1-2-1-1:0] read_addr_offset_internal;
+wire [VN_DEGREE+1-2-1-1:0] read_addr_offset_internal [0:VNU3_INSTANTIATE_NUM-1];
+wire [VNU3_INSTANTIATE_NUM-1:0]read_addr_offset_outSet;
+
+
+reg [DATAPATH_WIDTH-1:0] c2v_latch_0 [0:VN_NUM-1];
+reg [DATAPATH_WIDTH-1:0] c2v_latch_1 [0:VN_NUM-1];
+reg [DATAPATH_WIDTH-1:0] c2v_latch_2 [0:VN_NUM-1];
+generate 
+	genvar j;
+	for (j=0; j<VNU3_INSTANTIATE_NUM; j=j+1) begin : c2v_latch_inst
+		// c2v_out_0
+		///////////////////////////////////////////////////////////////////////////////////////////
+		always @(posedge read_clk, posedge c2v_latch_en) begin
+			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
+				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)] <= 0;
+			else if(c2v_latch_en == 1'b1) 
+				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)] <= c2v_0[(VNU3_INSTANTIATE_UNIT*j)];
+			else 
+				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)] <= c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)];
+		end
+		always @(posedge read_clk, posedge c2v_latch_en) begin
+			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
+				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+1] <= 0;
+			else if(c2v_latch_en == 1'b1) 
+				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+1] <= c2v_0[(VNU3_INSTANTIATE_UNIT*j)+1];
+			else 
+				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+1] <= c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+1];
+		end
+		always @(posedge read_clk, posedge c2v_latch_en) begin
+			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
+				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+2] <= 0;
+			else if(c2v_latch_en == 1'b1) 
+				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+2] <= c2v_0[(VNU3_INSTANTIATE_UNIT*j)+2];
+			else 
+				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+2] <= c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+2];
+		end
+		always @(posedge read_clk, posedge c2v_latch_en) begin
+			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
+				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+3] <= 0;
+			else if(c2v_latch_en == 1'b1) 
+				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+3] <= c2v_0[(VNU3_INSTANTIATE_UNIT*j)+3];
+			else 
+				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+3] <= c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+3];
+		end	
+		///////////////////////////////////////////////////////////////////////////////////////////
+		// c2v_out_1
+		always @(posedge read_clk, posedge c2v_latch_en) begin
+			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
+				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)] <= 0;
+			else if(c2v_latch_en == 1'b1) 
+				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)] <= c2v_1[(VNU3_INSTANTIATE_UNIT*j)];
+			else 
+				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)] <= c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)];
+		end
+		always @(posedge read_clk, posedge c2v_latch_en) begin
+			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
+				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+1] <= 0;
+			else if(c2v_latch_en == 1'b1) 
+				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+1] <= c2v_1[(VNU3_INSTANTIATE_UNIT*j)+1];
+			else 
+				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+1] <= c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+1];
+		end	
+		always @(posedge read_clk, posedge c2v_latch_en) begin
+			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
+				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+2] <= 0;
+			else if(c2v_latch_en == 1'b1) 
+				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+2] <= c2v_1[(VNU3_INSTANTIATE_UNIT*j)+2];
+			else 
+				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+2] <= c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+2];
+		end
+		always @(posedge read_clk, posedge c2v_latch_en) begin
+			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
+				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+3] <= 0;
+			else if(c2v_latch_en == 1'b1) 
+				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+3] <= c2v_1[(VNU3_INSTANTIATE_UNIT*j)+3];
+			else 
+				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+3] <= c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+3];
+		end	
+		///////////////////////////////////////////////////////////////////////////////////////////
+		// c2v_out_2
+		always @(posedge read_clk, posedge c2v_latch_en) begin
+			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
+				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)] <= 0;
+			else if(c2v_latch_en == 1'b1) 
+				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)] <= c2v_2[(VNU3_INSTANTIATE_UNIT*j)];
+			else 
+				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)] <= c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)];
+		end
+		always @(posedge read_clk, posedge c2v_latch_en) begin
+			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
+				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+1] <= 0;
+			else if(c2v_latch_en == 1'b1) 
+				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+1] <= c2v_2[(VNU3_INSTANTIATE_UNIT*j)+1];
+			else 
+				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+1] <= c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+1];
+		end	
+		always @(posedge read_clk, posedge c2v_latch_en) begin
+			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
+				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+2] <= 0;
+			else if(c2v_latch_en == 1'b1) 
+				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+2] <= c2v_2[(VNU3_INSTANTIATE_UNIT*j)+2];
+			else 
+				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+2] <= c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+2];
+		end
+		always @(posedge read_clk, posedge c2v_latch_en) begin
+			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
+				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+3] <= 0;
+			else if(c2v_latch_en == 1'b1) 
+				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+3] <= c2v_2[(VNU3_INSTANTIATE_UNIT*j)+3];
+			else 
+				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+3] <= c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+3];
+		end	
+		///////////////////////////////////////////////////////////////////////////////////////////
+	end
+endgenerate
 
 generate
-	genvar j;
+	//genvar j;
 	// Group A interacting with Port A of IB-ROMs
-	integer inst_num_groupA = VNU3_INSTANTIATE_NUM / 2;
+	localparam inst_num_groupA = 25;
 	for (j=0; j<inst_num_groupA; j=j+1) begin : vnu3_204_102_inst_GroupA
 		// Instantiation of F_0
 		// Instantiation of F_0
@@ -1697,7 +1815,7 @@ generate
 		wire [1:0] vnu3_tranEn_out;
 	
 		vnu3_f0 u_f0(
-			.read_addr_offset_out (read_addr_offset_internal[0]), // to forward the current multi-frame offset signal to the next sub-datapath	
+			.read_addr_offset_out (read_addr_offset_internal[j][0]), // to forward the current multi-frame offset signal to the next sub-datapath	
 			// For the first VNU
 			.vnu0_tPort0 (f0_out[0]  ), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu0_tPort1 (f0_out[1]  ), // internal signals accounting for each 128-entry partial LUT's output
@@ -1729,34 +1847,34 @@ generate
 			.vnu3_tranEn_out1 (vnu3_tranEn_out[1]),
 		
 			// From the first VNU
-			.vnu0_c2v_0  (c2v_0[(VNU3_INSTANTIATE_UNIT*j)]),
-			.vnu0_c2v_1  (c2v_1[(VNU3_INSTANTIATE_UNIT*j)]),
-			.vnu0_c2v_2  (c2v_2[(VNU3_INSTANTIATE_UNIT*j)]),
+			.vnu0_c2v_0  (/*c2v_0*/c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)]),
+			.vnu0_c2v_1  (/*c2v_1*/c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)]),
+			.vnu0_c2v_2  (/*c2v_2*/c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)]),
 			.vnu0_ch_llr (ch_msg[VNU3_INSTANTIATE_UNIT*j]),
 	
 			// From the second VNU
-			.vnu1_c2v_0  (c2v_0[(VNU3_INSTANTIATE_UNIT*j)+1]),
-			.vnu1_c2v_1  (c2v_1[(VNU3_INSTANTIATE_UNIT*j)+1]),
-			.vnu1_c2v_2  (c2v_2[(VNU3_INSTANTIATE_UNIT*j)+1]),
+			.vnu1_c2v_0  (/*c2v_0*/c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+1]),
+			.vnu1_c2v_1  (/*c2v_1*/c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+1]),
+			.vnu1_c2v_2  (/*c2v_2*/c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+1]),
 			.vnu1_ch_llr (ch_msg[(VNU3_INSTANTIATE_UNIT*j)+1]),
 	
 			// From the third VNU
-			.vnu2_c2v_0  (c2v_0[(VNU3_INSTANTIATE_UNIT*j)+2]),
-			.vnu2_c2v_1  (c2v_1[(VNU3_INSTANTIATE_UNIT*j)+2]),
-			.vnu2_c2v_2  (c2v_2[(VNU3_INSTANTIATE_UNIT*j)+2]),
+			.vnu2_c2v_0  (/*c2v_0*/c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+2]),
+			.vnu2_c2v_1  (/*c2v_1*/c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+2]),
+			.vnu2_c2v_2  (/*c2v_2*/c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+2]),
 			.vnu2_ch_llr (ch_msg[(VNU3_INSTANTIATE_UNIT*j)+2]),
 	
 			// From the fourth VNU
-			.vnu3_c2v_0  (c2v_0[(VNU3_INSTANTIATE_UNIT*j)+3]),
-			.vnu3_c2v_1  (c2v_1[(VNU3_INSTANTIATE_UNIT*j)+3]),
-			.vnu3_c2v_2  (c2v_2[(VNU3_INSTANTIATE_UNIT*j)+3]),
+			.vnu3_c2v_0  (/*c2v_0*/c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+3]),
+			.vnu3_c2v_1  (/*c2v_1*/c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+3]),
+			.vnu3_c2v_2  (/*c2v_2*/c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+3]),
 			.vnu3_ch_llr (ch_msg[(VNU3_INSTANTIATE_UNIT*j)+3]),
 		
 			.read_clk (read_clk),
 			.read_addr_offset (read_addr_offset), // offset determing the switch between multi-frame
 		
 			// Iteration-Update Page Address 
-			.page_addr_ram (page_addr_ram_0[VN_ROM_ADDR_BW-1:0]),
+			.page_addr_ram (page_addr_ram_0[VN_PAGE_ADDR_BW+1-1:0]),
 			// Ieration-Update Data
 			.ram_write_data_0 (ram_write_dataA_0[VN_ROM_RD_BW-1:0]),
 		
@@ -1769,11 +1887,15 @@ generate
 		wire [QUAN_SIZE-1:0] vnu1_v2c[0:2];
 		wire [QUAN_SIZE-1:0] vnu2_v2c[0:2];
 		wire [QUAN_SIZE-1:0] vnu3_v2c[0:2];
+		wire [`QUAN_SIZE-1:0] vnu0_dn_in;
+		wire [`QUAN_SIZE-1:0] vnu1_dn_in;
+		wire [`QUAN_SIZE-1:0] vnu2_dn_in;
+		wire [`QUAN_SIZE-1:0] vnu3_dn_in;
 		wire [QUAN_SIZE-1:0] vnu0_E_reg2, vnu1_E_reg2, vnu2_E_reg2, vnu3_E_reg2;
-		wire [1:0] vnu0_tranEn_out_f1;
-		wire [1:0] vnu1_tranEn_out_f1;
-		wire [1:0] vnu2_tranEn_out_f1;
-		wire [1:0] vnu3_tranEn_out_f1;
+		wire vnu0_tranEn_out_f1;
+		wire vnu1_tranEn_out_f1;
+		wire vnu2_tranEn_out_f1;
+		wire vnu3_tranEn_out_f1;
 		vnu3_f1 u_f1(
 			.read_addr_offset_out (read_addr_offset_outSet[j]), // to forward the current multi-frame offset signal to the next sub-datapath	
 			// For the first VNU
@@ -1781,24 +1903,28 @@ generate
 			.vnu0_v2c1 (vnu0_v2c[1]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu0_v2c2 (vnu0_v2c[2]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu0_E_reg2 (vnu0_E_reg2[QUAN_SIZE-1:0]),
+			.vnu0_dn_in (vnu0_dn_in[`QUAN_SIZE-1:0]), // the input source to decision node in the next step
 			.vnu0_tranEn_out0 (vnu0_tranEn_out_f1),
 			// For the second VNU       
 			.vnu1_v2c0 (vnu1_v2c[0]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu1_v2c1 (vnu1_v2c[1]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu1_v2c2 (vnu1_v2c[2]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu1_E_reg2 (vnu1_E_reg2[QUAN_SIZE-1:0]),
+			.vnu1_dn_in (vnu1_dn_in[`QUAN_SIZE-1:0]), // the input source to decision node in the next step
 			.vnu1_tranEn_out0 (vnu1_tranEn_out_f1),
 			// For the third VNU        
 			.vnu2_v2c0 (vnu2_v2c[0]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu2_v2c1 (vnu2_v2c[1]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu2_v2c2 (vnu2_v2c[2]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu2_E_reg2 (vnu2_E_reg2[QUAN_SIZE-1:0]),
+			.vnu2_dn_in (vnu2_dn_in[`QUAN_SIZE-1:0]), // the input source to decision node in the next step
 			.vnu2_tranEn_out0 (vnu2_tranEn_out_f1),
 			// For the fourth VNU       
 			.vnu3_v2c0 (vnu3_v2c[0]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu3_v2c1 (vnu3_v2c[1]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu3_v2c2 (vnu3_v2c[2]), // internal signals accounting for each 128-entry partial LUT's output
-			.vnu3_E_reg2 (vnu3_E_reg2[QUAN_SIZE-1:0]),	
+			.vnu3_E_reg2 (vnu3_E_reg2[QUAN_SIZE-1:0]),
+			.vnu3_dn_in (vnu3_dn_in[`QUAN_SIZE-1:0]), // the input source to decision node in the next step
 			.vnu3_tranEn_out0 (vnu3_tranEn_out_f1),
 			
 			// From the first VNU
@@ -1834,10 +1960,10 @@ generate
 			.vnu3_tranEn_in1 (vnu3_tranEn_out[1]),
 		
 			.read_clk (read_clk),
-			.read_addr_offset (read_addr_offset_internal[0]), // offset determing the switch between multi-frame
+			.read_addr_offset (read_addr_offset_internal[j][0]), // offset determing the switch between multi-frame
 		
 			// Iteration-Update Page Address 
-			.page_addr_ram (page_addr_ram_1[VN_ROM_ADDR_BW-1:0]),
+			.page_addr_ram (page_addr_ram_1[VN_PAGE_ADDR_BW+1-1:0]),
 			// Ieration-Update Data
 			.ram_write_data_1 (ram_write_dataA_1[VN_ROM_RD_BW-1:0]),
 			
@@ -1853,22 +1979,22 @@ generate
 			.dnu3_hard_decision (hard_decision[VNU3_INSTANTIATE_UNIT*j+3]), // internal signals accounting for each 128-entry partial LUT's output
 		
 			// From the first DNU
-			.vnu0_t10		 (vnu0_v2c[0]),
+			.vnu0_t10		 (vnu0_dn_in[`QUAN_SIZE-1:0]),
 			.vnu0_c2v_2      (vnu0_E_reg2[QUAN_SIZE-1:0]),
 			.vnu0_tranEn_in0 (vnu0_tranEn_out_f1),
 
 			// From the second DNU
-			.vnu1_t10		 (vnu1_v2c[0]),
+			.vnu1_t10		 (vnu1_dn_in[`QUAN_SIZE-1:0]),
 			.vnu1_c2v_2      (vnu1_E_reg2[QUAN_SIZE-1:0]),
 			.vnu1_tranEn_in0 (vnu1_tranEn_out_f1),
 
 			// From the third DNU
-			.vnu2_t10		 (vnu2_v2c[0]),
+			.vnu2_t10		 (vnu2_dn_in[`QUAN_SIZE-1:0]),
 			.vnu2_c2v_2      (vnu2_E_reg2[QUAN_SIZE-1:0]),
 			.vnu2_tranEn_in0 (vnu2_tranEn_out_f1),
 		
 			// From the fourth DNU
-			.vnu3_t10		 (vnu3_v2c[0]),
+			.vnu3_t10		 (vnu3_dn_in[`QUAN_SIZE-1:0]),
 			.vnu3_c2v_2      (vnu3_E_reg2[QUAN_SIZE-1:0]),
 			.vnu3_tranEn_in0 (vnu3_tranEn_out_f1),
 		
@@ -1876,9 +2002,9 @@ generate
 			.read_addr_offset (read_addr_offset_outSet[j]), // offset determing the switch between multi-frame 
 			
 			// Iteration-Update Page Address 
-			.page_addr_ram (page_addr_ram_2[VN_ROM_ADDR_BW-1:0]),
+			.page_addr_ram (page_addr_ram_2[DN_PAGE_ADDR_BW+1-1:0]),
 			// Ieration-Update Data
-			.ram_write_data_1 (ram_write_dataA_2[VN_ROM_RD_BW-1:0]),
+			.ram_write_data_1 (ram_write_dataA_2[DN_ROM_RD_BW-1:0]),
 			
 			.write_clk (dn_write_clk),
 			.ib_ram_we (ib_ram_we[2])
@@ -1892,7 +2018,7 @@ generate
 			.M0 (vnu0_v2c[0]),
 			.M1 (vnu0_v2c[1]),
 			.M2 (vnu0_v2c[2]),
-			.ch_llr (vnu0_ch_llr[QUAN_SIZE-1:0]),
+			.ch_llr (ch_msg[(VNU3_INSTANTIATE_UNIT*j)]),
 			.v2c_src (v2c_src)             
 		);
 		ib_vnu_3_pipeOut u_v2c_out1(
@@ -1903,7 +2029,7 @@ generate
 			.M0 (vnu1_v2c[0]),
 			.M1 (vnu1_v2c[1]),
 			.M2 (vnu1_v2c[2]),
-			.ch_llr (vnu1_ch_llr[QUAN_SIZE-1:0]),
+			.ch_llr (ch_msg[(VNU3_INSTANTIATE_UNIT*j)+1]),
 			.v2c_src (v2c_src)             
 		);
 		ib_vnu_3_pipeOut u_v2c_out2(
@@ -1914,7 +2040,7 @@ generate
 			.M0 (vnu2_v2c[0]),
 			.M1 (vnu2_v2c[1]),
 			.M2 (vnu2_v2c[2]),
-			.ch_llr (vnu2_ch_llr[QUAN_SIZE-1:0]),
+			.ch_llr (ch_msg[(VNU3_INSTANTIATE_UNIT*j)+2]),
 			.v2c_src (v2c_src)             
 		);
 		ib_vnu_3_pipeOut u_v2c_out3(
@@ -1925,13 +2051,13 @@ generate
 			.M0 (vnu3_v2c[0]),
 			.M1 (vnu3_v2c[1]),
 			.M2 (vnu3_v2c[2]),
-			.ch_llr (vnu3_ch_llr[QUAN_SIZE-1:0]),
+			.ch_llr (ch_msg[(VNU3_INSTANTIATE_UNIT*j)+3]),
 			.v2c_src (v2c_src)              
 		);
 	end
 
 	// Group B interacting with Port B of IB-ROMs
-	integer inst_num_groupB = VNU3_INSTANTIATE_NUM - inst_num_groupA;
+	localparam inst_num_groupB = 26;
 	for (j=inst_num_groupB-1; j<VNU3_INSTANTIATE_NUM; j=j+1) begin : vnu3_204_102_inst_GroupB
 		// Instantiation of F_0
 		// Instantiation of F_0
@@ -1946,7 +2072,7 @@ generate
 		wire [1:0] vnu3_tranEn_out;
 	
 		vnu3_f0 u_f0(
-			.read_addr_offset_out (read_addr_offset_internal[0]), // to forward the current multi-frame offset signal to the next sub-datapath	
+			.read_addr_offset_out (read_addr_offset_internal[j][0]), // to forward the current multi-frame offset signal to the next sub-datapath	
 			// For the first VNU
 			.vnu0_tPort0 (f0_out[0]  ), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu0_tPort1 (f0_out[1]  ), // internal signals accounting for each 128-entry partial LUT's output
@@ -1978,36 +2104,36 @@ generate
 			.vnu3_tranEn_out1 (vnu3_tranEn_out[1]),
 		
 			// From the first VNU
-			.vnu0_c2v_0  (c2v_0[(VNU3_INSTANTIATE_UNIT*j)]),
-			.vnu0_c2v_1  (c2v_1[(VNU3_INSTANTIATE_UNIT*j)]),
-			.vnu0_c2v_2  (c2v_2[(VNU3_INSTANTIATE_UNIT*j)]),
+			.vnu0_c2v_0  (/*c2v_0*/c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)]),
+			.vnu0_c2v_1  (/*c2v_1*/c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)]),
+			.vnu0_c2v_2  (/*c2v_2*/c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)]),
 			.vnu0_ch_llr (ch_msg[VNU3_INSTANTIATE_UNIT*j]),
 	
 			// From the second VNU
-			.vnu1_c2v_0  (c2v_0[(VNU3_INSTANTIATE_UNIT*j)+1]),
-			.vnu1_c2v_1  (c2v_1[(VNU3_INSTANTIATE_UNIT*j)+1]),
-			.vnu1_c2v_2  (c2v_2[(VNU3_INSTANTIATE_UNIT*j)+1]),
+			.vnu1_c2v_0  (/*c2v_0*/c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+1]),
+			.vnu1_c2v_1  (/*c2v_1*/c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+1]),
+			.vnu1_c2v_2  (/*c2v_2*/c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+1]),
 			.vnu1_ch_llr (ch_msg[(VNU3_INSTANTIATE_UNIT*j)+1]),
 	
 			// From the third VNU
-			.vnu2_c2v_0  (c2v_0[(VNU3_INSTANTIATE_UNIT*j)+2]),
-			.vnu2_c2v_1  (c2v_1[(VNU3_INSTANTIATE_UNIT*j)+2]),
-			.vnu2_c2v_2  (c2v_2[(VNU3_INSTANTIATE_UNIT*j)+2]),
+			.vnu2_c2v_0  (/*c2v_0*/c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+2]),
+			.vnu2_c2v_1  (/*c2v_1*/c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+2]),
+			.vnu2_c2v_2  (/*c2v_2*/c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+2]),
 			.vnu2_ch_llr (ch_msg[(VNU3_INSTANTIATE_UNIT*j)+2]),
 	
 			// From the fourth VNU
-			.vnu3_c2v_0  (c2v_0[(VNU3_INSTANTIATE_UNIT*j)+3]),
-			.vnu3_c2v_1  (c2v_1[(VNU3_INSTANTIATE_UNIT*j)+3]),
-			.vnu3_c2v_2  (c2v_2[(VNU3_INSTANTIATE_UNIT*j)+3]),
+			.vnu3_c2v_0  (/*c2v_0*/c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+3]),
+			.vnu3_c2v_1  (/*c2v_1*/c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+3]),
+			.vnu3_c2v_2  (/*c2v_2*/c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+3]),
 			.vnu3_ch_llr (ch_msg[(VNU3_INSTANTIATE_UNIT*j)+3]),
 		
 			.read_clk (read_clk),
 			.read_addr_offset (read_addr_offset), // offset determing the switch between multi-frame
 		
 			// Iteration-Update Page Address 
-			.page_addr_ram (page_addr_ram_0[VN_ROM_ADDR_BW-1:0]),
+			.page_addr_ram (page_addr_ram_0[VN_PAGE_ADDR_BW+1-1:0]),
 			// Ieration-Update Data
-			.ram_write_data_0 (ram_write_dataA_0[VN_ROM_RD_BW-1:0]),
+			.ram_write_data_0 (ram_write_dataB_0[VN_ROM_RD_BW-1:0]),
 		
 			.write_clk (vn_write_clk),
 			.ib_ram_we (ib_ram_we[0])
@@ -2018,11 +2144,15 @@ generate
 		wire [QUAN_SIZE-1:0] vnu1_v2c[0:2];
 		wire [QUAN_SIZE-1:0] vnu2_v2c[0:2];
 		wire [QUAN_SIZE-1:0] vnu3_v2c[0:2];
+		wire [`QUAN_SIZE-1:0] vnu0_dn_in;
+		wire [`QUAN_SIZE-1:0] vnu1_dn_in;
+		wire [`QUAN_SIZE-1:0] vnu2_dn_in;
+		wire [`QUAN_SIZE-1:0] vnu3_dn_in;
 		wire [QUAN_SIZE-1:0] vnu0_E_reg2, vnu1_E_reg2, vnu2_E_reg2, vnu3_E_reg2;
-		wire [1:0] vnu0_tranEn_out_f1;
-		wire [1:0] vnu1_tranEn_out_f1;
-		wire [1:0] vnu2_tranEn_out_f1;
-		wire [1:0] vnu3_tranEn_out_f1;
+		wire vnu0_tranEn_out_f1;
+		wire vnu1_tranEn_out_f1;
+		wire vnu2_tranEn_out_f1;
+		wire vnu3_tranEn_out_f1;
 		vnu3_f1 u_f1(
 			.read_addr_offset_out (read_addr_offset_outSet[j]), // to forward the current multi-frame offset signal to the next sub-datapath	
 			// For the first VNU
@@ -2030,24 +2160,28 @@ generate
 			.vnu0_v2c1 (vnu0_v2c[1]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu0_v2c2 (vnu0_v2c[2]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu0_E_reg2 (vnu0_E_reg2[QUAN_SIZE-1:0]),
+			.vnu0_dn_in (vnu0_dn_in[`QUAN_SIZE-1:0]), // the input source to decision node in the next step
 			.vnu0_tranEn_out0 (vnu0_tranEn_out_f1),
 			// For the second VNU       
 			.vnu1_v2c0 (vnu1_v2c[0]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu1_v2c1 (vnu1_v2c[1]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu1_v2c2 (vnu1_v2c[2]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu1_E_reg2 (vnu1_E_reg2[QUAN_SIZE-1:0]),
+			.vnu1_dn_in (vnu1_dn_in[`QUAN_SIZE-1:0]), // the input source to decision node in the next step
 			.vnu1_tranEn_out0 (vnu1_tranEn_out_f1),
 			// For the third VNU        
 			.vnu2_v2c0 (vnu2_v2c[0]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu2_v2c1 (vnu2_v2c[1]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu2_v2c2 (vnu2_v2c[2]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu2_E_reg2 (vnu2_E_reg2[QUAN_SIZE-1:0]),
+			.vnu2_dn_in (vnu2_dn_in[`QUAN_SIZE-1:0]), // the input source to decision node in the next step
 			.vnu2_tranEn_out0 (vnu2_tranEn_out_f1),
 			// For the fourth VNU       
 			.vnu3_v2c0 (vnu3_v2c[0]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu3_v2c1 (vnu3_v2c[1]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu3_v2c2 (vnu3_v2c[2]), // internal signals accounting for each 128-entry partial LUT's output
-			.vnu3_E_reg2 (vnu3_E_reg2[QUAN_SIZE-1:0]),	
+			.vnu3_E_reg2 (vnu3_E_reg2[QUAN_SIZE-1:0]),
+			.vnu3_dn_in (vnu3_dn_in[`QUAN_SIZE-1:0]), // the input source to decision node in the next step
 			.vnu3_tranEn_out0 (vnu3_tranEn_out_f1),
 			
 			// From the first VNU
@@ -2083,12 +2217,12 @@ generate
 			.vnu3_tranEn_in1 (vnu3_tranEn_out[1]),
 		
 			.read_clk (read_clk),
-			.read_addr_offset (read_addr_offset_internal[0]), // offset determing the switch between multi-frame
+			.read_addr_offset (read_addr_offset_internal[j][0]), // offset determing the switch between multi-frame
 		
 			// Iteration-Update Page Address 
-			.page_addr_ram (page_addr_ram_1[VN_ROM_ADDR_BW-1:0]),
+			.page_addr_ram (page_addr_ram_1[VN_PAGE_ADDR_BW+1-1:0]),
 			// Ieration-Update Data
-			.ram_write_data_1 (ram_write_dataA_1[VN_ROM_RD_BW-1:0]),
+			.ram_write_data_1 (ram_write_dataB_1[VN_ROM_RD_BW-1:0]),
 			
 			.write_clk (vn_write_clk),
 			.ib_ram_we (ib_ram_we[1])
@@ -2102,22 +2236,22 @@ generate
 			.dnu3_hard_decision (hard_decision[VNU3_INSTANTIATE_UNIT*j+3]), // internal signals accounting for each 128-entry partial LUT's output
 		
 			// From the first DNU
-			.vnu0_t10		 (vnu0_v2c[0]),
+			.vnu0_t10		 (vnu0_dn_in[`QUAN_SIZE-1:0]),
 			.vnu0_c2v_2      (vnu0_E_reg2[QUAN_SIZE-1:0]),
 			.vnu0_tranEn_in0 (vnu0_tranEn_out_f1),
 
 			// From the second DNU
-			.vnu1_t10		 (vnu1_v2c[0]),
+			.vnu1_t10		 (vnu1_dn_in[`QUAN_SIZE-1:0]),
 			.vnu1_c2v_2      (vnu1_E_reg2[QUAN_SIZE-1:0]),
 			.vnu1_tranEn_in0 (vnu1_tranEn_out_f1),
 
 			// From the third DNU
-			.vnu2_t10		 (vnu2_v2c[0]),
+			.vnu2_t10		 (vnu2_dn_in[`QUAN_SIZE-1:0]),
 			.vnu2_c2v_2      (vnu2_E_reg2[QUAN_SIZE-1:0]),
 			.vnu2_tranEn_in0 (vnu2_tranEn_out_f1),
 		
 			// From the fourth DNU
-			.vnu3_t10		 (vnu3_v2c[0]),
+			.vnu3_t10		 (vnu3_dn_in[`QUAN_SIZE-1:0]),
 			.vnu3_c2v_2      (vnu3_E_reg2[QUAN_SIZE-1:0]),
 			.vnu3_tranEn_in0 (vnu3_tranEn_out_f1),
 		
@@ -2125,9 +2259,9 @@ generate
 			.read_addr_offset (read_addr_offset_outSet[j]), // offset determing the switch between multi-frame 
 			
 			// Iteration-Update Page Address 
-			.page_addr_ram (page_addr_ram_2[VN_ROM_ADDR_BW-1:0]),
+			.page_addr_ram (page_addr_ram_2[DN_PAGE_ADDR_BW+1-1:0]),
 			// Ieration-Update Data
-			.ram_write_data_1 (ram_write_dataA_2[VN_ROM_RD_BW-1:0]),
+			.ram_write_data_1 (ram_write_dataB_2[DN_ROM_RD_BW-1:0]),
 			
 			.write_clk (dn_write_clk),
 			.ib_ram_we (ib_ram_we[2])
