@@ -1684,7 +1684,6 @@ wire [VN_NUM-1:0] hard_decision;
 wire [VN_DEGREE+1-2-1-1:0] read_addr_offset_internal [0:VNU3_INSTANTIATE_NUM-1];
 wire [VNU3_INSTANTIATE_NUM-1:0]read_addr_offset_outSet;
 
-
 reg [DATAPATH_WIDTH-1:0] c2v_latch_0 [0:VN_NUM-1];
 reg [DATAPATH_WIDTH-1:0] c2v_latch_1 [0:VN_NUM-1];
 reg [DATAPATH_WIDTH-1:0] c2v_latch_2 [0:VN_NUM-1];
@@ -1693,15 +1692,15 @@ generate
 	for (j=0; j<VNU3_INSTANTIATE_NUM; j=j+1) begin : c2v_latch_inst
 		// c2v_out_0
 		///////////////////////////////////////////////////////////////////////////////////////////
-		always @(posedge read_clk, posedge c2v_latch_en) begin
+		always @(posedge read_clk) begin
 			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
 				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)] <= 0;
 			else if(c2v_latch_en == 1'b1) 
 				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)] <= c2v_0[(VNU3_INSTANTIATE_UNIT*j)];
-			else 
-				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)] <= c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)];
+			//else 
+			//	c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)] <= c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)];
 		end
-		always @(posedge read_clk, posedge c2v_latch_en) begin
+		always @(posedge read_clk) begin
 			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
 				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+1] <= 0;
 			else if(c2v_latch_en == 1'b1) 
@@ -1709,89 +1708,89 @@ generate
 			else 
 				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+1] <= c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+1];
 		end
-		always @(posedge read_clk, posedge c2v_latch_en) begin
+		always @(posedge read_clk) begin
 			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
 				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+2] <= 0;
 			else if(c2v_latch_en == 1'b1) 
 				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+2] <= c2v_0[(VNU3_INSTANTIATE_UNIT*j)+2];
-			else 
-				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+2] <= c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+2];
+			//else 
+			//	c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+2] <= c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+2];
 		end
-		always @(posedge read_clk, posedge c2v_latch_en) begin
+		always @(posedge read_clk) begin
 			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
 				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+3] <= 0;
 			else if(c2v_latch_en == 1'b1) 
 				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+3] <= c2v_0[(VNU3_INSTANTIATE_UNIT*j)+3];
-			else 
-				c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+3] <= c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+3];
+			//else 
+			//	c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+3] <= c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+3];
 		end	
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// c2v_out_1
-		always @(posedge read_clk, posedge c2v_latch_en) begin
+		always @(posedge read_clk) begin
 			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
 				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)] <= 0;
 			else if(c2v_latch_en == 1'b1) 
 				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)] <= c2v_1[(VNU3_INSTANTIATE_UNIT*j)];
-			else 
-				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)] <= c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)];
+			//else 
+			//	c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)] <= c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)];
 		end
-		always @(posedge read_clk, posedge c2v_latch_en) begin
+		always @(posedge read_clk) begin
 			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
 				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+1] <= 0;
 			else if(c2v_latch_en == 1'b1) 
 				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+1] <= c2v_1[(VNU3_INSTANTIATE_UNIT*j)+1];
-			else 
-				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+1] <= c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+1];
+			//else 
+			//	c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+1] <= c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+1];
 		end	
-		always @(posedge read_clk, posedge c2v_latch_en) begin
+		always @(posedge read_clk) begin
 			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
 				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+2] <= 0;
 			else if(c2v_latch_en == 1'b1) 
 				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+2] <= c2v_1[(VNU3_INSTANTIATE_UNIT*j)+2];
-			else 
-				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+2] <= c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+2];
+			//else 
+			//	c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+2] <= c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+2];
 		end
-		always @(posedge read_clk, posedge c2v_latch_en) begin
+		always @(posedge read_clk) begin
 			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
 				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+3] <= 0;
 			else if(c2v_latch_en == 1'b1) 
 				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+3] <= c2v_1[(VNU3_INSTANTIATE_UNIT*j)+3];
-			else 
-				c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+3] <= c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+3];
+			//else 
+			//	c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+3] <= c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+3];
 		end	
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// c2v_out_2
-		always @(posedge read_clk, posedge c2v_latch_en) begin
+		always @(posedge read_clk) begin
 			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
 				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)] <= 0;
 			else if(c2v_latch_en == 1'b1) 
 				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)] <= c2v_2[(VNU3_INSTANTIATE_UNIT*j)];
-			else 
-				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)] <= c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)];
+			//else 
+			//	c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)] <= c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)];
 		end
-		always @(posedge read_clk, posedge c2v_latch_en) begin
+		always @(posedge read_clk) begin
 			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
 				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+1] <= 0;
 			else if(c2v_latch_en == 1'b1) 
 				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+1] <= c2v_2[(VNU3_INSTANTIATE_UNIT*j)+1];
-			else 
-				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+1] <= c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+1];
+			//else 
+			//	c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+1] <= c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+1];
 		end	
-		always @(posedge read_clk, posedge c2v_latch_en) begin
+		always @(posedge read_clk) begin
 			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
 				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+2] <= 0;
 			else if(c2v_latch_en == 1'b1) 
 				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+2] <= c2v_2[(VNU3_INSTANTIATE_UNIT*j)+2];
-			else 
-				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+2] <= c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+2];
+			//else 
+			//	c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+2] <= c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+2];
 		end
-		always @(posedge read_clk, posedge c2v_latch_en) begin
+		always @(posedge read_clk) begin
 			if(c2v_parallel_load == 1'b1) // from c2v_load[0]
 				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+3] <= 0;
 			else if(c2v_latch_en == 1'b1) 
 				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+3] <= c2v_2[(VNU3_INSTANTIATE_UNIT*j)+3];
-			else 
-				c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+3] <= c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+3];
+			//else 
+			//	c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+3] <= c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+3];
 		end	
 		///////////////////////////////////////////////////////////////////////////////////////////
 	end

@@ -1290,7 +1290,7 @@ generate
 	for (j=0; j<CNU6_INSTANTIATE_NUM; j=j+1) begin : v2c_latch_inst
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// v2c_out_0
-	always @(posedge read_clk, posedge v2c_latch_en) begin
+	always @(posedge read_clk) begin
 		if(v2c_parallel_load == 1'b1) // from v2c_load[0]
 			v2c_latch_0[(CNU6_INSTANTIATE_UNIT*j)] <= 0;
 		else if(v2c_latch_en == 1'b1) 
@@ -1298,7 +1298,7 @@ generate
 		else 
 			v2c_latch_0[(CNU6_INSTANTIATE_UNIT*j)] <= v2c_latch_0[(CNU6_INSTANTIATE_UNIT*j)];
 	end
-	always @(posedge read_clk, posedge v2c_latch_en) begin
+	always @(posedge read_clk) begin
 		if(v2c_parallel_load == 1'b1) // from v2c_load[0]
 			v2c_latch_0[(CNU6_INSTANTIATE_UNIT*j)+1] <= 0;
 		else if(v2c_latch_en == 1'b1) 
@@ -1308,7 +1308,7 @@ generate
 	end	
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// v2c_out_1
-	always @(posedge read_clk, posedge v2c_latch_en) begin
+	always @(posedge read_clk) begin
 		if(v2c_parallel_load == 1'b1) // from v2c_load[0]
 			v2c_latch_1[(CNU6_INSTANTIATE_UNIT*j)] <= 0;
 		else if(v2c_latch_en == 1'b1) 
@@ -1316,7 +1316,7 @@ generate
 		else 
 			v2c_latch_1[(CNU6_INSTANTIATE_UNIT*j)] <= v2c_latch_1[(CNU6_INSTANTIATE_UNIT*j)];
 	end
-	always @(posedge read_clk, posedge v2c_latch_en) begin
+	always @(posedge read_clk) begin
 		if(v2c_parallel_load == 1'b1) // from v2c_load[0]
 			v2c_latch_1[(CNU6_INSTANTIATE_UNIT*j)+1] <= 0;
 		else if(v2c_latch_en == 1'b1) 
@@ -1326,7 +1326,7 @@ generate
 	end	
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// v2c_out_2
-	always @(posedge read_clk, posedge v2c_latch_en) begin
+	always @(posedge read_clk) begin
 		if(v2c_parallel_load == 1'b1) // from v2c_load[0]
 			v2c_latch_2[(CNU6_INSTANTIATE_UNIT*j)] <= 0;
 		else if(v2c_latch_en == 1'b1) 
@@ -1334,7 +1334,7 @@ generate
 		else 
 			v2c_latch_2[(CNU6_INSTANTIATE_UNIT*j)] <= v2c_latch_2[(CNU6_INSTANTIATE_UNIT*j)];
 	end
-	always @(posedge read_clk, posedge v2c_latch_en) begin
+	always @(posedge read_clk) begin
 		if(v2c_parallel_load == 1'b1) // from v2c_load[0]
 			v2c_latch_2[(CNU6_INSTANTIATE_UNIT*j)+1] <= 0;
 		else if(v2c_latch_en == 1'b1) 
@@ -1344,7 +1344,7 @@ generate
 	end	
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// v2c_out_3
-	always @(posedge read_clk, posedge v2c_latch_en) begin
+	always @(posedge read_clk) begin
 		if(v2c_parallel_load == 1'b1) // from v2c_load[0]
 			v2c_latch_3[(CNU6_INSTANTIATE_UNIT*j)] <= 0;
 		else if(v2c_latch_en == 1'b1) 
@@ -1352,7 +1352,7 @@ generate
 		else 
 			v2c_latch_3[(CNU6_INSTANTIATE_UNIT*j)] <= v2c_latch_3[(CNU6_INSTANTIATE_UNIT*j)];
 	end
-	always @(posedge read_clk, posedge v2c_latch_en) begin
+	always @(posedge read_clk) begin
 		if(v2c_parallel_load == 1'b1) // from v2c_load[0]
 			v2c_latch_3[(CNU6_INSTANTIATE_UNIT*j)+1] <= 0;
 		else if(v2c_latch_en == 1'b1) 
@@ -1362,7 +1362,7 @@ generate
 	end	
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// v2c_out_4
-	always @(posedge read_clk, posedge v2c_latch_en) begin
+	always @(posedge read_clk) begin
 		if(v2c_parallel_load == 1'b1) // from v2c_load[0]
 			v2c_latch_4[(CNU6_INSTANTIATE_UNIT*j)] <= 0;
 		else if(v2c_latch_en == 1'b1) 
@@ -1370,7 +1370,7 @@ generate
 		else 
 			v2c_latch_4[(CNU6_INSTANTIATE_UNIT*j)] <= v2c_latch_4[(CNU6_INSTANTIATE_UNIT*j)];
 	end
-	always @(posedge read_clk, posedge v2c_latch_en) begin
+	always @(posedge read_clk) begin
 		if(v2c_parallel_load == 1'b1) // from v2c_load[0]
 			v2c_latch_4[(CNU6_INSTANTIATE_UNIT*j)+1] <= 0;
 		else if(v2c_latch_en == 1'b1) 
@@ -1380,7 +1380,7 @@ generate
 	end	
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// v2c_out_5
-	always @(posedge read_clk, posedge v2c_latch_en) begin
+	always @(posedge read_clk) begin
 		if(v2c_parallel_load == 1'b1) // from v2c_load[0]
 			v2c_latch_5[(CNU6_INSTANTIATE_UNIT*j)] <= 0;
 		else if(v2c_latch_en == 1'b1) 
@@ -1388,7 +1388,7 @@ generate
 		else 
 			v2c_latch_5[(CNU6_INSTANTIATE_UNIT*j)] <= v2c_latch_5[(CNU6_INSTANTIATE_UNIT*j)];
 	end
-	always @(posedge read_clk, posedge v2c_latch_en) begin
+	always @(posedge read_clk) begin
 		if(v2c_parallel_load == 1'b1) // from v2c_load[0]
 			v2c_latch_5[(CNU6_INSTANTIATE_UNIT*j)+1] <= 0;
 		else if(v2c_latch_en == 1'b1) 

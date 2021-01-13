@@ -2490,7 +2490,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_1;
 	cnu_bitSerial_port #(
@@ -2519,7 +2519,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_2;
 	cnu_bitSerial_port #(
@@ -2548,7 +2548,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_3;
 	cnu_bitSerial_port #(
@@ -2577,7 +2577,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_4;
 	cnu_bitSerial_port #(
@@ -2606,7 +2606,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_5;
 	cnu_bitSerial_port #(
@@ -2635,7 +2635,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_6;
 	cnu_bitSerial_port #(
@@ -2664,7 +2664,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_7;
 	cnu_bitSerial_port #(
@@ -2693,7 +2693,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_8;
 	cnu_bitSerial_port #(
@@ -2722,7 +2722,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_9;
 	cnu_bitSerial_port #(
@@ -2751,7 +2751,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_10;
 	cnu_bitSerial_port #(
@@ -2780,7 +2780,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_11;
 	cnu_bitSerial_port #(
@@ -2809,7 +2809,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_12;
 	cnu_bitSerial_port #(
@@ -2838,7 +2838,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_13;
 	cnu_bitSerial_port #(
@@ -2867,7 +2867,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_14;
 	cnu_bitSerial_port #(
@@ -2896,7 +2896,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_15;
 	cnu_bitSerial_port #(
@@ -2925,7 +2925,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_16;
 	cnu_bitSerial_port #(
@@ -2954,7 +2954,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_17;
 	cnu_bitSerial_port #(
@@ -2983,7 +2983,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_18;
 	cnu_bitSerial_port #(
@@ -3012,7 +3012,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_19;
 	cnu_bitSerial_port #(
@@ -3041,7 +3041,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_20;
 	cnu_bitSerial_port #(
@@ -3070,7 +3070,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_21;
 	cnu_bitSerial_port #(
@@ -3099,7 +3099,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_22;
 	cnu_bitSerial_port #(
@@ -3128,7 +3128,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_23;
 	cnu_bitSerial_port #(
@@ -3157,7 +3157,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_24;
 	cnu_bitSerial_port #(
@@ -3186,7 +3186,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_25;
 	cnu_bitSerial_port #(
@@ -3215,7 +3215,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_26;
 	cnu_bitSerial_port #(
@@ -3244,7 +3244,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_27;
 	cnu_bitSerial_port #(
@@ -3273,7 +3273,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_28;
 	cnu_bitSerial_port #(
@@ -3302,7 +3302,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_29;
 	cnu_bitSerial_port #(
@@ -3331,7 +3331,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_30;
 	cnu_bitSerial_port #(
@@ -3360,7 +3360,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_31;
 	cnu_bitSerial_port #(
@@ -3389,7 +3389,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_32;
 	cnu_bitSerial_port #(
@@ -3418,7 +3418,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_33;
 	cnu_bitSerial_port #(
@@ -3447,7 +3447,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_34;
 	cnu_bitSerial_port #(
@@ -3476,7 +3476,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_35;
 	cnu_bitSerial_port #(
@@ -3505,7 +3505,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_36;
 	cnu_bitSerial_port #(
@@ -3534,7 +3534,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_37;
 	cnu_bitSerial_port #(
@@ -3563,7 +3563,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_38;
 	cnu_bitSerial_port #(
@@ -3592,7 +3592,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_39;
 	cnu_bitSerial_port #(
@@ -3621,7 +3621,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_40;
 	cnu_bitSerial_port #(
@@ -3650,7 +3650,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_41;
 	cnu_bitSerial_port #(
@@ -3679,7 +3679,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_42;
 	cnu_bitSerial_port #(
@@ -3708,7 +3708,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_43;
 	cnu_bitSerial_port #(
@@ -3737,7 +3737,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_44;
 	cnu_bitSerial_port #(
@@ -3766,7 +3766,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_45;
 	cnu_bitSerial_port #(
@@ -3795,7 +3795,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_46;
 	cnu_bitSerial_port #(
@@ -3824,7 +3824,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_47;
 	cnu_bitSerial_port #(
@@ -3853,7 +3853,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_48;
 	cnu_bitSerial_port #(
@@ -3882,7 +3882,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_49;
 	cnu_bitSerial_port #(
@@ -3911,7 +3911,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_50;
 	cnu_bitSerial_port #(
@@ -3940,7 +3940,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_51;
 	cnu_bitSerial_port #(
@@ -3969,7 +3969,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_52;
 	cnu_bitSerial_port #(
@@ -3998,7 +3998,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_53;
 	cnu_bitSerial_port #(
@@ -4027,7 +4027,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_54;
 	cnu_bitSerial_port #(
@@ -4056,7 +4056,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_55;
 	cnu_bitSerial_port #(
@@ -4085,7 +4085,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_56;
 	cnu_bitSerial_port #(
@@ -4114,7 +4114,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_57;
 	cnu_bitSerial_port #(
@@ -4143,7 +4143,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_58;
 	cnu_bitSerial_port #(
@@ -4172,7 +4172,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_59;
 	cnu_bitSerial_port #(
@@ -4201,7 +4201,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_60;
 	cnu_bitSerial_port #(
@@ -4230,7 +4230,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_61;
 	cnu_bitSerial_port #(
@@ -4259,7 +4259,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_62;
 	cnu_bitSerial_port #(
@@ -4288,7 +4288,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_63;
 	cnu_bitSerial_port #(
@@ -4317,7 +4317,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_64;
 	cnu_bitSerial_port #(
@@ -4346,7 +4346,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_65;
 	cnu_bitSerial_port #(
@@ -4375,7 +4375,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_66;
 	cnu_bitSerial_port #(
@@ -4404,7 +4404,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_67;
 	cnu_bitSerial_port #(
@@ -4433,7 +4433,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_68;
 	cnu_bitSerial_port #(
@@ -4462,7 +4462,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_69;
 	cnu_bitSerial_port #(
@@ -4491,7 +4491,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_70;
 	cnu_bitSerial_port #(
@@ -4520,7 +4520,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_71;
 	cnu_bitSerial_port #(
@@ -4549,7 +4549,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_72;
 	cnu_bitSerial_port #(
@@ -4578,7 +4578,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_73;
 	cnu_bitSerial_port #(
@@ -4607,7 +4607,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_74;
 	cnu_bitSerial_port #(
@@ -4636,7 +4636,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_75;
 	cnu_bitSerial_port #(
@@ -4665,7 +4665,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_76;
 	cnu_bitSerial_port #(
@@ -4694,7 +4694,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_77;
 	cnu_bitSerial_port #(
@@ -4723,7 +4723,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_78;
 	cnu_bitSerial_port #(
@@ -4752,7 +4752,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_79;
 	cnu_bitSerial_port #(
@@ -4781,7 +4781,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_80;
 	cnu_bitSerial_port #(
@@ -4810,7 +4810,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_81;
 	cnu_bitSerial_port #(
@@ -4839,7 +4839,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_82;
 	cnu_bitSerial_port #(
@@ -4868,7 +4868,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_83;
 	cnu_bitSerial_port #(
@@ -4897,7 +4897,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_84;
 	cnu_bitSerial_port #(
@@ -4926,7 +4926,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_85;
 	cnu_bitSerial_port #(
@@ -4955,7 +4955,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_86;
 	cnu_bitSerial_port #(
@@ -4984,7 +4984,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_87;
 	cnu_bitSerial_port #(
@@ -5013,7 +5013,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_88;
 	cnu_bitSerial_port #(
@@ -5042,7 +5042,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_89;
 	cnu_bitSerial_port #(
@@ -5071,7 +5071,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_90;
 	cnu_bitSerial_port #(
@@ -5100,7 +5100,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_91;
 	cnu_bitSerial_port #(
@@ -5129,7 +5129,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_92;
 	cnu_bitSerial_port #(
@@ -5158,7 +5158,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_93;
 	cnu_bitSerial_port #(
@@ -5187,7 +5187,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_94;
 	cnu_bitSerial_port #(
@@ -5216,7 +5216,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_95;
 	cnu_bitSerial_port #(
@@ -5245,7 +5245,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_96;
 	cnu_bitSerial_port #(
@@ -5274,7 +5274,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_97;
 	cnu_bitSerial_port #(
@@ -5303,7 +5303,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_98;
 	cnu_bitSerial_port #(
@@ -5332,7 +5332,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_99;
 	cnu_bitSerial_port #(
@@ -5361,7 +5361,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_100;
 	cnu_bitSerial_port #(
@@ -5390,7 +5390,7 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
 	wire [CN_DEGREE-1:0] cn_serialInOut_101;
 	cnu_bitSerial_port #(
@@ -5419,15 +5419,15 @@ module fully_parallel_route #(
 		.load (load[0]),
 		.parallel_en (parallel_en[0]),
 		.serial_clk (serial_clk)
-	);
+);
 	
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port0 (
 		.serialInOut_0 (cn_serialInOut_72[0]),
-		.serialInOut_1 (cn_serialInOut_83[0]),
-		.serialInOut_2 (cn_serialInOut_80[0]),
+		.serialInOut_1 (cn_serialInOut_83[2]),
+		.serialInOut_2 (cn_serialInOut_80[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_00[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_01[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_02[`DATAPATH_WIDTH-1:0]),
@@ -5438,15 +5438,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port1 (
 		.serialInOut_0 (cn_serialInOut_62[0]),
-		.serialInOut_1 (cn_serialInOut_44[0]),
-		.serialInOut_2 (cn_serialInOut_25[0]),
+		.serialInOut_1 (cn_serialInOut_44[2]),
+		.serialInOut_2 (cn_serialInOut_25[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_10[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_11[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_12[`DATAPATH_WIDTH-1:0]),
@@ -5457,15 +5457,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port2 (
 		.serialInOut_0 (cn_serialInOut_16[0]),
-		.serialInOut_1 (cn_serialInOut_76[0]),
-		.serialInOut_2 (cn_serialInOut_54[0]),
+		.serialInOut_1 (cn_serialInOut_76[2]),
+		.serialInOut_2 (cn_serialInOut_54[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_20[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_21[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_22[`DATAPATH_WIDTH-1:0]),
@@ -5476,15 +5476,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port3 (
 		.serialInOut_0 (cn_serialInOut_73[0]),
-		.serialInOut_1 (cn_serialInOut_46[0]),
-		.serialInOut_2 (cn_serialInOut_23[0]),
+		.serialInOut_1 (cn_serialInOut_46[2]),
+		.serialInOut_2 (cn_serialInOut_23[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_30[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_31[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_32[`DATAPATH_WIDTH-1:0]),
@@ -5495,15 +5495,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port4 (
 		.serialInOut_0 (cn_serialInOut_8[0]),
-		.serialInOut_1 (cn_serialInOut_9[0]),
-		.serialInOut_2 (cn_serialInOut_51[0]),
+		.serialInOut_1 (cn_serialInOut_9[2]),
+		.serialInOut_2 (cn_serialInOut_51[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_40[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_41[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_42[`DATAPATH_WIDTH-1:0]),
@@ -5514,15 +5514,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port5 (
 		.serialInOut_0 (cn_serialInOut_61[0]),
-		.serialInOut_1 (cn_serialInOut_62[1]),
-		.serialInOut_2 (cn_serialInOut_43[0]),
+		.serialInOut_1 (cn_serialInOut_62[2]),
+		.serialInOut_2 (cn_serialInOut_43[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_50[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_51[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_52[`DATAPATH_WIDTH-1:0]),
@@ -5533,15 +5533,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port6 (
 		.serialInOut_0 (cn_serialInOut_37[0]),
-		.serialInOut_1 (cn_serialInOut_38[0]),
-		.serialInOut_2 (cn_serialInOut_34[0]),
+		.serialInOut_1 (cn_serialInOut_38[2]),
+		.serialInOut_2 (cn_serialInOut_34[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_60[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_61[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_62[`DATAPATH_WIDTH-1:0]),
@@ -5552,15 +5552,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port7 (
 		.serialInOut_0 (cn_serialInOut_59[0]),
-		.serialInOut_1 (cn_serialInOut_3[0]),
-		.serialInOut_2 (cn_serialInOut_99[0]),
+		.serialInOut_1 (cn_serialInOut_3[2]),
+		.serialInOut_2 (cn_serialInOut_99[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_70[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_71[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_72[`DATAPATH_WIDTH-1:0]),
@@ -5571,15 +5571,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port8 (
 		.serialInOut_0 (cn_serialInOut_81[0]),
-		.serialInOut_1 (cn_serialInOut_97[0]),
-		.serialInOut_2 (cn_serialInOut_62[2]),
+		.serialInOut_1 (cn_serialInOut_97[2]),
+		.serialInOut_2 (cn_serialInOut_62[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_80[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_81[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_82[`DATAPATH_WIDTH-1:0]),
@@ -5590,15 +5590,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port9 (
 		.serialInOut_0 (cn_serialInOut_39[0]),
-		.serialInOut_1 (cn_serialInOut_79[0]),
-		.serialInOut_2 (cn_serialInOut_67[0]),
+		.serialInOut_1 (cn_serialInOut_79[2]),
+		.serialInOut_2 (cn_serialInOut_67[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_90[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_91[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_92[`DATAPATH_WIDTH-1:0]),
@@ -5609,15 +5609,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port10 (
 		.serialInOut_0 (cn_serialInOut_90[0]),
-		.serialInOut_1 (cn_serialInOut_80[1]),
-		.serialInOut_2 (cn_serialInOut_17[0]),
+		.serialInOut_1 (cn_serialInOut_80[2]),
+		.serialInOut_2 (cn_serialInOut_17[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_100[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_101[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_102[`DATAPATH_WIDTH-1:0]),
@@ -5628,15 +5628,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port11 (
 		.serialInOut_0 (cn_serialInOut_85[0]),
-		.serialInOut_1 (cn_serialInOut_87[0]),
-		.serialInOut_2 (cn_serialInOut_98[0]),
+		.serialInOut_1 (cn_serialInOut_87[2]),
+		.serialInOut_2 (cn_serialInOut_98[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_110[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_111[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_112[`DATAPATH_WIDTH-1:0]),
@@ -5647,15 +5647,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port12 (
-		.serialInOut_0 (cn_serialInOut_76[1]),
-		.serialInOut_1 (cn_serialInOut_70[0]),
-		.serialInOut_2 (cn_serialInOut_64[0]),
+		.serialInOut_0 (cn_serialInOut_76[0]),
+		.serialInOut_1 (cn_serialInOut_70[2]),
+		.serialInOut_2 (cn_serialInOut_64[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_120[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_121[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_122[`DATAPATH_WIDTH-1:0]),
@@ -5666,15 +5666,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port13 (
 		.serialInOut_0 (cn_serialInOut_28[0]),
-		.serialInOut_1 (cn_serialInOut_8[1]),
-		.serialInOut_2 (cn_serialInOut_32[0]),
+		.serialInOut_1 (cn_serialInOut_8[2]),
+		.serialInOut_2 (cn_serialInOut_32[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_130[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_131[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_132[`DATAPATH_WIDTH-1:0]),
@@ -5685,15 +5685,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port14 (
 		.serialInOut_0 (cn_serialInOut_14[0]),
-		.serialInOut_1 (cn_serialInOut_40[0]),
-		.serialInOut_2 (cn_serialInOut_33[0]),
+		.serialInOut_1 (cn_serialInOut_40[2]),
+		.serialInOut_2 (cn_serialInOut_33[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_140[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_141[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_142[`DATAPATH_WIDTH-1:0]),
@@ -5704,15 +5704,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port15 (
 		.serialInOut_0 (cn_serialInOut_74[0]),
-		.serialInOut_1 (cn_serialInOut_10[0]),
-		.serialInOut_2 (cn_serialInOut_21[0]),
+		.serialInOut_1 (cn_serialInOut_10[2]),
+		.serialInOut_2 (cn_serialInOut_21[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_150[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_151[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_152[`DATAPATH_WIDTH-1:0]),
@@ -5723,15 +5723,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port16 (
 		.serialInOut_0 (cn_serialInOut_47[0]),
-		.serialInOut_1 (cn_serialInOut_23[1]),
-		.serialInOut_2 (cn_serialInOut_94[0]),
+		.serialInOut_1 (cn_serialInOut_23[2]),
+		.serialInOut_2 (cn_serialInOut_94[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_160[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_161[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_162[`DATAPATH_WIDTH-1:0]),
@@ -5742,15 +5742,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port17 (
-		.serialInOut_0 (cn_serialInOut_21[1]),
-		.serialInOut_1 (cn_serialInOut_43[1]),
-		.serialInOut_2 (cn_serialInOut_59[1]),
+		.serialInOut_0 (cn_serialInOut_21[0]),
+		.serialInOut_1 (cn_serialInOut_43[2]),
+		.serialInOut_2 (cn_serialInOut_59[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_170[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_171[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_172[`DATAPATH_WIDTH-1:0]),
@@ -5761,15 +5761,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port18 (
 		.serialInOut_0 (cn_serialInOut_4[0]),
-		.serialInOut_1 (cn_serialInOut_18[0]),
-		.serialInOut_2 (cn_serialInOut_40[1]),
+		.serialInOut_1 (cn_serialInOut_18[2]),
+		.serialInOut_2 (cn_serialInOut_40[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_180[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_181[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_182[`DATAPATH_WIDTH-1:0]),
@@ -5780,15 +5780,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port19 (
 		.serialInOut_0 (cn_serialInOut_30[0]),
 		.serialInOut_1 (cn_serialInOut_21[2]),
-		.serialInOut_2 (cn_serialInOut_42[0]),
+		.serialInOut_2 (cn_serialInOut_42[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_190[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_191[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_192[`DATAPATH_WIDTH-1:0]),
@@ -5799,15 +5799,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port20 (
 		.serialInOut_0 (cn_serialInOut_20[0]),
-		.serialInOut_1 (cn_serialInOut_17[1]),
-		.serialInOut_2 (cn_serialInOut_55[0]),
+		.serialInOut_1 (cn_serialInOut_17[2]),
+		.serialInOut_2 (cn_serialInOut_55[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_200[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_201[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_202[`DATAPATH_WIDTH-1:0]),
@@ -5818,15 +5818,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port21 (
 		.serialInOut_0 (cn_serialInOut_82[0]),
-		.serialInOut_1 (cn_serialInOut_50[0]),
-		.serialInOut_2 (cn_serialInOut_48[0]),
+		.serialInOut_1 (cn_serialInOut_50[2]),
+		.serialInOut_2 (cn_serialInOut_48[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_210[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_211[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_212[`DATAPATH_WIDTH-1:0]),
@@ -5837,15 +5837,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port22 (
 		.serialInOut_0 (cn_serialInOut_78[0]),
-		.serialInOut_1 (cn_serialInOut_6[0]),
-		.serialInOut_2 (cn_serialInOut_87[1]),
+		.serialInOut_1 (cn_serialInOut_6[2]),
+		.serialInOut_2 (cn_serialInOut_87[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_220[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_221[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_222[`DATAPATH_WIDTH-1:0]),
@@ -5856,15 +5856,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port23 (
 		.serialInOut_0 (cn_serialInOut_35[0]),
-		.serialInOut_1 (cn_serialInOut_66[0]),
-		.serialInOut_2 (cn_serialInOut_4[1]),
+		.serialInOut_1 (cn_serialInOut_66[2]),
+		.serialInOut_2 (cn_serialInOut_4[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_230[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_231[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_232[`DATAPATH_WIDTH-1:0]),
@@ -5875,15 +5875,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port24 (
-		.serialInOut_0 (cn_serialInOut_83[1]),
-		.serialInOut_1 (cn_serialInOut_74[1]),
-		.serialInOut_2 (cn_serialInOut_31[0]),
+		.serialInOut_0 (cn_serialInOut_83[0]),
+		.serialInOut_1 (cn_serialInOut_74[2]),
+		.serialInOut_2 (cn_serialInOut_31[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_240[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_241[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_242[`DATAPATH_WIDTH-1:0]),
@@ -5894,15 +5894,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port25 (
 		.serialInOut_0 (cn_serialInOut_0[0]),
-		.serialInOut_1 (cn_serialInOut_78[1]),
-		.serialInOut_2 (cn_serialInOut_37[1]),
+		.serialInOut_1 (cn_serialInOut_78[2]),
+		.serialInOut_2 (cn_serialInOut_37[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_250[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_251[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_252[`DATAPATH_WIDTH-1:0]),
@@ -5913,15 +5913,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port26 (
-		.serialInOut_0 (cn_serialInOut_42[1]),
-		.serialInOut_1 (cn_serialInOut_81[1]),
-		.serialInOut_2 (cn_serialInOut_74[2]),
+		.serialInOut_0 (cn_serialInOut_42[0]),
+		.serialInOut_1 (cn_serialInOut_81[2]),
+		.serialInOut_2 (cn_serialInOut_74[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_260[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_261[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_262[`DATAPATH_WIDTH-1:0]),
@@ -5932,15 +5932,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port27 (
 		.serialInOut_0 (cn_serialInOut_1[0]),
-		.serialInOut_1 (cn_serialInOut_0[1]),
-		.serialInOut_2 (cn_serialInOut_22[0]),
+		.serialInOut_1 (cn_serialInOut_0[2]),
+		.serialInOut_2 (cn_serialInOut_22[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_270[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_271[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_272[`DATAPATH_WIDTH-1:0]),
@@ -5951,15 +5951,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port28 (
-		.serialInOut_0 (cn_serialInOut_32[1]),
-		.serialInOut_1 (cn_serialInOut_60[0]),
-		.serialInOut_2 (cn_serialInOut_82[1]),
+		.serialInOut_0 (cn_serialInOut_32[0]),
+		.serialInOut_1 (cn_serialInOut_60[2]),
+		.serialInOut_2 (cn_serialInOut_82[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_280[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_281[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_282[`DATAPATH_WIDTH-1:0]),
@@ -5970,15 +5970,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port29 (
 		.serialInOut_0 (cn_serialInOut_68[0]),
-		.serialInOut_1 (cn_serialInOut_2[0]),
-		.serialInOut_2 (cn_serialInOut_29[0]),
+		.serialInOut_1 (cn_serialInOut_2[2]),
+		.serialInOut_2 (cn_serialInOut_29[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_290[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_291[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_292[`DATAPATH_WIDTH-1:0]),
@@ -5989,15 +5989,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port30 (
 		.serialInOut_0 (cn_serialInOut_27[0]),
 		.serialInOut_1 (cn_serialInOut_4[2]),
-		.serialInOut_2 (cn_serialInOut_76[2]),
+		.serialInOut_2 (cn_serialInOut_76[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_300[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_301[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_302[`DATAPATH_WIDTH-1:0]),
@@ -6008,15 +6008,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port31 (
 		.serialInOut_0 (cn_serialInOut_7[0]),
-		.serialInOut_1 (cn_serialInOut_55[1]),
-		.serialInOut_2 (cn_serialInOut_3[1]),
+		.serialInOut_1 (cn_serialInOut_55[2]),
+		.serialInOut_2 (cn_serialInOut_3[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_310[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_311[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_312[`DATAPATH_WIDTH-1:0]),
@@ -6027,15 +6027,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port32 (
 		.serialInOut_0 (cn_serialInOut_52[0]),
-		.serialInOut_1 (cn_serialInOut_75[0]),
-		.serialInOut_2 (cn_serialInOut_35[1]),
+		.serialInOut_1 (cn_serialInOut_75[2]),
+		.serialInOut_2 (cn_serialInOut_35[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_320[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_321[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_322[`DATAPATH_WIDTH-1:0]),
@@ -6046,15 +6046,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port33 (
 		.serialInOut_0 (cn_serialInOut_95[0]),
-		.serialInOut_1 (cn_serialInOut_27[1]),
-		.serialInOut_2 (cn_serialInOut_101[0]),
+		.serialInOut_1 (cn_serialInOut_27[2]),
+		.serialInOut_2 (cn_serialInOut_101[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_330[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_331[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_332[`DATAPATH_WIDTH-1:0]),
@@ -6065,15 +6065,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port34 (
-		.serialInOut_0 (cn_serialInOut_43[2]),
-		.serialInOut_1 (cn_serialInOut_16[1]),
-		.serialInOut_2 (cn_serialInOut_47[1]),
+		.serialInOut_0 (cn_serialInOut_43[0]),
+		.serialInOut_1 (cn_serialInOut_16[2]),
+		.serialInOut_2 (cn_serialInOut_47[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_340[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_341[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_342[`DATAPATH_WIDTH-1:0]),
@@ -6084,15 +6084,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port35 (
 		.serialInOut_0 (cn_serialInOut_91[0]),
-		.serialInOut_1 (cn_serialInOut_25[1]),
-		.serialInOut_2 (cn_serialInOut_73[1]),
+		.serialInOut_1 (cn_serialInOut_25[2]),
+		.serialInOut_2 (cn_serialInOut_73[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_350[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_351[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_352[`DATAPATH_WIDTH-1:0]),
@@ -6103,15 +6103,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port36 (
-		.serialInOut_0 (cn_serialInOut_55[2]),
-		.serialInOut_1 (cn_serialInOut_68[1]),
-		.serialInOut_2 (cn_serialInOut_10[1]),
+		.serialInOut_0 (cn_serialInOut_55[0]),
+		.serialInOut_1 (cn_serialInOut_68[2]),
+		.serialInOut_2 (cn_serialInOut_10[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_360[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_361[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_362[`DATAPATH_WIDTH-1:0]),
@@ -6122,15 +6122,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port37 (
-		.serialInOut_0 (cn_serialInOut_17[2]),
-		.serialInOut_1 (cn_serialInOut_67[1]),
-		.serialInOut_2 (cn_serialInOut_49[0]),
+		.serialInOut_0 (cn_serialInOut_17[0]),
+		.serialInOut_1 (cn_serialInOut_67[2]),
+		.serialInOut_2 (cn_serialInOut_49[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_370[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_371[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_372[`DATAPATH_WIDTH-1:0]),
@@ -6141,15 +6141,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port38 (
 		.serialInOut_0 (cn_serialInOut_71[0]),
-		.serialInOut_1 (cn_serialInOut_33[1]),
-		.serialInOut_2 (cn_serialInOut_36[0]),
+		.serialInOut_1 (cn_serialInOut_33[2]),
+		.serialInOut_2 (cn_serialInOut_36[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_380[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_381[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_382[`DATAPATH_WIDTH-1:0]),
@@ -6160,15 +6160,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port39 (
 		.serialInOut_0 (cn_serialInOut_24[0]),
-		.serialInOut_1 (cn_serialInOut_36[1]),
-		.serialInOut_2 (cn_serialInOut_75[1]),
+		.serialInOut_1 (cn_serialInOut_36[2]),
+		.serialInOut_2 (cn_serialInOut_75[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_390[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_391[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_392[`DATAPATH_WIDTH-1:0]),
@@ -6179,15 +6179,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port40 (
-		.serialInOut_0 (cn_serialInOut_22[1]),
-		.serialInOut_1 (cn_serialInOut_29[1]),
-		.serialInOut_2 (cn_serialInOut_20[1]),
+		.serialInOut_0 (cn_serialInOut_22[0]),
+		.serialInOut_1 (cn_serialInOut_29[2]),
+		.serialInOut_2 (cn_serialInOut_20[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_400[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_401[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_402[`DATAPATH_WIDTH-1:0]),
@@ -6198,15 +6198,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port41 (
-		.serialInOut_0 (cn_serialInOut_6[1]),
-		.serialInOut_1 (cn_serialInOut_28[1]),
-		.serialInOut_2 (cn_serialInOut_39[1]),
+		.serialInOut_0 (cn_serialInOut_6[0]),
+		.serialInOut_1 (cn_serialInOut_28[2]),
+		.serialInOut_2 (cn_serialInOut_39[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_410[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_411[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_412[`DATAPATH_WIDTH-1:0]),
@@ -6217,15 +6217,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port42 (
-		.serialInOut_0 (cn_serialInOut_70[1]),
-		.serialInOut_1 (cn_serialInOut_77[0]),
-		.serialInOut_2 (cn_serialInOut_38[1]),
+		.serialInOut_0 (cn_serialInOut_70[0]),
+		.serialInOut_1 (cn_serialInOut_77[2]),
+		.serialInOut_2 (cn_serialInOut_38[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_420[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_421[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_422[`DATAPATH_WIDTH-1:0]),
@@ -6236,15 +6236,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port43 (
 		.serialInOut_0 (cn_serialInOut_12[0]),
-		.serialInOut_1 (cn_serialInOut_1[1]),
-		.serialInOut_2 (cn_serialInOut_95[1]),
+		.serialInOut_1 (cn_serialInOut_1[2]),
+		.serialInOut_2 (cn_serialInOut_95[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_430[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_431[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_432[`DATAPATH_WIDTH-1:0]),
@@ -6255,15 +6255,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port44 (
-		.serialInOut_0 (cn_serialInOut_54[1]),
+		.serialInOut_0 (cn_serialInOut_54[0]),
 		.serialInOut_1 (cn_serialInOut_32[2]),
-		.serialInOut_2 (cn_serialInOut_50[1]),
+		.serialInOut_2 (cn_serialInOut_50[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_440[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_441[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_442[`DATAPATH_WIDTH-1:0]),
@@ -6274,15 +6274,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port45 (
-		.serialInOut_0 (cn_serialInOut_48[1]),
-		.serialInOut_1 (cn_serialInOut_63[0]),
-		.serialInOut_2 (cn_serialInOut_15[0]),
+		.serialInOut_0 (cn_serialInOut_48[0]),
+		.serialInOut_1 (cn_serialInOut_63[2]),
+		.serialInOut_2 (cn_serialInOut_15[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_450[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_451[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_452[`DATAPATH_WIDTH-1:0]),
@@ -6293,15 +6293,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port46 (
-		.serialInOut_0 (cn_serialInOut_36[2]),
-		.serialInOut_1 (cn_serialInOut_65[0]),
-		.serialInOut_2 (cn_serialInOut_53[0]),
+		.serialInOut_0 (cn_serialInOut_36[0]),
+		.serialInOut_1 (cn_serialInOut_65[2]),
+		.serialInOut_2 (cn_serialInOut_53[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_460[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_461[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_462[`DATAPATH_WIDTH-1:0]),
@@ -6312,15 +6312,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port47 (
-		.serialInOut_0 (cn_serialInOut_49[1]),
+		.serialInOut_0 (cn_serialInOut_49[0]),
 		.serialInOut_1 (cn_serialInOut_35[2]),
-		.serialInOut_2 (cn_serialInOut_88[0]),
+		.serialInOut_2 (cn_serialInOut_88[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_470[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_471[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_472[`DATAPATH_WIDTH-1:0]),
@@ -6331,15 +6331,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port48 (
-		.serialInOut_0 (cn_serialInOut_44[1]),
-		.serialInOut_1 (cn_serialInOut_14[1]),
-		.serialInOut_2 (cn_serialInOut_56[0]),
+		.serialInOut_0 (cn_serialInOut_44[0]),
+		.serialInOut_1 (cn_serialInOut_14[2]),
+		.serialInOut_2 (cn_serialInOut_56[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_480[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_481[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_482[`DATAPATH_WIDTH-1:0]),
@@ -6350,15 +6350,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port49 (
-		.serialInOut_0 (cn_serialInOut_87[2]),
-		.serialInOut_1 (cn_serialInOut_34[1]),
-		.serialInOut_2 (cn_serialInOut_14[2]),
+		.serialInOut_0 (cn_serialInOut_87[0]),
+		.serialInOut_1 (cn_serialInOut_34[2]),
+		.serialInOut_2 (cn_serialInOut_14[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_490[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_491[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_492[`DATAPATH_WIDTH-1:0]),
@@ -6369,15 +6369,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port50 (
-		.serialInOut_0 (cn_serialInOut_56[1]),
-		.serialInOut_1 (cn_serialInOut_101[1]),
-		.serialInOut_2 (cn_serialInOut_77[1]),
+		.serialInOut_0 (cn_serialInOut_56[0]),
+		.serialInOut_1 (cn_serialInOut_101[2]),
+		.serialInOut_2 (cn_serialInOut_77[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_500[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_501[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_502[`DATAPATH_WIDTH-1:0]),
@@ -6388,15 +6388,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port51 (
-		.serialInOut_0 (cn_serialInOut_97[1]),
-		.serialInOut_1 (cn_serialInOut_26[0]),
-		.serialInOut_2 (cn_serialInOut_70[2]),
+		.serialInOut_0 (cn_serialInOut_97[0]),
+		.serialInOut_1 (cn_serialInOut_26[2]),
+		.serialInOut_2 (cn_serialInOut_70[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_510[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_511[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_512[`DATAPATH_WIDTH-1:0]),
@@ -6407,15 +6407,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port52 (
-		.serialInOut_0 (cn_serialInOut_26[1]),
-		.serialInOut_1 (cn_serialInOut_51[1]),
-		.serialInOut_2 (cn_serialInOut_93[0]),
+		.serialInOut_0 (cn_serialInOut_26[0]),
+		.serialInOut_1 (cn_serialInOut_51[2]),
+		.serialInOut_2 (cn_serialInOut_93[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_520[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_521[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_522[`DATAPATH_WIDTH-1:0]),
@@ -6426,15 +6426,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port53 (
-		.serialInOut_0 (cn_serialInOut_67[2]),
-		.serialInOut_1 (cn_serialInOut_19[0]),
-		.serialInOut_2 (cn_serialInOut_86[0]),
+		.serialInOut_0 (cn_serialInOut_67[0]),
+		.serialInOut_1 (cn_serialInOut_19[2]),
+		.serialInOut_2 (cn_serialInOut_86[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_530[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_531[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_532[`DATAPATH_WIDTH-1:0]),
@@ -6445,15 +6445,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port54 (
-		.serialInOut_0 (cn_serialInOut_88[1]),
+		.serialInOut_0 (cn_serialInOut_88[0]),
 		.serialInOut_1 (cn_serialInOut_37[2]),
-		.serialInOut_2 (cn_serialInOut_7[1]),
+		.serialInOut_2 (cn_serialInOut_7[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_540[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_541[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_542[`DATAPATH_WIDTH-1:0]),
@@ -6464,15 +6464,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port55 (
-		.serialInOut_0 (cn_serialInOut_23[2]),
-		.serialInOut_1 (cn_serialInOut_93[1]),
-		.serialInOut_2 (cn_serialInOut_52[1]),
+		.serialInOut_0 (cn_serialInOut_23[0]),
+		.serialInOut_1 (cn_serialInOut_93[2]),
+		.serialInOut_2 (cn_serialInOut_52[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_550[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_551[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_552[`DATAPATH_WIDTH-1:0]),
@@ -6483,15 +6483,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port56 (
-		.serialInOut_0 (cn_serialInOut_10[2]),
+		.serialInOut_0 (cn_serialInOut_10[0]),
 		.serialInOut_1 (cn_serialInOut_49[2]),
-		.serialInOut_2 (cn_serialInOut_18[1]),
+		.serialInOut_2 (cn_serialInOut_18[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_560[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_561[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_562[`DATAPATH_WIDTH-1:0]),
@@ -6502,15 +6502,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port57 (
 		.serialInOut_0 (cn_serialInOut_13[0]),
 		.serialInOut_1 (cn_serialInOut_82[2]),
-		.serialInOut_2 (cn_serialInOut_97[2]),
+		.serialInOut_2 (cn_serialInOut_97[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_570[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_571[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_572[`DATAPATH_WIDTH-1:0]),
@@ -6521,15 +6521,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port58 (
-		.serialInOut_0 (cn_serialInOut_75[2]),
+		.serialInOut_0 (cn_serialInOut_75[0]),
 		.serialInOut_1 (cn_serialInOut_54[2]),
-		.serialInOut_2 (cn_serialInOut_1[2]),
+		.serialInOut_2 (cn_serialInOut_1[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_580[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_581[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_582[`DATAPATH_WIDTH-1:0]),
@@ -6540,15 +6540,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port59 (
-		.serialInOut_0 (cn_serialInOut_40[2]),
-		.serialInOut_1 (cn_serialInOut_69[0]),
-		.serialInOut_2 (cn_serialInOut_61[1]),
+		.serialInOut_0 (cn_serialInOut_40[0]),
+		.serialInOut_1 (cn_serialInOut_69[2]),
+		.serialInOut_2 (cn_serialInOut_61[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_590[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_591[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_592[`DATAPATH_WIDTH-1:0]),
@@ -6559,15 +6559,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port60 (
-		.serialInOut_0 (cn_serialInOut_77[2]),
-		.serialInOut_1 (cn_serialInOut_85[1]),
-		.serialInOut_2 (cn_serialInOut_13[1]),
+		.serialInOut_0 (cn_serialInOut_77[0]),
+		.serialInOut_1 (cn_serialInOut_85[2]),
+		.serialInOut_2 (cn_serialInOut_13[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_600[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_601[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_602[`DATAPATH_WIDTH-1:0]),
@@ -6578,15 +6578,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port61 (
-		.serialInOut_0 (cn_serialInOut_2[1]),
+		.serialInOut_0 (cn_serialInOut_2[0]),
 		.serialInOut_1 (cn_serialInOut_20[2]),
-		.serialInOut_2 (cn_serialInOut_58[0]),
+		.serialInOut_2 (cn_serialInOut_58[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_610[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_611[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_612[`DATAPATH_WIDTH-1:0]),
@@ -6597,15 +6597,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port62 (
-		.serialInOut_0 (cn_serialInOut_63[1]),
+		.serialInOut_0 (cn_serialInOut_63[0]),
 		.serialInOut_1 (cn_serialInOut_22[2]),
-		.serialInOut_2 (cn_serialInOut_45[0]),
+		.serialInOut_2 (cn_serialInOut_45[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_620[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_621[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_622[`DATAPATH_WIDTH-1:0]),
@@ -6616,15 +6616,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port63 (
-		.serialInOut_0 (cn_serialInOut_46[1]),
+		.serialInOut_0 (cn_serialInOut_46[0]),
 		.serialInOut_1 (cn_serialInOut_42[2]),
-		.serialInOut_2 (cn_serialInOut_44[2]),
+		.serialInOut_2 (cn_serialInOut_44[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_630[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_631[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_632[`DATAPATH_WIDTH-1:0]),
@@ -6635,15 +6635,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port64 (
-		.serialInOut_0 (cn_serialInOut_94[1]),
-		.serialInOut_1 (cn_serialInOut_30[1]),
-		.serialInOut_2 (cn_serialInOut_0[2]),
+		.serialInOut_0 (cn_serialInOut_94[0]),
+		.serialInOut_1 (cn_serialInOut_30[2]),
+		.serialInOut_2 (cn_serialInOut_0[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_640[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_641[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_642[`DATAPATH_WIDTH-1:0]),
@@ -6654,15 +6654,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port65 (
 		.serialInOut_0 (cn_serialInOut_84[0]),
-		.serialInOut_1 (cn_serialInOut_58[1]),
-		.serialInOut_2 (cn_serialInOut_83[2]),
+		.serialInOut_1 (cn_serialInOut_58[2]),
+		.serialInOut_2 (cn_serialInOut_83[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_650[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_651[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_652[`DATAPATH_WIDTH-1:0]),
@@ -6673,15 +6673,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port66 (
-		.serialInOut_0 (cn_serialInOut_93[2]),
-		.serialInOut_1 (cn_serialInOut_53[1]),
-		.serialInOut_2 (cn_serialInOut_100[0]),
+		.serialInOut_0 (cn_serialInOut_93[0]),
+		.serialInOut_1 (cn_serialInOut_53[2]),
+		.serialInOut_2 (cn_serialInOut_100[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_660[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_661[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_662[`DATAPATH_WIDTH-1:0]),
@@ -6692,15 +6692,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port67 (
 		.serialInOut_0 (cn_serialInOut_92[0]),
-		.serialInOut_1 (cn_serialInOut_5[0]),
-		.serialInOut_2 (cn_serialInOut_30[2]),
+		.serialInOut_1 (cn_serialInOut_5[2]),
+		.serialInOut_2 (cn_serialInOut_30[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_670[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_671[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_672[`DATAPATH_WIDTH-1:0]),
@@ -6711,15 +6711,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port68 (
-		.serialInOut_0 (cn_serialInOut_58[2]),
+		.serialInOut_0 (cn_serialInOut_58[0]),
 		.serialInOut_1 (cn_serialInOut_94[2]),
-		.serialInOut_2 (cn_serialInOut_60[1]),
+		.serialInOut_2 (cn_serialInOut_60[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_680[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_681[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_682[`DATAPATH_WIDTH-1:0]),
@@ -6730,15 +6730,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port69 (
 		.serialInOut_0 (cn_serialInOut_57[0]),
-		.serialInOut_1 (cn_serialInOut_72[1]),
-		.serialInOut_2 (cn_serialInOut_46[2]),
+		.serialInOut_1 (cn_serialInOut_72[2]),
+		.serialInOut_2 (cn_serialInOut_46[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_690[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_691[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_692[`DATAPATH_WIDTH-1:0]),
@@ -6749,15 +6749,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port70 (
-		.serialInOut_0 (cn_serialInOut_53[2]),
-		.serialInOut_1 (cn_serialInOut_86[1]),
-		.serialInOut_2 (cn_serialInOut_6[2]),
+		.serialInOut_0 (cn_serialInOut_53[0]),
+		.serialInOut_1 (cn_serialInOut_86[2]),
+		.serialInOut_2 (cn_serialInOut_6[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_700[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_701[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_702[`DATAPATH_WIDTH-1:0]),
@@ -6768,15 +6768,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port71 (
-		.serialInOut_0 (cn_serialInOut_51[2]),
-		.serialInOut_1 (cn_serialInOut_96[0]),
-		.serialInOut_2 (cn_serialInOut_78[2]),
+		.serialInOut_0 (cn_serialInOut_51[0]),
+		.serialInOut_1 (cn_serialInOut_96[2]),
+		.serialInOut_2 (cn_serialInOut_78[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_710[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_711[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_712[`DATAPATH_WIDTH-1:0]),
@@ -6787,15 +6787,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port72 (
 		.serialInOut_0 (cn_serialInOut_11[0]),
-		.serialInOut_1 (cn_serialInOut_89[0]),
-		.serialInOut_2 (cn_serialInOut_27[2]),
+		.serialInOut_1 (cn_serialInOut_89[2]),
+		.serialInOut_2 (cn_serialInOut_27[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_720[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_721[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_722[`DATAPATH_WIDTH-1:0]),
@@ -6806,15 +6806,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port73 (
-		.serialInOut_0 (cn_serialInOut_29[2]),
-		.serialInOut_1 (cn_serialInOut_98[1]),
-		.serialInOut_2 (cn_serialInOut_96[1]),
+		.serialInOut_0 (cn_serialInOut_29[0]),
+		.serialInOut_1 (cn_serialInOut_98[2]),
+		.serialInOut_2 (cn_serialInOut_96[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_730[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_731[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_732[`DATAPATH_WIDTH-1:0]),
@@ -6825,15 +6825,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port74 (
 		.serialInOut_0 (cn_serialInOut_41[0]),
-		.serialInOut_1 (cn_serialInOut_99[1]),
-		.serialInOut_2 (cn_serialInOut_72[2]),
+		.serialInOut_1 (cn_serialInOut_99[2]),
+		.serialInOut_2 (cn_serialInOut_72[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_740[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_741[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_742[`DATAPATH_WIDTH-1:0]),
@@ -6844,15 +6844,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port75 (
-		.serialInOut_0 (cn_serialInOut_100[1]),
+		.serialInOut_0 (cn_serialInOut_100[0]),
 		.serialInOut_1 (cn_serialInOut_61[2]),
-		.serialInOut_2 (cn_serialInOut_19[1]),
+		.serialInOut_2 (cn_serialInOut_19[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_750[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_751[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_752[`DATAPATH_WIDTH-1:0]),
@@ -6863,15 +6863,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port76 (
-		.serialInOut_0 (cn_serialInOut_79[1]),
+		.serialInOut_0 (cn_serialInOut_79[0]),
 		.serialInOut_1 (cn_serialInOut_95[2]),
-		.serialInOut_2 (cn_serialInOut_84[1]),
+		.serialInOut_2 (cn_serialInOut_84[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_760[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_761[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_762[`DATAPATH_WIDTH-1:0]),
@@ -6882,15 +6882,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port77 (
-		.serialInOut_0 (cn_serialInOut_99[2]),
-		.serialInOut_1 (cn_serialInOut_57[1]),
-		.serialInOut_2 (cn_serialInOut_90[1]),
+		.serialInOut_0 (cn_serialInOut_99[0]),
+		.serialInOut_1 (cn_serialInOut_57[2]),
+		.serialInOut_2 (cn_serialInOut_90[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_770[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_771[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_772[`DATAPATH_WIDTH-1:0]),
@@ -6901,15 +6901,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port78 (
-		.serialInOut_0 (cn_serialInOut_18[2]),
-		.serialInOut_1 (cn_serialInOut_15[1]),
-		.serialInOut_2 (cn_serialInOut_5[1]),
+		.serialInOut_0 (cn_serialInOut_18[0]),
+		.serialInOut_1 (cn_serialInOut_15[2]),
+		.serialInOut_2 (cn_serialInOut_5[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_780[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_781[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_782[`DATAPATH_WIDTH-1:0]),
@@ -6920,15 +6920,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port79 (
-		.serialInOut_0 (cn_serialInOut_98[2]),
+		.serialInOut_0 (cn_serialInOut_98[0]),
 		.serialInOut_1 (cn_serialInOut_48[2]),
-		.serialInOut_2 (cn_serialInOut_71[1]),
+		.serialInOut_2 (cn_serialInOut_71[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_790[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_791[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_792[`DATAPATH_WIDTH-1:0]),
@@ -6939,15 +6939,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port80 (
-		.serialInOut_0 (cn_serialInOut_69[1]),
-		.serialInOut_1 (cn_serialInOut_91[1]),
-		.serialInOut_2 (cn_serialInOut_16[2]),
+		.serialInOut_0 (cn_serialInOut_69[0]),
+		.serialInOut_1 (cn_serialInOut_91[2]),
+		.serialInOut_2 (cn_serialInOut_16[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_800[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_801[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_802[`DATAPATH_WIDTH-1:0]),
@@ -6958,15 +6958,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port81 (
-		.serialInOut_0 (cn_serialInOut_89[1]),
-		.serialInOut_1 (cn_serialInOut_92[1]),
-		.serialInOut_2 (cn_serialInOut_68[2]),
+		.serialInOut_0 (cn_serialInOut_89[0]),
+		.serialInOut_1 (cn_serialInOut_92[2]),
+		.serialInOut_2 (cn_serialInOut_68[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_810[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_811[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_812[`DATAPATH_WIDTH-1:0]),
@@ -6977,15 +6977,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port82 (
-		.serialInOut_0 (cn_serialInOut_9[1]),
+		.serialInOut_0 (cn_serialInOut_9[0]),
 		.serialInOut_1 (cn_serialInOut_39[2]),
-		.serialInOut_2 (cn_serialInOut_24[1]),
+		.serialInOut_2 (cn_serialInOut_24[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_820[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_821[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_822[`DATAPATH_WIDTH-1:0]),
@@ -6996,15 +6996,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port83 (
-		.serialInOut_0 (cn_serialInOut_38[2]),
+		.serialInOut_0 (cn_serialInOut_38[0]),
 		.serialInOut_1 (cn_serialInOut_71[2]),
-		.serialInOut_2 (cn_serialInOut_81[2]),
+		.serialInOut_2 (cn_serialInOut_81[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_830[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_831[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_832[`DATAPATH_WIDTH-1:0]),
@@ -7015,15 +7015,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port84 (
-		.serialInOut_0 (cn_serialInOut_66[1]),
+		.serialInOut_0 (cn_serialInOut_66[0]),
 		.serialInOut_1 (cn_serialInOut_73[2]),
-		.serialInOut_2 (cn_serialInOut_11[1]),
+		.serialInOut_2 (cn_serialInOut_11[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_840[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_841[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_842[`DATAPATH_WIDTH-1:0]),
@@ -7034,15 +7034,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port85 (
-		.serialInOut_0 (cn_serialInOut_3[2]),
-		.serialInOut_1 (cn_serialInOut_64[1]),
-		.serialInOut_2 (cn_serialInOut_26[2]),
+		.serialInOut_0 (cn_serialInOut_3[0]),
+		.serialInOut_1 (cn_serialInOut_64[2]),
+		.serialInOut_2 (cn_serialInOut_26[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_850[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_851[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_852[`DATAPATH_WIDTH-1:0]),
@@ -7053,15 +7053,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port86 (
-		.serialInOut_0 (cn_serialInOut_19[2]),
+		.serialInOut_0 (cn_serialInOut_19[0]),
 		.serialInOut_1 (cn_serialInOut_84[2]),
-		.serialInOut_2 (cn_serialInOut_89[2]),
+		.serialInOut_2 (cn_serialInOut_89[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_860[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_861[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_862[`DATAPATH_WIDTH-1:0]),
@@ -7072,15 +7072,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port87 (
-		.serialInOut_0 (cn_serialInOut_101[2]),
-		.serialInOut_1 (cn_serialInOut_12[1]),
-		.serialInOut_2 (cn_serialInOut_91[2]),
+		.serialInOut_0 (cn_serialInOut_101[0]),
+		.serialInOut_1 (cn_serialInOut_12[2]),
+		.serialInOut_2 (cn_serialInOut_91[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_870[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_871[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_872[`DATAPATH_WIDTH-1:0]),
@@ -7091,15 +7091,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port88 (
-		.serialInOut_0 (cn_serialInOut_45[1]),
+		.serialInOut_0 (cn_serialInOut_45[0]),
 		.serialInOut_1 (cn_serialInOut_7[2]),
-		.serialInOut_2 (cn_serialInOut_8[2]),
+		.serialInOut_2 (cn_serialInOut_8[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_880[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_881[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_882[`DATAPATH_WIDTH-1:0]),
@@ -7110,15 +7110,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port89 (
-		.serialInOut_0 (cn_serialInOut_34[2]),
+		.serialInOut_0 (cn_serialInOut_34[0]),
 		.serialInOut_1 (cn_serialInOut_45[2]),
-		.serialInOut_2 (cn_serialInOut_9[2]),
+		.serialInOut_2 (cn_serialInOut_9[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_890[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_891[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_892[`DATAPATH_WIDTH-1:0]),
@@ -7129,15 +7129,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port90 (
-		.serialInOut_0 (cn_serialInOut_96[2]),
+		.serialInOut_0 (cn_serialInOut_96[0]),
 		.serialInOut_1 (cn_serialInOut_52[2]),
-		.serialInOut_2 (cn_serialInOut_92[2]),
+		.serialInOut_2 (cn_serialInOut_92[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_900[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_901[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_902[`DATAPATH_WIDTH-1:0]),
@@ -7148,15 +7148,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port91 (
-		.serialInOut_0 (cn_serialInOut_65[1]),
+		.serialInOut_0 (cn_serialInOut_65[0]),
 		.serialInOut_1 (cn_serialInOut_47[2]),
-		.serialInOut_2 (cn_serialInOut_41[1]),
+		.serialInOut_2 (cn_serialInOut_41[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_910[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_911[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_912[`DATAPATH_WIDTH-1:0]),
@@ -7167,15 +7167,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port92 (
-		.serialInOut_0 (cn_serialInOut_86[2]),
+		.serialInOut_0 (cn_serialInOut_86[0]),
 		.serialInOut_1 (cn_serialInOut_88[2]),
-		.serialInOut_2 (cn_serialInOut_63[2]),
+		.serialInOut_2 (cn_serialInOut_63[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_920[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_921[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_922[`DATAPATH_WIDTH-1:0]),
@@ -7186,15 +7186,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port93 (
-		.serialInOut_0 (cn_serialInOut_25[2]),
+		.serialInOut_0 (cn_serialInOut_25[0]),
 		.serialInOut_1 (cn_serialInOut_24[2]),
-		.serialInOut_2 (cn_serialInOut_57[2]),
+		.serialInOut_2 (cn_serialInOut_57[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_930[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_931[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_932[`DATAPATH_WIDTH-1:0]),
@@ -7205,15 +7205,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port94 (
-		.serialInOut_0 (cn_serialInOut_5[2]),
+		.serialInOut_0 (cn_serialInOut_5[0]),
 		.serialInOut_1 (cn_serialInOut_56[2]),
-		.serialInOut_2 (cn_serialInOut_66[2]),
+		.serialInOut_2 (cn_serialInOut_66[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_940[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_941[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_942[`DATAPATH_WIDTH-1:0]),
@@ -7224,15 +7224,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port95 (
-		.serialInOut_0 (cn_serialInOut_64[2]),
+		.serialInOut_0 (cn_serialInOut_64[0]),
 		.serialInOut_1 (cn_serialInOut_11[2]),
-		.serialInOut_2 (cn_serialInOut_2[2]),
+		.serialInOut_2 (cn_serialInOut_2[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_950[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_951[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_952[`DATAPATH_WIDTH-1:0]),
@@ -7243,15 +7243,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port96 (
-		.serialInOut_0 (cn_serialInOut_60[2]),
+		.serialInOut_0 (cn_serialInOut_60[0]),
 		.serialInOut_1 (cn_serialInOut_90[2]),
-		.serialInOut_2 (cn_serialInOut_65[2]),
+		.serialInOut_2 (cn_serialInOut_65[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_960[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_961[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_962[`DATAPATH_WIDTH-1:0]),
@@ -7262,15 +7262,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port97 (
-		.serialInOut_0 (cn_serialInOut_80[2]),
+		.serialInOut_0 (cn_serialInOut_80[0]),
 		.serialInOut_1 (cn_serialInOut_100[2]),
-		.serialInOut_2 (cn_serialInOut_28[2]),
+		.serialInOut_2 (cn_serialInOut_28[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_970[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_971[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_972[`DATAPATH_WIDTH-1:0]),
@@ -7281,15 +7281,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port98 (
-		.serialInOut_0 (cn_serialInOut_50[2]),
+		.serialInOut_0 (cn_serialInOut_50[0]),
 		.serialInOut_1 (cn_serialInOut_59[2]),
-		.serialInOut_2 (cn_serialInOut_85[2]),
+		.serialInOut_2 (cn_serialInOut_85[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_980[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_981[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_982[`DATAPATH_WIDTH-1:0]),
@@ -7300,15 +7300,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port99 (
-		.serialInOut_0 (cn_serialInOut_15[2]),
+		.serialInOut_0 (cn_serialInOut_15[0]),
 		.serialInOut_1 (cn_serialInOut_13[2]),
-		.serialInOut_2 (cn_serialInOut_79[2]),
+		.serialInOut_2 (cn_serialInOut_79[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_990[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_991[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_992[`DATAPATH_WIDTH-1:0]),
@@ -7319,15 +7319,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port100 (
-		.serialInOut_0 (cn_serialInOut_33[2]),
-		.serialInOut_1 (cn_serialInOut_31[1]),
-		.serialInOut_2 (cn_serialInOut_69[2]),
+		.serialInOut_0 (cn_serialInOut_33[0]),
+		.serialInOut_1 (cn_serialInOut_31[2]),
+		.serialInOut_2 (cn_serialInOut_69[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_1000[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1001[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1002[`DATAPATH_WIDTH-1:0]),
@@ -7338,15 +7338,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port101 (
-		.serialInOut_0 (cn_serialInOut_31[2]),
+		.serialInOut_0 (cn_serialInOut_31[0]),
 		.serialInOut_1 (cn_serialInOut_41[2]),
-		.serialInOut_2 (cn_serialInOut_12[2]),
+		.serialInOut_2 (cn_serialInOut_12[4]),
 		.c2v_parallelOut_0(c2v_parallelOut_1010[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1011[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1012[`DATAPATH_WIDTH-1:0]),
@@ -7357,15 +7357,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port102 (
-		.serialInOut_0 (cn_serialInOut_71[3]),
+		.serialInOut_0 (cn_serialInOut_71[1]),
 		.serialInOut_1 (cn_serialInOut_16[3]),
-		.serialInOut_2 (cn_serialInOut_44[3]),
+		.serialInOut_2 (cn_serialInOut_44[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1020[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1021[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1022[`DATAPATH_WIDTH-1:0]),
@@ -7376,15 +7376,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port103 (
-		.serialInOut_0 (cn_serialInOut_51[3]),
+		.serialInOut_0 (cn_serialInOut_51[1]),
 		.serialInOut_1 (cn_serialInOut_13[3]),
-		.serialInOut_2 (cn_serialInOut_21[3]),
+		.serialInOut_2 (cn_serialInOut_21[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1030[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1031[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1032[`DATAPATH_WIDTH-1:0]),
@@ -7395,15 +7395,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port104 (
-		.serialInOut_0 (cn_serialInOut_48[3]),
+		.serialInOut_0 (cn_serialInOut_48[1]),
 		.serialInOut_1 (cn_serialInOut_52[3]),
-		.serialInOut_2 (cn_serialInOut_1[3]),
+		.serialInOut_2 (cn_serialInOut_1[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1040[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1041[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1042[`DATAPATH_WIDTH-1:0]),
@@ -7414,15 +7414,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port105 (
-		.serialInOut_0 (cn_serialInOut_94[3]),
+		.serialInOut_0 (cn_serialInOut_94[1]),
 		.serialInOut_1 (cn_serialInOut_75[3]),
-		.serialInOut_2 (cn_serialInOut_59[3]),
+		.serialInOut_2 (cn_serialInOut_59[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1050[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1051[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1052[`DATAPATH_WIDTH-1:0]),
@@ -7433,15 +7433,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port106 (
-		.serialInOut_0 (cn_serialInOut_38[3]),
+		.serialInOut_0 (cn_serialInOut_38[1]),
 		.serialInOut_1 (cn_serialInOut_56[3]),
-		.serialInOut_2 (cn_serialInOut_25[3]),
+		.serialInOut_2 (cn_serialInOut_25[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1060[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1061[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1062[`DATAPATH_WIDTH-1:0]),
@@ -7452,15 +7452,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port107 (
-		.serialInOut_0 (cn_serialInOut_31[3]),
-		.serialInOut_1 (cn_serialInOut_59[4]),
-		.serialInOut_2 (cn_serialInOut_47[3]),
+		.serialInOut_0 (cn_serialInOut_31[1]),
+		.serialInOut_1 (cn_serialInOut_59[3]),
+		.serialInOut_2 (cn_serialInOut_47[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1070[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1071[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1072[`DATAPATH_WIDTH-1:0]),
@@ -7471,15 +7471,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port108 (
-		.serialInOut_0 (cn_serialInOut_1[4]),
+		.serialInOut_0 (cn_serialInOut_1[1]),
 		.serialInOut_1 (cn_serialInOut_77[3]),
-		.serialInOut_2 (cn_serialInOut_7[3]),
+		.serialInOut_2 (cn_serialInOut_7[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1080[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1081[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1082[`DATAPATH_WIDTH-1:0]),
@@ -7490,15 +7490,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port109 (
-		.serialInOut_0 (cn_serialInOut_91[3]),
+		.serialInOut_0 (cn_serialInOut_91[1]),
 		.serialInOut_1 (cn_serialInOut_2[3]),
-		.serialInOut_2 (cn_serialInOut_53[3]),
+		.serialInOut_2 (cn_serialInOut_53[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1090[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1091[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1092[`DATAPATH_WIDTH-1:0]),
@@ -7509,15 +7509,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port110 (
-		.serialInOut_0 (cn_serialInOut_70[3]),
+		.serialInOut_0 (cn_serialInOut_70[1]),
 		.serialInOut_1 (cn_serialInOut_54[3]),
-		.serialInOut_2 (cn_serialInOut_41[3]),
+		.serialInOut_2 (cn_serialInOut_41[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1100[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1101[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1102[`DATAPATH_WIDTH-1:0]),
@@ -7528,15 +7528,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port111 (
-		.serialInOut_0 (cn_serialInOut_22[3]),
+		.serialInOut_0 (cn_serialInOut_22[1]),
 		.serialInOut_1 (cn_serialInOut_4[3]),
-		.serialInOut_2 (cn_serialInOut_61[3]),
+		.serialInOut_2 (cn_serialInOut_61[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1110[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1111[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1112[`DATAPATH_WIDTH-1:0]),
@@ -7547,15 +7547,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port112 (
-		.serialInOut_0 (cn_serialInOut_34[3]),
+		.serialInOut_0 (cn_serialInOut_34[1]),
 		.serialInOut_1 (cn_serialInOut_98[3]),
-		.serialInOut_2 (cn_serialInOut_49[3]),
+		.serialInOut_2 (cn_serialInOut_49[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1120[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1121[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1122[`DATAPATH_WIDTH-1:0]),
@@ -7566,15 +7566,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port113 (
-		.serialInOut_0 (cn_serialInOut_36[3]),
+		.serialInOut_0 (cn_serialInOut_36[1]),
 		.serialInOut_1 (cn_serialInOut_30[3]),
-		.serialInOut_2 (cn_serialInOut_17[3]),
+		.serialInOut_2 (cn_serialInOut_17[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1130[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1131[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1132[`DATAPATH_WIDTH-1:0]),
@@ -7585,15 +7585,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port114 (
-		.serialInOut_0 (cn_serialInOut_23[3]),
+		.serialInOut_0 (cn_serialInOut_23[1]),
 		.serialInOut_1 (cn_serialInOut_83[3]),
-		.serialInOut_2 (cn_serialInOut_11[3]),
+		.serialInOut_2 (cn_serialInOut_11[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1140[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1141[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1142[`DATAPATH_WIDTH-1:0]),
@@ -7604,15 +7604,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port115 (
-		.serialInOut_0 (cn_serialInOut_13[4]),
+		.serialInOut_0 (cn_serialInOut_13[1]),
 		.serialInOut_1 (cn_serialInOut_96[3]),
-		.serialInOut_2 (cn_serialInOut_55[3]),
+		.serialInOut_2 (cn_serialInOut_55[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1150[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1151[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1152[`DATAPATH_WIDTH-1:0]),
@@ -7623,15 +7623,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port116 (
-		.serialInOut_0 (cn_serialInOut_93[3]),
+		.serialInOut_0 (cn_serialInOut_93[1]),
 		.serialInOut_1 (cn_serialInOut_39[3]),
-		.serialInOut_2 (cn_serialInOut_43[3]),
+		.serialInOut_2 (cn_serialInOut_43[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1160[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1161[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1162[`DATAPATH_WIDTH-1:0]),
@@ -7642,15 +7642,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port117 (
-		.serialInOut_0 (cn_serialInOut_21[4]),
+		.serialInOut_0 (cn_serialInOut_21[1]),
 		.serialInOut_1 (cn_serialInOut_73[3]),
-		.serialInOut_2 (cn_serialInOut_62[3]),
+		.serialInOut_2 (cn_serialInOut_62[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1170[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1171[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1172[`DATAPATH_WIDTH-1:0]),
@@ -7661,15 +7661,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port118 (
-		.serialInOut_0 (cn_serialInOut_62[4]),
-		.serialInOut_1 (cn_serialInOut_48[4]),
-		.serialInOut_2 (cn_serialInOut_27[3]),
+		.serialInOut_0 (cn_serialInOut_62[1]),
+		.serialInOut_1 (cn_serialInOut_48[3]),
+		.serialInOut_2 (cn_serialInOut_27[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1180[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1181[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1182[`DATAPATH_WIDTH-1:0]),
@@ -7680,15 +7680,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port119 (
-		.serialInOut_0 (cn_serialInOut_41[4]),
+		.serialInOut_0 (cn_serialInOut_41[1]),
 		.serialInOut_1 (cn_serialInOut_95[3]),
-		.serialInOut_2 (cn_serialInOut_77[4]),
+		.serialInOut_2 (cn_serialInOut_77[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1190[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1191[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1192[`DATAPATH_WIDTH-1:0]),
@@ -7699,15 +7699,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port120 (
-		.serialInOut_0 (cn_serialInOut_100[3]),
+		.serialInOut_0 (cn_serialInOut_100[1]),
 		.serialInOut_1 (cn_serialInOut_26[3]),
-		.serialInOut_2 (cn_serialInOut_84[3]),
+		.serialInOut_2 (cn_serialInOut_84[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1200[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1201[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1202[`DATAPATH_WIDTH-1:0]),
@@ -7718,15 +7718,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port121 (
-		.serialInOut_0 (cn_serialInOut_54[4]),
+		.serialInOut_0 (cn_serialInOut_54[1]),
 		.serialInOut_1 (cn_serialInOut_74[3]),
-		.serialInOut_2 (cn_serialInOut_98[4]),
+		.serialInOut_2 (cn_serialInOut_98[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1210[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1211[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1212[`DATAPATH_WIDTH-1:0]),
@@ -7737,15 +7737,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port122 (
-		.serialInOut_0 (cn_serialInOut_39[4]),
+		.serialInOut_0 (cn_serialInOut_39[1]),
 		.serialInOut_1 (cn_serialInOut_8[3]),
-		.serialInOut_2 (cn_serialInOut_66[3]),
+		.serialInOut_2 (cn_serialInOut_66[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1220[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1221[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1222[`DATAPATH_WIDTH-1:0]),
@@ -7756,15 +7756,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port123 (
-		.serialInOut_0 (cn_serialInOut_60[3]),
-		.serialInOut_1 (cn_serialInOut_27[4]),
-		.serialInOut_2 (cn_serialInOut_96[4]),
+		.serialInOut_0 (cn_serialInOut_60[1]),
+		.serialInOut_1 (cn_serialInOut_27[3]),
+		.serialInOut_2 (cn_serialInOut_96[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1230[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1231[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1232[`DATAPATH_WIDTH-1:0]),
@@ -7775,15 +7775,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port124 (
-		.serialInOut_0 (cn_serialInOut_75[4]),
-		.serialInOut_1 (cn_serialInOut_100[4]),
-		.serialInOut_2 (cn_serialInOut_15[3]),
+		.serialInOut_0 (cn_serialInOut_75[1]),
+		.serialInOut_1 (cn_serialInOut_100[3]),
+		.serialInOut_2 (cn_serialInOut_15[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1240[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1241[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1242[`DATAPATH_WIDTH-1:0]),
@@ -7794,15 +7794,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port125 (
-		.serialInOut_0 (cn_serialInOut_87[3]),
-		.serialInOut_1 (cn_serialInOut_94[4]),
-		.serialInOut_2 (cn_serialInOut_32[3]),
+		.serialInOut_0 (cn_serialInOut_87[1]),
+		.serialInOut_1 (cn_serialInOut_94[3]),
+		.serialInOut_2 (cn_serialInOut_32[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1250[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1251[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1252[`DATAPATH_WIDTH-1:0]),
@@ -7813,15 +7813,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port126 (
-		.serialInOut_0 (cn_serialInOut_4[4]),
-		.serialInOut_1 (cn_serialInOut_32[4]),
-		.serialInOut_2 (cn_serialInOut_36[4]),
+		.serialInOut_0 (cn_serialInOut_4[1]),
+		.serialInOut_1 (cn_serialInOut_32[3]),
+		.serialInOut_2 (cn_serialInOut_36[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1260[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1261[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1262[`DATAPATH_WIDTH-1:0]),
@@ -7832,15 +7832,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port127 (
-		.serialInOut_0 (cn_serialInOut_67[3]),
-		.serialInOut_1 (cn_serialInOut_60[4]),
-		.serialInOut_2 (cn_serialInOut_26[4]),
+		.serialInOut_0 (cn_serialInOut_67[1]),
+		.serialInOut_1 (cn_serialInOut_60[3]),
+		.serialInOut_2 (cn_serialInOut_26[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1270[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1271[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1272[`DATAPATH_WIDTH-1:0]),
@@ -7851,15 +7851,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port128 (
-		.serialInOut_0 (cn_serialInOut_64[3]),
-		.serialInOut_1 (cn_serialInOut_51[4]),
-		.serialInOut_2 (cn_serialInOut_37[3]),
+		.serialInOut_0 (cn_serialInOut_64[1]),
+		.serialInOut_1 (cn_serialInOut_51[3]),
+		.serialInOut_2 (cn_serialInOut_37[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1280[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1281[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1282[`DATAPATH_WIDTH-1:0]),
@@ -7870,15 +7870,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port129 (
-		.serialInOut_0 (cn_serialInOut_19[3]),
-		.serialInOut_1 (cn_serialInOut_41[5]),
-		.serialInOut_2 (cn_serialInOut_14[3]),
+		.serialInOut_0 (cn_serialInOut_19[1]),
+		.serialInOut_1 (cn_serialInOut_41[3]),
+		.serialInOut_2 (cn_serialInOut_14[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1290[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1291[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1292[`DATAPATH_WIDTH-1:0]),
@@ -7889,15 +7889,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port130 (
-		.serialInOut_0 (cn_serialInOut_59[5]),
-		.serialInOut_1 (cn_serialInOut_22[4]),
-		.serialInOut_2 (cn_serialInOut_83[4]),
+		.serialInOut_0 (cn_serialInOut_59[1]),
+		.serialInOut_1 (cn_serialInOut_22[3]),
+		.serialInOut_2 (cn_serialInOut_83[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1300[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1301[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1302[`DATAPATH_WIDTH-1:0]),
@@ -7908,13 +7908,13 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port131 (
-		.serialInOut_0 (cn_serialInOut_66[4]),
+		.serialInOut_0 (cn_serialInOut_66[1]),
 		.serialInOut_1 (cn_serialInOut_72[3]),
 		.serialInOut_2 (cn_serialInOut_51[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1310[`DATAPATH_WIDTH-1:0]),
@@ -7927,15 +7927,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port132 (
-		.serialInOut_0 (cn_serialInOut_24[3]),
+		.serialInOut_0 (cn_serialInOut_24[1]),
 		.serialInOut_1 (cn_serialInOut_65[3]),
-		.serialInOut_2 (cn_serialInOut_52[4]),
+		.serialInOut_2 (cn_serialInOut_52[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1320[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1321[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1322[`DATAPATH_WIDTH-1:0]),
@@ -7946,15 +7946,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port133 (
-		.serialInOut_0 (cn_serialInOut_50[3]),
+		.serialInOut_0 (cn_serialInOut_50[1]),
 		.serialInOut_1 (cn_serialInOut_76[3]),
-		.serialInOut_2 (cn_serialInOut_20[3]),
+		.serialInOut_2 (cn_serialInOut_20[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1330[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1331[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1332[`DATAPATH_WIDTH-1:0]),
@@ -7965,15 +7965,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port134 (
-		.serialInOut_0 (cn_serialInOut_80[3]),
-		.serialInOut_1 (cn_serialInOut_61[4]),
-		.serialInOut_2 (cn_serialInOut_0[3]),
+		.serialInOut_0 (cn_serialInOut_80[1]),
+		.serialInOut_1 (cn_serialInOut_61[3]),
+		.serialInOut_2 (cn_serialInOut_0[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1340[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1341[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1342[`DATAPATH_WIDTH-1:0]),
@@ -7984,15 +7984,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port135 (
-		.serialInOut_0 (cn_serialInOut_65[4]),
-		.serialInOut_1 (cn_serialInOut_20[4]),
-		.serialInOut_2 (cn_serialInOut_95[4]),
+		.serialInOut_0 (cn_serialInOut_65[1]),
+		.serialInOut_1 (cn_serialInOut_20[3]),
+		.serialInOut_2 (cn_serialInOut_95[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1350[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1351[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1352[`DATAPATH_WIDTH-1:0]),
@@ -8003,15 +8003,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port136 (
-		.serialInOut_0 (cn_serialInOut_74[4]),
-		.serialInOut_1 (cn_serialInOut_55[4]),
-		.serialInOut_2 (cn_serialInOut_82[3]),
+		.serialInOut_0 (cn_serialInOut_74[1]),
+		.serialInOut_1 (cn_serialInOut_55[3]),
+		.serialInOut_2 (cn_serialInOut_82[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1360[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1361[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1362[`DATAPATH_WIDTH-1:0]),
@@ -8022,15 +8022,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port137 (
-		.serialInOut_0 (cn_serialInOut_7[4]),
+		.serialInOut_0 (cn_serialInOut_7[1]),
 		.serialInOut_1 (cn_serialInOut_12[3]),
-		.serialInOut_2 (cn_serialInOut_18[3]),
+		.serialInOut_2 (cn_serialInOut_18[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1370[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1371[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1372[`DATAPATH_WIDTH-1:0]),
@@ -8041,15 +8041,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port138 (
-		.serialInOut_0 (cn_serialInOut_29[3]),
-		.serialInOut_1 (cn_serialInOut_18[4]),
-		.serialInOut_2 (cn_serialInOut_50[4]),
+		.serialInOut_0 (cn_serialInOut_29[1]),
+		.serialInOut_1 (cn_serialInOut_18[3]),
+		.serialInOut_2 (cn_serialInOut_50[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1380[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1381[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1382[`DATAPATH_WIDTH-1:0]),
@@ -8060,15 +8060,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port139 (
-		.serialInOut_0 (cn_serialInOut_101[3]),
+		.serialInOut_0 (cn_serialInOut_101[1]),
 		.serialInOut_1 (cn_serialInOut_89[3]),
-		.serialInOut_2 (cn_serialInOut_57[3]),
+		.serialInOut_2 (cn_serialInOut_57[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1390[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1391[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1392[`DATAPATH_WIDTH-1:0]),
@@ -8079,15 +8079,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port140 (
-		.serialInOut_0 (cn_serialInOut_96[5]),
+		.serialInOut_0 (cn_serialInOut_96[1]),
 		.serialInOut_1 (cn_serialInOut_10[3]),
-		.serialInOut_2 (cn_serialInOut_67[4]),
+		.serialInOut_2 (cn_serialInOut_67[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1400[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1401[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1402[`DATAPATH_WIDTH-1:0]),
@@ -8098,15 +8098,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port141 (
-		.serialInOut_0 (cn_serialInOut_88[3]),
-		.serialInOut_1 (cn_serialInOut_14[4]),
-		.serialInOut_2 (cn_serialInOut_97[3]),
+		.serialInOut_0 (cn_serialInOut_88[1]),
+		.serialInOut_1 (cn_serialInOut_14[3]),
+		.serialInOut_2 (cn_serialInOut_97[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1410[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1411[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1412[`DATAPATH_WIDTH-1:0]),
@@ -8117,15 +8117,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port142 (
-		.serialInOut_0 (cn_serialInOut_43[4]),
-		.serialInOut_1 (cn_serialInOut_19[4]),
-		.serialInOut_2 (cn_serialInOut_34[4]),
+		.serialInOut_0 (cn_serialInOut_43[1]),
+		.serialInOut_1 (cn_serialInOut_19[3]),
+		.serialInOut_2 (cn_serialInOut_34[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1420[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1421[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1422[`DATAPATH_WIDTH-1:0]),
@@ -8136,14 +8136,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port143 (
-		.serialInOut_0 (cn_serialInOut_73[4]),
-		.serialInOut_1 (cn_serialInOut_34[5]),
+		.serialInOut_0 (cn_serialInOut_73[1]),
+		.serialInOut_1 (cn_serialInOut_34[3]),
 		.serialInOut_2 (cn_serialInOut_4[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1430[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1431[`DATAPATH_WIDTH-1:0]),
@@ -8155,15 +8155,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port144 (
-		.serialInOut_0 (cn_serialInOut_25[4]),
-		.serialInOut_1 (cn_serialInOut_71[4]),
-		.serialInOut_2 (cn_serialInOut_58[3]),
+		.serialInOut_0 (cn_serialInOut_25[1]),
+		.serialInOut_1 (cn_serialInOut_71[3]),
+		.serialInOut_2 (cn_serialInOut_58[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1440[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1441[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1442[`DATAPATH_WIDTH-1:0]),
@@ -8174,15 +8174,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port145 (
-		.serialInOut_0 (cn_serialInOut_9[3]),
-		.serialInOut_1 (cn_serialInOut_87[4]),
-		.serialInOut_2 (cn_serialInOut_93[4]),
+		.serialInOut_0 (cn_serialInOut_9[1]),
+		.serialInOut_1 (cn_serialInOut_87[3]),
+		.serialInOut_2 (cn_serialInOut_93[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1450[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1451[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1452[`DATAPATH_WIDTH-1:0]),
@@ -8193,15 +8193,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port146 (
-		.serialInOut_0 (cn_serialInOut_45[3]),
+		.serialInOut_0 (cn_serialInOut_45[1]),
 		.serialInOut_1 (cn_serialInOut_68[3]),
-		.serialInOut_2 (cn_serialInOut_99[3]),
+		.serialInOut_2 (cn_serialInOut_99[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1460[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1461[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1462[`DATAPATH_WIDTH-1:0]),
@@ -8212,15 +8212,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port147 (
-		.serialInOut_0 (cn_serialInOut_15[4]),
-		.serialInOut_1 (cn_serialInOut_53[4]),
-		.serialInOut_2 (cn_serialInOut_76[4]),
+		.serialInOut_0 (cn_serialInOut_15[1]),
+		.serialInOut_1 (cn_serialInOut_53[3]),
+		.serialInOut_2 (cn_serialInOut_76[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1470[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1471[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1472[`DATAPATH_WIDTH-1:0]),
@@ -8231,13 +8231,13 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port148 (
-		.serialInOut_0 (cn_serialInOut_90[3]),
+		.serialInOut_0 (cn_serialInOut_90[1]),
 		.serialInOut_1 (cn_serialInOut_5[3]),
 		.serialInOut_2 (cn_serialInOut_73[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1480[`DATAPATH_WIDTH-1:0]),
@@ -8250,13 +8250,13 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port149 (
-		.serialInOut_0 (cn_serialInOut_12[4]),
+		.serialInOut_0 (cn_serialInOut_12[1]),
 		.serialInOut_1 (cn_serialInOut_63[3]),
 		.serialInOut_2 (cn_serialInOut_100[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1490[`DATAPATH_WIDTH-1:0]),
@@ -8269,14 +8269,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port150 (
-		.serialInOut_0 (cn_serialInOut_46[3]),
-		.serialInOut_1 (cn_serialInOut_31[4]),
+		.serialInOut_0 (cn_serialInOut_46[1]),
+		.serialInOut_1 (cn_serialInOut_31[3]),
 		.serialInOut_2 (cn_serialInOut_39[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1500[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1501[`DATAPATH_WIDTH-1:0]),
@@ -8288,15 +8288,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port151 (
-		.serialInOut_0 (cn_serialInOut_49[4]),
-		.serialInOut_1 (cn_serialInOut_23[4]),
-		.serialInOut_2 (cn_serialInOut_89[4]),
+		.serialInOut_0 (cn_serialInOut_49[1]),
+		.serialInOut_1 (cn_serialInOut_23[3]),
+		.serialInOut_2 (cn_serialInOut_89[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1510[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1511[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1512[`DATAPATH_WIDTH-1:0]),
@@ -8307,15 +8307,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port152 (
-		.serialInOut_0 (cn_serialInOut_37[4]),
-		.serialInOut_1 (cn_serialInOut_47[4]),
-		.serialInOut_2 (cn_serialInOut_45[4]),
+		.serialInOut_0 (cn_serialInOut_37[1]),
+		.serialInOut_1 (cn_serialInOut_47[3]),
+		.serialInOut_2 (cn_serialInOut_45[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1520[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1521[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1522[`DATAPATH_WIDTH-1:0]),
@@ -8326,15 +8326,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port153 (
-		.serialInOut_0 (cn_serialInOut_85[3]),
-		.serialInOut_1 (cn_serialInOut_84[4]),
-		.serialInOut_2 (cn_serialInOut_46[4]),
+		.serialInOut_0 (cn_serialInOut_85[1]),
+		.serialInOut_1 (cn_serialInOut_84[3]),
+		.serialInOut_2 (cn_serialInOut_46[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1530[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1531[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1532[`DATAPATH_WIDTH-1:0]),
@@ -8345,15 +8345,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port154 (
-		.serialInOut_0 (cn_serialInOut_5[4]),
-		.serialInOut_1 (cn_serialInOut_50[5]),
-		.serialInOut_2 (cn_serialInOut_33[3]),
+		.serialInOut_0 (cn_serialInOut_5[1]),
+		.serialInOut_1 (cn_serialInOut_50[3]),
+		.serialInOut_2 (cn_serialInOut_33[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1540[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1541[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1542[`DATAPATH_WIDTH-1:0]),
@@ -8364,15 +8364,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port155 (
-		.serialInOut_0 (cn_serialInOut_6[3]),
-		.serialInOut_1 (cn_serialInOut_67[5]),
-		.serialInOut_2 (cn_serialInOut_35[3]),
+		.serialInOut_0 (cn_serialInOut_6[1]),
+		.serialInOut_1 (cn_serialInOut_67[3]),
+		.serialInOut_2 (cn_serialInOut_35[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1550[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1551[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1552[`DATAPATH_WIDTH-1:0]),
@@ -8383,15 +8383,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port156 (
-		.serialInOut_0 (cn_serialInOut_55[5]),
-		.serialInOut_1 (cn_serialInOut_6[4]),
-		.serialInOut_2 (cn_serialInOut_30[4]),
+		.serialInOut_0 (cn_serialInOut_55[1]),
+		.serialInOut_1 (cn_serialInOut_6[3]),
+		.serialInOut_2 (cn_serialInOut_30[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1560[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1561[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1562[`DATAPATH_WIDTH-1:0]),
@@ -8402,14 +8402,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port157 (
-		.serialInOut_0 (cn_serialInOut_68[4]),
-		.serialInOut_1 (cn_serialInOut_91[4]),
+		.serialInOut_0 (cn_serialInOut_68[1]),
+		.serialInOut_1 (cn_serialInOut_91[3]),
 		.serialInOut_2 (cn_serialInOut_60[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1570[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1571[`DATAPATH_WIDTH-1:0]),
@@ -8421,15 +8421,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port158 (
-		.serialInOut_0 (cn_serialInOut_47[5]),
-		.serialInOut_1 (cn_serialInOut_38[4]),
-		.serialInOut_2 (cn_serialInOut_42[3]),
+		.serialInOut_0 (cn_serialInOut_47[1]),
+		.serialInOut_1 (cn_serialInOut_38[3]),
+		.serialInOut_2 (cn_serialInOut_42[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1580[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1581[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1582[`DATAPATH_WIDTH-1:0]),
@@ -8440,15 +8440,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port159 (
-		.serialInOut_0 (cn_serialInOut_30[5]),
-		.serialInOut_1 (cn_serialInOut_70[4]),
-		.serialInOut_2 (cn_serialInOut_63[4]),
+		.serialInOut_0 (cn_serialInOut_30[1]),
+		.serialInOut_1 (cn_serialInOut_70[3]),
+		.serialInOut_2 (cn_serialInOut_63[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1590[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1591[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1592[`DATAPATH_WIDTH-1:0]),
@@ -8459,15 +8459,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port160 (
-		.serialInOut_0 (cn_serialInOut_32[5]),
-		.serialInOut_1 (cn_serialInOut_7[5]),
-		.serialInOut_2 (cn_serialInOut_92[3]),
+		.serialInOut_0 (cn_serialInOut_32[1]),
+		.serialInOut_1 (cn_serialInOut_7[3]),
+		.serialInOut_2 (cn_serialInOut_92[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1600[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1601[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1602[`DATAPATH_WIDTH-1:0]),
@@ -8478,15 +8478,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port161 (
-		.serialInOut_0 (cn_serialInOut_78[3]),
+		.serialInOut_0 (cn_serialInOut_78[1]),
 		.serialInOut_1 (cn_serialInOut_3[3]),
-		.serialInOut_2 (cn_serialInOut_16[4]),
+		.serialInOut_2 (cn_serialInOut_16[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1610[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1611[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1612[`DATAPATH_WIDTH-1:0]),
@@ -8497,14 +8497,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port162 (
-		.serialInOut_0 (cn_serialInOut_97[4]),
-		.serialInOut_1 (cn_serialInOut_36[5]),
+		.serialInOut_0 (cn_serialInOut_97[1]),
+		.serialInOut_1 (cn_serialInOut_36[3]),
 		.serialInOut_2 (cn_serialInOut_94[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1620[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1621[`DATAPATH_WIDTH-1:0]),
@@ -8516,15 +8516,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port163 (
-		.serialInOut_0 (cn_serialInOut_76[5]),
+		.serialInOut_0 (cn_serialInOut_76[1]),
 		.serialInOut_1 (cn_serialInOut_86[3]),
-		.serialInOut_2 (cn_serialInOut_24[4]),
+		.serialInOut_2 (cn_serialInOut_24[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1630[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1631[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1632[`DATAPATH_WIDTH-1:0]),
@@ -8535,14 +8535,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port164 (
-		.serialInOut_0 (cn_serialInOut_18[5]),
-		.serialInOut_1 (cn_serialInOut_66[5]),
+		.serialInOut_0 (cn_serialInOut_18[1]),
+		.serialInOut_1 (cn_serialInOut_66[3]),
 		.serialInOut_2 (cn_serialInOut_48[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1640[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1641[`DATAPATH_WIDTH-1:0]),
@@ -8554,14 +8554,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port165 (
-		.serialInOut_0 (cn_serialInOut_86[4]),
-		.serialInOut_1 (cn_serialInOut_1[5]),
+		.serialInOut_0 (cn_serialInOut_86[1]),
+		.serialInOut_1 (cn_serialInOut_1[3]),
 		.serialInOut_2 (cn_serialInOut_68[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1650[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1651[`DATAPATH_WIDTH-1:0]),
@@ -8573,15 +8573,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port166 (
-		.serialInOut_0 (cn_serialInOut_0[4]),
-		.serialInOut_1 (cn_serialInOut_21[5]),
-		.serialInOut_2 (cn_serialInOut_9[4]),
+		.serialInOut_0 (cn_serialInOut_0[1]),
+		.serialInOut_1 (cn_serialInOut_21[3]),
+		.serialInOut_2 (cn_serialInOut_9[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1660[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1661[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1662[`DATAPATH_WIDTH-1:0]),
@@ -8592,13 +8592,13 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port167 (
-		.serialInOut_0 (cn_serialInOut_63[5]),
+		.serialInOut_0 (cn_serialInOut_63[1]),
 		.serialInOut_1 (cn_serialInOut_28[3]),
 		.serialInOut_2 (cn_serialInOut_87[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1670[`DATAPATH_WIDTH-1:0]),
@@ -8611,15 +8611,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port168 (
-		.serialInOut_0 (cn_serialInOut_69[3]),
-		.serialInOut_1 (cn_serialInOut_90[4]),
-		.serialInOut_2 (cn_serialInOut_64[4]),
+		.serialInOut_0 (cn_serialInOut_69[1]),
+		.serialInOut_1 (cn_serialInOut_90[3]),
+		.serialInOut_2 (cn_serialInOut_64[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1680[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1681[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1682[`DATAPATH_WIDTH-1:0]),
@@ -8630,15 +8630,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port169 (
-		.serialInOut_0 (cn_serialInOut_83[5]),
-		.serialInOut_1 (cn_serialInOut_24[5]),
-		.serialInOut_2 (cn_serialInOut_101[4]),
+		.serialInOut_0 (cn_serialInOut_83[1]),
+		.serialInOut_1 (cn_serialInOut_24[3]),
+		.serialInOut_2 (cn_serialInOut_101[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1690[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1691[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1692[`DATAPATH_WIDTH-1:0]),
@@ -8649,14 +8649,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port170 (
-		.serialInOut_0 (cn_serialInOut_98[5]),
-		.serialInOut_1 (cn_serialInOut_44[4]),
+		.serialInOut_0 (cn_serialInOut_98[1]),
+		.serialInOut_1 (cn_serialInOut_44[3]),
 		.serialInOut_2 (cn_serialInOut_65[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1700[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1701[`DATAPATH_WIDTH-1:0]),
@@ -8668,15 +8668,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port171 (
-		.serialInOut_0 (cn_serialInOut_57[4]),
-		.serialInOut_1 (cn_serialInOut_17[4]),
-		.serialInOut_2 (cn_serialInOut_56[4]),
+		.serialInOut_0 (cn_serialInOut_57[1]),
+		.serialInOut_1 (cn_serialInOut_17[3]),
+		.serialInOut_2 (cn_serialInOut_56[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1710[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1711[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1712[`DATAPATH_WIDTH-1:0]),
@@ -8687,15 +8687,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port172 (
-		.serialInOut_0 (cn_serialInOut_3[4]),
-		.serialInOut_1 (cn_serialInOut_0[5]),
-		.serialInOut_2 (cn_serialInOut_69[4]),
+		.serialInOut_0 (cn_serialInOut_3[1]),
+		.serialInOut_1 (cn_serialInOut_0[3]),
+		.serialInOut_2 (cn_serialInOut_69[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1720[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1721[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1722[`DATAPATH_WIDTH-1:0]),
@@ -8706,14 +8706,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port173 (
-		.serialInOut_0 (cn_serialInOut_11[4]),
-		.serialInOut_1 (cn_serialInOut_29[4]),
+		.serialInOut_0 (cn_serialInOut_11[1]),
+		.serialInOut_1 (cn_serialInOut_29[3]),
 		.serialInOut_2 (cn_serialInOut_71[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1730[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1731[`DATAPATH_WIDTH-1:0]),
@@ -8725,14 +8725,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port174 (
-		.serialInOut_0 (cn_serialInOut_81[3]),
-		.serialInOut_1 (cn_serialInOut_88[4]),
+		.serialInOut_0 (cn_serialInOut_81[1]),
+		.serialInOut_1 (cn_serialInOut_88[3]),
 		.serialInOut_2 (cn_serialInOut_31[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1740[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1741[`DATAPATH_WIDTH-1:0]),
@@ -8744,14 +8744,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port175 (
-		.serialInOut_0 (cn_serialInOut_14[5]),
-		.serialInOut_1 (cn_serialInOut_46[5]),
+		.serialInOut_0 (cn_serialInOut_14[1]),
+		.serialInOut_1 (cn_serialInOut_46[3]),
 		.serialInOut_2 (cn_serialInOut_54[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1750[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1751[`DATAPATH_WIDTH-1:0]),
@@ -8763,14 +8763,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port176 (
-		.serialInOut_0 (cn_serialInOut_17[5]),
-		.serialInOut_1 (cn_serialInOut_58[4]),
+		.serialInOut_0 (cn_serialInOut_17[1]),
+		.serialInOut_1 (cn_serialInOut_58[3]),
 		.serialInOut_2 (cn_serialInOut_23[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1760[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1761[`DATAPATH_WIDTH-1:0]),
@@ -8782,14 +8782,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port177 (
-		.serialInOut_0 (cn_serialInOut_20[5]),
-		.serialInOut_1 (cn_serialInOut_80[4]),
+		.serialInOut_0 (cn_serialInOut_20[1]),
+		.serialInOut_1 (cn_serialInOut_80[3]),
 		.serialInOut_2 (cn_serialInOut_12[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1770[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1771[`DATAPATH_WIDTH-1:0]),
@@ -8801,15 +8801,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port178 (
-		.serialInOut_0 (cn_serialInOut_53[5]),
-		.serialInOut_1 (cn_serialInOut_99[4]),
-		.serialInOut_2 (cn_serialInOut_28[4]),
+		.serialInOut_0 (cn_serialInOut_53[1]),
+		.serialInOut_1 (cn_serialInOut_99[3]),
+		.serialInOut_2 (cn_serialInOut_28[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1780[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1781[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1782[`DATAPATH_WIDTH-1:0]),
@@ -8820,14 +8820,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port179 (
-		.serialInOut_0 (cn_serialInOut_56[5]),
-		.serialInOut_1 (cn_serialInOut_49[5]),
+		.serialInOut_0 (cn_serialInOut_56[1]),
+		.serialInOut_1 (cn_serialInOut_49[3]),
 		.serialInOut_2 (cn_serialInOut_3[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1790[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1791[`DATAPATH_WIDTH-1:0]),
@@ -8839,14 +8839,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port180 (
-		.serialInOut_0 (cn_serialInOut_89[5]),
-		.serialInOut_1 (cn_serialInOut_93[5]),
+		.serialInOut_0 (cn_serialInOut_89[1]),
+		.serialInOut_1 (cn_serialInOut_93[3]),
 		.serialInOut_2 (cn_serialInOut_22[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1800[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1801[`DATAPATH_WIDTH-1:0]),
@@ -8858,15 +8858,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port181 (
-		.serialInOut_0 (cn_serialInOut_33[4]),
-		.serialInOut_1 (cn_serialInOut_9[5]),
-		.serialInOut_2 (cn_serialInOut_78[4]),
+		.serialInOut_0 (cn_serialInOut_33[1]),
+		.serialInOut_1 (cn_serialInOut_9[3]),
+		.serialInOut_2 (cn_serialInOut_78[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1810[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1811[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1812[`DATAPATH_WIDTH-1:0]),
@@ -8877,14 +8877,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port182 (
-		.serialInOut_0 (cn_serialInOut_92[4]),
-		.serialInOut_1 (cn_serialInOut_43[5]),
+		.serialInOut_0 (cn_serialInOut_92[1]),
+		.serialInOut_1 (cn_serialInOut_43[3]),
 		.serialInOut_2 (cn_serialInOut_88[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1820[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1821[`DATAPATH_WIDTH-1:0]),
@@ -8896,15 +8896,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port183 (
-		.serialInOut_0 (cn_serialInOut_72[4]),
-		.serialInOut_1 (cn_serialInOut_101[5]),
-		.serialInOut_2 (cn_serialInOut_40[3]),
+		.serialInOut_0 (cn_serialInOut_72[1]),
+		.serialInOut_1 (cn_serialInOut_101[3]),
+		.serialInOut_2 (cn_serialInOut_40[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1830[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1831[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1832[`DATAPATH_WIDTH-1:0]),
@@ -8915,15 +8915,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port184 (
-		.serialInOut_0 (cn_serialInOut_79[3]),
-		.serialInOut_1 (cn_serialInOut_25[5]),
-		.serialInOut_2 (cn_serialInOut_81[4]),
+		.serialInOut_0 (cn_serialInOut_79[1]),
+		.serialInOut_1 (cn_serialInOut_25[3]),
+		.serialInOut_2 (cn_serialInOut_81[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1840[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1841[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1842[`DATAPATH_WIDTH-1:0]),
@@ -8934,14 +8934,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port185 (
-		.serialInOut_0 (cn_serialInOut_10[4]),
-		.serialInOut_1 (cn_serialInOut_64[5]),
+		.serialInOut_0 (cn_serialInOut_10[1]),
+		.serialInOut_1 (cn_serialInOut_64[3]),
 		.serialInOut_2 (cn_serialInOut_91[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1850[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1851[`DATAPATH_WIDTH-1:0]),
@@ -8953,14 +8953,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port186 (
-		.serialInOut_0 (cn_serialInOut_44[5]),
-		.serialInOut_1 (cn_serialInOut_40[4]),
+		.serialInOut_0 (cn_serialInOut_44[1]),
+		.serialInOut_1 (cn_serialInOut_40[3]),
 		.serialInOut_2 (cn_serialInOut_86[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1860[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1861[`DATAPATH_WIDTH-1:0]),
@@ -8972,14 +8972,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port187 (
-		.serialInOut_0 (cn_serialInOut_27[5]),
-		.serialInOut_1 (cn_serialInOut_82[4]),
+		.serialInOut_0 (cn_serialInOut_27[1]),
+		.serialInOut_1 (cn_serialInOut_82[3]),
 		.serialInOut_2 (cn_serialInOut_70[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1870[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1871[`DATAPATH_WIDTH-1:0]),
@@ -8991,14 +8991,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port188 (
-		.serialInOut_0 (cn_serialInOut_84[5]),
-		.serialInOut_1 (cn_serialInOut_33[5]),
+		.serialInOut_0 (cn_serialInOut_84[1]),
+		.serialInOut_1 (cn_serialInOut_33[3]),
 		.serialInOut_2 (cn_serialInOut_38[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1880[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1881[`DATAPATH_WIDTH-1:0]),
@@ -9010,14 +9010,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port189 (
-		.serialInOut_0 (cn_serialInOut_8[4]),
-		.serialInOut_1 (cn_serialInOut_81[5]),
+		.serialInOut_0 (cn_serialInOut_8[1]),
+		.serialInOut_1 (cn_serialInOut_81[3]),
 		.serialInOut_2 (cn_serialInOut_13[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1890[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1891[`DATAPATH_WIDTH-1:0]),
@@ -9029,14 +9029,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port190 (
-		.serialInOut_0 (cn_serialInOut_2[4]),
-		.serialInOut_1 (cn_serialInOut_35[4]),
+		.serialInOut_0 (cn_serialInOut_2[1]),
+		.serialInOut_1 (cn_serialInOut_35[3]),
 		.serialInOut_2 (cn_serialInOut_19[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1900[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1901[`DATAPATH_WIDTH-1:0]),
@@ -9048,14 +9048,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port191 (
-		.serialInOut_0 (cn_serialInOut_82[5]),
-		.serialInOut_1 (cn_serialInOut_85[4]),
+		.serialInOut_0 (cn_serialInOut_82[1]),
+		.serialInOut_1 (cn_serialInOut_85[3]),
 		.serialInOut_2 (cn_serialInOut_75[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1910[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1911[`DATAPATH_WIDTH-1:0]),
@@ -9067,15 +9067,15 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port192 (
-		.serialInOut_0 (cn_serialInOut_28[5]),
-		.serialInOut_1 (cn_serialInOut_69[5]),
-		.serialInOut_2 (cn_serialInOut_79[4]),
+		.serialInOut_0 (cn_serialInOut_28[1]),
+		.serialInOut_1 (cn_serialInOut_69[3]),
+		.serialInOut_2 (cn_serialInOut_79[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1920[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1921[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_2(c2v_parallelOut_1922[`DATAPATH_WIDTH-1:0]),
@@ -9086,14 +9086,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port193 (
-		.serialInOut_0 (cn_serialInOut_42[4]),
-		.serialInOut_1 (cn_serialInOut_11[5]),
+		.serialInOut_0 (cn_serialInOut_42[1]),
+		.serialInOut_1 (cn_serialInOut_11[3]),
 		.serialInOut_2 (cn_serialInOut_8[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1930[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1931[`DATAPATH_WIDTH-1:0]),
@@ -9105,14 +9105,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port194 (
-		.serialInOut_0 (cn_serialInOut_77[5]),
-		.serialInOut_1 (cn_serialInOut_62[5]),
+		.serialInOut_0 (cn_serialInOut_77[1]),
+		.serialInOut_1 (cn_serialInOut_62[3]),
 		.serialInOut_2 (cn_serialInOut_72[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1940[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1941[`DATAPATH_WIDTH-1:0]),
@@ -9124,14 +9124,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port195 (
-		.serialInOut_0 (cn_serialInOut_26[5]),
-		.serialInOut_1 (cn_serialInOut_45[5]),
+		.serialInOut_0 (cn_serialInOut_26[1]),
+		.serialInOut_1 (cn_serialInOut_45[3]),
 		.serialInOut_2 (cn_serialInOut_29[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1950[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1951[`DATAPATH_WIDTH-1:0]),
@@ -9143,14 +9143,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port196 (
-		.serialInOut_0 (cn_serialInOut_58[5]),
-		.serialInOut_1 (cn_serialInOut_15[5]),
+		.serialInOut_0 (cn_serialInOut_58[1]),
+		.serialInOut_1 (cn_serialInOut_15[3]),
 		.serialInOut_2 (cn_serialInOut_85[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1960[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1961[`DATAPATH_WIDTH-1:0]),
@@ -9162,14 +9162,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port197 (
-		.serialInOut_0 (cn_serialInOut_61[5]),
-		.serialInOut_1 (cn_serialInOut_57[5]),
+		.serialInOut_0 (cn_serialInOut_61[1]),
+		.serialInOut_1 (cn_serialInOut_57[3]),
 		.serialInOut_2 (cn_serialInOut_5[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1970[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1971[`DATAPATH_WIDTH-1:0]),
@@ -9181,14 +9181,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port198 (
-		.serialInOut_0 (cn_serialInOut_40[5]),
-		.serialInOut_1 (cn_serialInOut_97[5]),
+		.serialInOut_0 (cn_serialInOut_40[1]),
+		.serialInOut_1 (cn_serialInOut_97[3]),
 		.serialInOut_2 (cn_serialInOut_90[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1980[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1981[`DATAPATH_WIDTH-1:0]),
@@ -9200,14 +9200,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port199 (
-		.serialInOut_0 (cn_serialInOut_95[5]),
-		.serialInOut_1 (cn_serialInOut_92[5]),
+		.serialInOut_0 (cn_serialInOut_95[1]),
+		.serialInOut_1 (cn_serialInOut_92[3]),
 		.serialInOut_2 (cn_serialInOut_10[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_1990[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_1991[`DATAPATH_WIDTH-1:0]),
@@ -9219,14 +9219,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port200 (
-		.serialInOut_0 (cn_serialInOut_52[5]),
-		.serialInOut_1 (cn_serialInOut_42[5]),
+		.serialInOut_0 (cn_serialInOut_52[1]),
+		.serialInOut_1 (cn_serialInOut_42[3]),
 		.serialInOut_2 (cn_serialInOut_80[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_2000[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_2001[`DATAPATH_WIDTH-1:0]),
@@ -9238,14 +9238,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port201 (
-		.serialInOut_0 (cn_serialInOut_35[5]),
-		.serialInOut_1 (cn_serialInOut_78[5]),
+		.serialInOut_0 (cn_serialInOut_35[1]),
+		.serialInOut_1 (cn_serialInOut_78[3]),
 		.serialInOut_2 (cn_serialInOut_74[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_2010[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_2011[`DATAPATH_WIDTH-1:0]),
@@ -9257,14 +9257,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port202 (
-		.serialInOut_0 (cn_serialInOut_16[5]),
-		.serialInOut_1 (cn_serialInOut_37[5]),
+		.serialInOut_0 (cn_serialInOut_16[1]),
+		.serialInOut_1 (cn_serialInOut_37[3]),
 		.serialInOut_2 (cn_serialInOut_2[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_2020[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_2021[`DATAPATH_WIDTH-1:0]),
@@ -9276,14 +9276,14 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 
-	vnu_bitSerial_port #(
-.MSG_WIDTH (MSG_WIDTH),
-.VN_DEGREE (VN_DEGREE)
+vnu_bitSerial_port #(
+	.MSG_WIDTH (MSG_WIDTH),
+	.VN_DEGREE (VN_DEGREE)
 ) vnu_converter_port203 (
-		.serialInOut_0 (cn_serialInOut_99[5]),
-		.serialInOut_1 (cn_serialInOut_79[5]),
+		.serialInOut_0 (cn_serialInOut_99[1]),
+		.serialInOut_1 (cn_serialInOut_79[3]),
 		.serialInOut_2 (cn_serialInOut_6[5]),
 		.c2v_parallelOut_0(c2v_parallelOut_2030[`DATAPATH_WIDTH-1:0]),
 		.c2v_parallelOut_1(c2v_parallelOut_2031[`DATAPATH_WIDTH-1:0]),
@@ -9295,5 +9295,5 @@ module fully_parallel_route #(
 		.load (load[1]),
 		.parallel_en (parallel_en[1]),
 		.serial_clk (serial_clk)
-	);
+);
 endmodule
