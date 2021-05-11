@@ -494,5 +494,5 @@ module qsn_right_85b (
 	assign mux_stage_0[82] = (sel[0] == 1'b1) ? sw_in[1] : mux_stage_1[82];
 	assign mux_stage_0[83] = (sel[0] == 1'b1) ? sw_in[0] : sw_in[1];
 
-	assign sw_out[84:0] = mux_stage_0[84:0];
+	assign sw_out[84:0] = {sw_in[0], mux_stage_0[83:0]};
 endmodule

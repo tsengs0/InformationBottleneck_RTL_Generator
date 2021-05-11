@@ -111,7 +111,7 @@ def right_shift_hdl_gen(out_bitwidth, in_bitwidth, sel_bitwidth, permutation_len
         # To keep the number of multiplexers for configuration of next stage
         mux_num_prev = mux_num
 
-    hdl_fd.write("\n\tassign sw_out[" + str(out_bitwidth-1) + ":0] = mux_stage_0[" + str(out_bitwidth-1) + ":0];\n")
+    hdl_fd.write("\n\tassign sw_out[" + str(out_bitwidth-1) + ":0] = {sw_in[0], mux_stage_0[" + str(out_bitwidth-2) + ":0]};\n")
     hdl_fd.write("endmodule")
     hdl_fd.close()
 
