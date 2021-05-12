@@ -135,6 +135,64 @@ def merge_mux_hdl_gen(out_bitwidth, left_in_bitwidth, right_in_bitwidth, sel_bit
 
     hdl_fd.close()
 
+def qsn_controller_hdl_gen(left_sel_bitwidth, right_sel_bitwidth, merge_sel_bitwidth, shift_factor_bitwidth, permutation_length):
+    # To create the Verilog module file
+    hdl_filename = 'qsn_controller_' + str(permutation_length) + 'b.v'
+    hdl_fd = open(hdl_filename, "w")
+    hdl_fd.write("module qsn_controller_" + str(permutation_length) + "b #(\n" +
+                 "\tparameter [$clog2(" + str(permutation_length) + ")-1:0] PERMUTATION_LENGTH = " + str(permutation_length) +"\n) (\n"+
+                 "\toutput reg [" + str(left_sel_bitwidth-1) + ":0] left_sel,\n" +
+                 "\toutput reg [" + str(right_sel_bitwidth-1) + ":0] right_sel,\n" +
+                 "\toutput reg [" + str(merge_sel_bitwidth-1) + ":0] merge_sel,\n" +
+                 "\tinput wire [" + str(shift_factor_bitwidth-1) + ":0] shift_factor,\n" +
+                 "\tinput wire rstn,\n" +
+                 "\tinput wire sys_clk\n);\n\n")
+
+    hdl_fd.write("\twire shifter_nonzero;\n" +
+                 "\tassign shifter_nonzero = (|shift_factor[" + str(shift_factor_bitwidth-1) + ":0]);\n\n")
+
+    ## To write control signals of Left Shift Network
+    hdl_fd.write("\talways @(posedge sys_clk) begin\n" +
+                 "\t\tif(!rstn) left_sel <= 0;\n" +
+                 "\t\telse if(shifter_nonzero == 1'b1) begin\n" +
+                 "\t\t\tleft_sel  <= shift_factor;\n" +
+                 "\t\tend\n"
+                 "\t\telse begin\n" +
+                 "\t\t\tleft_sel  <= 0;\n" +
+                 "\t\tend\n" +
+                 "\tend\n")
+    ## To write control signals of Right Shift Network
+    hdl_fd.write("\talways @(posedge sys_clk) begin\n" +
+                 "\t\tif(!rstn) right_sel <= 0;\n" +
+                 "\t\telse if(shifter_nonzero == 1'b1) begin\n" +
+                 "\t\t\tright_sel <=  "+ str(permutation_length) + "-shift_factor;\n" +
+                 "\t\tend\n"
+                 "\t\telse begin\n" +
+                 "\t\t\tright_sel <= 0;\n" +
+                 "\t\tend\n" +
+                 "\tend\n")
+    ## To write control signals of Merge Network
+    hdl_fd.write("\talways @(posedge sys_clk) begin\n" +
+                 "\t\tif(!rstn) merge_sel <= 0;\n" +
+                 "\t\telse if(shifter_nonzero == 1'b1) begin\n" +
+                 "\t\t\tcase(shift_factor[" + str(shift_factor_bitwidth-1) + ":0])\n")
+
+    for i in range(1, permutation_length):
+        merge_sel_temp = format(2**(permutation_length-i) - 1, '084b')
+        lut_case = str(i) + "\t:\t merge_sel[" + str(merge_sel_bitwidth-1) + ":0] = 84'b" + merge_sel_temp + ";\n";
+        hdl_fd.write("\t\t\t\t" + lut_case)
+
+    hdl_fd.write("\t\t\t\tdefault\t:\tmerge_sel[" + str(merge_sel_bitwidth-1) + ":0] = 0;\n" +
+                 "\t\t\tendcase // shift_factor\n" +
+                 "\t\tend\n"
+                 "\t\telse begin\n" +
+                 "\t\t\tmerge_sel[" + str(merge_sel_bitwidth-1) + ":0] <= {" + str(merge_sel_bitwidth) + "{1'b1}};\n" +
+                 "\t\tend\n" +
+                 "\tend\n")
+
+    hdl_fd.write("endmodule")
+    hdl_fd.close()
+
 def qsn_top_hdl_gen(out_bitwidth, in_bitwidth, shift_sel_bitwidth, merge_sel_bitwidth, permutation_length):
     # To create the Verilog module file
     hdl_filename = 'qsn_top_' + str(permutation_length) + 'b.v'
@@ -191,6 +249,7 @@ def main():
     right_shift_hdl_gen(out_bitwidth=Pc, in_bitwidth=Pc, sel_bitwidth=sel_bitwidth, permutation_length=Pc)
     merge_mux_hdl_gen(out_bitwidth=Pc, left_in_bitwidth=Pc-1, right_in_bitwidth=Pc, sel_bitwidth=Pc-1, permutation_length=Pc)
     qsn_top_hdl_gen(out_bitwidth=Pc, in_bitwidth=Pc, shift_sel_bitwidth=sel_bitwidth, merge_sel_bitwidth=Pc-1, permutation_length=Pc)
+    qsn_controller_hdl_gen(left_sel_bitwidth=sel_bitwidth, right_sel_bitwidth=sel_bitwidth, merge_sel_bitwidth=Pc-1, shift_factor_bitwidth=math.ceil(math.log2(Pc-1)), permutation_length=Pc)
 
 if __name__ == "__main__":
     main()
