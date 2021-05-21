@@ -1,0 +1,41 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"0.535885",
+   "Default View_TopLeft":"-207,-1011",
+   "ExpandedHierarchyInLayout":"",
+   "guistr":"# # String gsaved with Nlview 7.0.21  2019-05-29 bk=1.5064 VDI=41 GEI=36 GUI=JA:9.0 TLS
+#  -string -flagsOSRD
+preplace port m00_axi_init_axi_txn -pg 1 -lvl 0 -x -20 -y -750 -defaultsOSRD
+preplace port pl_ps_ext_intr -pg 1 -lvl 0 -x -20 -y -510 -defaultsOSRD
+preplace port m00_axi_wr_intr_en -pg 1 -lvl 0 -x -20 -y -670 -defaultsOSRD -left
+preplace port axi_wr_end -pg 1 -lvl 5 -x 1590 -y -1030 -defaultsOSRD
+preplace port axi_wr_next_shift -pg 1 -lvl 5 -x 1590 -y -910 -defaultsOSRD
+preplace port axi_wr_first_shift -pg 1 -lvl 5 -x 1590 -y -1090 -defaultsOSRD
+preplace port m00_axi_aclk -pg 1 -lvl 0 -x -20 -y -610 -defaultsOSRD -left
+preplace portBus result_packet_in -pg 1 -lvl 0 -x -20 -y -790 -defaultsOSRD
+preplace portBus m_axi_arestn -pg 1 -lvl 5 -x 1590 -y -750 -defaultsOSRD
+preplace inst zynq_ultra_ps_e_0 -pg 1 -lvl 2 -x 670 -y -480 -defaultsOSRD
+preplace inst axi_smc -pg 1 -lvl 4 -x 1420 -y -800 -defaultsOSRD
+preplace inst rst_ps8_0_100M -pg 1 -lvl 3 -x 1110 -y -530 -defaultsOSRD
+preplace inst full_axi4_burst_wr_0 -pg 1 -lvl 1 -x 190 -y -760 -defaultsOSRD
+preplace netloc zynq_ultra_ps_e_0_pl_resetn0 1 2 1 940 -550n
+preplace netloc rst_ps8_0_100M_peripheral_aresetn 1 0 5 20 -630 NJ -630 NJ -630 1280 -710 1560
+preplace netloc result_packet_in_1 1 0 1 N -790
+preplace netloc m00_axi_init_axi_txn_1 1 0 1 0 -770n
+preplace netloc full_axi4_burst_wr_0_axi_wr_intr_en 1 0 2 0J -640 360
+preplace netloc pl_ps_ext_intr_1 1 0 2 NJ -510 360
+preplace netloc full_axi4_burst_wr_0_axi_wr_first_shift 1 1 4 370 -1090 NJ -1090 NJ -1090 NJ
+preplace netloc full_axi4_burst_wr_0_axi_wr_next_shift 1 1 4 390J -910 NJ -910 NJ -910 N
+preplace netloc full_axi4_burst_wr_0_axi_wr_end 1 1 4 380 -1030 NJ -1030 NJ -1030 NJ
+preplace netloc zynq_ultra_ps_e_0_pl_clk0 1 0 4 10 -570 370 -570 930 -800 N
+preplace netloc axi_smc_M00_AXI 1 1 4 390 -720 NJ -720 NJ -720 1550
+preplace netloc full_axi4_burst_wr_0_M00_AXI 1 1 3 NJ -820 NJ -820 N
+levelinfo -pg 1 -20 190 670 1110 1420 1590
+pagesize -pg 1 -db -bbox -sgen -230 -1220 1770 180
+"
+}
+{
+   "da_axi4_cnt":"1",
+   "da_clkrst_cnt":"7",
+   "da_zynq_ultra_ps_e_cnt":"1"
+}

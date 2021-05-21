@@ -1,0 +1,337 @@
+{
+  "design": {
+    "design_info": {
+      "boundary_crc": "0xCB23D86CF3D21ABE",
+      "device": "xczu7ev-ffvc1156-2-e",
+      "name": "test",
+      "synth_flow_mode": "Hierarchical",
+      "tool_version": "2019.2",
+      "validated": "true"
+    },
+    "design_tree": {
+      "axis_pl2ps_fifo_0": ""
+    },
+    "interface_ports": {
+      "M_AXIS_0": {
+        "mode": "Master",
+        "vlnv": "xilinx.com:interface:axis_rtl:1.0",
+        "parameters": {
+          "TDATA_NUM_BYTES": {
+            "value": "4",
+            "value_src": "auto_prop"
+          },
+          "TDEST_WIDTH": {
+            "value": "0",
+            "value_src": "const_prop"
+          },
+          "TID_WIDTH": {
+            "value": "0",
+            "value_src": "const_prop"
+          },
+          "TUSER_WIDTH": {
+            "value": "0",
+            "value_src": "const_prop"
+          },
+          "HAS_TREADY": {
+            "value": "1",
+            "value_src": "const_prop"
+          },
+          "HAS_TSTRB": {
+            "value": "1",
+            "value_src": "auto_prop"
+          },
+          "HAS_TKEEP": {
+            "value": "0",
+            "value_src": "const_prop"
+          },
+          "HAS_TLAST": {
+            "value": "1",
+            "value_src": "const_prop"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.000",
+            "value_src": "default"
+          },
+          "CLK_DOMAIN": {
+            "value": "test_m_axis_aclk_0",
+            "value_src": "default"
+          },
+          "LAYERED_METADATA": {
+            "value": "undef",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          }
+        }
+      },
+      "S_AXIS_0": {
+        "mode": "Slave",
+        "vlnv": "xilinx.com:interface:axis_rtl:1.0",
+        "parameters": {
+          "TDATA_NUM_BYTES": {
+            "value": "4"
+          },
+          "TDEST_WIDTH": {
+            "value": "0"
+          },
+          "TID_WIDTH": {
+            "value": "0"
+          },
+          "TUSER_WIDTH": {
+            "value": "0"
+          },
+          "HAS_TREADY": {
+            "value": "1"
+          },
+          "HAS_TSTRB": {
+            "value": "1"
+          },
+          "HAS_TKEEP": {
+            "value": "0"
+          },
+          "HAS_TLAST": {
+            "value": "1"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.000",
+            "value_src": "default"
+          },
+          "CLK_DOMAIN": {
+            "value": "test_s_axis_aclk_0",
+            "value_src": "default"
+          },
+          "LAYERED_METADATA": {
+            "value": "undef"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          }
+        }
+      }
+    },
+    "ports": {
+      "AXI_En_0": {
+        "direction": "I"
+      },
+      "En_0": {
+        "direction": "I"
+      },
+      "FrameSize_0": {
+        "direction": "I",
+        "left": "7",
+        "right": "0"
+      },
+      "m_axis_aclk_0": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "ASSOCIATED_BUSIF": {
+            "value": "M_AXIS_0",
+            "value_src": "default"
+          },
+          "ASSOCIATED_RESET": {
+            "value": "m_axis_aresetn_0",
+            "value_src": "default"
+          },
+          "CLK_DOMAIN": {
+            "value": "test_m_axis_aclk_0",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.000",
+            "value_src": "default"
+          }
+        }
+      },
+      "m_axis_aresetn_0": {
+        "type": "rst",
+        "direction": "I",
+        "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "POLARITY": {
+            "value": "ACTIVE_LOW",
+            "value_src": "default"
+          }
+        }
+      },
+      "pl_fifo_wr_clk_0": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "test_pl_fifo_wr_clk_0",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.000",
+            "value_src": "default"
+          }
+        }
+      },
+      "result_fifo_in_0": {
+        "direction": "I",
+        "left": "31",
+        "right": "0"
+      },
+      "result_fifo_we_0": {
+        "direction": "I"
+      },
+      "s_axis_aclk_0": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "ASSOCIATED_BUSIF": {
+            "value": "S_AXIS_0",
+            "value_src": "default"
+          },
+          "ASSOCIATED_RESET": {
+            "value": "s_axis_aresetn_0",
+            "value_src": "default"
+          },
+          "CLK_DOMAIN": {
+            "value": "test_s_axis_aclk_0",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.000",
+            "value_src": "default"
+          }
+        }
+      },
+      "s_axis_aresetn_0": {
+        "type": "rst",
+        "direction": "I",
+        "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "POLARITY": {
+            "value": "ACTIVE_LOW",
+            "value_src": "default"
+          }
+        }
+      }
+    },
+    "components": {
+      "axis_pl2ps_fifo_0": {
+        "vlnv": "xilinx.com:user:axis_pl2ps_fifo:1.1",
+        "xci_name": "test_axis_pl2ps_fifo_0_0"
+      }
+    },
+    "interface_nets": {
+      "S_AXIS_0_1": {
+        "interface_ports": [
+          "S_AXIS_0",
+          "axis_pl2ps_fifo_0/S_AXIS"
+        ]
+      },
+      "axis_pl2ps_fifo_0_M_AXIS": {
+        "interface_ports": [
+          "M_AXIS_0",
+          "axis_pl2ps_fifo_0/M_AXIS"
+        ]
+      }
+    },
+    "nets": {
+      "AXI_En_0_1": {
+        "ports": [
+          "AXI_En_0",
+          "axis_pl2ps_fifo_0/AXI_En"
+        ]
+      },
+      "En_0_1": {
+        "ports": [
+          "En_0",
+          "axis_pl2ps_fifo_0/En"
+        ]
+      },
+      "FrameSize_0_1": {
+        "ports": [
+          "FrameSize_0",
+          "axis_pl2ps_fifo_0/FrameSize"
+        ]
+      },
+      "m_axis_aclk_0_1": {
+        "ports": [
+          "m_axis_aclk_0",
+          "axis_pl2ps_fifo_0/m_axis_aclk"
+        ]
+      },
+      "m_axis_aresetn_0_1": {
+        "ports": [
+          "m_axis_aresetn_0",
+          "axis_pl2ps_fifo_0/m_axis_aresetn"
+        ]
+      },
+      "pl_fifo_wr_clk_0_1": {
+        "ports": [
+          "pl_fifo_wr_clk_0",
+          "axis_pl2ps_fifo_0/pl_fifo_wr_clk"
+        ]
+      },
+      "result_fifo_in_0_1": {
+        "ports": [
+          "result_fifo_in_0",
+          "axis_pl2ps_fifo_0/result_fifo_in"
+        ]
+      },
+      "result_fifo_we_0_1": {
+        "ports": [
+          "result_fifo_we_0",
+          "axis_pl2ps_fifo_0/result_fifo_we"
+        ]
+      },
+      "s_axis_aclk_0_1": {
+        "ports": [
+          "s_axis_aclk_0",
+          "axis_pl2ps_fifo_0/s_axis_aclk"
+        ]
+      },
+      "s_axis_aresetn_0_1": {
+        "ports": [
+          "s_axis_aresetn_0",
+          "axis_pl2ps_fifo_0/s_axis_aresetn"
+        ]
+      }
+    }
+  }
+}

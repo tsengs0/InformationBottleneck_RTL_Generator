@@ -1,0 +1,9 @@
+{
+	"version": "1.0",
+	"modules": {
+		"ib_memory_system": {
+			"proto_instances": {
+			}
+		}
+	}
+}
