@@ -7,7 +7,7 @@ import json
 '''
     Funtion Summary
 A) QSN generator
-    Ref.: Chen, Xiaoheng, Shu Lin, and Venkatesh Akella. "QSN—A simple circular-shift network for reconfigurable quasi-cyclic LDPC decoders." IEEE Transactions on Circuits and Systems II: Express Briefs 57.10 (2010): 782-786.
+    Reference: Chen, Xiaoheng, Shu Lin, and Venkatesh Akella. "QSN—A simple circular-shift network for reconfigurable quasi-cyclic LDPC decoders." IEEE Transactions on Circuits and Systems II: Express Briefs 57.10 (2010): 782-786.
     1) HDL generator constructing Left Shift Network
     2) HDL generator constructing Right Shift Network
     3) HDL generator constructing Merge Network
@@ -193,62 +193,76 @@ def qsn_controller_hdl_gen(left_sel_bitwidth, right_sel_bitwidth, merge_sel_bitw
     hdl_fd.write("endmodule")
     hdl_fd.close()
 
-def qsn_top_hdl_gen(out_bitwidth, in_bitwidth, shift_sel_bitwidth, merge_sel_bitwidth, permutation_length):
+def qsn_top_hdl_gen(out_bitwidth, in_bitwidth, shift_sel_bitwidth, merge_sel_bitwidth, permutation_length, quant):
     # To create the Verilog module file
     hdl_filename = 'qsn_top_' + str(permutation_length) + 'b.v'
     hdl_fd = open(hdl_filename, "w")
-    hdl_fd.write("module qsn_top_" + str(permutation_length) + "b (\n" +
-                 "\toutput wire [" + str(out_bitwidth-1) + ":0] sw_out,\n\n" +
-                 "\tinput wire [" + str(in_bitwidth-1) + ":0] sw_in,\n" +
-                 "\tinput wire [" + str(shift_sel_bitwidth-1) + ":0] left_sel,\n" +
+    hdl_fd.write("module qsn_top_" + str(permutation_length) + "b (\n")
+
+    for q in range(quant):
+        hdl_fd.write("\toutput wire [" + str(out_bitwidth-1) + ":0] sw_out_bit" + str(q) + ",\n")
+        if q == quant-1:
+            hdl_fd.write("\n")
+
+    for q in range(quant):
+        hdl_fd.write("\tinput wire [" + str(in_bitwidth-1) + ":0] sw_in_bit" + str(q) + ",\n")
+
+    hdl_fd.write("\tinput wire [" + str(shift_sel_bitwidth-1) + ":0] left_sel,\n" +
                  "\tinput wire [" + str(shift_sel_bitwidth-1) + ":0] right_sel,\n" +
                  "\tinput wire [" + str(merge_sel_bitwidth-1) + ":0] merge_sel\n);\n\n")
 
+    hdl_fd.write("\twire [" + str(permutation_length - 1) + ":0] sw_in_reg[0:" + str(quant - 1) + "];\n" +
+                 "\twire [" + str(permutation_length - 1) + ":0] sw_out_reg[0:" + str(quant - 1) + "];\n")
+
+    # Generate for-loop block in order to instatiate QSN of q-bit bitwidth
+    hdl_fd.write("\tgenvar i;\n"+
+                 "\tgenerate\n" +
+                 "\t\tfor(i=0:i<" + str(quant) + ";i=i+1) begin : bs_bitwidth_inst\n")
+
     left_out_bitwidth = permutation_length-1
-    hdl_fd.write("\t// Instantiation of Left Shift Network\n")
-    hdl_fd.write("\twire [" + str(left_out_bitwidth-1) + ":0] left_sw_out;\n" +
-                 "\tqsn_left_" + str(permutation_length) + "b qsn_left_u0 (\n" +
-                 "\t\t.sw_out (left_sw_out[" + str(left_out_bitwidth-1) + ":0]),\n\n"+
-                 "\t\t.sw_in (sw_in[" + str(in_bitwidth-1) + ":0]),\n" +
-                 "\t\t.sel (left_sel[" + str(shift_sel_bitwidth-1) + ":0])\n"+
-                 "\t);\n")
+    hdl_fd.write("\t\t// Instantiation of Left Shift Network\n")
+    hdl_fd.write("\t\twire [" + str(left_out_bitwidth-1) + ":0] left_sw_out;\n" +
+                 "\t\tqsn_left_" + str(permutation_length) + "b qsn_left_u0 (\n" +
+                 "\t\t\t.sw_out (left_sw_out[" + str(left_out_bitwidth-1) + ":0]),\n\n"+
+                 "\t\t\t.sw_in (sw_in_reg[i]),\n" +
+                 "\t\t\t.sel (left_sel[" + str(shift_sel_bitwidth-1) + ":0])\n"+
+                 "\t\t);\n")
 
     right_out_bitwidth = permutation_length
-    hdl_fd.write("\t// Instantiation of Right Shift Network\n")
-    hdl_fd.write("\twire [" + str(right_out_bitwidth) + ":0] right_sw_out;\n" +
-                 "\tqsn_right_" + str(permutation_length) + "b qsn_right_u0 (\n" +
-                 "\t\t.sw_out (right_sw_out[" + str(right_out_bitwidth-1) + ":0]),\n\n"+
-                 "\t\t.sw_in (sw_in[" + str(in_bitwidth-1) + ":0]),\n" +
-                 "\t\t.sel (right_sel[" + str(shift_sel_bitwidth-1) + ":0])\n"+
-                 "\t);\n")
+    hdl_fd.write("\t\t// Instantiation of Right Shift Network\n")
+    hdl_fd.write("\t\twire [" + str(right_out_bitwidth) + ":0] right_sw_out;\n" +
+                 "\t\tqsn_right_" + str(permutation_length) + "b qsn_right_u0 (\n" +
+                 "\t\t\t.sw_out (right_sw_out[" + str(right_out_bitwidth-1) + ":0]),\n\n"+
+                 "\t\t\t.sw_in (sw_in_reg[i]),\n" +
+                 "\t\t\t.sel (right_sel[" + str(shift_sel_bitwidth-1) + ":0])\n"+
+                 "\t\t);\n")
 
-    hdl_fd.write("\t// Instantiation of Merge Network\n"+
-                 "\tqsn_merge_" + str(permutation_length) + "b qsn_merge_u0 (\n" +
-                 "\t\t.sw_out (sw_out[" + str(out_bitwidth - 1) + ":0]),\n\n" +
-                 "\t\t.left_in (left_sw_out[" + str(left_out_bitwidth - 1) + ":0]),\n" +
-                 "\t\t.right_in (right_sw_out[" + str(right_out_bitwidth - 1) + ":0]),\n" +
-                 "\t\t.sel (merge_sel[" + str(merge_sel_bitwidth - 1) + ":0])\n" +
-                 "\t);\n")
+    hdl_fd.write("\t\t// Instantiation of Merge Network\n"+
+                 "\t\tqsn_merge_" + str(permutation_length) + "b qsn_merge_u0 (\n" +
+                 "\t\t\t.sw_out (sw_out_reg[i]),\n\n" +
+                 "\t\t\t.left_in (left_sw_out[" + str(left_out_bitwidth - 1) + ":0]),\n" +
+                 "\t\t\t.right_in (right_sw_out[" + str(right_out_bitwidth - 1) + ":0]),\n" +
+                 "\t\t\t.sel (merge_sel[" + str(merge_sel_bitwidth - 1) + ":0])\n" +
+                 "\t\t);\n")
+    hdl_fd.write("\t\tend\n"+
+                 "\tendgenerate\n\n")
+
+    for q in range(quant):
+        hdl_fd.write("\tassign sw_in_reg[" + str(q) + "] = sw_in_bit" + str(q) + "[" + str(permutation_length-1) + ":0];\n")
+    for q in range(quant):
+        hdl_fd.write("\tassign sw_out_bit" + str(q) + "[" + str(permutation_length-1) + ":0] = sw_out_reg[" + str(q) + "];\n")
 
     hdl_fd.write("endmodule")
     hdl_fd.close()
 
 def main():
-    Pc = 85
-    left_shift_hdl_gen(out_bitwidth=Pc - 1, in_bitwidth=Pc, sel_bitwidth=math.ceil(math.log2(Pc)),
-                       permutation_length=Pc)
-    right_shift_hdl_gen(out_bitwidth=Pc, in_bitwidth=Pc, sel_bitwidth=math.ceil(math.log2(Pc)), permutation_length=Pc)
-    merge_mux_hdl_gen(out_bitwidth=Pc - 1, left_in_bitwidth=Pc - 1, right_in_bitwidth=Pc, sel_bitwidth=Pc - 1,
-                      permutation_length=Pc)
-
-
-def main():
+    q = 4  # 4-bit quantisation
     Pc=85
     sel_bitwidth = math.ceil(math.log2(Pc))
     left_shift_hdl_gen(out_bitwidth=Pc-1, in_bitwidth=Pc, sel_bitwidth=sel_bitwidth, permutation_length=Pc)
     right_shift_hdl_gen(out_bitwidth=Pc, in_bitwidth=Pc, sel_bitwidth=sel_bitwidth, permutation_length=Pc)
     merge_mux_hdl_gen(out_bitwidth=Pc, left_in_bitwidth=Pc-1, right_in_bitwidth=Pc, sel_bitwidth=Pc-1, permutation_length=Pc)
-    qsn_top_hdl_gen(out_bitwidth=Pc, in_bitwidth=Pc, shift_sel_bitwidth=sel_bitwidth, merge_sel_bitwidth=Pc-1, permutation_length=Pc)
+    qsn_top_hdl_gen(out_bitwidth=Pc, in_bitwidth=Pc, shift_sel_bitwidth=sel_bitwidth, merge_sel_bitwidth=Pc-1, permutation_length=Pc, quant=q)
     qsn_controller_hdl_gen(left_sel_bitwidth=sel_bitwidth, right_sel_bitwidth=sel_bitwidth, merge_sel_bitwidth=Pc-1, shift_factor_bitwidth=math.ceil(math.log2(Pc-1)), permutation_length=Pc)
 
 if __name__ == "__main__":
