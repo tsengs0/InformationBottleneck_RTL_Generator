@@ -716,7 +716,7 @@ Set of Multipexer Insertion Locations --> Between Layer_0 and 1
 ----------------------------------------------------------------------------------------------------------------------------
 Set of Multipexer Insertion Locations --> Between Layer_1 and 2
 (Multiplexer number, MemBank.start, MemBank.end):
-	Sub-matrix_0 -> {# of one-cycle MUXs:85 (from:11085264), # of two-cycle MUXs:0 (from:0)}
+	Sub-matrix_0 -> {# of one-cycle MUXs:85 (from:38266320), # of two-cycle MUXs:0 (from:0)}
 	Sub-matrix_1 -> {# of one-cycle MUXs:22 (from:63), # of two-cycle MUXs:63 (from:0)}
 1-delay insertion set:
 {63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
@@ -765,7 +765,7 @@ Set of Multipexer Insertion Locations --> Between Layer_1 and 2
 ----------------------------------------------------------------------------------------------------------------------------
 Set of Multipexer Insertion Locations --> Between Layer_2 and 0
 (Multiplexer number, MemBank.start, MemBank.end):
-	Sub-matrix_0 -> {# of one-cycle MUXs:85 (from:11091200), # of two-cycle MUXs:0 (from:0)}
+	Sub-matrix_0 -> {# of one-cycle MUXs:85 (from:38272256), # of two-cycle MUXs:0 (from:0)}
 	Sub-matrix_1 -> {# of one-cycle MUXs:22 (from:63), # of two-cycle MUXs:63 (from:0)}
 1-delay insertion set:
 {63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }

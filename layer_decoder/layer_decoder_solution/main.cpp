@@ -6,6 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include <fstream>
 
 using namespace std;
 #define DEBUG
@@ -52,12 +53,12 @@ typedef struct layer_module {
 	page_align_set_t **page_align_set;
 } Layer_Module;
 Layer_Module *layer;
-
-
+char hdl_filename[50] = "page_align_";
 void sys_init();
 void var_mem_init();
 void mux_insert_set(unsigned int layer_a, unsigned int layer_b, unsigned int *mux_num, unsigned int **mux_loc_set);
 void delay_set_construct(unsigned int sub_matrix_id, unsigned int delay_type, unsigned int target_set_size, unsigned int target_start_loc, Layer_Module *target_layer);
+void page_align_hdl_gen(unsigned int submatrix_id, unsigned int align_cmd_num, vector<unsigned int> *delay_cmd);
 
 int main(int argc, char **argv)
 {
@@ -168,9 +169,10 @@ int main(int argc, char **argv)
 	     << "Construction of delay commands" << endl;
 	vector<unsigned int> **delay_cmd = new vector<unsigned int>* [dc-1];
 	vector<unsigned int> all_msg; // a dummy set including all {0, 1, ..., Pc-1} in order to perform complement of a set
+	unsigned int align_cmd_num = ((unsigned int) 1) << layer_num; // there are 2^(layer_num) number of possible delay commands to be generated
 	for(unsigned int temp = 0; temp < Pc; temp++) all_msg.push_back(temp);
 	for(unsigned int submatrix_id = 1; submatrix_id < dc; submatrix_id++) {
-		delay_cmd[submatrix_id] = new vector<unsigned int> [((unsigned int) 1) << layer_num]; // there are 2^(layer_num) number of possible delay commands to be generated
+		delay_cmd[submatrix_id] = new vector<unsigned int> [align_cmd_num];
 		// 0) Two-delay-only inseration on Layer A:
 		//    set operation: (A-B)-C or (A\B)\C
 		vector<unsigned int> diff;
@@ -349,6 +351,8 @@ int main(int argc, char **argv)
 		for(unsigned int temp = 0; temp < delay_cmd[submatrix_id][7].size(); temp++) cout << delay_cmd[submatrix_id][7][temp] << " ";
 		cout << "}" << endl;
 		
+		// To generate HDL source code
+		page_align_hdl_gen(submatrix_id, align_cmd_num, delay_cmd[submatrix_id]);
 		cout << "----------------------------------------------------------------------------------------------------------------------------" << endl;
 	}
 
@@ -410,4 +414,48 @@ void delay_set_construct(unsigned int sub_matrix_id, unsigned int delay_type, un
 		for(unsigned int i = 0; i < target_set_size; i++) 
 			target_layer -> page_align_set[sub_matrix_id][delay_type].push_back(target_start_loc+i);
 	}
+}
+
+void page_align_hdl_gen(unsigned int submatrix_id, unsigned int align_cmd_num, vector<unsigned int> *delay_cmd)
+{
+	unsigned int *align_set_size = new unsigned int [align_cmd_num];
+	unsigned int cmd_type;
+	
+	sprintf(hdl_filename+11, "%d_lib.v", submatrix_id);
+	ofstream hdl_fd(hdl_filename, ofstream::out);
+	for(unsigned int cmd_id = 0; cmd_id < align_cmd_num; cmd_id++)
+		align_set_size[cmd_id] = delay_cmd[cmd_id].size();
+
+	cmd_type = 0;
+	while(cmd_type < 6) {
+		if(align_set_size[cmd_type] != 0) {
+			for(unsigned int i = 0; i < align_set_size[cmd_type]; i++)
+				hdl_fd << "wire delay_cmd_" << delay_cmd[cmd_type][i] << ";" << endl
+					   << "align_cmd_gen_" << cmd_type
+			       	   << " #(.LAYER_NUM (LAYER_NUM)) delay_cmd_" << delay_cmd[cmd_type][i]
+			       	   << "(.delay_cmd(delay_cmd_" << delay_cmd[cmd_type][i]
+			       	   << "), .layer_status(layer_status[LAYER_NUM-1:0]));" << endl
+			       	   << "page_align_depth_1_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << delay_cmd[cmd_type][i]
+			       	   << "(.align_out (msg_out_" << delay_cmd[cmd_type][i]
+			       	   << "), .align_target_in (msg_mux_out[" << delay_cmd[cmd_type][i]
+			       	   << "]), .delay_cmd(delay_cmd_" << delay_cmd[cmd_type][i]
+			       	   << "), .sys_clk(sys_clk), .rstn(rstn));" << endl << endl;
+		}
+		cmd_type += 1;
+	}
+
+	for(unsigned int i = 0; i < align_set_size[6]; i++) {
+		hdl_fd << "page_align_depth_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << delay_cmd[6][i]
+			   << "(.align_out(msg_out_" << delay_cmd[6][i]
+			   << "), .align_target_in (msg_mux_out[" << delay_cmd[6][i]
+			   << "]), .sys_clk(sys_clk), .rstn(rstn));" << endl;
+	}
+	for(unsigned int i = 0; i < align_set_size[7]; i++) {
+		hdl_fd << "page_align_depth_1 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << delay_cmd[7][i]
+			   << "(.align_out(msg_out_" << delay_cmd[7][i]
+			   << "), .align_target_in (msg_mux_out[" << delay_cmd[7][i]
+			   << "]), .sys_clk(sys_clk), .rstn(rstn));" << endl;
+	}
+
+	hdl_fd.close();
 }
