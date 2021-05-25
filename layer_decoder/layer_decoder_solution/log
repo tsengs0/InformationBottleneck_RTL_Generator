@@ -668,16 +668,16 @@ Row Chunk_8
 Set of Multipexer Insertion Locations --> Between Layer_0 and 1
 (Multiplexer number, MemBank.start, MemBank.end):
 	Sub-matrix_0 -> {# of one-cycle MUXs:85 (from:0), # of two-cycle MUXs:0 (from:0)}
-	Sub-matrix_1 -> {# of one-cycle MUXs:46 (from:39), # of two-cycle MUXs:39 (from:0)}
+	Sub-matrix_1 -> {# of one-cycle MUXs:61 (from:24), # of two-cycle MUXs:24 (from:0)}
 1-delay insertion set:
-{39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+{24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
 2-delay insertion set:
-{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 }
-	Sub-matrix_2 -> {# of one-cycle MUXs:64 (from:21), # of two-cycle MUXs:21 (from:0)}
+{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 }
+	Sub-matrix_2 -> {# of one-cycle MUXs:76 (from:9), # of two-cycle MUXs:9 (from:0)}
 1-delay insertion set:
-{21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+{9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
 2-delay insertion set:
-{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 }
+{0 1 2 3 4 5 6 7 8 }
 	Sub-matrix_3 -> {# of one-cycle MUXs:47 (from:38), # of two-cycle MUXs:38 (from:0)}
 1-delay insertion set:
 {38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
@@ -698,11 +698,11 @@ Set of Multipexer Insertion Locations --> Between Layer_0 and 1
 {39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
 2-delay insertion set:
 {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 }
-	Sub-matrix_7 -> {# of one-cycle MUXs:60 (from:25), # of two-cycle MUXs:25 (from:0)}
+	Sub-matrix_7 -> {# of one-cycle MUXs:65 (from:20), # of two-cycle MUXs:20 (from:0)}
 1-delay insertion set:
-{25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+{20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
 2-delay insertion set:
-{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 }
+{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
 	Sub-matrix_8 -> {# of one-cycle MUXs:34 (from:51), # of two-cycle MUXs:51 (from:0)}
 1-delay insertion set:
 {51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
@@ -716,7 +716,56 @@ Set of Multipexer Insertion Locations --> Between Layer_0 and 1
 ----------------------------------------------------------------------------------------------------------------------------
 Set of Multipexer Insertion Locations --> Between Layer_1 and 2
 (Multiplexer number, MemBank.start, MemBank.end):
-	Sub-matrix_0 -> {# of one-cycle MUXs:85 (from:38266320), # of two-cycle MUXs:0 (from:0)}
+	Sub-matrix_0 -> {# of one-cycle MUXs:85 (from:0), # of two-cycle MUXs:0 (from:0)}
+	Sub-matrix_1 -> {# of one-cycle MUXs:46 (from:39), # of two-cycle MUXs:39 (from:0)}
+1-delay insertion set:
+{39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+2-delay insertion set:
+{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 }
+	Sub-matrix_2 -> {# of one-cycle MUXs:64 (from:21), # of two-cycle MUXs:21 (from:0)}
+1-delay insertion set:
+{21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+2-delay insertion set:
+{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 }
+	Sub-matrix_3 -> {# of one-cycle MUXs:57 (from:28), # of two-cycle MUXs:28 (from:0)}
+1-delay insertion set:
+{28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+2-delay insertion set:
+{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 }
+	Sub-matrix_4 -> {# of one-cycle MUXs:22 (from:63), # of two-cycle MUXs:63 (from:0)}
+1-delay insertion set:
+{63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+2-delay insertion set:
+{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 }
+	Sub-matrix_5 -> {# of one-cycle MUXs:83 (from:2), # of two-cycle MUXs:2 (from:0)}
+1-delay insertion set:
+{2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+2-delay insertion set:
+{0 1 }
+	Sub-matrix_6 -> {# of one-cycle MUXs:77 (from:8), # of two-cycle MUXs:8 (from:0)}
+1-delay insertion set:
+{8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+2-delay insertion set:
+{0 1 2 3 4 5 6 7 }
+	Sub-matrix_7 -> {# of one-cycle MUXs:60 (from:25), # of two-cycle MUXs:25 (from:0)}
+1-delay insertion set:
+{25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+2-delay insertion set:
+{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 }
+	Sub-matrix_8 -> {# of one-cycle MUXs:57 (from:28), # of two-cycle MUXs:28 (from:0)}
+1-delay insertion set:
+{28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+2-delay insertion set:
+{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 }
+	Sub-matrix_9 -> {# of one-cycle MUXs:65 (from:20), # of two-cycle MUXs:20 (from:0)}
+1-delay insertion set:
+{20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+2-delay insertion set:
+{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
+----------------------------------------------------------------------------------------------------------------------------
+Set of Multipexer Insertion Locations --> Between Layer_2 and 0
+(Multiplexer number, MemBank.start, MemBank.end):
+	Sub-matrix_0 -> {# of one-cycle MUXs:85 (from:0), # of two-cycle MUXs:0 (from:0)}
 	Sub-matrix_1 -> {# of one-cycle MUXs:22 (from:63), # of two-cycle MUXs:63 (from:0)}
 1-delay insertion set:
 {63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
@@ -732,11 +781,11 @@ Set of Multipexer Insertion Locations --> Between Layer_1 and 2
 {66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
 2-delay insertion set:
 {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 }
-	Sub-matrix_4 -> {# of one-cycle MUXs:22 (from:63), # of two-cycle MUXs:63 (from:0)}
+	Sub-matrix_4 -> {# of one-cycle MUXs:77 (from:8), # of two-cycle MUXs:8 (from:0)}
 1-delay insertion set:
-{63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+{8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
 2-delay insertion set:
-{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 }
+{0 1 2 3 4 5 6 7 }
 	Sub-matrix_5 -> {# of one-cycle MUXs:65 (from:20), # of two-cycle MUXs:20 (from:0)}
 1-delay insertion set:
 {20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
@@ -763,134 +812,1201 @@ Set of Multipexer Insertion Locations --> Between Layer_1 and 2
 2-delay insertion set:
 {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 }
 ----------------------------------------------------------------------------------------------------------------------------
-Set of Multipexer Insertion Locations --> Between Layer_2 and 0
-(Multiplexer number, MemBank.start, MemBank.end):
-	Sub-matrix_0 -> {# of one-cycle MUXs:85 (from:38272256), # of two-cycle MUXs:0 (from:0)}
-	Sub-matrix_1 -> {# of one-cycle MUXs:22 (from:63), # of two-cycle MUXs:63 (from:0)}
-1-delay insertion set:
-{63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
-2-delay insertion set:
-{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 }
-	Sub-matrix_2 -> {# of one-cycle MUXs:55 (from:30), # of two-cycle MUXs:30 (from:0)}
-1-delay insertion set:
-{30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
-2-delay insertion set:
-{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 }
-	Sub-matrix_3 -> {# of one-cycle MUXs:19 (from:66), # of two-cycle MUXs:66 (from:0)}
-1-delay insertion set:
-{66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
-2-delay insertion set:
-{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 }
-	Sub-matrix_4 -> {# of one-cycle MUXs:14 (from:71), # of two-cycle MUXs:71 (from:0)}
-1-delay insertion set:
-{71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
-2-delay insertion set:
-{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 }
-	Sub-matrix_5 -> {# of one-cycle MUXs:63 (from:22), # of two-cycle MUXs:22 (from:0)}
-1-delay insertion set:
-{22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
-2-delay insertion set:
-{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 }
-	Sub-matrix_6 -> {# of one-cycle MUXs:38 (from:47), # of two-cycle MUXs:47 (from:0)}
-1-delay insertion set:
-{47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
-2-delay insertion set:
-{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 }
-	Sub-matrix_7 -> {# of one-cycle MUXs:40 (from:45), # of two-cycle MUXs:45 (from:0)}
-1-delay insertion set:
-{45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
-2-delay insertion set:
-{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 }
-	Sub-matrix_8 -> {# of one-cycle MUXs:6 (from:79), # of two-cycle MUXs:79 (from:0)}
-1-delay insertion set:
-{79 80 81 82 83 84 }
-2-delay insertion set:
-{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 }
-	Sub-matrix_9 -> {# of one-cycle MUXs:15 (from:70), # of two-cycle MUXs:70 (from:0)}
-1-delay insertion set:
-{70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
-2-delay insertion set:
-{0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 }
-----------------------------------------------------------------------------------------------------------------------------
 Construction of delay commands
 A-only delay command for submatrix-1: {}
 B-only delay command for submatrix-1: {}
 A&B delay command for submatrix-1: {}
-C-only delay command for submatrix-1: {}
+C-only delay command for submatrix-1: {39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 }
 A&C delay command for submatrix-1: {}
-B&C delay command for submatrix-1: {39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 }
-All-two-delay command for submatrix-1: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 }
+B&C delay command for submatrix-1: {24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 }
+All-two-delay command for submatrix-1: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 }
 All-one-delay command for submatrix-1: {63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
 ----------------------------------------------------------------------------------------------------------------------------
 A-only delay command for submatrix-2: {}
 B-only delay command for submatrix-2: {}
 A&B delay command for submatrix-2: {}
-C-only delay command for submatrix-2: {}
+C-only delay command for submatrix-2: {21 22 23 24 25 26 27 28 29 }
 A&C delay command for submatrix-2: {}
-B&C delay command for submatrix-2: {21 22 23 24 25 26 27 28 29 }
-All-two-delay command for submatrix-2: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 }
+B&C delay command for submatrix-2: {9 10 11 12 13 14 15 16 17 18 19 20 }
+All-two-delay command for submatrix-2: {0 1 2 3 4 5 6 7 8 }
 All-one-delay command for submatrix-2: {30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
 ----------------------------------------------------------------------------------------------------------------------------
 A-only delay command for submatrix-3: {}
 B-only delay command for submatrix-3: {}
 A&B delay command for submatrix-3: {}
-C-only delay command for submatrix-3: {}
-A&C delay command for submatrix-3: {}
-B&C delay command for submatrix-3: {38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 }
-All-two-delay command for submatrix-3: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 }
+C-only delay command for submatrix-3: {38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 }
+A&C delay command for submatrix-3: {28 29 30 31 32 33 34 35 36 37 }
+B&C delay command for submatrix-3: {}
+All-two-delay command for submatrix-3: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 }
 All-one-delay command for submatrix-3: {66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
 ----------------------------------------------------------------------------------------------------------------------------
-A-only delay command for submatrix-4: {}
+A-only delay command for submatrix-4: {63 64 65 66 67 68 69 70 }
 B-only delay command for submatrix-4: {}
-A&B delay command for submatrix-4: {}
+A&B delay command for submatrix-4: {8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 }
 C-only delay command for submatrix-4: {}
-A&C delay command for submatrix-4: {63 64 65 66 67 68 69 70 }
+A&C delay command for submatrix-4: {}
 B&C delay command for submatrix-4: {}
-All-two-delay command for submatrix-4: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 }
+All-two-delay command for submatrix-4: {0 1 2 3 4 5 6 7 }
 All-one-delay command for submatrix-4: {71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
 ----------------------------------------------------------------------------------------------------------------------------
-A-only delay command for submatrix-5: {}
+A-only delay command for submatrix-5: {20 21 }
 B-only delay command for submatrix-5: {}
 A&B delay command for submatrix-5: {}
 C-only delay command for submatrix-5: {}
-A&C delay command for submatrix-5: {20 21 }
+A&C delay command for submatrix-5: {2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
 B&C delay command for submatrix-5: {}
-All-two-delay command for submatrix-5: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
+All-two-delay command for submatrix-5: {0 1 }
 All-one-delay command for submatrix-5: {22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
 ----------------------------------------------------------------------------------------------------------------------------
 A-only delay command for submatrix-6: {}
 B-only delay command for submatrix-6: {}
 A&B delay command for submatrix-6: {}
-C-only delay command for submatrix-6: {}
-A&C delay command for submatrix-6: {}
-B&C delay command for submatrix-6: {39 40 41 42 43 44 45 46 }
-All-two-delay command for submatrix-6: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 }
+C-only delay command for submatrix-6: {39 40 41 42 43 44 45 46 }
+A&C delay command for submatrix-6: {8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 }
+B&C delay command for submatrix-6: {}
+All-two-delay command for submatrix-6: {0 1 2 3 4 5 6 7 }
 All-one-delay command for submatrix-6: {47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
 ----------------------------------------------------------------------------------------------------------------------------
 A-only delay command for submatrix-7: {}
 B-only delay command for submatrix-7: {}
 A&B delay command for submatrix-7: {}
-C-only delay command for submatrix-7: {}
+C-only delay command for submatrix-7: {25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 }
 A&C delay command for submatrix-7: {}
-B&C delay command for submatrix-7: {25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 }
-All-two-delay command for submatrix-7: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 }
+B&C delay command for submatrix-7: {20 21 22 23 24 }
+All-two-delay command for submatrix-7: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
 All-one-delay command for submatrix-7: {45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
 ----------------------------------------------------------------------------------------------------------------------------
 A-only delay command for submatrix-8: {}
 B-only delay command for submatrix-8: {}
 A&B delay command for submatrix-8: {}
-C-only delay command for submatrix-8: {}
-A&C delay command for submatrix-8: {}
-B&C delay command for submatrix-8: {51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 }
-All-two-delay command for submatrix-8: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 }
+C-only delay command for submatrix-8: {51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 }
+A&C delay command for submatrix-8: {28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 }
+B&C delay command for submatrix-8: {}
+All-two-delay command for submatrix-8: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 }
 All-one-delay command for submatrix-8: {79 80 81 82 83 84 }
 ----------------------------------------------------------------------------------------------------------------------------
 A-only delay command for submatrix-9: {}
 B-only delay command for submatrix-9: {}
 A&B delay command for submatrix-9: {}
-C-only delay command for submatrix-9: {}
-A&C delay command for submatrix-9: {}
-B&C delay command for submatrix-9: {50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 }
-All-two-delay command for submatrix-9: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 }
+C-only delay command for submatrix-9: {50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 }
+A&C delay command for submatrix-9: {20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 }
+B&C delay command for submatrix-9: {}
+All-two-delay command for submatrix-9: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
 All-one-delay command for submatrix-9: {70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+----------------------------------------------------------------------------------------------------------------------------
+Layer_0
+submatrix_1: {DS_24 ~ DS_84} must be delayed by 9-cycle when write-page is PA_1
+submatrix_2: {DS_9 ~ DS_84} must be delayed by 9-cycle when write-page is PA_8
+submatrix_3: {DS_38 ~ DS_84} must be delayed by 9-cycle when write-page is PA_7
+submatrix_4: {DS_71 ~ DS_84} must be delayed by 9-cycle when write-page is PA_6
+submatrix_5: {DS_22 ~ DS_84} must be delayed by 9-cycle when write-page is PA_6
+submatrix_6: {DS_39 ~ DS_84} must be delayed by 9-cycle when write-page is PA_6
+submatrix_7: {DS_20 ~ DS_84} must be delayed by 9-cycle when write-page is PA_3
+submatrix_8: {DS_51 ~ DS_84} must be delayed by 9-cycle when write-page is PA_0
+submatrix_9: {DS_50 ~ DS_84} must be delayed by 9-cycle when write-page is PA_0
+----------------------------------------------------------------------------------------------------------------------------
+Layer_1
+submatrix_1: {DS_39 ~ DS_84} must be delayed by 9-cycle when write-page is PA_7
+submatrix_2: {DS_21 ~ DS_84} must be delayed by 9-cycle when write-page is PA_2
+submatrix_3: {DS_28 ~ DS_84} must be delayed by 9-cycle when write-page is PA_6
+submatrix_4: {DS_63 ~ DS_84} must be delayed by 9-cycle when write-page is PA_4
+submatrix_5: {DS_2 ~ DS_84} must be delayed by 9-cycle when write-page is PA_1
+submatrix_6: {DS_8 ~ DS_84} must be delayed by 9-cycle when write-page is PA_6
+submatrix_7: {DS_25 ~ DS_84} must be delayed by 9-cycle when write-page is PA_7
+submatrix_8: {DS_28 ~ DS_84} must be delayed by 9-cycle when write-page is PA_7
+submatrix_9: {DS_20 ~ DS_84} must be delayed by 9-cycle when write-page is PA_7
+----------------------------------------------------------------------------------------------------------------------------
+Layer_2
+submatrix_1: {DS_63 ~ DS_84} must be delayed by 9-cycle when write-page is PA_0
+submatrix_2: {DS_30 ~ DS_84} must be delayed by 9-cycle when write-page is PA_7
+submatrix_3: {DS_66 ~ DS_84} must be delayed by 9-cycle when write-page is PA_4
+submatrix_4: {DS_8 ~ DS_84} must be delayed by 9-cycle when write-page is PA_6
+submatrix_5: {DS_20 ~ DS_84} must be delayed by 9-cycle when write-page is PA_0
+submatrix_6: {DS_47 ~ DS_84} must be delayed by 9-cycle when write-page is PA_5
+submatrix_7: {DS_45 ~ DS_84} must be delayed by 9-cycle when write-page is PA_7
+submatrix_8: {DS_79 ~ DS_84} must be delayed by 9-cycle when write-page is PA_1
+submatrix_9: {DS_70 ~ DS_84} must be delayed by 9-cycle when write-page is PA_1
+----------------------------------------------------------------------------------------------------------------------------
+
+
+
+Submatrix_1, Delay-Cmd_0	->	Critical_set_D={ }
+Submatrix_1, Delay-Cmd_0	->	Critical_set_E={ }
+Submatrix_1, Delay-Cmd_0	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_1, Delay-Cmd_1	->	Critical_set_D={ }
+Submatrix_1, Delay-Cmd_1	->	Critical_set_E={ }
+Submatrix_1, Delay-Cmd_1	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_1, Delay-Cmd_2	->	Critical_set_D={ }
+Submatrix_1, Delay-Cmd_2	->	Critical_set_E={ }
+Submatrix_1, Delay-Cmd_2	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_1, Delay-Cmd_3	->	Critical_set_D={ 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 }
+Submatrix_1, Delay-Cmd_3	->	Critical_set_E={ 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 }
+Submatrix_1, Delay-Cmd_3	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 }
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_1, Delay-Cmd_4	->	Critical_set_D={ }
+Submatrix_1, Delay-Cmd_4	->	Critical_set_E={ }
+Submatrix_1, Delay-Cmd_4	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_1, Delay-Cmd_5	->	Critical_set_D={ 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 }
+Submatrix_1, Delay-Cmd_5	->	Critical_set_E={ }
+Submatrix_1, Delay-Cmd_5	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 }
+Construction of Circular delay commands
+D-only delay command: { 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_1, Delay-Cmd_6	->	Critical_set_D={ }
+Submatrix_1, Delay-Cmd_6	->	Critical_set_E={ }
+Submatrix_1, Delay-Cmd_6	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 }
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_1, Delay-Cmd_7	->	Critical_set_D={ 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Submatrix_1, Delay-Cmd_7	->	Critical_set_E={ 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Submatrix_1, Delay-Cmd_7	->	Critical_set_F={ 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+----------------------------------------------------------------------------------------------------------------------------
+Circular Delay Command subsets of base set: { 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_2, Delay-Cmd_0	->	Critical_set_D={ }
+Submatrix_2, Delay-Cmd_0	->	Critical_set_E={ }
+Submatrix_2, Delay-Cmd_0	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_2, Delay-Cmd_1	->	Critical_set_D={ }
+Submatrix_2, Delay-Cmd_1	->	Critical_set_E={ }
+Submatrix_2, Delay-Cmd_1	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_2, Delay-Cmd_2	->	Critical_set_D={ }
+Submatrix_2, Delay-Cmd_2	->	Critical_set_E={ }
+Submatrix_2, Delay-Cmd_2	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_2, Delay-Cmd_3	->	Critical_set_D={ 21 22 23 24 25 26 27 28 29 }
+Submatrix_2, Delay-Cmd_3	->	Critical_set_E={ 21 22 23 24 25 26 27 28 29 }
+Submatrix_2, Delay-Cmd_3	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 21 22 23 24 25 26 27 28 29 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {21 22 23 24 25 26 27 28 29 }
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_2, Delay-Cmd_4	->	Critical_set_D={ }
+Submatrix_2, Delay-Cmd_4	->	Critical_set_E={ }
+Submatrix_2, Delay-Cmd_4	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_2, Delay-Cmd_5	->	Critical_set_D={ 9 10 11 12 13 14 15 16 17 18 19 20 }
+Submatrix_2, Delay-Cmd_5	->	Critical_set_E={ }
+Submatrix_2, Delay-Cmd_5	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 9 10 11 12 13 14 15 16 17 18 19 20 }
+Construction of Circular delay commands
+D-only delay command: { 9 10 11 12 13 14 15 16 17 18 19 20 }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_2, Delay-Cmd_6	->	Critical_set_D={ }
+Submatrix_2, Delay-Cmd_6	->	Critical_set_E={ }
+Submatrix_2, Delay-Cmd_6	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 0 1 2 3 4 5 6 7 8 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {0 1 2 3 4 5 6 7 8 }
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_2, Delay-Cmd_7	->	Critical_set_D={ 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Submatrix_2, Delay-Cmd_7	->	Critical_set_E={ 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Submatrix_2, Delay-Cmd_7	->	Critical_set_F={ 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+----------------------------------------------------------------------------------------------------------------------------
+Circular Delay Command subsets of base set: { 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_3, Delay-Cmd_0	->	Critical_set_D={ }
+Submatrix_3, Delay-Cmd_0	->	Critical_set_E={ }
+Submatrix_3, Delay-Cmd_0	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_3, Delay-Cmd_1	->	Critical_set_D={ }
+Submatrix_3, Delay-Cmd_1	->	Critical_set_E={ }
+Submatrix_3, Delay-Cmd_1	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_3, Delay-Cmd_2	->	Critical_set_D={ }
+Submatrix_3, Delay-Cmd_2	->	Critical_set_E={ }
+Submatrix_3, Delay-Cmd_2	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_3, Delay-Cmd_3	->	Critical_set_D={ 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 }
+Submatrix_3, Delay-Cmd_3	->	Critical_set_E={ 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 }
+Submatrix_3, Delay-Cmd_3	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 }
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_3, Delay-Cmd_4	->	Critical_set_D={ }
+Submatrix_3, Delay-Cmd_4	->	Critical_set_E={ 28 29 30 31 32 33 34 35 36 37 }
+Submatrix_3, Delay-Cmd_4	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 28 29 30 31 32 33 34 35 36 37 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {28 29 30 31 32 33 34 35 36 37 }
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_3, Delay-Cmd_5	->	Critical_set_D={ }
+Submatrix_3, Delay-Cmd_5	->	Critical_set_E={ }
+Submatrix_3, Delay-Cmd_5	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_3, Delay-Cmd_6	->	Critical_set_D={ }
+Submatrix_3, Delay-Cmd_6	->	Critical_set_E={ }
+Submatrix_3, Delay-Cmd_6	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 }
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_3, Delay-Cmd_7	->	Critical_set_D={ 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Submatrix_3, Delay-Cmd_7	->	Critical_set_E={ 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Submatrix_3, Delay-Cmd_7	->	Critical_set_F={ 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+----------------------------------------------------------------------------------------------------------------------------
+Circular Delay Command subsets of base set: { 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_4, Delay-Cmd_0	->	Critical_set_D={ }
+Submatrix_4, Delay-Cmd_0	->	Critical_set_E={ 63 64 65 66 67 68 69 70 }
+Submatrix_4, Delay-Cmd_0	->	Critical_set_F={ 63 64 65 66 67 68 69 70 }
+
+Circular Delay Command subsets of base set: { 63 64 65 66 67 68 69 70 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {63 64 65 66 67 68 69 70 }
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_4, Delay-Cmd_1	->	Critical_set_D={ }
+Submatrix_4, Delay-Cmd_1	->	Critical_set_E={ }
+Submatrix_4, Delay-Cmd_1	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_4, Delay-Cmd_2	->	Critical_set_D={ }
+Submatrix_4, Delay-Cmd_2	->	Critical_set_E={ }
+Submatrix_4, Delay-Cmd_2	->	Critical_set_F={ 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 }
+
+Circular Delay Command subsets of base set: { 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 }
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_4, Delay-Cmd_3	->	Critical_set_D={ }
+Submatrix_4, Delay-Cmd_3	->	Critical_set_E={ }
+Submatrix_4, Delay-Cmd_3	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_4, Delay-Cmd_4	->	Critical_set_D={ }
+Submatrix_4, Delay-Cmd_4	->	Critical_set_E={ }
+Submatrix_4, Delay-Cmd_4	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_4, Delay-Cmd_5	->	Critical_set_D={ }
+Submatrix_4, Delay-Cmd_5	->	Critical_set_E={ }
+Submatrix_4, Delay-Cmd_5	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_4, Delay-Cmd_6	->	Critical_set_D={ }
+Submatrix_4, Delay-Cmd_6	->	Critical_set_E={ }
+Submatrix_4, Delay-Cmd_6	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 0 1 2 3 4 5 6 7 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {0 1 2 3 4 5 6 7 }
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_4, Delay-Cmd_7	->	Critical_set_D={ 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Submatrix_4, Delay-Cmd_7	->	Critical_set_E={ 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Submatrix_4, Delay-Cmd_7	->	Critical_set_F={ 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+----------------------------------------------------------------------------------------------------------------------------
+Circular Delay Command subsets of base set: { 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_5, Delay-Cmd_0	->	Critical_set_D={ }
+Submatrix_5, Delay-Cmd_0	->	Critical_set_E={ 20 21 }
+Submatrix_5, Delay-Cmd_0	->	Critical_set_F={ 20 21 }
+
+Circular Delay Command subsets of base set: { 20 21 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {20 21 }
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_5, Delay-Cmd_1	->	Critical_set_D={ }
+Submatrix_5, Delay-Cmd_1	->	Critical_set_E={ }
+Submatrix_5, Delay-Cmd_1	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_5, Delay-Cmd_2	->	Critical_set_D={ }
+Submatrix_5, Delay-Cmd_2	->	Critical_set_E={ }
+Submatrix_5, Delay-Cmd_2	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_5, Delay-Cmd_3	->	Critical_set_D={ }
+Submatrix_5, Delay-Cmd_3	->	Critical_set_E={ }
+Submatrix_5, Delay-Cmd_3	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_5, Delay-Cmd_4	->	Critical_set_D={ }
+Submatrix_5, Delay-Cmd_4	->	Critical_set_E={ 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
+Submatrix_5, Delay-Cmd_4	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_5, Delay-Cmd_5	->	Critical_set_D={ }
+Submatrix_5, Delay-Cmd_5	->	Critical_set_E={ }
+Submatrix_5, Delay-Cmd_5	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_5, Delay-Cmd_6	->	Critical_set_D={ }
+Submatrix_5, Delay-Cmd_6	->	Critical_set_E={ }
+Submatrix_5, Delay-Cmd_6	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 0 1 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {0 1 }
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_5, Delay-Cmd_7	->	Critical_set_D={ 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Submatrix_5, Delay-Cmd_7	->	Critical_set_E={ 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Submatrix_5, Delay-Cmd_7	->	Critical_set_F={ 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+----------------------------------------------------------------------------------------------------------------------------
+Circular Delay Command subsets of base set: { 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_6, Delay-Cmd_0	->	Critical_set_D={ }
+Submatrix_6, Delay-Cmd_0	->	Critical_set_E={ }
+Submatrix_6, Delay-Cmd_0	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_6, Delay-Cmd_1	->	Critical_set_D={ }
+Submatrix_6, Delay-Cmd_1	->	Critical_set_E={ }
+Submatrix_6, Delay-Cmd_1	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_6, Delay-Cmd_2	->	Critical_set_D={ }
+Submatrix_6, Delay-Cmd_2	->	Critical_set_E={ }
+Submatrix_6, Delay-Cmd_2	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_6, Delay-Cmd_3	->	Critical_set_D={ 39 40 41 42 43 44 45 46 }
+Submatrix_6, Delay-Cmd_3	->	Critical_set_E={ 39 40 41 42 43 44 45 46 }
+Submatrix_6, Delay-Cmd_3	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 39 40 41 42 43 44 45 46 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {39 40 41 42 43 44 45 46 }
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_6, Delay-Cmd_4	->	Critical_set_D={ }
+Submatrix_6, Delay-Cmd_4	->	Critical_set_E={ 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 }
+Submatrix_6, Delay-Cmd_4	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 }
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_6, Delay-Cmd_5	->	Critical_set_D={ }
+Submatrix_6, Delay-Cmd_5	->	Critical_set_E={ }
+Submatrix_6, Delay-Cmd_5	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_6, Delay-Cmd_6	->	Critical_set_D={ }
+Submatrix_6, Delay-Cmd_6	->	Critical_set_E={ }
+Submatrix_6, Delay-Cmd_6	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 0 1 2 3 4 5 6 7 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {0 1 2 3 4 5 6 7 }
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_6, Delay-Cmd_7	->	Critical_set_D={ 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Submatrix_6, Delay-Cmd_7	->	Critical_set_E={ 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Submatrix_6, Delay-Cmd_7	->	Critical_set_F={ 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+----------------------------------------------------------------------------------------------------------------------------
+Circular Delay Command subsets of base set: { 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_7, Delay-Cmd_0	->	Critical_set_D={ }
+Submatrix_7, Delay-Cmd_0	->	Critical_set_E={ }
+Submatrix_7, Delay-Cmd_0	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_7, Delay-Cmd_1	->	Critical_set_D={ }
+Submatrix_7, Delay-Cmd_1	->	Critical_set_E={ }
+Submatrix_7, Delay-Cmd_1	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_7, Delay-Cmd_2	->	Critical_set_D={ }
+Submatrix_7, Delay-Cmd_2	->	Critical_set_E={ }
+Submatrix_7, Delay-Cmd_2	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_7, Delay-Cmd_3	->	Critical_set_D={ 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 }
+Submatrix_7, Delay-Cmd_3	->	Critical_set_E={ 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 }
+Submatrix_7, Delay-Cmd_3	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 }
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_7, Delay-Cmd_4	->	Critical_set_D={ }
+Submatrix_7, Delay-Cmd_4	->	Critical_set_E={ }
+Submatrix_7, Delay-Cmd_4	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_7, Delay-Cmd_5	->	Critical_set_D={ 20 21 22 23 24 }
+Submatrix_7, Delay-Cmd_5	->	Critical_set_E={ }
+Submatrix_7, Delay-Cmd_5	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 20 21 22 23 24 }
+Construction of Circular delay commands
+D-only delay command: { 20 21 22 23 24 }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_7, Delay-Cmd_6	->	Critical_set_D={ }
+Submatrix_7, Delay-Cmd_6	->	Critical_set_E={ }
+Submatrix_7, Delay-Cmd_6	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_7, Delay-Cmd_7	->	Critical_set_D={ 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Submatrix_7, Delay-Cmd_7	->	Critical_set_E={ 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Submatrix_7, Delay-Cmd_7	->	Critical_set_F={ 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+----------------------------------------------------------------------------------------------------------------------------
+Circular Delay Command subsets of base set: { 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_8, Delay-Cmd_0	->	Critical_set_D={ }
+Submatrix_8, Delay-Cmd_0	->	Critical_set_E={ }
+Submatrix_8, Delay-Cmd_0	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_8, Delay-Cmd_1	->	Critical_set_D={ }
+Submatrix_8, Delay-Cmd_1	->	Critical_set_E={ }
+Submatrix_8, Delay-Cmd_1	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_8, Delay-Cmd_2	->	Critical_set_D={ }
+Submatrix_8, Delay-Cmd_2	->	Critical_set_E={ }
+Submatrix_8, Delay-Cmd_2	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_8, Delay-Cmd_3	->	Critical_set_D={ 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 }
+Submatrix_8, Delay-Cmd_3	->	Critical_set_E={ 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 }
+Submatrix_8, Delay-Cmd_3	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 }
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_8, Delay-Cmd_4	->	Critical_set_D={ }
+Submatrix_8, Delay-Cmd_4	->	Critical_set_E={ 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 }
+Submatrix_8, Delay-Cmd_4	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 }
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_8, Delay-Cmd_5	->	Critical_set_D={ }
+Submatrix_8, Delay-Cmd_5	->	Critical_set_E={ }
+Submatrix_8, Delay-Cmd_5	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_8, Delay-Cmd_6	->	Critical_set_D={ }
+Submatrix_8, Delay-Cmd_6	->	Critical_set_E={ }
+Submatrix_8, Delay-Cmd_6	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 }
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_8, Delay-Cmd_7	->	Critical_set_D={ 79 80 81 82 83 84 }
+Submatrix_8, Delay-Cmd_7	->	Critical_set_E={ 79 80 81 82 83 84 }
+Submatrix_8, Delay-Cmd_7	->	Critical_set_F={ 79 80 81 82 83 84 }
+----------------------------------------------------------------------------------------------------------------------------
+Circular Delay Command subsets of base set: { 79 80 81 82 83 84 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {79 80 81 82 83 84 }
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_9, Delay-Cmd_0	->	Critical_set_D={ }
+Submatrix_9, Delay-Cmd_0	->	Critical_set_E={ }
+Submatrix_9, Delay-Cmd_0	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_9, Delay-Cmd_1	->	Critical_set_D={ }
+Submatrix_9, Delay-Cmd_1	->	Critical_set_E={ }
+Submatrix_9, Delay-Cmd_1	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_9, Delay-Cmd_2	->	Critical_set_D={ }
+Submatrix_9, Delay-Cmd_2	->	Critical_set_E={ }
+Submatrix_9, Delay-Cmd_2	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_9, Delay-Cmd_3	->	Critical_set_D={ 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 }
+Submatrix_9, Delay-Cmd_3	->	Critical_set_E={ 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 }
+Submatrix_9, Delay-Cmd_3	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 }
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_9, Delay-Cmd_4	->	Critical_set_D={ }
+Submatrix_9, Delay-Cmd_4	->	Critical_set_E={ 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 }
+Submatrix_9, Delay-Cmd_4	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 }
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_9, Delay-Cmd_5	->	Critical_set_D={ }
+Submatrix_9, Delay-Cmd_5	->	Critical_set_E={ }
+Submatrix_9, Delay-Cmd_5	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {}
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_9, Delay-Cmd_6	->	Critical_set_D={ }
+Submatrix_9, Delay-Cmd_6	->	Critical_set_E={ }
+Submatrix_9, Delay-Cmd_6	->	Critical_set_F={ }
+
+Circular Delay Command subsets of base set: { 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {}
+All-no-circular-delay command: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
+----------------------------------------------------------------------------------------------------------------------------
+Submatrix_9, Delay-Cmd_7	->	Critical_set_D={ 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Submatrix_9, Delay-Cmd_7	->	Critical_set_E={ 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Submatrix_9, Delay-Cmd_7	->	Critical_set_F={ 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+----------------------------------------------------------------------------------------------------------------------------
+Circular Delay Command subsets of base set: { 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+Construction of Circular delay commands
+D-only delay command: { }
+E-only delay command: {}
+D&E delay command: {}
+F-only delay command: {}
+D&F delay command: {}
+E&F delay command: {}
+All-9-delay command: {70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 }
+All-no-circular-delay command: {}
 ----------------------------------------------------------------------------------------------------------------------------
