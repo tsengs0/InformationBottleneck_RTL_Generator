@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iterator>
 #include <fstream>
+#include <string>
 
 using namespace std;
 #define DEBUG
@@ -48,6 +49,7 @@ typedef struct circular_page_t {
 	unsigned int PA[layer_num][dc];
 	unsigned int DS[layer_num][dc];
 } circular_page;
+string **circular_cmd_logic;
 
 typedef struct layer_module {
 	unsigned int *C_index;
@@ -67,6 +69,7 @@ void delay_set_construct(unsigned int sub_matrix_id, unsigned int delay_type, un
 void page_align_hdl_gen(unsigned int submatrix_id, unsigned int align_cmd_num, vector<unsigned int> *delay_cmd);
 void critical_delay_set_construct(unsigned int base_set_id, vector<unsigned int> *base_set, vector<unsigned int> *critical_set_ref, vector<unsigned int> *critical_set);
 void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int> base_delay_cmd, vector<unsigned int> *critical_set, vector<unsigned int> *circular_delay_cmd);
+void circular_page_align_hdl_gen(unsigned int base_set_id, unsigned int submatrix_id, unsigned align_cmd_num, vector<unsigned int> *circular_delay_cmd);
 
 int main(int argc, char **argv)
 {
@@ -436,7 +439,16 @@ int main(int argc, char **argv)
 #ifdef DEBUG
 	cout << endl << endl << endl;
 #endif
-	// Construction of \hat{subsets}, i.e., \hat{D}, \hat{E} and \hat{E}
+	// Reading and loading the configuration file of each circular command generation logic
+	ifstream logic_fd("circular_cmd_log.v", ifstream::in);
+	circular_cmd_logic = new string* [align_cmd_num];
+	for(unsigned int base_set_id = 0; base_set_id < align_cmd_num; base_set_id++) {
+		circular_cmd_logic[base_set_id] = new string [align_cmd_num-1]; // the last one without circular cmd at all
+		for(unsigned int circular_id = 0; circular_id < align_cmd_num-1; circular_id++)
+			std::getline(logic_fd, circular_cmd_logic[base_set_id][circular_id]);
+	}
+	logic_fd.close();
+
 	vector<unsigned int> ***circular_delay_cmd = new vector<unsigned int>** [dc];
 	for(unsigned int submatrix_id = 1; submatrix_id < dc; submatrix_id++) {
 		circular_delay_cmd[submatrix_id] = new vector<unsigned int>* [align_cmd_num];
@@ -479,6 +491,13 @@ int main(int argc, char **argv)
 #ifdef DEBUG
 			cout << "----------------------------------------------------------------------------------------------------------------------------" << endl;
 #endif
+			// To generate the final page-aligned mechanism including circular-aware command generators and page-aligned message net assignment
+			circular_page_align_hdl_gen(
+				base_set_id,
+				submatrix_id,
+				align_cmd_num,
+				circular_delay_cmd[submatrix_id][base_set_id]
+			);
 		}
 	}
 
@@ -567,7 +586,7 @@ void page_align_hdl_gen(unsigned int submatrix_id, unsigned int align_cmd_num, v
 	unsigned int cmd_type;
 	
 	sprintf(hdl_filename+11, "%d_lib.v", submatrix_id);
-	ofstream hdl_fd(hdl_filename, ofstream::out);
+	ofstream hdl_fd; hdl_fd.open(hdl_filename, ofstream::out | ofstream::app);
 	for(unsigned int cmd_id = 0; cmd_id < align_cmd_num; cmd_id++)
 		align_set_size[cmd_id] = delay_cmd[cmd_id].size();
 
@@ -807,4 +826,96 @@ void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int
 	// To generate HDL source code
 	//page_align_hdl_gen(submatrix_id, align_cmd_num, delay_cmd[submatrix_id]);
 }
-//wire delay_cmd_58;
+
+void circular_page_align_hdl_gen(unsigned int base_set_id, unsigned int submatrix_id, unsigned align_cmd_num, vector<unsigned int> *circular_delay_cmd)
+{
+	sprintf(hdl_filename, "circular_page_align_%d_lib.v", submatrix_id);
+	ofstream hdl_fd; hdl_fd.open(hdl_filename, ofstream::out | ofstream::app);
+
+	for(unsigned int cmd_id = 0; cmd_id < align_cmd_num; cmd_id++) {
+		unsigned int circular_set_size = circular_delay_cmd[cmd_id].size();
+		if(circular_set_size != 0 && cmd_id < (align_cmd_num-2)) {
+			// One common command generator/logic is enough to be shared by the following elements
+			hdl_fd << "wire [1:0] circular_delay_cmd_" << base_set_id << "_" << cmd_id << ";" << endl
+				   << "assign circular_delay_cmd_" << base_set_id << "_" << cmd_id
+				   << " = " << circular_cmd_logic[base_set_id][cmd_id] << endl;
+
+			for(unsigned int msg_id = 0; msg_id < circular_set_size; msg_id++) {
+				hdl_fd << "circular_page_align_depth_1_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u"
+					   << circular_delay_cmd[cmd_id][msg_id]
+					   << " (.align_out (msg_out_" << circular_delay_cmd[cmd_id][msg_id]
+					   << "), .align_target_in (msg_mux_out[" << circular_delay_cmd[cmd_id][msg_id]
+					   << "]), .delay_cmd(circular_delay_cmd_" << base_set_id << "_" << cmd_id
+					   << "), .sys_clk(sys_clk), .rstn(rstn));" << endl;
+			}
+		}
+		else if(circular_set_size != 0 && cmd_id == (align_cmd_num-2)) {
+			for(unsigned int msg_id = 0; msg_id < circular_set_size; msg_id++) {
+				hdl_fd << "circular_page_align_depth_";
+				if(base_set_id == 6) hdl_fd << "2"; // 2-circular delay
+				else if(base_set_id == 7) hdl_fd << "1"; // 1-circular delay
+				hdl_fd << " #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << circular_delay_cmd[cmd_id][msg_id]
+				       << " (.align_out (msg_out_" << circular_delay_cmd[cmd_id][msg_id]
+				       << "), .align_target_in (msg_mux_out[" << circular_delay_cmd[cmd_id][msg_id]
+				       << "]), .first_row_chunk(first_row_chunk), .sys_clk(sys_clk), .rstn(rstn));" << endl;
+			}
+		}
+		else if(circular_set_size != 0 && cmd_id == (align_cmd_num-1)) {
+			for(unsigned int msg_id = 0; msg_id < circular_set_size; msg_id++) {
+				if(base_set_id < 6){
+					hdl_fd << "wire delay_cmd_" << circular_delay_cmd[cmd_id][msg_id] << ";" << endl
+						   << "align_cmd_gen_" << cmd_id
+			    	   	   << " #(.LAYER_NUM (LAYER_NUM)) delay_cmd_" << circular_delay_cmd[cmd_id][msg_id]
+			    	   	   << "(.delay_cmd(delay_cmd_" << circular_delay_cmd[cmd_id][msg_id]
+			    	   	   << "), .layer_status(layer_status[LAYER_NUM-1:0]));" << endl
+			    	   	   << "page_align_depth_1_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << circular_delay_cmd[cmd_id][msg_id]
+			    	   	   << "(.align_out (msg_out_" << circular_delay_cmd[cmd_id][msg_id]
+			    	   	   << "), .align_target_in (msg_mux_out[" << circular_delay_cmd[cmd_id][msg_id]
+			    	   	   << "]), .delay_cmd(delay_cmd_" << circular_delay_cmd[cmd_id][msg_id]
+			    	   	   << "), .sys_clk(sys_clk), .rstn(rstn));" << endl << endl;
+			    }
+				else if(base_set_id == 6) {
+					hdl_fd << "page_align_depth_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << circular_delay_cmd[cmd_id][msg_id]
+						   << "(.align_out(msg_out_" << circular_delay_cmd[cmd_id][msg_id]
+						   << "), .align_target_in (msg_mux_out[" << circular_delay_cmd[cmd_id][msg_id]
+						   << "]), .sys_clk(sys_clk), .rstn(rstn));" << endl;
+			    }
+				else if(base_set_id == 7) {
+					hdl_fd << "page_align_depth_1 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << circular_delay_cmd[cmd_id][msg_id]
+						   << "(.align_out(msg_out_" << circular_delay_cmd[cmd_id][msg_id]
+						   << "), .align_target_in (msg_mux_out[" << circular_delay_cmd[cmd_id][msg_id]
+						   << "]), .sys_clk(sys_clk), .rstn(rstn));" << endl;
+				}
+			}
+		}
+	}
+	hdl_fd.close();
+}
+
+/*
+circular_page_align_depth_1_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u46(.align_out (msg_out_46), .align_target_in (msg_mux_out[46]), .delay_cmd(delay_cmd_46), .sys_clk(sys_clk), .rstn(rstn));
+
+circular_page_align_depth_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u46(.align_out (msg_out_46), .align_target_in (msg_mux_out[46]), .first_row_chunk(first_row_chunk), .sys_clk(sys_clk), .rstn(rstn));
+*/
+/*
+wire delay_cmd_58;
+module circular_align_cmd_gen_5 #(
+	parameter LAYER_NUM = 3
+)(
+	output wire [1:0] delay_cmd, // '0': 1-cycle delay cmd; '1': 2-cycle delay cmd; '2':(z/Pc)-cycle delay cmd - circular case
+	input wire [LAYER_NUM-1:0] layer_status,
+	input wire first_row_chunk
+);
+
+// 5) Two-delay-only inseration on Layer B and C:
+assign delay_cmd = ((layer_status[1] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10
+                   ((layer_status[1] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b0) ? 2'b01 : 2'b00;
+endmodule
+
+
+wire [1:0] delay_cmd_0;
+assign delay_cmd_0 = (layer_status[0] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 :
+		     (layer_status[0] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : 2'b00;
+
+assign delay_cmd_0 = ()
+*/

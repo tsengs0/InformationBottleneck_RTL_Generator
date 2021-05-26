@@ -4,6 +4,11 @@ import numpy as np
 import math
 import json
 
+cmd_mkdir = 'mkdir '
+cmd_move = 'mv '
+cmd_copy = 'cp -a '
+template_copy_dir = '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/permutation_network'
+
 '''
     Funtion Summary
 A) QSN generator
@@ -217,7 +222,7 @@ def qsn_top_hdl_gen(out_bitwidth, in_bitwidth, shift_sel_bitwidth, merge_sel_bit
     # Generate for-loop block in order to instatiate QSN of q-bit bitwidth
     hdl_fd.write("\tgenvar i;\n"+
                  "\tgenerate\n" +
-                 "\t\tfor(i=0:i<" + str(quant) + ";i=i+1) begin : bs_bitwidth_inst\n")
+                 "\t\tfor(i=0;i<" + str(quant) + ";i=i+1) begin : bs_bitwidth_inst\n")
 
     left_out_bitwidth = permutation_length-1
     hdl_fd.write("\t\t// Instantiation of Left Shift Network\n")
@@ -264,6 +269,8 @@ def main():
     merge_mux_hdl_gen(out_bitwidth=Pc, left_in_bitwidth=Pc-1, right_in_bitwidth=Pc, sel_bitwidth=Pc-1, permutation_length=Pc)
     qsn_top_hdl_gen(out_bitwidth=Pc, in_bitwidth=Pc, shift_sel_bitwidth=sel_bitwidth, merge_sel_bitwidth=Pc-1, permutation_length=Pc, quant=q)
     qsn_controller_hdl_gen(left_sel_bitwidth=sel_bitwidth, right_sel_bitwidth=sel_bitwidth, merge_sel_bitwidth=Pc-1, shift_factor_bitwidth=math.ceil(math.log2(Pc-1)), permutation_length=Pc)
+
+    subprocess.call(cmd_move + "./*.v " + template_copy_dir + "/", shell=True)
 
 if __name__ == "__main__":
     main()
