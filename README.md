@@ -30,7 +30,20 @@ utilisation (with DNUs) | 80.1022% | 57.3811%
 utilisation of LUT (without DNUs) | 65.876% ||
 utilisation of LUT (with DNUs) | 67.4162% ||
 
+### Hardware cost of Layered Decoder (26.May.2021)
+Module | LUT | FF
+-------|-----|---
+Circular Shifter (QSN, Pc=84) | 535 | 97
+Page-Aligned Mechanism (circular-aware) | 885 | 1099
+-------|-----|---
+Note that in the above synthesis result, some shift registers circuit are synthesised by using SRL which costs "LUT as memory" resources instead of FFs.
 
+Module | LUT | FF
+-------|-----|---
+Circular Shifter (QSN, Pc=84) | 535 | 97
+Page-Aligned Mechanism (circular-aware) | 387 | 3,004
+-------|-----|---
+Note that in the above synthesis result, since the LUTRAMs are considered as much more precious resources, a synthesis option "-no_srlextract" was turned on in order to prevent any SRL based shift registers. Thus, all implementation of shift registers can be guaranteed to be synthesised by only FFs. However, which one gives rise more stringent timing violation, such question is still opened (it has to be further addressed as our future work).
 
 ###Misc. (27.OCT, 2020)
 One interesting C++ and SystemC based FEC Toolbox, the decription is as follow:
