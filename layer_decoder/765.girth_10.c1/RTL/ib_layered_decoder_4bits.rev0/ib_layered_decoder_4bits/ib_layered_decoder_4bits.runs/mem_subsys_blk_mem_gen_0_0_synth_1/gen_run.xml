@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenRun Id="mem_subsys_blk_mem_gen_0_0_synth_1" LaunchPart="xczu7ev-ffvc1156-2-e" LaunchTime="1621860457">
-  <File Type="VDS-TIMING-PB" Name="mem_subsys_blk_mem_gen_0_0_timing_summary_synth.pb"/>
-  <File Type="VDS-TIMINGSUMMARY" Name="mem_subsys_blk_mem_gen_0_0_timing_summary_synth.rpt"/>
-  <File Type="RDS-DCP" Name="mem_subsys_blk_mem_gen_0_0.dcp"/>
-  <File Type="RDS-UTIL-PB" Name="mem_subsys_blk_mem_gen_0_0_utilization_synth.pb"/>
-  <File Type="RDS-UTIL" Name="mem_subsys_blk_mem_gen_0_0_utilization_synth.rpt"/>
-  <File Type="RDS-PROPCONSTRS" Name="mem_subsys_blk_mem_gen_0_0_drc_synth.rpt"/>
-  <File Type="RDS-RDS" Name="mem_subsys_blk_mem_gen_0_0.vds"/>
-  <File Type="REPORTS-TCL" Name="mem_subsys_blk_mem_gen_0_0_reports.tcl"/>
   <File Type="PA-TCL" Name="mem_subsys_blk_mem_gen_0_0.tcl"/>
+  <File Type="REPORTS-TCL" Name="mem_subsys_blk_mem_gen_0_0_reports.tcl"/>
+  <File Type="RDS-RDS" Name="mem_subsys_blk_mem_gen_0_0.vds"/>
+  <File Type="RDS-DCP" Name="mem_subsys_blk_mem_gen_0_0.dcp"/>
   <FileSet Name="sources" Type="BlockSrcs" RelSrcDir="$PSRCDIR/mem_subsys_blk_mem_gen_0_0">
     <File Path="$PSRCDIR/sources_1/bd/mem_subsys/ip/mem_subsys_blk_mem_gen_0_0/mem_subsys_blk_mem_gen_0_0.xci">
       <FileInfo>

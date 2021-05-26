@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xczu7ev-ffvc1156-2-e" LaunchTime="1622034394">
+<GenRun Id="synth_no_SRL" LaunchPart="xczu7ev-ffvc1156-2-e" LaunchTime="1622035434">
   <File Type="VDS-TIMING-PB" Name="mem_subsystem_top_timing_summary_synth.pb"/>
   <File Type="VDS-TIMINGSUMMARY" Name="mem_subsystem_top_timing_summary_synth.rpt"/>
   <File Type="RDS-DCP" Name="mem_subsystem_top.dcp"/>
-  <File Type="RDS-UTIL-PB" Name="mem_subsystem_top_utilization_synth.pb"/>
-  <File Type="RDS-UTIL" Name="mem_subsystem_top_utilization_synth.rpt"/>
-  <File Type="RDS-PROPCONSTRS" Name="mem_subsystem_top_drc_synth.rpt"/>
-  <File Type="RDS-RDS" Name="mem_subsystem_top.vds"/>
   <File Type="REPORTS-TCL" Name="mem_subsystem_top_reports.tcl"/>
   <File Type="PA-TCL" Name="mem_subsystem_top.tcl"/>
+  <File Type="RDS-RDS" Name="mem_subsystem_top.vds"/>
+  <File Type="RDS-PROPCONSTRS" Name="mem_subsystem_top_drc_synth.rpt"/>
+  <File Type="RDS-UTIL" Name="mem_subsystem_top_utilization_synth.rpt"/>
+  <File Type="RDS-UTIL-PB" Name="mem_subsystem_top_utilization_synth.pb"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/bd/mem_subsys/mem_subsys.bd">
@@ -444,8 +444,12 @@
     </Config>
   </FileSet>
   <Strategy Version="1" Minor="2">
-    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
-    <Step Id="synth_design"/>
+    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019">
+      <Desc>Vivado Synthesis Defaults</Desc>
+    </StratHandle>
+    <Step Id="synth_design">
+      <Option Id="MoreOptsStr"><![CDATA[-no_srlextract]]></Option>
+    </Step>
   </Strategy>
   <BlockFileSet Type="BlockSrcs" Name="mem_subsys_blk_mem_gen_0_0"/>
 </GenRun>

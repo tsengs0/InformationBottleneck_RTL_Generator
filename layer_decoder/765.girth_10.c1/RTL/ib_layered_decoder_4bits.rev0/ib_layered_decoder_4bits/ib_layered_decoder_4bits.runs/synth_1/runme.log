@@ -12,40 +12,16 @@ source mem_subsystem_top.tcl -notrace
 INFO: [IP_Flow 19-234] Refreshing IP repositories
 INFO: [IP_Flow 19-1704] No user IP repositories specified
 INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/s1820419/Xilinx/Vivado/2019.2/data/ip'.
-add_files: Time (s): cpu = 00:00:03 ; elapsed = 00:00:05 . Memory (MB): peak = 1704.086 ; gain = 41.688 ; free physical = 1506116 ; free virtual = 1542939
+add_files: Time (s): cpu = 00:00:03 ; elapsed = 00:00:05 . Memory (MB): peak = 1704.090 ; gain = 41.688 ; free physical = 1498933 ; free virtual = 1538905
 Command: synth_design -top mem_subsystem_top -part xczu7ev-ffvc1156-2-e
 Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xczu7ev'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xczu7ev'
 INFO: [Device 21-403] Loading part xczu7ev-ffvc1156-2-e
 INFO: Launching helper process for spawning children vivado processes
-INFO: Helper process launched with PID 58010 
-WARNING: [Synth 8-2254] instance name 'delay_cmd_39' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:275]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_40' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:279]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_41' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:283]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_42' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:287]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_43' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:291]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_44' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:295]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_45' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:299]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_46' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:303]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_47' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:307]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_48' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:311]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_49' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:315]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_50' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:319]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_51' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:323]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_52' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:327]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_53' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:331]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_54' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:335]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_55' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:339]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_56' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:343]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_57' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:347]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_58' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:351]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_59' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:355]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_60' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:359]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_61' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:363]
-WARNING: [Synth 8-2254] instance name 'delay_cmd_62' matches net/port name [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:367]
+INFO: Helper process launched with PID 7977 
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 2698.742 ; gain = 2.887 ; free physical = 1504991 ; free virtual = 1541816
+Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 2695.859 ; gain = 0.000 ; free physical = 1497820 ; free virtual = 1537792
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-6157] synthesizing module 'mem_subsystem_top' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_lib.v:1]
 	Parameter QUAN_SIZE bound to: 4 - type: integer 
@@ -62,19 +38,16 @@ INFO: [Synth 8-6157] synthesizing module 'ram_pageAlign_interface' [/home/s18204
 	Parameter QUAN_SIZE bound to: 4 - type: integer 
 	Parameter CHECK_PARALLELISM bound to: 85 - type: integer 
 	Parameter LAYER_NUM bound to: 3 - type: integer 
-INFO: [Synth 8-6157] synthesizing module 'align_cmd_gen_5' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:574]
-	Parameter LAYER_NUM bound to: 3 - type: integer 
-INFO: [Synth 8-6155] done synthesizing module 'align_cmd_gen_5' (1#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:574]
-INFO: [Synth 8-6157] synthesizing module 'page_align_depth_1_2' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:585]
+INFO: [Synth 8-6157] synthesizing module 'circular_page_align_depth_1_2' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:665]
 	Parameter QUAN_SIZE bound to: 4 - type: integer 
-INFO: [Synth 8-6155] done synthesizing module 'page_align_depth_1_2' (2#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:585]
-INFO: [Synth 8-6157] synthesizing module 'page_align_depth_2' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:630]
+INFO: [Synth 8-6155] done synthesizing module 'circular_page_align_depth_1_2' (1#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:665]
+INFO: [Synth 8-6157] synthesizing module 'page_align_depth_2' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:564]
 	Parameter QUAN_SIZE bound to: 4 - type: integer 
-INFO: [Synth 8-6155] done synthesizing module 'page_align_depth_2' (3#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:630]
-INFO: [Synth 8-6157] synthesizing module 'page_align_depth_1' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:611]
+INFO: [Synth 8-6155] done synthesizing module 'page_align_depth_2' (2#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:564]
+INFO: [Synth 8-6157] synthesizing module 'circular_page_align_depth_1' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:694]
 	Parameter QUAN_SIZE bound to: 4 - type: integer 
-INFO: [Synth 8-6155] done synthesizing module 'page_align_depth_1' (4#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:611]
-INFO: [Synth 8-6155] done synthesizing module 'ram_pageAlign_interface' (5#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'circular_page_align_depth_1' (3#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:694]
+INFO: [Synth 8-6155] done synthesizing module 'ram_pageAlign_interface' (4#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v:1]
 INFO: [Synth 8-6157] synthesizing module 'column_ram_pc85' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/column_ram.v:1]
 	Parameter QUAN_SIZE bound to: 4 - type: integer 
 	Parameter CHECK_PARALLELISM bound to: 85 - type: integer 
@@ -91,23 +64,22 @@ INFO: [Synth 8-6157] synthesizing module 'ram_unit' [/home/s1820419/LDPC_MinorRe
 	Parameter ADDR bound to: 10 - type: integer 
 INFO: [Synth 8-6157] synthesizing module 'mem_subsys_wrapper' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.srcs/sources_1/bd/mem_subsys/hdl/mem_subsys_wrapper.v:12]
 INFO: [Synth 8-6157] synthesizing module 'mem_subsys' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.srcs/sources_1/bd/mem_subsys/synth/mem_subsys.v:13]
-INFO: [Synth 8-6157] synthesizing module 'mem_subsys_blk_mem_gen_0_0' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.runs/synth_1/.Xil/Vivado-57706-lmpcc-12/realtime/mem_subsys_blk_mem_gen_0_0_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'mem_subsys_blk_mem_gen_0_0' (6#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.runs/synth_1/.Xil/Vivado-57706-lmpcc-12/realtime/mem_subsys_blk_mem_gen_0_0_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'mem_subsys' (7#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.srcs/sources_1/bd/mem_subsys/synth/mem_subsys.v:13]
-INFO: [Synth 8-6155] done synthesizing module 'mem_subsys_wrapper' (8#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.srcs/sources_1/bd/mem_subsys/hdl/mem_subsys_wrapper.v:12]
-INFO: [Synth 8-6155] done synthesizing module 'ram_unit' (9#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/column_ram.v:392]
+INFO: [Synth 8-6157] synthesizing module 'mem_subsys_blk_mem_gen_0_0' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.runs/synth_1/.Xil/Vivado-7829-lmpcc-02/realtime/mem_subsys_blk_mem_gen_0_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'mem_subsys_blk_mem_gen_0_0' (5#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.runs/synth_1/.Xil/Vivado-7829-lmpcc-02/realtime/mem_subsys_blk_mem_gen_0_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'mem_subsys' (6#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.srcs/sources_1/bd/mem_subsys/synth/mem_subsys.v:13]
+INFO: [Synth 8-6155] done synthesizing module 'mem_subsys_wrapper' (7#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.srcs/sources_1/bd/mem_subsys/hdl/mem_subsys_wrapper.v:12]
+INFO: [Synth 8-6155] done synthesizing module 'ram_unit' (8#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/column_ram.v:392]
 WARNING: [Synth 8-689] width (32) of port connection 'AddrIn_b' does not match port width (10) of module 'ram_unit' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/column_ram.v:211]
 WARNING: [Synth 8-689] width (32) of port connection 'AddrIn_b' does not match port width (10) of module 'ram_unit' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/column_ram.v:211]
 WARNING: [Synth 8-689] width (32) of port connection 'AddrIn_b' does not match port width (10) of module 'ram_unit' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/column_ram.v:211]
 WARNING: [Synth 8-689] width (32) of port connection 'AddrIn_b' does not match port width (10) of module 'ram_unit' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/column_ram.v:211]
 WARNING: [Synth 8-689] width (32) of port connection 'AddrIn_b' does not match port width (10) of module 'ram_unit' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/column_ram.v:211]
-INFO: [Synth 8-6155] done synthesizing module 'column_ram_pc85' (10#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/column_ram.v:1]
-INFO: [Synth 8-6157] synthesizing module 'ram_out_demux' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_lib.v:1100]
+INFO: [Synth 8-6155] done synthesizing module 'column_ram_pc85' (9#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/column_ram.v:1]
+INFO: [Synth 8-6157] synthesizing module 'ram_out_demux' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_lib.v:1102]
 	Parameter QUAN_SIZE bound to: 4 - type: integer 
 	Parameter CHECK_PARALLELISM bound to: 85 - type: integer 
-INFO: [Synth 8-6155] done synthesizing module 'ram_out_demux' (11#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_lib.v:1100]
-INFO: [Synth 8-6155] done synthesizing module 'mem_subsystem_top' (12#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_lib.v:1]
-WARNING: [Synth 8-3331] design align_cmd_gen_5 has unconnected port layer_status[0]
+INFO: [Synth 8-6155] done synthesizing module 'ram_out_demux' (10#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_lib.v:1102]
+INFO: [Synth 8-6155] done synthesizing module 'mem_subsystem_top' (11#1) [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_lib.v:1]
 WARNING: [Synth 8-3331] design ram_pageAlign_interface has unconnected port delay_cmd[84]
 WARNING: [Synth 8-3331] design ram_pageAlign_interface has unconnected port delay_cmd[83]
 WARNING: [Synth 8-3331] design ram_pageAlign_interface has unconnected port delay_cmd[82]
@@ -194,7 +166,7 @@ WARNING: [Synth 8-3331] design ram_pageAlign_interface has unconnected port dela
 WARNING: [Synth 8-3331] design ram_pageAlign_interface has unconnected port delay_cmd[1]
 WARNING: [Synth 8-3331] design ram_pageAlign_interface has unconnected port delay_cmd[0]
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:06 . Memory (MB): peak = 2741.648 ; gain = 45.793 ; free physical = 1505034 ; free virtual = 1541859
+Finished RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 2756.527 ; gain = 60.668 ; free physical = 1497836 ; free virtual = 1537809
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -207,12 +179,12 @@ Report Check Netlist:
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 2756.492 ; gain = 60.637 ; free physical = 1505030 ; free virtual = 1541855
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:05 ; elapsed = 00:00:07 . Memory (MB): peak = 2759.496 ; gain = 63.637 ; free physical = 1497832 ; free virtual = 1537805
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 2756.492 ; gain = 60.637 ; free physical = 1505030 ; free virtual = 1541855
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:05 ; elapsed = 00:00:07 . Memory (MB): peak = 2759.496 ; gain = 63.637 ; free physical = 1497832 ; free virtual = 1537805
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.03 . Memory (MB): peak = 2756.492 ; gain = 0.000 ; free physical = 1505023 ; free virtual = 1541848
+Netlist sorting complete. Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 2759.496 ; gain = 0.000 ; free physical = 1497824 ; free virtual = 1537797
 INFO: [Project 1-570] Preparing netlist for logic optimization
 
 Processing XDC Constraints
@@ -233,13 +205,13 @@ Parsing XDC File [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_deco
 Finished Parsing XDC File [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.runs/synth_1/dont_touch.xdc]
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2884.211 ; gain = 0.000 ; free physical = 1504882 ; free virtual = 1541707
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2886.184 ; gain = 0.000 ; free physical = 1497707 ; free virtual = 1537680
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2884.211 ; gain = 0.000 ; free physical = 1504882 ; free virtual = 1541707
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.02 . Memory (MB): peak = 2886.184 ; gain = 0.000 ; free physical = 1497707 ; free virtual = 1537680
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:11 ; elapsed = 00:00:16 . Memory (MB): peak = 2884.211 ; gain = 188.355 ; free physical = 1505017 ; free virtual = 1541843
+Finished Constraint Validation : Time (s): cpu = 00:00:13 ; elapsed = 00:00:17 . Memory (MB): peak = 2886.184 ; gain = 190.324 ; free physical = 1497811 ; free virtual = 1537785
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
@@ -247,7 +219,7 @@ Start Loading Part and Timing Information
 Loading part: xczu7ev-ffvc1156-2-e
 INFO: [Synth 8-6742] Reading net delay rules and data
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:11 ; elapsed = 00:00:16 . Memory (MB): peak = 2884.211 ; gain = 188.355 ; free physical = 1505017 ; free virtual = 1541843
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:13 ; elapsed = 00:00:17 . Memory (MB): peak = 2886.184 ; gain = 190.324 ; free physical = 1497811 ; free virtual = 1537785
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
@@ -263,34 +235,11 @@ Applied set_property DONT_TOUCH = true for inst_column_ram_pc85/\mem_device_inst
 Applied set_property DONT_TOUCH = true for inst_column_ram_pc85/\mem_device_inst[3].ram_unit_u0 /ram_unit_u0/mem_subsys_i/blk_mem_gen_0. (constraint file  auto generated constraint, line ).
 Applied set_property DONT_TOUCH = true for inst_column_ram_pc85/\mem_device_inst[4].ram_unit_u0 /ram_unit_u0/mem_subsys_i/blk_mem_gen_0. (constraint file  auto generated constraint, line ).
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:11 ; elapsed = 00:00:16 . Memory (MB): peak = 2884.211 ; gain = 188.355 ; free physical = 1505017 ; free virtual = 1541843
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:13 ; elapsed = 00:00:17 . Memory (MB): peak = 2886.184 ; gain = 190.324 ; free physical = 1497811 ; free virtual = 1537785
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:12 ; elapsed = 00:00:16 . Memory (MB): peak = 2884.211 ; gain = 188.355 ; free physical = 1505010 ; free virtual = 1541836
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:13 ; elapsed = 00:00:18 . Memory (MB): peak = 2886.184 ; gain = 190.324 ; free physical = 1497804 ; free virtual = 1537778
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_40'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_41'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_42'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_43'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_44'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_45'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_46'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_47'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_48'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_49'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_50'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_51'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_52'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_53'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_54'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_55'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_56'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_57'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_58'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_59'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_60'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_61'
-INFO: [Synth 8-223] decloning instance 'ram_pageAlign_interface_u0/delay_cmd_39' (align_cmd_gen_5) to 'ram_pageAlign_interface_u0/delay_cmd_62'
 
 Report RTL Partitions: 
 +-+--------------+------------+----------+
@@ -304,9 +253,11 @@ Detailed RTL Component Info :
 +---Adders : 
 	   2 Input     11 Bit       Adders := 1     
 +---Registers : 
-	                4 Bit    Registers := 148   
+	                4 Bit    Registers := 751   
 +---Muxes : 
-	   2 Input      4 Bit        Muxes := 109   
+	   2 Input      4 Bit        Muxes := 188   
+	   2 Input      2 Bit        Muxes := 2     
+	   2 Input      1 Bit        Muxes := 2     
 ---------------------------------------------------------------------------------
 Finished RTL Component Statistics 
 ---------------------------------------------------------------------------------
@@ -314,24 +265,28 @@ Finished RTL Component Statistics
 Start RTL Hierarchical Component Statistics 
 ---------------------------------------------------------------------------------
 Hierarchical RTL Component report 
-Module page_align_depth_1_2 
+Module circular_page_align_depth_1_2 
 Detailed RTL Component Info : 
 +---Registers : 
-	                4 Bit    Registers := 2     
+	                4 Bit    Registers := 9     
 +---Muxes : 
-	   2 Input      4 Bit        Muxes := 1     
+	   2 Input      4 Bit        Muxes := 2     
 Module page_align_depth_2 
 Detailed RTL Component Info : 
 +---Registers : 
 	                4 Bit    Registers := 2     
-Module page_align_depth_1 
+Module circular_page_align_depth_1 
 Detailed RTL Component Info : 
 +---Registers : 
-	                4 Bit    Registers := 1     
+	                4 Bit    Registers := 9     
++---Muxes : 
+	   2 Input      4 Bit        Muxes := 1     
 Module ram_pageAlign_interface 
 Detailed RTL Component Info : 
 +---Muxes : 
 	   2 Input      4 Bit        Muxes := 85    
+	   2 Input      2 Bit        Muxes := 2     
+	   2 Input      1 Bit        Muxes := 2     
 Module column_ram_pc85 
 Detailed RTL Component Info : 
 +---Adders : 
@@ -366,9 +321,10 @@ WARNING: [Synth 8-3331] design mem_subsystem_top has unconnected port delay_cmd[
 WARNING: [Synth 8-3331] design mem_subsystem_top has unconnected port delay_cmd[73]
 WARNING: [Synth 8-3331] design mem_subsystem_top has unconnected port delay_cmd[72]
 WARNING: [Synth 8-3331] design mem_subsystem_top has unconnected port delay_cmd[71]
+WARNING: [Synth 8-3331] design mem_subsystem_top has unconnected port delay_cmd[70]
 INFO: [Common 17-14] Message 'Synth 8-3331' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:13 ; elapsed = 00:00:17 . Memory (MB): peak = 2884.211 ; gain = 188.355 ; free physical = 1504998 ; free virtual = 1541827
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:15 ; elapsed = 00:00:20 . Memory (MB): peak = 2886.184 ; gain = 190.324 ; free physical = 1497781 ; free virtual = 1537758
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -380,13 +336,13 @@ Report RTL Partitions:
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:39 ; elapsed = 00:01:03 . Memory (MB): peak = 3369.812 ; gain = 673.957 ; free physical = 1504220 ; free virtual = 1541106
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:41 ; elapsed = 00:01:06 . Memory (MB): peak = 3377.816 ; gain = 681.957 ; free physical = 1497019 ; free virtual = 1537022
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:39 ; elapsed = 00:01:03 . Memory (MB): peak = 3369.812 ; gain = 673.957 ; free physical = 1504099 ; free virtual = 1540985
+Finished Timing Optimization : Time (s): cpu = 00:00:42 ; elapsed = 00:01:06 . Memory (MB): peak = 3378.816 ; gain = 682.957 ; free physical = 1497018 ; free virtual = 1537021
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -398,7 +354,7 @@ Report RTL Partitions:
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:39 ; elapsed = 00:01:04 . Memory (MB): peak = 3382.828 ; gain = 686.973 ; free physical = 1504277 ; free virtual = 1541163
+Finished Technology Mapping : Time (s): cpu = 00:00:42 ; elapsed = 00:01:07 . Memory (MB): peak = 3392.559 ; gain = 696.699 ; free physical = 1497015 ; free virtual = 1537018
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -442,13 +398,13 @@ WARNING: [Synth 8-5753] loadless multi-driven net inst_column_ram_pc85/dummy_dou
 WARNING: [Synth 8-5753] loadless multi-driven net inst_column_ram_pc85/dummy_dout_reg[0] with 4th driver pin 'inst_column_ram_pc85/mem_device_inst[1].ram_unit_u0/ram_unit_u0/mem_subsys_i/BRAM_PORTB_0_dout[32]' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.srcs/sources_1/bd/mem_subsys/hdl/mem_subsys_wrapper.v:45]
 WARNING: [Synth 8-5753] loadless multi-driven net inst_column_ram_pc85/dummy_dout_reg[0] with 5th driver pin 'inst_column_ram_pc85/mem_device_inst[0].ram_unit_u0/ram_unit_u0/mem_subsys_i/BRAM_PORTB_0_dout[32]' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.srcs/sources_1/bd/mem_subsys/hdl/mem_subsys_wrapper.v:45]
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:42 ; elapsed = 00:01:07 . Memory (MB): peak = 3395.703 ; gain = 699.848 ; free physical = 1504280 ; free virtual = 1541166
+Finished IO Insertion : Time (s): cpu = 00:00:45 ; elapsed = 00:01:10 . Memory (MB): peak = 3404.465 ; gain = 708.605 ; free physical = 1497013 ; free virtual = 1537016
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:42 ; elapsed = 00:01:07 . Memory (MB): peak = 3395.703 ; gain = 699.848 ; free physical = 1504280 ; free virtual = 1541166
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:45 ; elapsed = 00:01:10 . Memory (MB): peak = 3404.465 ; gain = 708.605 ; free physical = 1497015 ; free virtual = 1537018
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -467,25 +423,121 @@ Report Check Netlist:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:42 ; elapsed = 00:01:07 . Memory (MB): peak = 3395.703 ; gain = 699.848 ; free physical = 1504280 ; free virtual = 1541166
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:46 ; elapsed = 00:01:10 . Memory (MB): peak = 3404.465 ; gain = 708.605 ; free physical = 1497015 ; free virtual = 1537018
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:42 ; elapsed = 00:01:07 . Memory (MB): peak = 3395.703 ; gain = 699.848 ; free physical = 1504280 ; free virtual = 1541166
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:46 ; elapsed = 00:01:10 . Memory (MB): peak = 3404.465 ; gain = 708.605 ; free physical = 1497015 ; free virtual = 1537018
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:42 ; elapsed = 00:01:07 . Memory (MB): peak = 3395.703 ; gain = 699.848 ; free physical = 1504280 ; free virtual = 1541166
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:46 ; elapsed = 00:01:10 . Memory (MB): peak = 3404.465 ; gain = 708.605 ; free physical = 1497015 ; free virtual = 1537018
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:42 ; elapsed = 00:01:07 . Memory (MB): peak = 3395.703 ; gain = 699.848 ; free physical = 1504280 ; free virtual = 1541166
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:46 ; elapsed = 00:01:10 . Memory (MB): peak = 3404.465 ; gain = 708.605 ; free physical = 1497015 ; free virtual = 1537018
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+Static Shift Register Report:
++------------------+-----------------------------------------------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
+|Module Name       | RTL Name                                                        | Length | Width | Reset Signal | Pull out first Reg | Pull out last Reg | SRL16E | SRLC32E | 
++------------------+-----------------------------------------------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u20/delay_insert_8_reg[3] | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u21/delay_insert_8_reg[3] | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u2/delay_insert_8_reg[3]  | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u3/delay_insert_8_reg[3]  | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u4/delay_insert_8_reg[3]  | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u5/delay_insert_8_reg[3]  | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u6/delay_insert_8_reg[3]  | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u7/delay_insert_8_reg[3]  | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u8/delay_insert_8_reg[3]  | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u9/delay_insert_8_reg[3]  | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u10/delay_insert_8_reg[3] | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u11/delay_insert_8_reg[3] | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u12/delay_insert_8_reg[3] | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u13/delay_insert_8_reg[3] | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u14/delay_insert_8_reg[3] | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u15/delay_insert_8_reg[3] | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u16/delay_insert_8_reg[3] | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u17/delay_insert_8_reg[3] | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u18/delay_insert_8_reg[3] | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u19/delay_insert_8_reg[3] | 7      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u22/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u23/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u24/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u25/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u26/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u27/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u28/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u29/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u30/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u31/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u32/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u33/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u34/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u35/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u36/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u37/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u38/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u39/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u40/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u41/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u42/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u43/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u44/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u45/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u46/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u47/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u48/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u49/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u50/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u51/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u52/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u53/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u54/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u55/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u56/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u57/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u58/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u59/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u60/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u61/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u62/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u63/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u64/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u65/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u66/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u67/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u68/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u69/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u70/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u71/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u72/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u73/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u74/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u75/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u76/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u77/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u78/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u79/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u80/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u81/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u82/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u83/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
+|mem_subsystem_top | ram_pageAlign_interface_u0/page_align_u84/delay_insert_8_reg[3] | 8      | 4     | YES          | NO                 | YES               | 4      | 0       | 
++------------------+-----------------------------------------------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP and Shift Register Reporting
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -509,149 +561,150 @@ Report Cell Usage:
 |5     |mem_subsys_blk_mem_gen_0_0__8 |     1|
 |6     |BUFG                          |     1|
 |7     |LUT1                          |     3|
-|8     |LUT2                          |     2|
-|9     |LUT3                          |   342|
-|10    |LUT4                          |    98|
-|11    |LUT5                          |     2|
-|12    |LUT6                          |     2|
-|13    |FDRE                          |   592|
-|14    |IBUF                          |   696|
-|15    |OBUFT                         |   680|
+|8     |LUT2                          |   335|
+|9     |LUT3                          |   595|
+|10    |LUT4                          |     2|
+|11    |LUT5                          |    10|
+|12    |LUT6                          |    74|
+|13    |SRL16E                        |   332|
+|14    |FDRE                          |  1099|
+|15    |IBUF                          |   698|
+|16    |OBUFT                         |   680|
 +------+------------------------------+------+
 
 Report Instance Areas: 
-+------+-------------------------------------+------------------------------+------+
-|      |Instance                             |Module                        |Cells |
-+------+-------------------------------------+------------------------------+------+
-|1     |top                                  |                              |  2778|
-|2     |  inst_column_ram_pc85               |column_ram_pc85               |   371|
-|3     |    \mem_device_inst[0].ram_unit_u0  |ram_unit__xdcDup__1           |    72|
-|4     |      ram_unit_u0                    |mem_subsys_wrapper__xdcDup__1 |    72|
-|5     |        mem_subsys_i                 |mem_subsys__xdcDup__1         |    72|
-|6     |    \mem_device_inst[1].ram_unit_u0  |ram_unit__xdcDup__2           |    72|
-|7     |      ram_unit_u0                    |mem_subsys_wrapper__xdcDup__2 |    72|
-|8     |        mem_subsys_i                 |mem_subsys__xdcDup__2         |    72|
-|9     |    \mem_device_inst[2].ram_unit_u0  |ram_unit__xdcDup__3           |    72|
-|10    |      ram_unit_u0                    |mem_subsys_wrapper__xdcDup__3 |    72|
-|11    |        mem_subsys_i                 |mem_subsys__xdcDup__3         |    72|
-|12    |    \mem_device_inst[3].ram_unit_u0  |ram_unit__xdcDup__4           |    72|
-|13    |      ram_unit_u0                    |mem_subsys_wrapper__xdcDup__4 |    72|
-|14    |        mem_subsys_i                 |mem_subsys__xdcDup__4         |    72|
-|15    |    \mem_device_inst[4].ram_unit_u0  |ram_unit                      |    72|
-|16    |      ram_unit_u0                    |mem_subsys_wrapper            |    72|
-|17    |        mem_subsys_i                 |mem_subsys                    |    72|
-|18    |  ram_pageAlign_interface_u0         |ram_pageAlign_interface       |  1029|
-|19    |    page_align_u0                    |page_align_depth_2            |     8|
-|20    |    page_align_u1                    |page_align_depth_2_0          |     8|
-|21    |    page_align_u10                   |page_align_depth_2_1          |     8|
-|22    |    page_align_u11                   |page_align_depth_2_2          |     8|
-|23    |    page_align_u12                   |page_align_depth_2_3          |     8|
-|24    |    page_align_u13                   |page_align_depth_2_4          |     8|
-|25    |    page_align_u14                   |page_align_depth_2_5          |     8|
-|26    |    page_align_u15                   |page_align_depth_2_6          |     8|
-|27    |    page_align_u16                   |page_align_depth_2_7          |     8|
-|28    |    page_align_u17                   |page_align_depth_2_8          |     8|
-|29    |    page_align_u18                   |page_align_depth_2_9          |     8|
-|30    |    page_align_u19                   |page_align_depth_2_10         |     8|
-|31    |    page_align_u2                    |page_align_depth_2_11         |     8|
-|32    |    page_align_u20                   |page_align_depth_2_12         |     8|
-|33    |    page_align_u21                   |page_align_depth_2_13         |     8|
-|34    |    page_align_u22                   |page_align_depth_2_14         |     8|
-|35    |    page_align_u23                   |page_align_depth_2_15         |     8|
-|36    |    page_align_u24                   |page_align_depth_2_16         |     8|
-|37    |    page_align_u25                   |page_align_depth_2_17         |     8|
-|38    |    page_align_u26                   |page_align_depth_2_18         |     8|
-|39    |    page_align_u27                   |page_align_depth_2_19         |     8|
-|40    |    page_align_u28                   |page_align_depth_2_20         |     8|
-|41    |    page_align_u29                   |page_align_depth_2_21         |     8|
-|42    |    page_align_u3                    |page_align_depth_2_22         |     8|
-|43    |    page_align_u30                   |page_align_depth_2_23         |     8|
-|44    |    page_align_u31                   |page_align_depth_2_24         |     8|
-|45    |    page_align_u32                   |page_align_depth_2_25         |     8|
-|46    |    page_align_u33                   |page_align_depth_2_26         |     8|
-|47    |    page_align_u34                   |page_align_depth_2_27         |     8|
-|48    |    page_align_u35                   |page_align_depth_2_28         |     8|
-|49    |    page_align_u36                   |page_align_depth_2_29         |     8|
-|50    |    page_align_u37                   |page_align_depth_2_30         |     8|
-|51    |    page_align_u38                   |page_align_depth_2_31         |     9|
-|52    |    page_align_u39                   |page_align_depth_1_2          |    12|
-|53    |    page_align_u4                    |page_align_depth_2_32         |     8|
-|54    |    page_align_u40                   |page_align_depth_1_2_33       |    12|
-|55    |    page_align_u41                   |page_align_depth_1_2_34       |    12|
-|56    |    page_align_u42                   |page_align_depth_1_2_35       |    12|
-|57    |    page_align_u43                   |page_align_depth_1_2_36       |    12|
-|58    |    page_align_u44                   |page_align_depth_1_2_37       |    12|
-|59    |    page_align_u45                   |page_align_depth_1_2_38       |    12|
-|60    |    page_align_u46                   |page_align_depth_1_2_39       |    12|
-|61    |    page_align_u47                   |page_align_depth_1_2_40       |    12|
-|62    |    page_align_u48                   |page_align_depth_1_2_41       |    12|
-|63    |    page_align_u49                   |page_align_depth_1_2_42       |    12|
-|64    |    page_align_u5                    |page_align_depth_2_43         |     8|
-|65    |    page_align_u50                   |page_align_depth_1_2_44       |    12|
-|66    |    page_align_u51                   |page_align_depth_1_2_45       |    12|
-|67    |    page_align_u52                   |page_align_depth_1_2_46       |    12|
-|68    |    page_align_u53                   |page_align_depth_1_2_47       |    12|
-|69    |    page_align_u54                   |page_align_depth_1_2_48       |    12|
-|70    |    page_align_u55                   |page_align_depth_1_2_49       |    12|
-|71    |    page_align_u56                   |page_align_depth_1_2_50       |    12|
-|72    |    page_align_u57                   |page_align_depth_1_2_51       |    12|
-|73    |    page_align_u58                   |page_align_depth_1_2_52       |    12|
-|74    |    page_align_u59                   |page_align_depth_1_2_53       |    12|
-|75    |    page_align_u6                    |page_align_depth_2_54         |     8|
-|76    |    page_align_u60                   |page_align_depth_1_2_55       |    12|
-|77    |    page_align_u61                   |page_align_depth_1_2_56       |    12|
-|78    |    page_align_u62                   |page_align_depth_1_2_57       |    12|
-|79    |    page_align_u63                   |page_align_depth_1            |     4|
-|80    |    page_align_u64                   |page_align_depth_1_58         |     4|
-|81    |    page_align_u65                   |page_align_depth_1_59         |     4|
-|82    |    page_align_u66                   |page_align_depth_1_60         |     4|
-|83    |    page_align_u67                   |page_align_depth_1_61         |     4|
-|84    |    page_align_u68                   |page_align_depth_1_62         |     4|
-|85    |    page_align_u69                   |page_align_depth_1_63         |     4|
-|86    |    page_align_u7                    |page_align_depth_2_64         |     8|
-|87    |    page_align_u70                   |page_align_depth_1_65         |     4|
-|88    |    page_align_u71                   |page_align_depth_1_66         |     4|
-|89    |    page_align_u72                   |page_align_depth_1_67         |     4|
-|90    |    page_align_u73                   |page_align_depth_1_68         |     4|
-|91    |    page_align_u74                   |page_align_depth_1_69         |     4|
-|92    |    page_align_u75                   |page_align_depth_1_70         |     4|
-|93    |    page_align_u76                   |page_align_depth_1_71         |     4|
-|94    |    page_align_u77                   |page_align_depth_1_72         |     4|
-|95    |    page_align_u78                   |page_align_depth_1_73         |     4|
-|96    |    page_align_u79                   |page_align_depth_1_74         |     4|
-|97    |    page_align_u8                    |page_align_depth_2_75         |     8|
-|98    |    page_align_u80                   |page_align_depth_1_76         |     4|
-|99    |    page_align_u81                   |page_align_depth_1_77         |     4|
-|100   |    page_align_u82                   |page_align_depth_1_78         |     4|
-|101   |    page_align_u83                   |page_align_depth_1_79         |     4|
-|102   |    page_align_u84                   |page_align_depth_1_80         |     4|
-|103   |    page_align_u9                    |page_align_depth_2_81         |     8|
-+------+-------------------------------------+------------------------------+------+
++------+-------------------------------------+---------------------------------+------+
+|      |Instance                             |Module                           |Cells |
++------+-------------------------------------+---------------------------------+------+
+|1     |top                                  |                                 |  4189|
+|2     |  inst_column_ram_pc85               |column_ram_pc85                  |   373|
+|3     |    \mem_device_inst[0].ram_unit_u0  |ram_unit__xdcDup__1              |    73|
+|4     |      ram_unit_u0                    |mem_subsys_wrapper__xdcDup__1    |    73|
+|5     |        mem_subsys_i                 |mem_subsys__xdcDup__1            |    72|
+|6     |    \mem_device_inst[1].ram_unit_u0  |ram_unit__xdcDup__2              |    73|
+|7     |      ram_unit_u0                    |mem_subsys_wrapper__xdcDup__2    |    73|
+|8     |        mem_subsys_i                 |mem_subsys__xdcDup__2            |    72|
+|9     |    \mem_device_inst[2].ram_unit_u0  |ram_unit__xdcDup__3              |    72|
+|10    |      ram_unit_u0                    |mem_subsys_wrapper__xdcDup__3    |    72|
+|11    |        mem_subsys_i                 |mem_subsys__xdcDup__3            |    72|
+|12    |    \mem_device_inst[3].ram_unit_u0  |ram_unit__xdcDup__4              |    72|
+|13    |      ram_unit_u0                    |mem_subsys_wrapper__xdcDup__4    |    72|
+|14    |        mem_subsys_i                 |mem_subsys__xdcDup__4            |    72|
+|15    |    \mem_device_inst[4].ram_unit_u0  |ram_unit                         |    72|
+|16    |      ram_unit_u0                    |mem_subsys_wrapper               |    72|
+|17    |        mem_subsys_i                 |mem_subsys                       |    72|
+|18    |  ram_pageAlign_interface_u0         |ram_pageAlign_interface          |  2436|
+|19    |    page_align_u0                    |page_align_depth_2               |     8|
+|20    |    page_align_u1                    |page_align_depth_2_0             |     8|
+|21    |    page_align_u10                   |circular_page_align_depth_1_2    |    28|
+|22    |    page_align_u11                   |circular_page_align_depth_1_2_1  |    28|
+|23    |    page_align_u12                   |circular_page_align_depth_1_2_2  |    28|
+|24    |    page_align_u13                   |circular_page_align_depth_1_2_3  |    28|
+|25    |    page_align_u14                   |circular_page_align_depth_1_2_4  |    28|
+|26    |    page_align_u15                   |circular_page_align_depth_1_2_5  |    28|
+|27    |    page_align_u16                   |circular_page_align_depth_1_2_6  |    28|
+|28    |    page_align_u17                   |circular_page_align_depth_1_2_7  |    28|
+|29    |    page_align_u18                   |circular_page_align_depth_1_2_8  |    28|
+|30    |    page_align_u19                   |circular_page_align_depth_1_2_9  |    28|
+|31    |    page_align_u2                    |circular_page_align_depth_1_2_10 |    28|
+|32    |    page_align_u20                   |circular_page_align_depth_1_2_11 |    28|
+|33    |    page_align_u21                   |circular_page_align_depth_1_2_12 |    28|
+|34    |    page_align_u22                   |circular_page_align_depth_1      |    32|
+|35    |    page_align_u23                   |circular_page_align_depth_1_13   |    24|
+|36    |    page_align_u24                   |circular_page_align_depth_1_14   |    24|
+|37    |    page_align_u25                   |circular_page_align_depth_1_15   |    24|
+|38    |    page_align_u26                   |circular_page_align_depth_1_16   |    24|
+|39    |    page_align_u27                   |circular_page_align_depth_1_17   |    24|
+|40    |    page_align_u28                   |circular_page_align_depth_1_18   |    24|
+|41    |    page_align_u29                   |circular_page_align_depth_1_19   |    24|
+|42    |    page_align_u3                    |circular_page_align_depth_1_2_20 |    28|
+|43    |    page_align_u30                   |circular_page_align_depth_1_21   |    24|
+|44    |    page_align_u31                   |circular_page_align_depth_1_22   |    24|
+|45    |    page_align_u32                   |circular_page_align_depth_1_23   |    24|
+|46    |    page_align_u33                   |circular_page_align_depth_1_24   |    24|
+|47    |    page_align_u34                   |circular_page_align_depth_1_25   |    24|
+|48    |    page_align_u35                   |circular_page_align_depth_1_26   |    24|
+|49    |    page_align_u36                   |circular_page_align_depth_1_27   |    24|
+|50    |    page_align_u37                   |circular_page_align_depth_1_28   |    24|
+|51    |    page_align_u38                   |circular_page_align_depth_1_29   |    24|
+|52    |    page_align_u39                   |circular_page_align_depth_1_30   |    24|
+|53    |    page_align_u4                    |circular_page_align_depth_1_2_31 |    28|
+|54    |    page_align_u40                   |circular_page_align_depth_1_32   |    24|
+|55    |    page_align_u41                   |circular_page_align_depth_1_33   |    24|
+|56    |    page_align_u42                   |circular_page_align_depth_1_34   |    24|
+|57    |    page_align_u43                   |circular_page_align_depth_1_35   |    24|
+|58    |    page_align_u44                   |circular_page_align_depth_1_36   |    24|
+|59    |    page_align_u45                   |circular_page_align_depth_1_37   |    24|
+|60    |    page_align_u46                   |circular_page_align_depth_1_38   |    24|
+|61    |    page_align_u47                   |circular_page_align_depth_1_39   |    24|
+|62    |    page_align_u48                   |circular_page_align_depth_1_40   |    24|
+|63    |    page_align_u49                   |circular_page_align_depth_1_41   |    24|
+|64    |    page_align_u5                    |circular_page_align_depth_1_2_42 |    28|
+|65    |    page_align_u50                   |circular_page_align_depth_1_43   |    24|
+|66    |    page_align_u51                   |circular_page_align_depth_1_44   |    24|
+|67    |    page_align_u52                   |circular_page_align_depth_1_45   |    24|
+|68    |    page_align_u53                   |circular_page_align_depth_1_46   |    24|
+|69    |    page_align_u54                   |circular_page_align_depth_1_47   |    24|
+|70    |    page_align_u55                   |circular_page_align_depth_1_48   |    24|
+|71    |    page_align_u56                   |circular_page_align_depth_1_49   |    24|
+|72    |    page_align_u57                   |circular_page_align_depth_1_50   |    24|
+|73    |    page_align_u58                   |circular_page_align_depth_1_51   |    24|
+|74    |    page_align_u59                   |circular_page_align_depth_1_52   |    24|
+|75    |    page_align_u6                    |circular_page_align_depth_1_2_53 |    28|
+|76    |    page_align_u60                   |circular_page_align_depth_1_54   |    24|
+|77    |    page_align_u61                   |circular_page_align_depth_1_55   |    24|
+|78    |    page_align_u62                   |circular_page_align_depth_1_56   |    24|
+|79    |    page_align_u63                   |circular_page_align_depth_1_57   |    24|
+|80    |    page_align_u64                   |circular_page_align_depth_1_58   |    24|
+|81    |    page_align_u65                   |circular_page_align_depth_1_59   |    24|
+|82    |    page_align_u66                   |circular_page_align_depth_1_60   |    24|
+|83    |    page_align_u67                   |circular_page_align_depth_1_61   |    24|
+|84    |    page_align_u68                   |circular_page_align_depth_1_62   |    24|
+|85    |    page_align_u69                   |circular_page_align_depth_1_63   |    24|
+|86    |    page_align_u7                    |circular_page_align_depth_1_2_64 |    28|
+|87    |    page_align_u70                   |circular_page_align_depth_1_65   |    24|
+|88    |    page_align_u71                   |circular_page_align_depth_1_66   |    24|
+|89    |    page_align_u72                   |circular_page_align_depth_1_67   |    24|
+|90    |    page_align_u73                   |circular_page_align_depth_1_68   |    24|
+|91    |    page_align_u74                   |circular_page_align_depth_1_69   |    24|
+|92    |    page_align_u75                   |circular_page_align_depth_1_70   |    24|
+|93    |    page_align_u76                   |circular_page_align_depth_1_71   |    24|
+|94    |    page_align_u77                   |circular_page_align_depth_1_72   |    24|
+|95    |    page_align_u78                   |circular_page_align_depth_1_73   |    24|
+|96    |    page_align_u79                   |circular_page_align_depth_1_74   |    24|
+|97    |    page_align_u8                    |circular_page_align_depth_1_2_75 |    28|
+|98    |    page_align_u80                   |circular_page_align_depth_1_76   |    24|
+|99    |    page_align_u81                   |circular_page_align_depth_1_77   |    24|
+|100   |    page_align_u82                   |circular_page_align_depth_1_78   |    24|
+|101   |    page_align_u83                   |circular_page_align_depth_1_79   |    24|
+|102   |    page_align_u84                   |circular_page_align_depth_1_80   |    24|
+|103   |    page_align_u9                    |circular_page_align_depth_1_2_81 |    28|
++------+-------------------------------------+---------------------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:42 ; elapsed = 00:01:07 . Memory (MB): peak = 3395.703 ; gain = 699.848 ; free physical = 1504280 ; free virtual = 1541166
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:46 ; elapsed = 00:01:10 . Memory (MB): peak = 3404.465 ; gain = 708.605 ; free physical = 1497015 ; free virtual = 1537018
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 105 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:39 ; elapsed = 00:01:02 . Memory (MB): peak = 3395.703 ; gain = 572.129 ; free physical = 1504314 ; free virtual = 1541200
-Synthesis Optimization Complete : Time (s): cpu = 00:00:42 ; elapsed = 00:01:07 . Memory (MB): peak = 3395.711 ; gain = 699.848 ; free physical = 1504314 ; free virtual = 1541200
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:42 ; elapsed = 00:01:05 . Memory (MB): peak = 3404.465 ; gain = 581.918 ; free physical = 1497047 ; free virtual = 1537050
+Synthesis Optimization Complete : Time (s): cpu = 00:00:46 ; elapsed = 00:01:10 . Memory (MB): peak = 3404.473 ; gain = 708.605 ; free physical = 1497047 ; free virtual = 1537050
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.03 . Memory (MB): peak = 3403.641 ; gain = 0.000 ; free physical = 1504389 ; free virtual = 1541275
-INFO: [Netlist 29-17] Analyzing 697 Unisim elements for replacement
+Netlist sorting complete. Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.03 . Memory (MB): peak = 3416.434 ; gain = 0.000 ; free physical = 1497129 ; free virtual = 1537133
+INFO: [Netlist 29-17] Analyzing 699 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3434.391 ; gain = 0.000 ; free physical = 1504310 ; free virtual = 1541197
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3440.246 ; gain = 0.000 ; free physical = 1497057 ; free virtual = 1537060
 INFO: [Project 1-111] Unisim Transformation Summary:
-  A total of 697 instances were transformed.
+  A total of 699 instances were transformed.
   BUFG => BUFGCE: 1 instance 
-  IBUF => IBUF (IBUFCTRL, INBUF): 696 instances
+  IBUF => IBUF (IBUFCTRL, INBUF): 698 instances
 
 INFO: [Common 17-83] Releasing license: Synthesis
-63 Infos, 149 Warnings, 0 Critical Warnings and 0 Errors encountered.
+38 Infos, 125 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:58 ; elapsed = 00:01:57 . Memory (MB): peak = 3434.391 ; gain = 1730.305 ; free physical = 1504406 ; free virtual = 1541292
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3434.391 ; gain = 0.000 ; free physical = 1504405 ; free virtual = 1541292
+synth_design: Time (s): cpu = 00:01:02 ; elapsed = 00:01:40 . Memory (MB): peak = 3440.246 ; gain = 1736.156 ; free physical = 1497150 ; free virtual = 1537153
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 3440.246 ; gain = 0.000 ; free physical = 1497150 ; free virtual = 1537153
 WARNING: [Constraints 18-5210] No constraints selected for write.
 Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
 INFO: [Common 17-1381] The checkpoint '/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.runs/synth_1/mem_subsystem_top.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file mem_subsystem_top_utilization_synth.rpt -pb mem_subsystem_top_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Mon May 24 22:01:27 2021...
+INFO: [Common 17-206] Exiting Vivado at Wed May 26 22:08:35 2021...

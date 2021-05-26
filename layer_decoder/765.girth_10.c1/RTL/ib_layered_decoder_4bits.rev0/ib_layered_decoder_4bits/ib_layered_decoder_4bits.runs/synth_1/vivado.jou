@@ -2,8 +2,8 @@
 # Vivado v2019.2 (64-bit)
 # SW Build 2708876 on Wed Nov  6 21:39:14 MST 2019
 # IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
-# Start of session at: Mon May 24 21:59:11 2021
-# Process ID: 57706
+# Start of session at: Wed May 26 22:06:36 2021
+# Process ID: 7829
 # Current directory: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.runs/synth_1
 # Command line: vivado -log mem_subsystem_top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source mem_subsystem_top.tcl
 # Log file: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.runs/synth_1/mem_subsystem_top.vds

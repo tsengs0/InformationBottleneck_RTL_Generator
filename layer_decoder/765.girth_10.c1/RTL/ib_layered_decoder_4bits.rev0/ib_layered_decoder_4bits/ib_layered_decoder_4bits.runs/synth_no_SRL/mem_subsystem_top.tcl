@@ -65,12 +65,12 @@ set_property used_in_implementation false [get_files dont_touch.xdc]
 set_param ips.enableIPCacheLiteLoad 1
 close [open __synthesis_is_running__ w]
 
-synth_design -top mem_subsystem_top -part xczu7ev-ffvc1156-2-e
+synth_design -top mem_subsystem_top -part xczu7ev-ffvc1156-2-e -no_srlextract
 
 
 # disable binary constraint mode for synth run checkpoints
 set_param constraints.enableBinaryConstraints false
 write_checkpoint -force -noxdef mem_subsystem_top.dcp
-create_report "synth_1_synth_report_utilization_0" "report_utilization -file mem_subsystem_top_utilization_synth.rpt -pb mem_subsystem_top_utilization_synth.pb"
+create_report "synth_no_SRL_synth_report_utilization_0" "report_utilization -file mem_subsystem_top_utilization_synth.rpt -pb mem_subsystem_top_utilization_synth.pb"
 file delete __synthesis_is_running__
 close [open __synthesis_is_complete__ w]

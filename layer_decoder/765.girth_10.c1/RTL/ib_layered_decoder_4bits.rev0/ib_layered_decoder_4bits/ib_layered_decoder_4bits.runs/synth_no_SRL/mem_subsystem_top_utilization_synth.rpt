@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-| Date         : Wed May 26 22:08:35 2021
+| Date         : Wed May 26 22:25:59 2021
 | Host         : lmpcc-02 running 64-bit SUSE Linux Enterprise Server 15 SP1
 | Command      : report_utilization -file mem_subsystem_top_utilization_synth.rpt -pb mem_subsystem_top_utilization_synth.pb
 | Design       : mem_subsystem_top
@@ -28,22 +28,20 @@ Table of Contents
 1. CLB Logic
 ------------
 
-+----------------------------+------+-------+-----------+-------+
-|          Site Type         | Used | Fixed | Available | Util% |
-+----------------------------+------+-------+-----------+-------+
-| CLB LUTs*                  |  885 |     0 |    230400 |  0.38 |
-|   LUT as Logic             |  553 |     0 |    230400 |  0.24 |
-|   LUT as Memory            |  332 |     0 |    101760 |  0.33 |
-|     LUT as Distributed RAM |    0 |     0 |           |       |
-|     LUT as Shift Register  |  332 |     0 |           |       |
-| CLB Registers              | 1099 |     0 |    460800 |  0.24 |
-|   Register as Flip Flop    | 1099 |     0 |    460800 |  0.24 |
-|   Register as Latch        |    0 |     0 |    460800 |  0.00 |
-| CARRY8                     |    0 |     0 |     28800 |  0.00 |
-| F7 Muxes                   |    0 |     0 |    115200 |  0.00 |
-| F8 Muxes                   |    0 |     0 |     57600 |  0.00 |
-| F9 Muxes                   |    0 |     0 |     28800 |  0.00 |
-+----------------------------+------+-------+-----------+-------+
++-------------------------+------+-------+-----------+-------+
+|        Site Type        | Used | Fixed | Available | Util% |
++-------------------------+------+-------+-----------+-------+
+| CLB LUTs*               |  387 |     0 |    230400 |  0.17 |
+|   LUT as Logic          |  387 |     0 |    230400 |  0.17 |
+|   LUT as Memory         |    0 |     0 |    101760 |  0.00 |
+| CLB Registers           | 3004 |     0 |    460800 |  0.65 |
+|   Register as Flip Flop | 3004 |     0 |    460800 |  0.65 |
+|   Register as Latch     |    0 |     0 |    460800 |  0.00 |
+| CARRY8                  |    0 |     0 |     28800 |  0.00 |
+| F7 Muxes                |    0 |     0 |    115200 |  0.00 |
+| F8 Muxes                |    0 |     0 |     57600 |  0.00 |
+| F9 Muxes                |    0 |     0 |     28800 |  0.00 |
++-------------------------+------+-------+-----------+-------+
 * Warning! The Final LUT count, after physical optimizations and full implementation, is typically lower. Run opt_design after synthesis, if not already completed, for a more realistic count.
 
 
@@ -62,7 +60,7 @@ Table of Contents
 | 0     |          Yes |           - |          Set |
 | 0     |          Yes |           - |        Reset |
 | 0     |          Yes |         Set |            - |
-| 1099  |          Yes |       Reset |            - |
+| 3004  |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -157,15 +155,14 @@ Table of Contents
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| FDRE     | 1099 |            Register |
+| FDRE     | 3004 |            Register |
 | INBUF    |  698 |                 I/O |
 | IBUFCTRL |  698 |              Others |
 | OBUFT    |  680 |                 I/O |
 | LUT3     |  595 |                 CLB |
-| LUT2     |  335 |                 CLB |
-| SRL16E   |  332 |                 CLB |
 | LUT6     |   74 |                 CLB |
 | LUT5     |   10 |                 CLB |
+| LUT2     |    3 |                 CLB |
 | LUT1     |    3 |                 CLB |
 | LUT4     |    2 |                 CLB |
 | BUFGCE   |    1 |               Clock |

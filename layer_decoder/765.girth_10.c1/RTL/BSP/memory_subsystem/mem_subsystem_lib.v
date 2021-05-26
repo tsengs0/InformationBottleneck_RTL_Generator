@@ -360,6 +360,7 @@ module mem_subsystem_top #(
 	input wire [CHECK_PARALLELISM-1:0] delay_cmd,
 	input wire [ADDR-1:0] sync_addr,
 	input wire [LAYER_NUM-1:0] layer_status,
+	input wire first_row_chunk,
 	input wire we,
 	input wire sys_clk,
 	input wire rstn
@@ -633,6 +634,7 @@ ram_pageAlign_interface #(
 	.sched_cmd (sched_cmd), // 1'b0: align_in from variable msg; 1'b1: align_in from check msg
 	.delay_cmd (delay_cmd[CHECK_PARALLELISM-1:0]),
 	.layer_status (layer_status[LAYER_NUM-1:0]),
+	.first_row_chunk (first_row_chunk),
 	.sys_clk (sys_clk),
 	.rstn (rstn)
 );
