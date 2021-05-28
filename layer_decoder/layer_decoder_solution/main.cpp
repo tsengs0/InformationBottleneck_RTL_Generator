@@ -8,6 +8,8 @@
 #include <iterator>
 #include <fstream>
 #include <string>
+#include <sstream>
+#include <bitset>
 
 using namespace std;
 #define DEBUG
@@ -56,6 +58,7 @@ typedef struct layer_module {
 	unsigned int *DS; // device selection
 	unsigned int *PA; // page address
 
+	unsigned int *shift_factor; 
 	//unsigned int ***page_align_set;
 	page_align_set_t **page_align_set;
 } Layer_Module;
@@ -70,6 +73,7 @@ void page_align_hdl_gen(unsigned int submatrix_id, unsigned int align_cmd_num, v
 void critical_delay_set_construct(unsigned int base_set_id, vector<unsigned int> *base_set, vector<unsigned int> *critical_set_ref, vector<unsigned int> *critical_set);
 void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int> base_delay_cmd, vector<unsigned int> *critical_set, vector<unsigned int> *circular_delay_cmd);
 void circular_page_align_hdl_gen(unsigned int base_set_id, unsigned int submatrix_id, unsigned align_cmd_num, vector<unsigned int> *circular_delay_cmd);
+unsigned int msg_to_mem_bankAddr(unsigned int mem_bank_num, unsigned int shift_factor, unsigned int msg_addr);
 
 int main(int argc, char **argv)
 {
@@ -80,6 +84,7 @@ int main(int argc, char **argv)
 	unsigned int row_chunk_cnt;
 
 	ofstream log_fd[dc]; char *log_filename;
+	ofstream page_align_test_pattern[dc]; char *tb_filename;
 	for(int i = 0; i < layer_num; i++) {
 #ifdef DEBUG
 		cout << "----------------------------------------------------------------------------------------------------------------------------" << endl
@@ -92,8 +97,13 @@ int main(int argc, char **argv)
 			if(i == 0) {
 				log_filename = new char [50];
 				sprintf(log_filename, "submatrix_col_%d.log.txt", sub_matrix_id);
-				log_fd[sub_matrix_id].open(log_filename, ofstream::out);
+				log_fd[sub_matrix_id].open(log_filename, ofstream::out | ofstream::app);
 				delete [] log_filename;
+
+				tb_filename = new char [50];
+				sprintf(tb_filename, "submatrix_%d_pageAlign_tb.mem", sub_matrix_id);
+				page_align_test_pattern[sub_matrix_id].open(tb_filename, ofstream::out | ofstream::app);
+				delete [] tb_filename;
 			}
 #ifdef DEBUG
 			cout << endl << endl << "Sub-Matrix_" << sub_matrix_id << ":" << endl << "(DS, PA)" << endl;
@@ -102,6 +112,10 @@ int main(int argc, char **argv)
 			layer_0_shift = (int) s[i][sub_matrix_id];
 			layer_1_shift = (int) s[(i+1) % layer_num][sub_matrix_id];
 			interLayer_offset = abs((int) ((z-layer_0_shift) % Pc) - (int) ((z-layer_1_shift) % Pc));
+			layer[i].shift_factor[sub_matrix_id] = interLayer_offset;
+#ifdef DEBUG	
+			cout << "Shift Factor: " << interLayer_offset << endl;
+#endif
 			row_chunk_cnt = 0;
 			for(int col = 0; col < z; col++) {
 				pcm_col = (sub_matrix_id*z)+col;
@@ -120,15 +134,18 @@ int main(int argc, char **argv)
 				#endif
 
 				#ifdef DISPLAY_DEVICE_SELECTION_ONLY
-					cout << layer[i].DS[pcm_col];
+					page_align_test_pattern[sub_matrix_id] << std::hex << layer[i].DS[pcm_col];
+					cout << std::dec << layer[i].DS[pcm_col];
 					log_fd[sub_matrix_id] << layer[i].DS[pcm_col];
 					if(col % 10 == 0) {
 						cout << endl;
 						log_fd[sub_matrix_id] << endl;
+						page_align_test_pattern[sub_matrix_id] << endl;
 					}
 					else { 
 						cout << " ";
 						log_fd[sub_matrix_id] << " ";
+						page_align_test_pattern[sub_matrix_id] << " ";
 					}
 				#endif
 
@@ -412,7 +429,7 @@ int main(int argc, char **argv)
 		cout << "----------------------------------------------------------------------------------------------------------------------------" << endl;
 	}
 
-	for(unsigned int k = 0; k < dc; k++) log_fd[k].close();
+	for(unsigned int k = 0; k < dc; k++) {log_fd[k].close(); page_align_test_pattern[k].close();}
 	
 	vector<unsigned int> critical_set_ref[dc][layer_num];
 
@@ -513,6 +530,7 @@ void sys_init()
 		layer[i].C_index = new unsigned int[col_size];
 		layer[i].DS = new unsigned int[col_size];
 		layer[i].PA = new unsigned int[col_size];
+		layer[i].shift_factor = new unsigned int [dc];
 		for(unsigned int j = 0; j < col_size; j++) layer[i].C_index[j] = C_index[j] % z;
 	}
 }
@@ -827,10 +845,15 @@ void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int
 	//page_align_hdl_gen(submatrix_id, align_cmd_num, delay_cmd[submatrix_id]);
 }
 
+unsigned int msg_to_mem_bankAddr(unsigned int mem_bank_num, unsigned int shift_factor, unsigned int msg_addr)
+{
+	return (msg_addr >= shift_factor) ? msg_addr-shift_factor : (mem_bank_num-shift_factor+msg_addr);
+}
 void circular_page_align_hdl_gen(unsigned int base_set_id, unsigned int submatrix_id, unsigned align_cmd_num, vector<unsigned int> *circular_delay_cmd)
 {
 	sprintf(hdl_filename, "circular_page_align_%d_lib.v", submatrix_id);
 	ofstream hdl_fd; hdl_fd.open(hdl_filename, ofstream::out | ofstream::app);
+	unsigned int memBank_addr;
 
 	for(unsigned int cmd_id = 0; cmd_id < align_cmd_num; cmd_id++) {
 		unsigned int circular_set_size = circular_delay_cmd[cmd_id].size();
@@ -841,49 +864,52 @@ void circular_page_align_hdl_gen(unsigned int base_set_id, unsigned int submatri
 				   << " = " << circular_cmd_logic[base_set_id][cmd_id] << endl;
 
 			for(unsigned int msg_id = 0; msg_id < circular_set_size; msg_id++) {
+				memBank_addr = msg_to_mem_bankAddr(Pc, layer[0].shift_factor[submatrix_id], circular_delay_cmd[cmd_id][msg_id]);
 				hdl_fd << "circular_page_align_depth_1_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u"
-					   << circular_delay_cmd[cmd_id][msg_id]
-					   << " (.align_out (msg_out_" << circular_delay_cmd[cmd_id][msg_id]
-					   << "), .align_target_in (msg_mux_out[" << circular_delay_cmd[cmd_id][msg_id]
+					   << memBank_addr
+					   << " (.align_out (msg_out_" << memBank_addr
+					   << "), .align_target_in (msg_mux_out[" << memBank_addr
 					   << "]), .delay_cmd(circular_delay_cmd_" << base_set_id << "_" << cmd_id
 					   << "), .sys_clk(sys_clk), .rstn(rstn));" << endl;
 			}
 		}
 		else if(circular_set_size != 0 && cmd_id == (align_cmd_num-2)) {
 			for(unsigned int msg_id = 0; msg_id < circular_set_size; msg_id++) {
+				memBank_addr = msg_to_mem_bankAddr(Pc, layer[0].shift_factor[submatrix_id], circular_delay_cmd[cmd_id][msg_id]);
 				hdl_fd << "circular_page_align_depth_";
 				if(base_set_id == 6) hdl_fd << "2"; // 2-circular delay
 				else if(base_set_id == 7) hdl_fd << "1"; // 1-circular delay
-				hdl_fd << " #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << circular_delay_cmd[cmd_id][msg_id]
-				       << " (.align_out (msg_out_" << circular_delay_cmd[cmd_id][msg_id]
-				       << "), .align_target_in (msg_mux_out[" << circular_delay_cmd[cmd_id][msg_id]
+				hdl_fd << " #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << memBank_addr
+				       << " (.align_out (msg_out_" << memBank_addr
+				       << "), .align_target_in (msg_mux_out[" << memBank_addr
 				       << "]), .first_row_chunk(first_row_chunk), .sys_clk(sys_clk), .rstn(rstn));" << endl;
 			}
 		}
 		else if(circular_set_size != 0 && cmd_id == (align_cmd_num-1)) {
 			for(unsigned int msg_id = 0; msg_id < circular_set_size; msg_id++) {
+				memBank_addr = msg_to_mem_bankAddr(Pc, layer[0].shift_factor[submatrix_id], circular_delay_cmd[cmd_id][msg_id]);
 				if(base_set_id < 6){
-					hdl_fd << "wire delay_cmd_" << circular_delay_cmd[cmd_id][msg_id] << ";" << endl
+					hdl_fd << "wire delay_cmd_" << memBank_addr << ";" << endl
 						   << "align_cmd_gen_" << cmd_id
-			    	   	   << " #(.LAYER_NUM (LAYER_NUM)) delay_cmd_" << circular_delay_cmd[cmd_id][msg_id]
-			    	   	   << "(.delay_cmd(delay_cmd_" << circular_delay_cmd[cmd_id][msg_id]
+			    	   	   << " #(.LAYER_NUM (LAYER_NUM)) delay_cmd_" << memBank_addr
+			    	   	   << "(.delay_cmd(delay_cmd_" << memBank_addr
 			    	   	   << "), .layer_status(layer_status[LAYER_NUM-1:0]));" << endl
-			    	   	   << "page_align_depth_1_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << circular_delay_cmd[cmd_id][msg_id]
-			    	   	   << "(.align_out (msg_out_" << circular_delay_cmd[cmd_id][msg_id]
-			    	   	   << "), .align_target_in (msg_mux_out[" << circular_delay_cmd[cmd_id][msg_id]
-			    	   	   << "]), .delay_cmd(delay_cmd_" << circular_delay_cmd[cmd_id][msg_id]
+			    	   	   << "page_align_depth_1_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << memBank_addr
+			    	   	   << "(.align_out (msg_out_" << memBank_addr
+			    	   	   << "), .align_target_in (msg_mux_out[" << memBank_addr
+			    	   	   << "]), .delay_cmd(delay_cmd_" << memBank_addr
 			    	   	   << "), .sys_clk(sys_clk), .rstn(rstn));" << endl << endl;
 			    }
 				else if(base_set_id == 6) {
-					hdl_fd << "page_align_depth_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << circular_delay_cmd[cmd_id][msg_id]
-						   << "(.align_out(msg_out_" << circular_delay_cmd[cmd_id][msg_id]
-						   << "), .align_target_in (msg_mux_out[" << circular_delay_cmd[cmd_id][msg_id]
+					hdl_fd << "page_align_depth_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << memBank_addr
+						   << "(.align_out(msg_out_" << memBank_addr
+						   << "), .align_target_in (msg_mux_out[" << memBank_addr
 						   << "]), .sys_clk(sys_clk), .rstn(rstn));" << endl;
 			    }
 				else if(base_set_id == 7) {
-					hdl_fd << "page_align_depth_1 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << circular_delay_cmd[cmd_id][msg_id]
-						   << "(.align_out(msg_out_" << circular_delay_cmd[cmd_id][msg_id]
-						   << "), .align_target_in (msg_mux_out[" << circular_delay_cmd[cmd_id][msg_id]
+					hdl_fd << "page_align_depth_1 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << memBank_addr
+						   << "(.align_out(msg_out_" << memBank_addr
+						   << "), .align_target_in (msg_mux_out[" << memBank_addr
 						   << "]), .sys_clk(sys_clk), .rstn(rstn));" << endl;
 				}
 			}
