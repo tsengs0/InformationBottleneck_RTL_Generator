@@ -10,7 +10,7 @@
 #include <string>
 #include <sstream>
 #include <bitset>
-//#include <ctime>
+#include <ctime>
 
 using namespace std;
 #define DEBUG
@@ -532,7 +532,7 @@ void sys_init()
 		for(unsigned int j = 0; j < col_size; j++) layer[i].C_index[j] = C_index[j] % z;
 	}
 
-	//srand(time(NULL));
+	srand(time(NULL));
 }
 
 void var_mem_init()
@@ -564,7 +564,6 @@ void mux_insert_set(unsigned int layer_a, unsigned int *mux_num, unsigned int **
 		}
 	}
 }
-
 /*
 void mux_insert_set(unsigned int layer_a, unsigned int layer_b, unsigned int *mux_num, unsigned int **mux_loc_set)
 {
