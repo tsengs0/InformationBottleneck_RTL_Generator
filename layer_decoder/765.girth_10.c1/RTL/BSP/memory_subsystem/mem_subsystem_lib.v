@@ -184,7 +184,7 @@ module mem_subsystem_top #(
 	output wire [QUAN_SIZE-1:0] mem_to_cnu_83,
 	output wire [QUAN_SIZE-1:0] mem_to_cnu_84,
 
-	input wire [QUAN_SIZE-1:0] vnu_msg_in_0,
+	input wire [QUAN_SIZE-1:0] vnu_to_mem_1,
 	input wire [QUAN_SIZE-1:0] vnu_to_mem_1,
 	input wire [QUAN_SIZE-1:0] vnu_to_mem_2,
 	input wire [QUAN_SIZE-1:0] vnu_to_mem_3,
@@ -459,7 +459,7 @@ ram_pageAlign_interface #(
 	.msg_out_83 (page_align_out[83]),
 	.msg_out_84 (page_align_out[84]),
 
-	.vnu_msg_in_0  (vnu_msg_in_0 [QUAN_SIZE-1:0]),
+	.vnu_msg_in_0  (vnu_to_mem_1 [QUAN_SIZE-1:0]),
 	.vnu_msg_in_1  (vnu_to_mem_1 [QUAN_SIZE-1:0]),
 	.vnu_msg_in_2  (vnu_to_mem_2 [QUAN_SIZE-1:0]),
 	.vnu_msg_in_3  (vnu_to_mem_3 [QUAN_SIZE-1:0]),

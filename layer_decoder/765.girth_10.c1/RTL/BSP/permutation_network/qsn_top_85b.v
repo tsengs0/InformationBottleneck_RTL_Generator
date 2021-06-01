@@ -1,8 +1,8 @@
 module qsn_top_85b (
-	output wire [84:0] sw_out_bit0,
-	output wire [84:0] sw_out_bit1,
-	output wire [84:0] sw_out_bit2,
-	output wire [84:0] sw_out_bit3,
+	output reg [84:0] sw_out_bit0,
+	output reg [84:0] sw_out_bit1,
+	output reg [84:0] sw_out_bit2,
+	output reg [84:0] sw_out_bit3,
 
 	input wire [84:0] sw_in_bit0,
 	input wire [84:0] sw_in_bit1,
@@ -10,7 +10,9 @@ module qsn_top_85b (
 	input wire [84:0] sw_in_bit3,
 	input wire [6:0] left_sel,
 	input wire [6:0] right_sel,
-	input wire [83:0] merge_sel
+	input wire [83:0] merge_sel,
+	input wire sys_clk,
+	input wire rstn
 );
 
 	wire [84:0] sw_in_reg[0:3];
@@ -27,7 +29,7 @@ module qsn_top_85b (
 			.sel (left_sel[6:0])
 		);
 		// Instantiation of Right Shift Network
-		wire [85:0] right_sw_out;
+		wire [84:0] right_sw_out;
 		qsn_right_85b qsn_right_u0 (
 			.sw_out (right_sw_out[84:0]),
 
@@ -49,8 +51,8 @@ module qsn_top_85b (
 	assign sw_in_reg[1] = sw_in_bit1[84:0];
 	assign sw_in_reg[2] = sw_in_bit2[84:0];
 	assign sw_in_reg[3] = sw_in_bit3[84:0];
-	assign sw_out_bit0[84:0] = sw_out_reg[0];
-	assign sw_out_bit1[84:0] = sw_out_reg[1];
-	assign sw_out_bit2[84:0] = sw_out_reg[2];
-	assign sw_out_bit3[84:0] = sw_out_reg[3];
+	always @(posedge sys_clk) begin if(!rstn) sw_out_bit0[84:0] <= 0; else sw_out_bit0[84:0] <= sw_out_reg[0]; end
+	always @(posedge sys_clk) begin if(!rstn) sw_out_bit1[84:0] <= 0; else sw_out_bit1[84:0] <= sw_out_reg[1]; end
+	always @(posedge sys_clk) begin if(!rstn) sw_out_bit2[84:0] <= 0; else sw_out_bit2[84:0] <= sw_out_reg[2]; end
+	always @(posedge sys_clk) begin if(!rstn) sw_out_bit3[84:0] <= 0; else sw_out_bit3[84:0] <= sw_out_reg[3]; end
 endmodule
