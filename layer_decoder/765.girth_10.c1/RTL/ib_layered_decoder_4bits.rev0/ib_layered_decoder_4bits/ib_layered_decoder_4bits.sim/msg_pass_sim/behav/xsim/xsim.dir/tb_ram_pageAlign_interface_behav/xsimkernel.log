@@ -1,0 +1,4 @@
+Running: xsim.dir/tb_ram_pageAlign_interface_behav/xsimk -simmode gui -wdb tb_ram_pageAlign_interface_behav.wdb -simrunnum 0 -socket 53537
+Design successfully loaded
+Design Loading Memory Usage: 46308 KB (Peak: 46308 KB)
+Design Loading CPU Usage: 20 ms

@@ -1,0 +1,30 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ram_pageAlign_interface
+INFO: [VRFC 10-311] analyzing module align_cmd_gen_0
+INFO: [VRFC 10-311] analyzing module align_cmd_gen_1
+INFO: [VRFC 10-311] analyzing module align_cmd_gen_2
+INFO: [VRFC 10-311] analyzing module align_cmd_gen_3
+INFO: [VRFC 10-311] analyzing module align_cmd_gen_4
+INFO: [VRFC 10-311] analyzing module align_cmd_gen_5
+INFO: [VRFC 10-311] analyzing module page_align_depth_1_2
+INFO: [VRFC 10-311] analyzing module page_align_depth_1
+INFO: [VRFC 10-311] analyzing module page_align_depth_2
+INFO: [VRFC 10-311] analyzing module circular_align_cmd_gen_0
+INFO: [VRFC 10-311] analyzing module circular_align_cmd_gen_1
+INFO: [VRFC 10-311] analyzing module circular_align_cmd_gen_2
+INFO: [VRFC 10-311] analyzing module circular_align_cmd_gen_3
+INFO: [VRFC 10-311] analyzing module circular_align_cmd_gen_4
+INFO: [VRFC 10-311] analyzing module circular_align_cmd_gen_5
+INFO: [VRFC 10-311] analyzing module circular_page_align_depth_1_2
+INFO: [VRFC 10-311] analyzing module circular_page_align_depth_1
+INFO: [VRFC 10-311] analyzing module circular_page_align_depth_2
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/permutation_network/qsn_controller_85b.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module qsn_controller_85b
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/permutation_network/qsn_left_85b.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module qsn_left_85b
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/permutation_network/qsn_merge_85b.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module qsn_merge_85b
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/permutation_network/qsn_right_85b.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module qsn_right_85b
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/permutation_network/qsn_top_85b.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module qsn_top_85b
