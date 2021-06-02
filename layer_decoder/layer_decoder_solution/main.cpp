@@ -69,7 +69,7 @@ void sys_init();
 void var_mem_init();
 void mux_insert_set(unsigned int layer_a, unsigned int *mux_num, unsigned int **mux_loc_set);
 //void mux_insert_set(unsigned int layer_a, unsigned int layer_b, unsigned int *mux_num, unsigned int **mux_loc_set);
-void delay_set_construct(unsigned int sub_matrix_id, unsigned int delay_type, unsigned int target_set_size, unsigned int target_start_loc, Layer_Module *target_layer);
+void delay_set_construct(unsigned int sub_matrix_id, unsigned int delay_type, unsigned int target_set_size, unsigned int target_start_loc, Layer_Module *target_layer, bool isExcption);
 void page_align_hdl_gen(unsigned int submatrix_id, unsigned int align_cmd_num, vector<unsigned int> *delay_cmd);
 void critical_delay_set_construct(unsigned int base_set_id, vector<unsigned int> *base_set, vector<unsigned int> *critical_set_ref, vector<unsigned int> *critical_set);
 void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int> base_delay_cmd, vector<unsigned int> *critical_set, vector<unsigned int> *circular_delay_cmd);
@@ -164,6 +164,7 @@ int main(int argc, char **argv)
 
 	unsigned int **mux_num = new unsigned int* [layer_num];
 	unsigned int ***mux_loc_set = new unsigned int** [layer_num];
+	bool isExcption;
 	circular_page circular_page_ptr;
 	for(int i = 0; i < layer_num; i++) {
 		unsigned int layer_a = i, layer_b = (i+1) % layer_num;
@@ -171,47 +172,31 @@ int main(int argc, char **argv)
 		mux_loc_set[i] = new unsigned int* [dc];
 		for(int j = 0; j < dc; j++) mux_loc_set[i][j] = new unsigned int[2];
 		mux_insert_set(layer_a, mux_num[i], mux_loc_set[i]);
-		//mux_insert_set(layer_a, layer_b, mux_num[i], mux_loc_set[i]);
-#ifdef DEBUG
-		cout << "----------------------------------------------------------------------------------------------------------------------------" << endl;
-		cout << "Set of Multipexer Insertion Locations --> Between Layer_" << layer_a << " and " << layer_b << endl
-		     << "(Multiplexer number, MemBank.start, MemBank.end):" << endl;
-#endif
-		for(unsigned int k = 0; k < dc; k++) {
-			log_fd[k] << "----------------------------------------------------------------------------------------------------------------------------" << endl;
-			log_fd[k] << "Set of Multipexer Insertion Locations --> Between Layer_" << layer_a << " and " << layer_b << endl
-			          << "(Multiplexer number, MemBank.start, MemBank.end):" << endl;
-		}
 
 		layer[i].page_align_set = new page_align_set_t* [dc];
 		for(unsigned int k = 0; k < dc; k++) {
-			log_fd[k] << "\tSub-matrix_" << k 
-			     	  << " -> {# of one-cycle MUXs:" << Pc-mux_num[i][k] 
-			     	  << " (from:" << mux_loc_set[i][k][0] << ")"
-			     	  << ", # of two-cycle MUXs:" << mux_num[i][k] << " (from:" << mux_loc_set[i][k][1] << ")}" << endl;
-#ifdef DEBUG
-			cout << "\tSub-matrix_" << k 
-			     << " -> {# of one-cycle MUXs:" << Pc-mux_num[i][k] 
-			     << " (from:" << mux_loc_set[i][k][0] << ")"
-			     << ", # of two-cycle MUXs:" << mux_num[i][k] << " (from:" << mux_loc_set[i][k][1] << ")}" << endl;
-#endif
 			if(k != 0) {
 				// Construction of one- and two-delay insertion sets of all layers
 				layer[i].page_align_set[k] = new page_align_set_t [PAGE_ALIGN_TYPE_NUM];	
 				unsigned int delay_set_size[PAGE_ALIGN_TYPE_NUM]; 
 				delay_set_size[0] = Pc-mux_num[i][k]; delay_set_size[1] = mux_num[i][k];
 				for(unsigned int align_type = 0; align_type < PAGE_ALIGN_TYPE_NUM; align_type++) {
+					// There is one exception leads to different identification of mux location
+					// E.g., a zero shift factor on next layer
+					if(s[layer_b][k] == 0) isExcption = true;
+					else isExcption = false;
 					delay_set_construct(
 								k,
 								align_type, 
 								delay_set_size[align_type],
 								mux_loc_set[i][k][align_type],
-								&layer[i]
+								&layer[i],
+								isExcption
 					);
 					
 #ifdef DEBUG
-					log_fd[k] << align_type+1 << "-delay insertion set:" << endl << "{";
-					cout << align_type+1 << "-delay insertion set:" << endl << "{";
+					log_fd[k] << endl << "Layer_" << i << " -> " << align_type+1 << "-delay insertion set:" << endl << "{";
+					cout << endl << "Layer_" << i << " -> " << align_type+1 << "-delay insertion set:" << endl << "{";
 					//for(unsigned int l = 0; l < delay_set_size[align_type]; l++) 
 					//	cout << layer[i].page_align_set[k][align_type][l] << " ";
 					vector<unsigned int>::iterator align_msg;
@@ -242,6 +227,9 @@ int main(int argc, char **argv)
 		delay_cmd[submatrix_id] = new vector<unsigned int> [align_cmd_num];
 		// 0) Two-delay-only inseration on Layer A:
 		//    set operation: (A-B)-C or (A\B)\C
+		sort(layer[0].page_align_set[submatrix_id][TWO_DELAY].begin(), layer[0].page_align_set[submatrix_id][TWO_DELAY].end());
+		sort(layer[1].page_align_set[submatrix_id][TWO_DELAY].begin(), layer[1].page_align_set[submatrix_id][TWO_DELAY].end());
+		sort(layer[2].page_align_set[submatrix_id][TWO_DELAY].begin(), layer[2].page_align_set[submatrix_id][TWO_DELAY].end());
 		vector<unsigned int> diff;
 		std::set_difference(
 					begin(layer[0].page_align_set[submatrix_id][TWO_DELAY]), 
@@ -249,7 +237,8 @@ int main(int argc, char **argv)
 					begin(layer[1].page_align_set[submatrix_id][TWO_DELAY]), 
 					end(layer[1].page_align_set[submatrix_id][TWO_DELAY]), 
 					std::inserter(diff, end(diff))
-		);
+		); 
+		sort(diff.begin(), diff.end());
 		std::set_difference(
 					begin(diff), 
 					end(diff), 
@@ -271,6 +260,7 @@ int main(int argc, char **argv)
 					end(layer[0].page_align_set[submatrix_id][TWO_DELAY]), 
 					std::inserter(diff, end(diff))
 		);
+		sort(diff.begin(), diff.end());
 		std::set_difference(
 					begin(diff), 
 					end(diff), 
@@ -299,6 +289,8 @@ int main(int argc, char **argv)
 					end(layer[2].page_align_set[submatrix_id][TWO_DELAY]),
 					std::inserter(delay_cmd[submatrix_id][2], end(delay_cmd[submatrix_id][2]))
 		);
+		sort(delay_cmd[submatrix_id][2].begin(), delay_cmd[submatrix_id][2].end());
+
 		vector<unsigned int>().swap(diff);
 		cout << "A&B delay command for submatrix-" << submatrix_id << ": {";
 		for(unsigned int temp = 0; temp < delay_cmd[submatrix_id][2].size(); temp++) cout << delay_cmd[submatrix_id][2][temp] << " ";
@@ -313,6 +305,7 @@ int main(int argc, char **argv)
 					end(layer[0].page_align_set[submatrix_id][TWO_DELAY]), 
 					std::inserter(diff, end(diff))
 		);
+		sort(diff.begin(), diff.end());
 		std::set_difference(
 					begin(diff), 
 					end(diff), 
@@ -320,6 +313,8 @@ int main(int argc, char **argv)
 					end(layer[1].page_align_set[submatrix_id][TWO_DELAY]),
 					std::inserter(delay_cmd[submatrix_id][3], end(delay_cmd[submatrix_id][3]))
 		);
+		sort(delay_cmd[submatrix_id][3].begin(), delay_cmd[submatrix_id][3].end());
+
 		vector<unsigned int>().swap(diff);
 		cout << "C-only delay command for submatrix-" << submatrix_id << ": {";
 		for(unsigned int temp = 0; temp < delay_cmd[submatrix_id][3].size(); temp++) cout << delay_cmd[submatrix_id][3][temp] << " ";
@@ -334,6 +329,7 @@ int main(int argc, char **argv)
 					end(layer[2].page_align_set[submatrix_id][TWO_DELAY]), 
 					std::inserter(diff, end(diff))
 		);
+		sort(diff.begin(), diff.end());
 		std::set_difference(
 					begin(diff), 
 					end(diff), 
@@ -341,6 +337,8 @@ int main(int argc, char **argv)
 					end(layer[1].page_align_set[submatrix_id][TWO_DELAY]),
 					std::inserter(delay_cmd[submatrix_id][4], end(delay_cmd[submatrix_id][4]))
 		);
+		sort(delay_cmd[submatrix_id][4].begin(), delay_cmd[submatrix_id][4].end());
+
 		vector<unsigned int>().swap(diff);
 		cout << "A&C delay command for submatrix-" << submatrix_id << ": {";
 		for(unsigned int temp = 0; temp < delay_cmd[submatrix_id][4].size(); temp++) cout << delay_cmd[submatrix_id][4][temp] << " ";
@@ -355,6 +353,7 @@ int main(int argc, char **argv)
 					end(layer[2].page_align_set[submatrix_id][TWO_DELAY]), 
 					std::inserter(diff, end(diff))
 		);
+		sort(diff.begin(), diff.end());
 		std::set_difference(
 					begin(diff), 
 					end(diff), 
@@ -362,6 +361,8 @@ int main(int argc, char **argv)
 					end(layer[0].page_align_set[submatrix_id][TWO_DELAY]),
 					std::inserter(delay_cmd[submatrix_id][5], end(delay_cmd[submatrix_id][5]))
 		);
+		sort(delay_cmd[submatrix_id][5].begin(), delay_cmd[submatrix_id][5].end());
+
 		vector<unsigned int>().swap(diff);
 		cout << "B&C delay command for submatrix-" << submatrix_id << ": {";
 		for(unsigned int temp = 0; temp < delay_cmd[submatrix_id][5].size(); temp++) cout << delay_cmd[submatrix_id][5][temp] << " ";
@@ -376,6 +377,7 @@ int main(int argc, char **argv)
 					end(layer[1].page_align_set[submatrix_id][TWO_DELAY]), 
 					std::inserter(diff, end(diff))
 		);
+		sort(diff.begin(), diff.end());
 		std::set_intersection(
 					begin(diff), 
 					end(diff), 
@@ -383,6 +385,8 @@ int main(int argc, char **argv)
 					end(layer[2].page_align_set[submatrix_id][TWO_DELAY]),
 					std::inserter(delay_cmd[submatrix_id][6], end(delay_cmd[submatrix_id][6]))
 		);
+		sort(delay_cmd[submatrix_id][6].begin(), delay_cmd[submatrix_id][6].end());
+
 		vector<unsigned int>().swap(diff);
 		cout << "All-two-delay command for submatrix-" << submatrix_id << ": {";
 		for(unsigned int temp = 0; temp < delay_cmd[submatrix_id][6].size(); temp++) cout << delay_cmd[submatrix_id][6][temp] << " ";
@@ -398,6 +402,7 @@ int main(int argc, char **argv)
 					end(layer[1].page_align_set[submatrix_id][TWO_DELAY]), 
 					std::inserter(diff, end(diff))
 		);
+		sort(diff.begin(), diff.end());
 		std::set_union(
 					begin(diff), 
 					end(diff), 
@@ -405,6 +410,7 @@ int main(int argc, char **argv)
 					end(layer[2].page_align_set[submatrix_id][TWO_DELAY]),
 					std::inserter(diff1, end(diff1))
 		);
+		sort(diff1.begin(), diff1.end());
 		std::set_difference(
 					begin(all_msg), 
 					end(all_msg), 
@@ -412,6 +418,8 @@ int main(int argc, char **argv)
 					end(diff1), 
 					std::inserter(delay_cmd[submatrix_id][7], end(delay_cmd[submatrix_id][7]))
 		);
+		sort(delay_cmd[submatrix_id][7].begin(), delay_cmd[submatrix_id][7].end());
+
 		vector<unsigned int>().swap(diff);
 		vector<unsigned int>().swap(diff1);
 		cout << "All-one-delay command for submatrix-" << submatrix_id << ": {";
@@ -426,7 +434,6 @@ int main(int argc, char **argv)
 	for(unsigned int k = 0; k < dc; k++) {log_fd[k].close();}
 	
 	vector<unsigned int> critical_set_ref[dc][layer_num];
-
 	vector<unsigned int> ***critical_set = new vector<unsigned int>** [dc];
 	for(unsigned int submatrix_id = 1; submatrix_id < dc; submatrix_id++) {
 		critical_set[submatrix_id] = new vector<unsigned int>* [align_cmd_num];
@@ -441,9 +448,23 @@ int main(int argc, char **argv)
 			cout << "submatrix_" << j << ": "			
 			     << "{DS_" << circular_page_ptr.DS[i][j] << " ~ DS_" << Pc-1 << "} must be delayed by " << inLayer_cnt << "-cycle when write-page is " 
 			     << "PA_" << circular_page_ptr.PA[i][j] << endl;
-
-			for(unsigned int critical_element = circular_page_ptr.DS[i][j]; critical_element < Pc; critical_element++) 
-				critical_set_ref[j][i].push_back(critical_element);
+			
+			// There is one exception leads to different identification of mux location
+			// E.g., a zero shift factor on next layer
+			if(s[(i+1) % layer_num][j] == 0) {
+				vector<unsigned int>::iterator align_msg;
+				for(align_msg = layer[i].page_align_set[j][(unsigned int) ONE_DELAY].begin(); 
+					align_msg != layer[i].page_align_set[j][(unsigned int) ONE_DELAY].end(); 
+					align_msg++
+				) {
+					critical_set_ref[j][i].push_back(*align_msg);
+					//cout << "critical_set_ref["<<j<<"]["<<i<<"]:" << critical_set_ref[j][i].back() << endl;
+				}
+			}
+			else {
+				for(unsigned int critical_element = circular_page_ptr.DS[i][j]; critical_element < Pc; critical_element++) 
+					critical_set_ref[j][i].push_back(critical_element);
+			}
 		}
 		cout << "----------------------------------------------------------------------------------------------------------------------------" << endl;
 	}
@@ -468,7 +489,7 @@ int main(int argc, char **argv)
 			critical_delay_set_construct(
 				base_set_id, 
 				delay_cmd[submatrix_id], 
-				critical_set_ref[submatrix_id], 
+				critical_set_ref[submatrix_id],
 				critical_set[submatrix_id][base_set_id]
 			);
 #ifdef DEBUG
@@ -565,37 +586,29 @@ void mux_insert_set(unsigned int layer_a, unsigned int *mux_num, unsigned int **
 	}
 }
 
-/*
-void mux_insert_set(unsigned int layer_a, unsigned int layer_b, unsigned int *mux_num, unsigned int **mux_loc_set)
+void delay_set_construct(unsigned int submatrix_id, unsigned int delay_type, unsigned int target_set_size, unsigned int target_start_loc, Layer_Module *target_layer, bool isExcption)
 {
-	for(int i = 0; i < dc; i++) {
-		unsigned int sub_matrix_end = (i+1)*z-1;
-		// To identify the number of messages have to be stored with two clock cycles delay insertion
-		int a = (int) layer[layer_a].DS[sub_matrix_end]+1; // number of misaligned messages
-		int b = (int) layer[layer_b].DS[sub_matrix_end]+1; // number of misaligned messages
-		int mux_num_temp = a-b;
-		if(mux_num_temp > 0) { // PA^{j} > PA^{j+1}
-			mux_num[i] = a;
-			mux_loc_set[i][0] = a; // one-cycle delay insertion
-			mux_loc_set[i][1] = 0; // tow-cycle delay insertion
-		}
-		else if(mux_num_temp < 0) { // PA^{j} < PA^{j+1}
-			mux_num[i] = b;
-			mux_loc_set[i][0] = b; // one-cycle delay insertion
-			mux_loc_set[i][1] = 0; // two-cycle delay insertion
-		}
-		else { // PA^{j} == PA^{j+1}, i.e., all Pc messages are inserted one-cycle delay
-			mux_num[i] = 0;
+	if(isExcption == true) {
+		unsigned int pcm_col, one_delay_page, DS_cur;
+		pcm_col = (submatrix_id*z);
+		one_delay_page = target_layer -> PA[pcm_col];
+
+		if(delay_type == (unsigned int) ONE_DELAY) {
+			for(unsigned int col = pcm_col; col < pcm_col+Pc; col++) {
+				DS_cur = target_layer -> DS[col];
+				if(target_layer -> PA[col] == one_delay_page)
+					target_layer -> page_align_set[submatrix_id][(unsigned int) ONE_DELAY].push_back(DS_cur);
+				else
+					target_layer -> page_align_set[submatrix_id][(unsigned int) TWO_DELAY].push_back(DS_cur);
+			}
 		}
 	}
-}
-*/
-void delay_set_construct(unsigned int sub_matrix_id, unsigned int delay_type, unsigned int target_set_size, unsigned int target_start_loc, Layer_Module *target_layer)
-{
-	// One- or Two-delay insertion set
-	if(delay_type == (unsigned int) ONE_DELAY || delay_type == (unsigned int) TWO_DELAY) {
-		for(unsigned int i = 0; i < target_set_size; i++) 
-			target_layer -> page_align_set[sub_matrix_id][delay_type].push_back(target_start_loc+i);
+	else { // if isException == false
+		// One- or Two-delay insertion set
+		if(delay_type == (unsigned int) ONE_DELAY || delay_type == (unsigned int) TWO_DELAY) {
+			for(unsigned int i = 0; i < target_set_size; i++) 
+				target_layer -> page_align_set[submatrix_id][delay_type].push_back(target_start_loc+i);
+		}
 	}
 }
 
@@ -650,7 +663,9 @@ void critical_delay_set_construct(
 	vector<unsigned int> *critical_set
 )
 {
-	for(unsigned int critical_set_id = 0; critical_set_id < layer_num; critical_set_id++)
+	for(unsigned int critical_set_id = 0; critical_set_id < layer_num; critical_set_id++) {
+		sort(critical_set_ref[critical_set_id].begin(), critical_set_ref[critical_set_id].end());
+		sort(base_set[base_set_id].begin(), base_set[base_set_id].end());
 		std::set_intersection(
 					begin(base_set[base_set_id]), 
 					end(base_set[base_set_id]), 
@@ -658,10 +673,24 @@ void critical_delay_set_construct(
 					end(critical_set_ref[critical_set_id]), 
 					std::inserter(critical_set[critical_set_id], end(critical_set[critical_set_id]))
 		);
+		sort(critical_set[critical_set_id].begin(), critical_set[critical_set_id].end());
+		/*
+		for(unsigned i = 0; i < base_set[base_set_id].size(); i++)
+			cout << "1) base_set["<<base_set_id<<"]:"<<base_set[base_set_id][i] << endl;
+		for(unsigned i = 0; i < critical_set_ref[critical_set_id].size(); i++)
+			cout << "2) critical_set_ref[" << critical_set_id << "]:" << critical_set_ref[critical_set_id][i] << endl;
+		for(unsigned i = 0; i < critical_set[critical_set_id].size(); i++)
+			cout << "3) critical_set["<<critical_set_id<<"]:" << critical_set[critical_set_id][i] << endl;
+		*/
+	}
 }
 
 void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int> base_delay_cmd, vector<unsigned int> *critical_set, vector<unsigned int> *circular_delay_cmd)
 {
+	sort(critical_set[0].begin(), critical_set[0].end());
+	sort(critical_set[1].begin(), critical_set[1].end());
+	sort(critical_set[2].begin(), critical_set[2].end());
+
 	// Construction of delay commands
 	cout << "Construction of Circular delay commands" << endl;
 	// 0) Two-delay-only inseration on Layer A:
@@ -674,6 +703,7 @@ void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int
 				end(critical_set[1]), 
 				std::inserter(diff, end(diff))
 	);
+	sort(diff.begin(), diff.end());
 	std::set_difference(
 				begin(diff), 
 				end(diff), 
@@ -695,6 +725,7 @@ void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int
 				end(critical_set[0]), 
 				std::inserter(diff, end(diff))
 	);
+	sort(diff.begin(), diff.end());
 	std::set_difference(
 				begin(diff), 
 				end(diff), 
@@ -716,6 +747,7 @@ void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int
 				end(critical_set[1]), 
 				std::inserter(diff, end(diff))
 	);
+	sort(diff.begin(), diff.end());
 	std::set_difference(
 				begin(diff), 
 				end(diff), 
@@ -737,6 +769,7 @@ void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int
 				end(critical_set[0]), 
 				std::inserter(diff, end(diff))
 	);
+	sort(diff.begin(), diff.end());
 	std::set_difference(
 				begin(diff), 
 				end(diff), 
@@ -758,6 +791,7 @@ void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int
 				end(critical_set[2]), 
 				std::inserter(diff, end(diff))
 	);
+	sort(diff.begin(), diff.end());
 	std::set_difference(
 				begin(diff), 
 				end(diff), 
@@ -779,6 +813,7 @@ void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int
 				end(critical_set[2]), 
 				std::inserter(diff, end(diff))
 	);
+	sort(diff.begin(), diff.end());
 	std::set_difference(
 				begin(diff), 
 				end(diff), 
@@ -786,6 +821,7 @@ void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int
 				end(critical_set[0]),
 				std::inserter(circular_delay_cmd[5], end(circular_delay_cmd[5]))
 	);
+	sort(diff.begin(), diff.end());
 	vector<unsigned int>().swap(diff);
 	cout << "E&F delay command: {";
 	for(unsigned int temp = 0; temp < circular_delay_cmd[5].size(); temp++) cout << circular_delay_cmd[5][temp] << " ";
@@ -800,6 +836,7 @@ void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int
 				end(critical_set[1]), 
 				std::inserter(diff, end(diff))
 	);
+	sort(diff.begin(), diff.end());
 	std::set_intersection(
 				begin(diff), 
 				end(diff), 
@@ -822,6 +859,7 @@ void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int
 				end(critical_set[1]), 
 				std::inserter(diff, end(diff))
 	);
+	sort(diff.begin(), diff.end());
 	std::set_union(
 				begin(diff), 
 				end(diff), 
@@ -829,6 +867,7 @@ void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int
 				end(critical_set[2]),
 				std::inserter(diff1, end(diff1))
 	);
+	sort(diff1.begin(), diff1.end());
 	std::set_difference(
 				begin(base_delay_cmd), 
 				end(base_delay_cmd), 
@@ -842,8 +881,14 @@ void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int
 	for(unsigned int temp = 0; temp < circular_delay_cmd[7].size(); temp++) cout << circular_delay_cmd[7][temp] << " ";
 	cout << "}" << endl;
 	
-	// To generate HDL source code
-	//page_align_hdl_gen(submatrix_id, align_cmd_num, delay_cmd[submatrix_id]);
+	sort(circular_delay_cmd[0].begin(), circular_delay_cmd[0].end());
+	sort(circular_delay_cmd[1].begin(), circular_delay_cmd[1].end());
+	sort(circular_delay_cmd[2].begin(), circular_delay_cmd[2].end());
+	sort(circular_delay_cmd[3].begin(), circular_delay_cmd[3].end());
+	sort(circular_delay_cmd[4].begin(), circular_delay_cmd[4].end());
+	sort(circular_delay_cmd[5].begin(), circular_delay_cmd[5].end());
+	sort(circular_delay_cmd[6].begin(), circular_delay_cmd[6].end());
+	sort(circular_delay_cmd[7].begin(), circular_delay_cmd[7].end());
 }
 
 void circular_page_align_hdl_gen(unsigned int base_set_id, unsigned int submatrix_id, unsigned align_cmd_num, vector<unsigned int> *circular_delay_cmd)
@@ -887,8 +932,8 @@ void circular_page_align_hdl_gen(unsigned int base_set_id, unsigned int submatri
 				memBank_addr = circular_delay_cmd[cmd_id][msg_id];
 				if(base_set_id < 6){
 					hdl_fd << "wire delay_cmd_" << memBank_addr << ";" << endl
-						   << "align_cmd_gen_" << cmd_id
-			    	   	   << " #(.LAYER_NUM (LAYER_NUM)) delay_cmd_" << memBank_addr
+						   << "align_cmd_gen_" << base_set_id
+			    	   	   << " #(.LAYER_NUM (LAYER_NUM)) delay_cmd_u" << memBank_addr
 			    	   	   << "(.delay_cmd(delay_cmd_" << memBank_addr
 			    	   	   << "), .layer_status(layer_status[LAYER_NUM-1:0]));" << endl
 			    	   	   << "page_align_depth_1_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << memBank_addr

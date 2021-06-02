@@ -31,4 +31,4 @@ run:
 	./$(EXE_NAME) > log
 
 clean: 
-	rm -f $(REBUILDABLES) *.dep *.deppo *~ *.o *.txt
+	rm -f $(REBUILDABLES) *.dep *.deppo *~ *.o *.txt circular_page_align*_lib.v page_align*_lib.v log submatrix*.mem
