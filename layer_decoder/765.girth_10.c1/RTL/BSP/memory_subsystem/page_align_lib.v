@@ -1,3 +1,6 @@
+`include "define.vh"
+
+`ifdef SCHED_4_4
 module ram_pageAlign_interface #(
 	parameter QUAN_SIZE = 4,
 	parameter CHECK_PARALLELISM = 85,
@@ -449,6 +452,7 @@ assign msg_mux_out[82] = (sched_cmd == 1'b0) ? vnu_msg_in_82 : cnu_msg_in_82;
 assign msg_mux_out[83] = (sched_cmd == 1'b0) ? vnu_msg_in_83 : cnu_msg_in_83;
 assign msg_mux_out[84] = (sched_cmd == 1'b0) ? vnu_msg_in_84 : cnu_msg_in_84;
 endmodule
+`endif
 
 /*----------Without (z/Pc)-cycle delay option----------------------------------*/
 module align_cmd_gen_0 #(

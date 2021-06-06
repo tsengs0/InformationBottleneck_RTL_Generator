@@ -1,9 +1,9 @@
 //`define SIM
 //`define V2C_C2V_PROBE
-//`define DECODER_4bit
-`define DECODER_3bit
-
-`define RC_204_102
+`define DECODER_4bit
+//`define DECODER_3bit
+//`define RC_204_102
+`define QC_RC_7650
 `ifdef RC_204_102
 	`define CN_NUM  102 // # CNs
 	`define VN_NUM  204 // # VNs 
@@ -268,4 +268,8 @@
 		
 		`define MULTI_FRAME_NUM 2
 	`endif // DECODER_4bit
-`endif // RC_204_102
+`elsif QC_RC_7650
+	//`define SCHED_4_4
+	`define SCHED_4_6
+	`define HDL_INFER // primitive of BRAM implementation
+`endif 
