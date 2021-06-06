@@ -53,6 +53,7 @@ typedef struct circular_page_t {
 	unsigned int DS[layer_num][dc];
 } circular_page;
 string **circular_cmd_logic;
+ofstream pa_hdl_fd[dc];
 
 typedef struct layer_module {
 	unsigned int *C_index;
@@ -483,6 +484,31 @@ int main(int argc, char **argv)
 
 	vector<unsigned int> ***circular_delay_cmd = new vector<unsigned int>** [dc];
 	for(unsigned int submatrix_id = 1; submatrix_id < dc; submatrix_id++) {
+		/*----------------------------------------------------------------------------------------------------------------*/
+			sprintf(hdl_filename, "circular_page_align_%d_lib.v", submatrix_id);
+			pa_hdl_fd[submatrix_id].open(hdl_filename, ofstream::out | ofstream::app);
+
+			pa_hdl_fd[submatrix_id] << "`include \"define.vh\"" << endl << endl
+									<< "`ifdef SCHED_4_6" << endl
+									<< dec << "module ram_pageAlign_interface_submatrix_" << submatrix_id << "#(" << endl
+						  			<< "\tparameter QUAN_SIZE = " << (unsigned int) q << "," << endl
+						  			<< "\tparameter CHECK_PARALLELISM = " << Pc << "," << endl
+						  			<< "\tparameter LAYER_NUM = " << layer_num << endl
+						  			<<") (" << endl;
+			for(unsigned int i = 0; i < Pc; i++)
+				pa_hdl_fd[submatrix_id] << "\toutput wire [QUAN_SIZE-1:0] msg_out_" << i << "," << endl;
+			pa_hdl_fd[submatrix_id] << endl;
+			for(unsigned int i = 0; i < Pc; i++)
+				pa_hdl_fd[submatrix_id] << "\tinput wire [QUAN_SIZE-1:0] msg_in_" << i << "," << endl;
+			pa_hdl_fd[submatrix_id] << endl
+				   					<< "\tinput wire [LAYER_NUM-1:0] layer_status," << endl
+				   					<< "\tinput wire first_row_chunk," << endl
+				   					<< "\tinput wire sys_clk," << endl
+				   					<< "\tinput wire rstn" << endl
+				   					<< ");" << endl << endl
+									<< "/////////////////////////////////////////////////////////////////////////////////////////////" << endl
+				   					<< "// Main structure of Page Alignment Mechanism" << endl;	
+		/*----------------------------------------------------------------------------------------------------------------*/
 		circular_delay_cmd[submatrix_id] = new vector<unsigned int>* [align_cmd_num];
 		for(unsigned int base_set_id = 0; base_set_id < align_cmd_num; base_set_id++) {
 			circular_delay_cmd[submatrix_id][base_set_id] = new vector<unsigned int> [align_cmd_num];
@@ -523,7 +549,7 @@ int main(int argc, char **argv)
 #ifdef DEBUG
 			cout << "----------------------------------------------------------------------------------------------------------------------------" << endl;
 #endif
-			// To generate the final page-aligned mechanism including circular-aware command generators and page-aligned message net assignment
+			// To generate the final page-aligned mechanism including circular-aware command generators and page-aligned message net assignment			
 			circular_page_align_hdl_gen(
 				base_set_id,
 				submatrix_id,
@@ -531,6 +557,10 @@ int main(int argc, char **argv)
 				circular_delay_cmd[submatrix_id][base_set_id]
 			);
 		}
+		pa_hdl_fd[submatrix_id] << "/////////////////////////////////////////////////////////////////////////////////////////////" << endl
+								<< "endmodule" << endl
+								<< "`endif";
+		pa_hdl_fd[submatrix_id].close();
 	}
 
 	// To generate the Test Pattern for HDL verification
@@ -893,71 +923,70 @@ void circular_page_align_cmd_gen(unsigned int align_cmd_num, vector<unsigned int
 
 void circular_page_align_hdl_gen(unsigned int base_set_id, unsigned int submatrix_id, unsigned align_cmd_num, vector<unsigned int> *circular_delay_cmd)
 {
-	sprintf(hdl_filename, "circular_page_align_%d_lib.v", submatrix_id);
-	ofstream hdl_fd; hdl_fd.open(hdl_filename, ofstream::out | ofstream::app);
+	//sprintf(hdl_filename, "circular_page_align_%d_lib.v", submatrix_id);
+	//ofstream hdl_fd; hdl_fd.open(hdl_filename, ofstream::out | ofstream::app);
 	unsigned int memBank_addr;
 
 	for(unsigned int cmd_id = 0; cmd_id < align_cmd_num; cmd_id++) {
 		unsigned int circular_set_size = circular_delay_cmd[cmd_id].size();
 		if(circular_set_size != 0 && cmd_id < (align_cmd_num-2)) {
 			// One common command generator/logic is enough to be shared by the following elements
-			hdl_fd << "wire [1:0] circular_delay_cmd_" << base_set_id << "_" << cmd_id << ";" << endl
-				   << "assign circular_delay_cmd_" << base_set_id << "_" << cmd_id
-				   << " = " << circular_cmd_logic[base_set_id][cmd_id] << endl;
+			pa_hdl_fd[submatrix_id] << "wire [1:0] circular_delay_cmd_" << base_set_id << "_" << cmd_id << ";" << endl
+				   					<< "assign circular_delay_cmd_" << base_set_id << "_" << cmd_id
+				   					<< " = " << circular_cmd_logic[base_set_id][cmd_id] << endl;
 
 			for(unsigned int msg_id = 0; msg_id < circular_set_size; msg_id++) {
 				memBank_addr = circular_delay_cmd[cmd_id][msg_id];
-				hdl_fd << "circular_page_align_depth_1_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u"
-					   << memBank_addr
-					   << " (.align_out (msg_out_" << memBank_addr
-					   << "), .align_target_in (msg_mux_out[" << memBank_addr
-					   << "]), .delay_cmd(circular_delay_cmd_" << base_set_id << "_" << cmd_id
-					   << "), .sys_clk(sys_clk), .rstn(rstn));" << endl;
+				pa_hdl_fd[submatrix_id] << "circular_page_align_depth_1_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u"
+					   					<< memBank_addr
+					   					<< " (.align_out (msg_out_" << memBank_addr
+					   					<< "), .align_target_in (msg_in_" << memBank_addr
+					   					<< "), .delay_cmd(circular_delay_cmd_" << base_set_id << "_" << cmd_id
+					   					<< "), .sys_clk(sys_clk), .rstn(rstn));" << endl;
 			}
 		}
 		else if(circular_set_size != 0 && cmd_id == (align_cmd_num-2)) {
 			for(unsigned int msg_id = 0; msg_id < circular_set_size; msg_id++) {
 				memBank_addr = circular_delay_cmd[cmd_id][msg_id];
-				hdl_fd << "circular_page_align_depth_";
-				if(base_set_id == 6) hdl_fd << "2"; // 2-circular delay
-				else if(base_set_id == 7) hdl_fd << "1"; // 1-circular delay
-				hdl_fd << " #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << memBank_addr
-				       << " (.align_out (msg_out_" << memBank_addr
-				       << "), .align_target_in (msg_mux_out[" << memBank_addr
-				       << "]), .first_row_chunk(first_row_chunk), .sys_clk(sys_clk), .rstn(rstn));" << endl;
+				pa_hdl_fd[submatrix_id] << "circular_page_align_depth_";
+				if(base_set_id == 6) pa_hdl_fd[submatrix_id] << "2"; // 2-circular delay
+				else if(base_set_id == 7) pa_hdl_fd[submatrix_id] << "1"; // 1-circular delay
+				pa_hdl_fd[submatrix_id] << " #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << memBank_addr
+				       					<< " (.align_out (msg_out_" << memBank_addr
+				       					<< "), .align_target_in (msg_in_" << memBank_addr
+				       					<< "), .first_row_chunk(first_row_chunk), .sys_clk(sys_clk), .rstn(rstn));" << endl;
 			}
 		}
 		else if(circular_set_size != 0 && cmd_id == (align_cmd_num-1)) {
 			for(unsigned int msg_id = 0; msg_id < circular_set_size; msg_id++) {
 				memBank_addr = circular_delay_cmd[cmd_id][msg_id];
 				if(base_set_id < 6){
-					hdl_fd << "wire delay_cmd_" << memBank_addr << ";" << endl
-						   << "align_cmd_gen_" << base_set_id
-			    	   	   << " #(.LAYER_NUM (LAYER_NUM)) delay_cmd_u" << memBank_addr
-			    	   	   << "(.delay_cmd(delay_cmd_" << memBank_addr
-			    	   	   << "), .layer_status(layer_status[LAYER_NUM-1:0]));" << endl
-			    	   	   << "page_align_depth_1_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << memBank_addr
-			    	   	   << "(.align_out (msg_out_" << memBank_addr
-			    	   	   << "), .align_target_in (msg_mux_out[" << memBank_addr
-			    	   	   << "]), .delay_cmd(delay_cmd_" << memBank_addr
-			    	   	   << "), .sys_clk(sys_clk), .rstn(rstn));" << endl << endl;
+					pa_hdl_fd[submatrix_id] << "wire delay_cmd_" << memBank_addr << ";" << endl
+						   					<< "align_cmd_gen_" << base_set_id
+			    	   	   					<< " #(.LAYER_NUM (LAYER_NUM)) delay_cmd_u" << memBank_addr
+			    	   	   					<< "(.delay_cmd(delay_cmd_" << memBank_addr
+			    	   	   					<< "), .layer_status(layer_status[LAYER_NUM-1:0]));" << endl
+			    	   	   					<< "page_align_depth_1_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << memBank_addr
+			    	   	   					<< "(.align_out (msg_out_" << memBank_addr
+			    	   	   					<< "), .align_target_in (msg_in_" << memBank_addr
+			    	   	   					<< "), .delay_cmd(delay_cmd_" << memBank_addr
+			    	   	   					<< "), .sys_clk(sys_clk), .rstn(rstn));" << endl << endl;
 			    }
 				else if(base_set_id == 6) {
-					hdl_fd << "page_align_depth_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << memBank_addr
-						   << "(.align_out(msg_out_" << memBank_addr
-						   << "), .align_target_in (msg_mux_out[" << memBank_addr
-						   << "]), .sys_clk(sys_clk), .rstn(rstn));" << endl;
+					pa_hdl_fd[submatrix_id] << "page_align_depth_2 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << memBank_addr
+						   					<< "(.align_out(msg_out_" << memBank_addr
+						   					<< "), .align_target_in (msg_in_" << memBank_addr
+						   					<< "), .sys_clk(sys_clk), .rstn(rstn));" << endl;
 			    }
 				else if(base_set_id == 7) {
-					hdl_fd << "page_align_depth_1 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << memBank_addr
-						   << "(.align_out(msg_out_" << memBank_addr
-						   << "), .align_target_in (msg_mux_out[" << memBank_addr
-						   << "]), .sys_clk(sys_clk), .rstn(rstn));" << endl;
+					pa_hdl_fd[submatrix_id] << "page_align_depth_1 #(.QUAN_SIZE (QUAN_SIZE)) page_align_u" << memBank_addr
+						   					<< "(.align_out(msg_out_" << memBank_addr
+						   					<< "), .align_target_in (msg_in_" << memBank_addr
+						   					<< "), .sys_clk(sys_clk), .rstn(rstn));" << endl;
 				}
 			}
 		}
 	}
-	hdl_fd.close();
 }
 
 void v2c_msg_pass_test_pattern(unsigned int submatrix_id)
