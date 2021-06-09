@@ -5,7 +5,7 @@ module tb_ram_pageAlign_interface (); /* this is automatically generated */
 	parameter         QUAN_SIZE = 4;
 	parameter CHECK_PARALLELISM = 85;
 	parameter         LAYER_NUM = 3;
-	parameter     ROW_CHUNK_NUM = 9;
+	parameter ROW_CHUNK_NUM = 9;
 	parameter START_PAGE_1_0 = 2; // starting page address of layer 0 of submatrix_1
 	parameter START_PAGE_1_1 = 8; // starting page address of layer 1 of submatrix_1
 	parameter START_PAGE_1_2 = 1; // starting page address of layer 2 of submatrix_1
