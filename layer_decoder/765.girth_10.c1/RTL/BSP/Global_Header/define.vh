@@ -269,7 +269,26 @@
 		`define MULTI_FRAME_NUM 2
 	`endif // DECODER_4bit
 `elsif QC_RC_7650
+	`define VN_DEGREE 3   // degree of one variable node
+	`define CN_DEGREE 10  // degree of one check node 
+	`define SUBMATRIX_Z 765
+	`define CN_NUM  SUBMATRIX_Z*VN_DEGREE // # CNs
+	`define VN_NUM  SUBMATRIX_Z*CN_DEGREE // # VNs 
+	`define QUAN_SIZE 4
+
 	//`define SCHED_4_4
 	`define SCHED_4_6
 	`define HDL_INFER // primitive of BRAM implementation
+	`define MAX_ITER 10
+	`define VN_ITER_ADDR_BW $clog2(`MAX_ITER)  // bit-width of addressing 10 iterationss
+	`define DN_ITER_ADDR_BW $clog2(`MAX_ITER)
+	`define ITER_ADDR_BW $clog2(`MAX_ITER)  // bit-width of addressing 10 iterationss
+	`define IB_VNU_DECOMP_funNum `VN_DEGREE+1-2
+	`define IB_DNU_DECOMP_funNum 1
+	`define ITER_ROM_GROUP 10 // the number of iteration datasets stored in one Group of IB-ROMs
+
+	`ifdef SCHED_4_6
+		`define CNU_FSM_STATE_NUM 7
+		`define VNU_FSM_STATE_NUM 8
+	`endif
 `endif 
