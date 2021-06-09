@@ -4,8 +4,7 @@ module qsn_controller_85b #(
 	output reg [6:0] left_sel,
 	output reg [6:0] right_sel,
 	output reg [83:0] merge_sel,
-	input wire [6:0] shift_factor, // since I mistakenly implemented a circular right shifter
-								   // thus, the actual shfit_factor should be given is P_c - shifter_factor
+	input wire [6:0] shift_factor,
 	input wire rstn,
 	input wire sys_clk
 );

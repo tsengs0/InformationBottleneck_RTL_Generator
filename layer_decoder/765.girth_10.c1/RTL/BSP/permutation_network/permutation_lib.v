@@ -1,7 +1,11 @@
+`include "define.vh"
+
 module permutation_wrapper #(
 	parameter CHECK_PARALLELISM = 85
 ) (
+	output wire [84:0] bs_out,
 
+	input wire [3:0] sw_in,
 	input wire [6:0] shift_factor,
 	input wire read_clk,
 	input wire rstn
@@ -24,47 +28,43 @@ qsn_controller_85b #(
 );
 
 // Permutation Network
+wire [84:0] sw_out_bit0;
+wire [84:0] sw_out_bit1;
+wire [84:0] sw_out_bit2;
+wire [84:0] sw_out_bit3;
 qsn_top_85b inst_qsn_top_85b (
 	.sw_out_bit0 (sw_out_bit0),
 	.sw_out_bit1 (sw_out_bit1),
 	.sw_out_bit2 (sw_out_bit2),
 	.sw_out_bit3 (sw_out_bit3),
-	.sw_in_bit0  (sw_in_bit0),
-	.sw_in_bit1  (sw_in_bit1),
-	.sw_in_bit2  (sw_in_bit2),
-	.sw_in_bit3  (sw_in_bit3),
+	.sw_in_bit0  ({{84{1'b0}}, sw_in[0]}),
+	.sw_in_bit1  ({{84{1'b0}}, sw_in[1]}),
+	.sw_in_bit2  ({{84{1'b0}}, sw_in[2]}),
+	.sw_in_bit3  ({{84{1'b0}}, sw_in[3]}),
+`ifdef SCHED_4_6
+	.sys_clk (read_clk),
+	.rstn (rstn),
+`endif
 	.left_sel    (left_sel),
 	.right_sel   (right_sel),
 	.merge_sel   (merge_sel)
 );
+
+permutation_lib permutation_lib_u0 (
+	.bs_out (bs_out),
+	.bs_in ({sw_out_bit0, sw_out_bit1, sw_out_bit2, sw_out_bit3})
+);
 endmodule
 
-module page_align #(
-	parameter QUAN_SIZE = 4
-) (
-	output wire [QUAN_SIZE-1:0] align_out,
-
-	input wire [QUAN_SIZE-1:0] vnu_align_in,
-	input wire [QUAN_SIZE-1:0] cnu_align_in,
-	input wire sched_cmd, // 1'b0: align_in from variable msg; 1'b1: align_in from check msg
-	input wire delay_cmd,
-	input wire sys_clk,
-	input wire rstn
+module permutation_lib (
+	output wire [84:0] bs_out,
+	input wire [85*4-1:0] bs_in
 );
 
-wire [QUAN_SIZE-1:0] align_in;
-reg [QUAN_SIZE-1:0] delay_insert_0;
-reg [QUAN_SIZE-1:0] delay_insert_1;
-always @(posedge sys_clk) begin
-	if(rstn == 1'b0) delay_insert_0 <= 0;
-	else delay_insert_0[QUAN_SIZE-1:0] <= align_in[QUAN_SIZE-1:0];
-end
-assign align_in[QUAN_SIZE-1:0] = (sched_cmd == 1'b0) ? vnu_align_in[QUAN_SIZE-1:0] : cnu_align_in[QUAN_SIZE-1:0];
-
-always @(posedge sys_clk) begin
-	if(rstn == 1'b0) delay_insert_1 <= 0;
-	else delay_insert_1[QUAN_SIZE-1:0] <= delay_insert_0[QUAN_SIZE-1:0];
-end
-
-assign align_out[QUAN_SIZE-1:0] = (delay_cmd == 1'b0) ? delay_insert_0[QUAN_SIZE-1:0] : delay_insert_1[QUAN_SIZE-1:0];
+generate
+	genvar i;
+	for(i=0;i<85;i=i+1) begin : dummy_inst
+		assign bs_out[i] = |bs_in[(i+1)*4-1:i*4];
+	end
+endgenerate
 endmodule
