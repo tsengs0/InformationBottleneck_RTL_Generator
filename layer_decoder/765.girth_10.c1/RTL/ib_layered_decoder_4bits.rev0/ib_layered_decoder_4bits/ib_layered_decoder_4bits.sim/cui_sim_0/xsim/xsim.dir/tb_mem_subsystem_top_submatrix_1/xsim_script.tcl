@@ -1,0 +1,1 @@
+xsim {tb_mem_subsystem_top_submatrix_1} -autoloadwcfg -tclbatch {cmd.tcl} -key {Behavioral:msg_pass_with_memWr_sim2:Functional:tb_mem_subsystem_top_submatrix_1} -protoinst {protoinst_files/mem_subsys.protoinst} -protoinst {protoinst_files/mem_subsys_frag.protoinst}

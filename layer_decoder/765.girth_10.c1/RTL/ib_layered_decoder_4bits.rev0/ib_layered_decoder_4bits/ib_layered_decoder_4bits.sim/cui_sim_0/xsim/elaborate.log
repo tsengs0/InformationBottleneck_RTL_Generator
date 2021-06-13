@@ -1,0 +1,41 @@
+Vivado Simulator 2019.2
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: /home/s1820419/Xilinx/Vivado/2019.2/bin/unwrapped/lnx64.o/xelab --relax --debug typical --mt auto -L blk_mem_gen_v8_4_4 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_mem_subsystem_top_submatrix_1 xil_defaultlib.tb_mem_subsystem_top_submatrix_1 xil_defaultlib.glbl -log elaborate.log 
+Multi-threading is on. Using 62 slave threads.
+WARNING: [XSIM 43-3431] One or more environment variables have been detected which affect the operation of the C compiler. These are typically not set in standard installations and are not tested by Xilinx, however they may be appropriate for your system, so the flow will attempt to continue.  If errors occur, try running xelab with the "-mt off -v 1" switches to see more information from the C compiler. The following environment variables have been detected:
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3091] actual bit length 1 differs from formal bit length 2 for port 'busy' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:449]
+WARNING: [VRFC 10-3091] actual bit length 1 differs from formal bit length 2 for port 'busy' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:366]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.cnu_control_unit(CNU_PIPELINE_LE...
+Compiling module xil_defaultlib.vnu_wr_update_handshake_default
+Compiling module xil_defaultlib.vnu_control_unit(VNU_PIPELINE_LE...
+Compiling module xil_defaultlib.vnu3_wr_fsm_default
+Compiling module xil_defaultlib.vn_iter_counter(ITER_ADDR_BW=4,M...
+Compiling module xil_defaultlib.v3rom_iter_selector(ITER_ROM_GRO...
+Compiling module xil_defaultlib.vn_mem_latch(ITER_ROM_GROUP=10,I...
+Compiling module xil_defaultlib.vn_Waddr_counter
+Compiling module xil_defaultlib.dnu3_wr_fsm_default
+Compiling module xil_defaultlib.dn_iter_counter(ITER_ADDR_BW=4,M...
+Compiling module xil_defaultlib.d3rom_iter_selector(ITER_ROM_GRO...
+Compiling module xil_defaultlib.dn_mem_latch(ITER_ROM_GROUP=10,I...
+Compiling module xil_defaultlib.dn_Waddr_counter
+Compiling module xil_defaultlib.qsn_left_85b
+Compiling module xil_defaultlib.qsn_right_85b
+Compiling module xil_defaultlib.qsn_merge_85b
+Compiling module xil_defaultlib.qsn_top_85b_default
+Compiling module xil_defaultlib.qsn_controller_85b(PERMUTATION_L...
+Compiling module xil_defaultlib.circular_page_align_depth_1_2
+Compiling module xil_defaultlib.circular_page_align_depth_1
+Compiling module xil_defaultlib.ram_pageAlign_interface_submatri...
+Compiling module xil_defaultlib.ram_unit(ADDR_WIDTH=10)
+Compiling module xil_defaultlib.ram_unit_frag(ADDR_WIDTH=10)
+Compiling module xil_defaultlib.column_ram_pc85(ADDR_WIDTH=10)
+Compiling module xil_defaultlib.mem_subsystem_top_submatrix_1(AD...
+Compiling module xil_defaultlib.tb_mem_subsystem_top_submatrix_1
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot tb_mem_subsystem_top_submatrix_1
