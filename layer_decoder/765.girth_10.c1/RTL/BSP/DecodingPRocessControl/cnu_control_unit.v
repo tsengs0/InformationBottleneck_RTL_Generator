@@ -42,6 +42,8 @@ module cnu_control_unit #(
 )(
     output wire cnu_rd,
     output wire c2v_mem_we,
+    output wire c2v_pa_en,
+    output wire c2v_bs_en,
     output wire v2c_src,
     output wire last_layer,
 
@@ -238,7 +240,9 @@ always @(posedge read_clk) begin
 end					  
 //////////////////////////////////////////////////////////////////////////////////////////////////////		
 assign v2c_src = (state == MEM_FETCH && fetch_pipeline_level == fetch_shift_overflow) ? 1'b1 : 1'b0;
-assign c2v_mem_we = (state == MEM_WB) ? ~c2v_msg_busy : 1'b0; 
+assign c2v_mem_we = (state == MEM_WB) ? 1'b1 : 1'b0; 
+assign c2v_pa_en = (state == PAGE_ALIGN) ? 1'b1 : 1'b0;
+assign c2v_bs_en = (state == BS_WB && bs_pipeline_level[0] == 1'b1) ? 1'b1 : 1'b0; // only enable at first pipeline stage over all BS_WB
 // CNU RD
 assign cnu_rd = (state == CNU_PIPE || state == CNU_OUT) ? 1'b1 : 1'b0;
 endmodule

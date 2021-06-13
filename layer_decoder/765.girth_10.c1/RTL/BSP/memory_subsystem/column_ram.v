@@ -812,7 +812,7 @@ module ram_unit #(
 );
 `ifdef HDL_INFER
 // Core Memory
- reg [DATA_WIDTH-1:0] ram_block [DEPTH-1:0];
+ reg [DATA_WIDTH-1:0] ram_block [0:DEPTH-1];
 
  // Port-A
 always @(posedge sys_clk) begin
@@ -879,7 +879,7 @@ module ram_unit_frag #(
 
 `ifdef HDL_INFER
 // Core Memory
- reg [DATA_WIDTH-1:0] ram_block [DEPTH-1:0];
+ reg [DATA_WIDTH-1:0] ram_block [0:DEPTH-1];
 
  // Port-A
 always @(posedge sys_clk) begin

@@ -61,7 +61,10 @@ module vnu_control_unit #(
 
     output wire v2c_src,
     output wire last_layer,
+    output reg [LAYER_NUM-1:0] layer_cnt,
     output wire v2c_mem_we,
+    output wire v2c_pa_en,
+    output wire v2c_bs_en,
 
     output wire [`IB_VNU_DECOMP_funNum-1:0] vnu_rd,
 	output wire dnu_rd,
@@ -100,7 +103,7 @@ always @(posedge read_clk, negedge rstn) begin
 	else decode_start <= decode_start;
 end
 
-reg [LAYER_NUM-1:0] layer_cnt;
+initial layer_cnt <= 0;
 always @(posedge read_clk) begin
 	if(rstn == 1'b0) layer_cnt <= 1;
 	else if(layer_finish == 1'b1) layer_cnt[LAYER_NUM-1:0] <= {layer_cnt[LAYER_NUM-2:0], layer_cnt[LAYER_NUM-1]};
@@ -525,7 +528,9 @@ endgenerate
 assign dnu_rd = (state == BS_WB || state == PAGE_ALIGN) ? 1'b1 : 1'b0; // DNUs are enabled since BS_WB till PAGE_ALIGN
 /*-------------------------------------------------------------------------------------------------------------------*/
 assign v2c_src = (state == MEM_FETCH && fetch_pipeline_level == fetch_shift_overflow) ? 1'b1 : 1'b0;
-assign v2c_mem_we = (state == MEM_WB) ? ~v2c_msg_busy : 1'b0; 
+assign v2c_mem_we = (state == MEM_WB) ? 1'b1 : 1'b0; 
+assign v2c_pa_en = (state == PAGE_ALIGN) ? 1'b1 : 1'b0;
+assign v2c_bs_en = (state == BS_WB && bs_pipeline_level[0] == 1'b1) ? 1'b1 : 1'b0; // only enable at first pipeline stage over all BS_WB
 assign 	vnu_update_pend = ( (state == MEM_FETCH || state == VNU_IB_RAM_PEND) &&
 							(vnu_pipe_load_finish[0] == 1'b1 || vnu_pipe_load_start[0] == 1'b0) &&
 			  			    (vnu_init_load_start == {`IB_VNU_DECOMP_funNum{1'b0}} || vnu_init_load_finish == {`IB_VNU_DECOMP_funNum{1'b1}})
