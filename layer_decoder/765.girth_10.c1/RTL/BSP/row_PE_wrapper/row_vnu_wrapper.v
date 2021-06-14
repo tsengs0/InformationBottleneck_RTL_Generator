@@ -220,8 +220,8 @@ generate
 		// Instantiation of F_1
 		wire [QUAN_SIZE-1:0] vnu0_v2c;
 		wire [QUAN_SIZE-1:0] vnu1_v2c;
-		wire [`QUAN_SIZE-1:0] vnu0_dn_in;
-		wire [`QUAN_SIZE-1:0] vnu1_dn_in;
+		wire [QUAN_SIZE-1:0] vnu0_dn_in;
+		wire [QUAN_SIZE-1:0] vnu1_dn_in;
 		wire [QUAN_SIZE-1:0] vnu0_E_reg2, vnu1_E_reg2;
 		wire vnu0_tranEn_out_f1;
 		wire vnu1_tranEn_out_f1;
@@ -238,12 +238,12 @@ generate
 			// For the first VNU
 			.vnu0_v2c0 (v2c_0[VNU3_INSTANTIATE_UNIT*j]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu0_E_reg2 (vnu0_E_reg2[QUAN_SIZE-1:0]),
-			.vnu0_dn_in (vnu0_dn_in[`QUAN_SIZE-1:0]), // the input source to decision node in the next step
+			.vnu0_dn_in (vnu0_dn_in[QUAN_SIZE-1:0]), // the input source to decision node in the next step
 			.vnu0_tranEn_out0 (vnu0_tranEn_out_f1),
 			// For the second VNU       
 			.vnu1_v2c0 (v2c_0[(VNU3_INSTANTIATE_UNIT*j)+1]), // internal signals accounting for each 128-entry partial LUT's output
 			.vnu1_E_reg2 (vnu1_E_reg2[QUAN_SIZE-1:0]),
-			.vnu1_dn_in (vnu1_dn_in[`QUAN_SIZE-1:0]), // the input source to decision node in the next step
+			.vnu1_dn_in (vnu1_dn_in[QUAN_SIZE-1:0]), // the input source to decision node in the next step
 			.vnu1_tranEn_out0 (vnu1_tranEn_out_f1),
 			
 			// From the first VNU
@@ -284,12 +284,12 @@ generate
 			.dnu1_hard_decision (hard_decision[(VNU3_INSTANTIATE_UNIT*j)+1]), // internal signals accounting for each 128-entry partial LUT's output		        
 		
 			// From the first DNU
-			.vnu0_t10		 (vnu0_dn_in[`QUAN_SIZE-1:0]),
+			.vnu0_t10		 (vnu0_dn_in[QUAN_SIZE-1:0]),
 			.vnu0_c2v_2      (vnu0_E_reg2[QUAN_SIZE-1:0]),
 			.vnu0_tranEn_in0 (vnu0_tranEn_out_f1),
 
 			// From the second DNU
-			.vnu1_t10		 (vnu1_dn_in[`QUAN_SIZE-1:0]),
+			.vnu1_t10		 (vnu1_dn_in[QUAN_SIZE-1:0]),
 			.vnu1_c2v_2      (vnu1_E_reg2[QUAN_SIZE-1:0]),
 			.vnu1_tranEn_in0 (vnu1_tranEn_out_f1),
 

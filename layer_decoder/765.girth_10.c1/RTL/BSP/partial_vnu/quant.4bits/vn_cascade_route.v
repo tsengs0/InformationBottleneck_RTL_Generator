@@ -208,9 +208,9 @@ module ib_vnu_3_pipeOut # (
     input wire v2c_src              
 );
 
-assign M0_src[`QUAN_SIZE-1:0] = (v2c_src == 1'b0) ? M0[`QUAN_SIZE-1:0] : ch_llr[`QUAN_SIZE-1:0];
-assign M1_src[`QUAN_SIZE-1:0] = (v2c_src == 1'b0) ? M1[`QUAN_SIZE-1:0] : ch_llr[`QUAN_SIZE-1:0];
-assign M2_src[`QUAN_SIZE-1:0] = (v2c_src == 1'b0) ? M2[`QUAN_SIZE-1:0] : ch_llr[`QUAN_SIZE-1:0];
+assign M0_src[QUAN_SIZE-1:0] = (v2c_src == 1'b0) ? M0[QUAN_SIZE-1:0] : ch_llr[QUAN_SIZE-1:0];
+assign M1_src[QUAN_SIZE-1:0] = (v2c_src == 1'b0) ? M1[QUAN_SIZE-1:0] : ch_llr[QUAN_SIZE-1:0];
+assign M2_src[QUAN_SIZE-1:0] = (v2c_src == 1'b0) ? M2[QUAN_SIZE-1:0] : ch_llr[QUAN_SIZE-1:0];
 endmodule
 
 module ib_dnu_f0_route #(
