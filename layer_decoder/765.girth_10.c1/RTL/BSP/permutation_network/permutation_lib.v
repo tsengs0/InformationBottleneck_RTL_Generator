@@ -1,5 +1,55 @@
 `include "define.vh"
 
+module zero_shuffle_top_85b #(
+	parameter CHECK_PARALLELISM = 85,
+	parameter BS_PIPELINE_LEVEL = 2
+) (
+	output wire [CHECK_PARALLELISM-1:0] sw_out_bit0,
+	output wire [CHECK_PARALLELISM-1:0] sw_out_bit1,
+	output wire [CHECK_PARALLELISM-1:0] sw_out_bit2,
+	output wire [CHECK_PARALLELISM-1:0] sw_out_bit3,
+
+`ifdef SCHED_4_6
+	input wire sys_clk,
+	input wire rstn,
+`endif
+	input wire [CHECK_PARALLELISM-1:0] sw_in_bit0,
+	input wire [CHECK_PARALLELISM-1:0] sw_in_bit1,
+	input wire [CHECK_PARALLELISM-1:0] sw_in_bit2,
+	input wire [CHECK_PARALLELISM-1:0] sw_in_bit3
+);
+
+`ifdef SCHED_4_6
+reg [CHECK_PARALLELISM-1:0] sw_out_bit0_pipe [0:BS_PIPELINE_LEVEL-1];
+reg [CHECK_PARALLELISM-1:0] sw_out_bit1_pipe [0:BS_PIPELINE_LEVEL-1];
+reg [CHECK_PARALLELISM-1:0] sw_out_bit2_pipe [0:BS_PIPELINE_LEVEL-1];
+reg [CHECK_PARALLELISM-1:0] sw_out_bit3_pipe [0:BS_PIPELINE_LEVEL-1];
+always @(posedge sys_clk) begin if(!rstn) sw_out_bit0_pipe[0] <= 0; else sw_out_bit0_pipe[0] <= sw_in_bit0[CHECK_PARALLELISM-1:0]; end
+always @(posedge sys_clk) begin if(!rstn) sw_out_bit1_pipe[0] <= 0; else sw_out_bit1_pipe[0] <= sw_in_bit1[CHECK_PARALLELISM-1:0]; end
+always @(posedge sys_clk) begin if(!rstn) sw_out_bit2_pipe[0] <= 0; else sw_out_bit2_pipe[0] <= sw_in_bit2[CHECK_PARALLELISM-1:0]; end
+always @(posedge sys_clk) begin if(!rstn) sw_out_bit3_pipe[0] <= 0; else sw_out_bit3_pipe[0] <= sw_in_bit3[CHECK_PARALLELISM-1:0]; end
+genvar bit_index;
+generate
+	for(bit_index=1;bit_index<BS_PIPELINE_LEVEL;bit_index=bit_index+1) begin : bit_zero_shuffle_inst
+		always @(posedge sys_clk) begin if(!rstn) sw_out_bit0_pipe[bit_index] <= 0; else sw_out_bit0_pipe[bit_index] <= sw_out_bit0_pipe[bit_index-1]; end
+		always @(posedge sys_clk) begin if(!rstn) sw_out_bit1_pipe[bit_index] <= 0; else sw_out_bit1_pipe[bit_index] <= sw_out_bit1_pipe[bit_index-1]; end
+		always @(posedge sys_clk) begin if(!rstn) sw_out_bit2_pipe[bit_index] <= 0; else sw_out_bit2_pipe[bit_index] <= sw_out_bit2_pipe[bit_index-1]; end
+		always @(posedge sys_clk) begin if(!rstn) sw_out_bit3_pipe[bit_index] <= 0; else sw_out_bit3_pipe[bit_index] <= sw_out_bit3_pipe[bit_index-1]; end
+	end
+endgenerate
+assign sw_out_bit0[CHECK_PARALLELISM-1:0] = sw_out_bit0_pipe[BS_PIPELINE_LEVEL-1];
+assign sw_out_bit1[CHECK_PARALLELISM-1:0] = sw_out_bit1_pipe[BS_PIPELINE_LEVEL-1];
+assign sw_out_bit2[CHECK_PARALLELISM-1:0] = sw_out_bit2_pipe[BS_PIPELINE_LEVEL-1];
+assign sw_out_bit3[CHECK_PARALLELISM-1:0] = sw_out_bit3_pipe[BS_PIPELINE_LEVEL-1];
+`else
+assign sw_out_bit0[CHECK_PARALLELISM-1:0] = sw_in_bit0[CHECK_PARALLELISM-1:0];
+assign sw_out_bit1[CHECK_PARALLELISM-1:0] = sw_in_bit1[CHECK_PARALLELISM-1:0];
+assign sw_out_bit2[CHECK_PARALLELISM-1:0] = sw_in_bit2[CHECK_PARALLELISM-1:0];
+assign sw_out_bit3[CHECK_PARALLELISM-1:0] = sw_in_bit3[CHECK_PARALLELISM-1:0];
+`endif
+endmodule
+
+// Obselete
 module permutation_wrapper #(
 	parameter CHECK_PARALLELISM = 85
 ) (

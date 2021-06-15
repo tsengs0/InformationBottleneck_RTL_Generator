@@ -1,4 +1,5 @@
 `include "define.vh"
+
 module vnu3_f1 #(
 	parameter QUAN_SIZE  = 4,
 	parameter PIPELINE_DEPTH = 3,
@@ -10,18 +11,26 @@ module vnu3_f1 #(
 	output wire read_addr_offset_out, // to forward the current multi-frame offset signal to the next sub-datapath	
     // For the first VNU
     output wire [QUAN_SIZE-1:0] vnu0_v2c0, // internal signals accounting for each 128-entry partial LUT's output
+`ifdef SCHED_4_6
+
+`else
 	output wire [QUAN_SIZE-1:0] vnu0_dn_in, // the input source to decision node in the next step
 	output wire [QUAN_SIZE-1:0] vnu0_E_reg2,
-`ifdef V2C_C2V_PROBE
-	output wire [QUAN_SIZE-1:0] vnu0_E_reg0,
-	output wire [QUAN_SIZE-1:0] vnu0_E_reg1,
-	output wire [QUAN_SIZE-1:0] vnu0_ch_llr_probe,
-`endif		
+`endif
+//`ifdef V2C_C2V_PROBE
+//	output wire [QUAN_SIZE-1:0] vnu0_E_reg0,
+//	output wire [QUAN_SIZE-1:0] vnu0_E_reg1,
+//	output wire [QUAN_SIZE-1:0] vnu0_ch_llr_probe,
+//`endif		
 	
     // For the second VNU       
     output wire [QUAN_SIZE-1:0] vnu1_v2c0, // internal signals accounting for each 128-entry partial LUT's output
+`ifdef SCHED_4_6
+
+`else
 	output wire [QUAN_SIZE-1:0] vnu1_E_reg2,
 	output wire [QUAN_SIZE-1:0] vnu1_dn_in, // the input source to decision node in the next step
+`endif
 
 	output wire vnu0_tranEn_out0, // for the decision node in the next stage
 	output wire vnu1_tranEn_out0, // for the decision node in the next stage
@@ -29,17 +38,25 @@ module vnu3_f1 #(
     // From the first VNU
     input wire [QUAN_SIZE-1:0] vnu0_t00,
     input wire [QUAN_SIZE-1:0] vnu0_c2v_1,
+`ifdef SCHED_4_6
+
+`else
     input wire [QUAN_SIZE-1:0] vnu0_c2v_2,
-`ifdef V2C_C2V_PROBE
-	input wire [QUAN_SIZE-1:0] vnu0_c2v_0,
-	input wire [QUAN_SIZE-1:0] vnu0_ch_llr,
 `endif
+//`ifdef V2C_C2V_PROBE
+//	input wire [QUAN_SIZE-1:0] vnu0_c2v_0,
+//	input wire [QUAN_SIZE-1:0] vnu0_ch_llr,
+//`endif
 	input wire vnu0_tranEn_in0,
 
     // From the second VNU
     input wire [QUAN_SIZE-1:0] vnu1_t00,
     input wire [QUAN_SIZE-1:0] vnu1_c2v_1,
-    input wire [QUAN_SIZE-1:0] vnu1_c2v_2, 
+`ifdef SCHED_4_6
+
+`else
+    input wire [QUAN_SIZE-1:0] vnu1_c2v_2,
+`endif
 	input wire vnu1_tranEn_in0,
 	
 	input wire read_clk,
@@ -73,41 +90,48 @@ ib_vnu3_f1_route vnu1_f1_in_pipe(
     .t_00 (vnu1_t00[QUAN_SIZE-1:0]),
     .E1   (vnu1_c2v_1[QUAN_SIZE-1:0])          
 );
-//================================================================================//
-// Pipeline Mechanism for V2C messages where it will be used in DNU.f0 
-ib_f1_c2v_pipeline #(
-	.PIPELINE_DEPTH (PIPELINE_DEPTH)
-) vnu0_c2v_pipe (
-	.E2_reg   (vnu0_E_reg2[QUAN_SIZE-1:0]),
-`ifdef V2C_C2V_PROBE
-	.E0_reg     (vnu0_E_reg0[QUAN_SIZE-1:0]),
-	.E1_reg     (vnu0_E_reg1[QUAN_SIZE-1:0]),
-	.ch_llr_reg (vnu0_ch_llr_probe[QUAN_SIZE-1:0]),
-	
-	.c2v0_in   (vnu0_c2v_0[QUAN_SIZE-1:0]),
-	.c2v1_in   (vnu0_c2v_1[QUAN_SIZE-1:0]),
-	.ch_llr_in (vnu0_ch_llr[QUAN_SIZE-1:0]),
+`ifdef SCHED_4_6
+
+`else
+	//================================================================================//
+	// Pipeline Mechanism for V2C messages where it will be used in DNU.f0 
+	ib_f1_c2v_pipeline #(
+		.PIPELINE_DEPTH (PIPELINE_DEPTH)
+	) vnu0_c2v_pipe (
+		.E2_reg   (vnu0_E_reg2[QUAN_SIZE-1:0]),
+	`ifdef V2C_C2V_PROBE
+		.E0_reg     (vnu0_E_reg0[QUAN_SIZE-1:0]),
+		.E1_reg     (vnu0_E_reg1[QUAN_SIZE-1:0]),
+		.ch_llr_reg (vnu0_ch_llr_probe[QUAN_SIZE-1:0]),
+		
+		.c2v0_in   (vnu0_c2v_0[QUAN_SIZE-1:0]),
+		.c2v1_in   (vnu0_c2v_1[QUAN_SIZE-1:0]),
+		.ch_llr_in (vnu0_ch_llr[QUAN_SIZE-1:0]),
+	`endif
+		.c2v2_in  (vnu0_c2v_2[QUAN_SIZE-1:0]),
+		.read_clk (read_clk),
+		.rstn (rstn)
+	);
+	ib_f1_c2v_pipeline #(
+		.PIPELINE_DEPTH (PIPELINE_DEPTH)
+	) vnu1_c2v_pipe (
+		.E2_reg   (vnu1_E_reg2[QUAN_SIZE-1:0]),
+		.c2v2_in  (vnu1_c2v_2[QUAN_SIZE-1:0]),
+		.read_clk (read_clk),
+		.rstn (rstn)
+	);
 `endif
-	.c2v2_in  (vnu0_c2v_2[QUAN_SIZE-1:0]),
-	.read_clk (read_clk),
-	.rstn (rstn)
-);
-ib_f1_c2v_pipeline #(
-	.PIPELINE_DEPTH (PIPELINE_DEPTH)
-) vnu1_c2v_pipe (
-	.E2_reg   (vnu1_E_reg2[QUAN_SIZE-1:0]),
-	.c2v2_in  (vnu1_c2v_2[QUAN_SIZE-1:0]),
-	.read_clk (read_clk),
-	.rstn (rstn)
-);
 //================================================================================//
 /*-------------IB-VNU RAM 0--------------------*/
 sym_vn_lut_out func_ram_10(
     .t_c_A (vnu0_v2c0[QUAN_SIZE-1:0]), // For first reader  (A)    
-    .t_c_B (vnu1_v2c0[QUAN_SIZE-1:0]), // For second reader (B) 
+    .t_c_B (vnu1_v2c0[QUAN_SIZE-1:0]), // For second reader (B)
+`ifdef SCHED_4_6
+
+`else
 	.t_c_dinA (vnu0_dn_in[QUAN_SIZE-1:0]), // the input source to decision node in the next step (without complement conversion)
 	.t_c_dinB (vnu1_dn_in[QUAN_SIZE-1:0]), // the input source to decision node in the next step (without complement conversion)
-
+`endif
 	.transpose_en_outA (vnu0_tranEn_out0),//(vnu0_tranEn_out0),
 	.transpose_en_outB (vnu1_tranEn_out0),//(vnu1_tranEn_out0),
 	.read_addr_offset_out (read_addr_offset_out),

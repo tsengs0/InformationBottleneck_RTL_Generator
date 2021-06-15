@@ -1,3 +1,5 @@
+`include "define.vh"
+
 module row_vnu_wrapper #(
 	parameter QUAN_SIZE = 4,
 	parameter CN_DEGREE = 10,
@@ -126,7 +128,7 @@ wire [QUAN_SIZE-1:0] ch_msg [0:CN_DEGREE-1];
 wire [QUAN_SIZE-1:0] v2c_0 [0:CN_DEGREE-1];
 wire [CN_DEGREE-1:0] hard_decision;
 // Address related signals including the Net type
-
+/*
 reg [QUAN_SIZE-1:0] c2v_latch_0 [0:CN_DEGREE-1];
 reg [QUAN_SIZE-1:0] c2v_latch_1 [0:CN_DEGREE-1];
 reg [QUAN_SIZE-1:0] c2v_latch_2 [0:CN_DEGREE-1];
@@ -160,6 +162,8 @@ generate
 		///////////////////////////////////////////////////////////////////////////////////////////
 	end
 endgenerate
+*/
+genvar j;
 generate
 	for (j=0; j<VNU3_INSTANTIATE_NUM; j=j+1) begin : partial_vnu3_inst
 		// Instantiation of F_0
@@ -181,27 +185,43 @@ generate
 			.read_addr_offset_out (read_addr_offset_internal), // to forward the current multi-frame offset signal to the next sub-datapath	
 			// For the first VNU
 			.vnu0_tPort0 (vnu0_f0_out[QUAN_SIZE-1:0]), // internal signals accounting for each 128-entry partial LUT's output
+`ifdef SCHED_4_6
+
+`else
 			.vnu0_c2v1   (vnu0_c2v[0]),
 			.vnu0_c2v2   (vnu0_c2v[1]),
+`endif
 			// For the second VNU       
 			.vnu1_tPort0 (vnu1_f0_out[QUAN_SIZE-1:0]), // internal signals accounting for each 128-entry partial LUT's output
+`ifdef SCHED_4_6
+
+`else
 			.vnu1_c2v1   (vnu1_c2v[0]),
 			.vnu1_c2v2   (vnu1_c2v[1]),
+`endif
 
 			// For first to fourth VNUs (output port)
 			.vnu0_tranEn_out0 (vnu0_tranEn_out),
 			.vnu1_tranEn_out0 (vnu1_tranEn_out),
 
 			// From the first VNU
-			.vnu0_c2v_0  (c2v_latch_0[VNU3_INSTANTIATE_UNIT*j]),
+			.vnu0_c2v_0  (c2v_0[VNU3_INSTANTIATE_UNIT*j]),
+`ifdef SCHED_4_6
+
+`else
 			.vnu0_c2v_1  (c2v_latch_1[VNU3_INSTANTIATE_UNIT*j]),
 			.vnu0_c2v_2  (c2v_latch_2[VNU3_INSTANTIATE_UNIT*j]),
+`endif
 			.vnu0_ch_llr (ch_msg[VNU3_INSTANTIATE_UNIT*j]),
 	
 			// From the second VNU
-			.vnu1_c2v_0  (c2v_latch_0[(VNU3_INSTANTIATE_UNIT*j)+1]),
+			.vnu1_c2v_0  (c2v_0[(VNU3_INSTANTIATE_UNIT*j)+1]),
+`ifdef SCHED_4_6
+
+`else
 			.vnu1_c2v_1  (c2v_latch_1[(VNU3_INSTANTIATE_UNIT*j)+1]),
 			.vnu1_c2v_2  (c2v_latch_2[(VNU3_INSTANTIATE_UNIT*j)+1]),
+`endif
 			.vnu1_ch_llr (ch_msg[(VNU3_INSTANTIATE_UNIT*j)+1]),
 		
 			.read_clk (read_clk),
@@ -237,25 +257,42 @@ generate
 			.read_addr_offset_out (read_addr_offset_outSet), // to forward the current multi-frame offset signal to the next sub-datapath	
 			// For the first VNU
 			.vnu0_v2c0 (v2c_0[VNU3_INSTANTIATE_UNIT*j]), // internal signals accounting for each 128-entry partial LUT's output
+`ifdef SCHED_4_6
+
+`else
 			.vnu0_E_reg2 (vnu0_E_reg2[QUAN_SIZE-1:0]),
 			.vnu0_dn_in (vnu0_dn_in[QUAN_SIZE-1:0]), // the input source to decision node in the next step
+`endif
 			.vnu0_tranEn_out0 (vnu0_tranEn_out_f1),
 			// For the second VNU       
 			.vnu1_v2c0 (v2c_0[(VNU3_INSTANTIATE_UNIT*j)+1]), // internal signals accounting for each 128-entry partial LUT's output
+`ifdef SCHED_4_6
+
+`else
 			.vnu1_E_reg2 (vnu1_E_reg2[QUAN_SIZE-1:0]),
 			.vnu1_dn_in (vnu1_dn_in[QUAN_SIZE-1:0]), // the input source to decision node in the next step
+`endif
 			.vnu1_tranEn_out0 (vnu1_tranEn_out_f1),
 			
 			// From the first VNU
 			.vnu0_t00   (vnu0_f0_out[QUAN_SIZE-1:0]),
-			.vnu0_c2v_1 (vnu0_c2v[0]),
+			.vnu0_c2v_1 (c2v_1[VNU3_INSTANTIATE_UNIT*j]),
+`ifdef SCHED_4_6
+
+`else
 			.vnu0_c2v_2 (vnu0_c2v[1]),
+`endif
+
 			.vnu0_tranEn_in0 (vnu0_tranEn_out),
 	
 			// From the second VNU
 			.vnu1_t00   (vnu1_f0_out[QUAN_SIZE-1:0]),
-			.vnu1_c2v_1 (vnu1_c2v[0]),
+			.vnu1_c2v_1 (c2v_1[(VNU3_INSTANTIATE_UNIT*j)+1]),
+`ifdef SCHED_4_6
+
+`else
 			.vnu1_c2v_2 (vnu1_c2v[1]), 
+`endif
 			.vnu1_tranEn_in0 (vnu1_tranEn_out),	
 	
 			.read_clk (read_clk),
@@ -284,13 +321,13 @@ generate
 			.dnu1_hard_decision (hard_decision[(VNU3_INSTANTIATE_UNIT*j)+1]), // internal signals accounting for each 128-entry partial LUT's output		        
 		
 			// From the first DNU
-			.vnu0_t10		 (vnu0_dn_in[QUAN_SIZE-1:0]),
-			.vnu0_c2v_2      (vnu0_E_reg2[QUAN_SIZE-1:0]),
+			.vnu0_t10		 (c2v_2[(VNU3_INSTANTIATE_UNIT*j)]), //(vnu0_dn_in[QUAN_SIZE-1:0]),
+			.vnu0_c2v_2      (c2v_1[VNU3_INSTANTIATE_UNIT*j]),
 			.vnu0_tranEn_in0 (vnu0_tranEn_out_f1),
 
 			// From the second DNU
-			.vnu1_t10		 (vnu1_dn_in[QUAN_SIZE-1:0]),
-			.vnu1_c2v_2      (vnu1_E_reg2[QUAN_SIZE-1:0]),
+			.vnu1_t10		 (c2v_2[(VNU3_INSTANTIATE_UNIT*j)+1]), //(vnu1_dn_in[QUAN_SIZE-1:0]),
+			.vnu1_c2v_2      (c2v_1[(VNU3_INSTANTIATE_UNIT*j)+1]),
 			.vnu1_tranEn_in0 (vnu1_tranEn_out_f1),
 
 			.read_clk (read_clk),
