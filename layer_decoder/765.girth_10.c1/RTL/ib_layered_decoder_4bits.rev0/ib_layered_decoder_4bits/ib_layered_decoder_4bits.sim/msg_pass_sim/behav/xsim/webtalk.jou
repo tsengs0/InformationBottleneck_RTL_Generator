@@ -2,11 +2,11 @@
 # Webtalk v2019.2 (64-bit)
 # SW Build 2708876 on Wed Nov  6 21:39:14 MST 2019
 # IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
-# Start of session at: Wed Jun  2 17:51:18 2021
-# Process ID: 53514
+# Start of session at: Fri Jun 11 16:22:12 2021
+# Process ID: 54200
 # Current directory: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.sim/msg_pass_sim/behav/xsim
-# Command line: wbtcv -mode batch -source /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.sim/msg_pass_sim/behav/xsim/xsim.dir/tb_ram_pageAlign_interface_behav/webtalk/xsim_webtalk.tcl -notrace
+# Command line: wbtcv -mode batch -source /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.sim/msg_pass_sim/behav/xsim/xsim.dir/tb_entire_sched_behav/webtalk/xsim_webtalk.tcl -notrace
 # Log file: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.sim/msg_pass_sim/behav/xsim/webtalk.log
 # Journal file: /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.sim/msg_pass_sim/behav/xsim/webtalk.jou
 #-----------------------------------------------------------
-source /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.sim/msg_pass_sim/behav/xsim/xsim.dir/tb_ram_pageAlign_interface_behav/webtalk/xsim_webtalk.tcl -notrace
+source /home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.sim/msg_pass_sim/behav/xsim/xsim.dir/tb_entire_sched_behav/webtalk/xsim_webtalk.tcl -notrace

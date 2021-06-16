@@ -1,0 +1,16 @@
+#
+# An unexpected error has occurred (11)
+#
+Stack:
+/home/s1820419/Xilinx/Vivado/2019.2/tps/lnx64/jre9.0.4/lib//server/libjvm.so(+0xb6aadb) [0x2ab3d30b2adb]
+/home/s1820419/Xilinx/Vivado/2019.2/tps/lnx64/jre9.0.4/lib//server/libjvm.so(JVM_handle_linux_signal+0xbb) [0x2ab3d30b7e1b]
+/home/s1820419/Xilinx/Vivado/2019.2/tps/lnx64/jre9.0.4/lib//server/libjvm.so(+0xb647b8) [0x2ab3d30ac7b8]
+/lib64/libc.so.6(+0x361e0) [0x2ab388ada1e0]
+/home/s1820419/Xilinx/Vivado/2019.2/lib/lnx64.o/librdi_simbridge_kernel.so(SimBridge::WdbAddressBTreeManagerImp::storeEvent(long long, long long, unsigned char)+0x80) [0x2ab3ce6dd950]
+/home/s1820419/Xilinx/Vivado/2019.2/lib/lnx64.o/librdi_simbridge_kernel.so(+0x50c23) [0x2ab3ce6e3c23]
+/home/s1820419/Xilinx/Vivado/2019.2/lib/lnx64.o/librdi_simbridge_kernel.so(SimBridge::WdbAddressBTreeManagerImp::addLiveEvent(SimBridge::WdbLiveEvent const*, std::function<void (long long, long long, unsigned char)> const&)+0xb1) [0x2ab3ce6de441]
+/home/s1820419/Xilinx/Vivado/2019.2/lib/lnx64.o/librdi_simbridge_kernel.so(SimBridge::WdbAddressBTreeManager::addEventBuffered(SimBridge::WdbLiveEvent const*)+0x68) [0x2ab3ce6de4e8]
+/home/s1820419/Xilinx/Vivado/2019.2/lib/lnx64.o/librdi_simbridge_kernel.so(SimBridge::WdbSharedMemReader::runReadThread(SimBridge::WdbIEventBlockDatabase*)+0x7d) [0x2ab3ce70ad1d]
+/home/s1820419/Xilinx/Vivado/2019.2/lib/lnx64.o/libboost_thread.so(+0xfa0d) [0x2ab38a731a0d]
+/lib64/libpthread.so.0(+0x7569) [0x2ab388e65569]
+/lib64/libc.so.6(clone+0x3f) [0x2ab388b9c9ef]

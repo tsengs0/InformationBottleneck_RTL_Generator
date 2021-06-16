@@ -1,0 +1,4 @@
+Vivado Simulator 2019.2
+Time resolution is 1 ps
+$finish called at time : 16350 ns : File "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_entire_sched.sv" Line 496
+$finish called at time : 16350 ns : File "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_entire_sched.sv" Line 496

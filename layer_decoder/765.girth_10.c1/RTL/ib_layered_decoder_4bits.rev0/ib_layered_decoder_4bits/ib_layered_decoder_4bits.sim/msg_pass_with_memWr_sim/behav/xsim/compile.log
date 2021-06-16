@@ -1,0 +1,258 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.ip_user_files/bd/mem_subsys/ip/mem_subsys_blk_mem_gen_0_0/sim/mem_subsys_blk_mem_gen_0_0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_subsys_blk_mem_gen_0_0
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.ip_user_files/bd/mem_subsys_frag/ip/mem_subsys_frag_blk_mem_gen_0_0/sim/mem_subsys_frag_blk_mem_gen_0_0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_subsys_frag_blk_mem_gen_0_0
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/opt_cnu_min_8.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module opt_cnu_min_8
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/opt_cnu_min_6.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module opt_cnu_min_6
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/min_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module min_tb
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/m42.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module m42
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/m22.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module m22
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/m21.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module m21
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/leq.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module leq
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.ip_user_files/bd/mem_subsys/sim/mem_subsys.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_subsys
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.ip_user_files/bd/mem_subsys_frag/sim/mem_subsys_frag.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_subsys_frag
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/base_cnu_min_10.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module base_cnu_min_10
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/base_cnu_min_6.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module base_cnu_min_6
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/ch_mem_lib.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ch_mem_submatrix_top
+INFO: [VRFC 10-311] analyzing module ch_mem
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/layer_decoder_solution/circular_page_align_1_lib.v" into library xil_defaultlib
+WARNING: [VRFC 10-3507] macro 'VN_NUM' redefined [../../../../../../BSP/Global_Header/define.vh:272]
+WARNING: [VRFC 10-3507] macro 'CN_DEGREE' redefined [../../../../../../BSP/Global_Header/define.vh:274]
+WARNING: [VRFC 10-3507] macro 'CN_NUM' redefined [../../../../../../BSP/Global_Header/define.vh:276]
+WARNING: [VRFC 10-3507] macro 'VN_NUM' redefined [../../../../../../BSP/Global_Header/define.vh:277]
+INFO: [VRFC 10-311] analyzing module ram_pageAlign_interface_submatrix_1
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/layer_decoder_solution/circular_page_align_2_lib.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ram_pageAlign_interface_submatrix_2
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/layer_decoder_solution/circular_page_align_3_lib.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ram_pageAlign_interface_submatrix_3
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/layer_decoder_solution/circular_page_align_4_lib.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ram_pageAlign_interface_submatrix_4
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/layer_decoder_solution/circular_page_align_5_lib.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ram_pageAlign_interface_submatrix_5
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/layer_decoder_solution/circular_page_align_6_lib.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ram_pageAlign_interface_submatrix_6
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/layer_decoder_solution/circular_page_align_7_lib.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ram_pageAlign_interface_submatrix_7
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/layer_decoder_solution/circular_page_align_8_lib.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ram_pageAlign_interface_submatrix_8
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/layer_decoder_solution/circular_page_align_9_lib.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ram_pageAlign_interface_submatrix_9
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/cnu_10.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cnu_10
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/cnu_6.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cnu_6
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/DecodingPRocessControl/cnu_control_unit.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cnu_control_unit
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/column_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module column_ram_pc85
+INFO: [VRFC 10-311] analyzing module ram_unit
+INFO: [VRFC 10-311] analyzing module ram_unit_frag
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/partial_vnu/quant.4bits/dnu_f0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module dnu_f0
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/leq.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module leq
+WARNING: [VRFC 10-3609] overwriting previous definition of module 'leq' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/leq.v:1]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/m21.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module m21
+WARNING: [VRFC 10-3609] overwriting previous definition of module 'm21' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/m21.v:1]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/m22.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module m22
+WARNING: [VRFC 10-3609] overwriting previous definition of module 'm22' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/m22.v:1]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/m42.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module m42
+WARNING: [VRFC 10-3609] overwriting previous definition of module 'm42' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/m42.v:1]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/partial_vnu/quant.4bits/mem_map.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module vn_addr_map
+INFO: [VRFC 10-311] analyzing module vn_addr_bus
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.srcs/sources_1/bd/mem_subsys_frag/hdl/mem_subsys_frag_wrapper.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_subsys_frag_wrapper
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.srcs/sources_1/bd/mem_subsys/hdl/mem_subsys_wrapper.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_subsys_wrapper
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_lib.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_subsystem_top
+INFO: [VRFC 10-311] analyzing module ram_out_demux
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_top_submatrix_1.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_subsystem_top_submatrix_1
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_top_submatrix_2.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_subsystem_top_submatrix_2
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_top_submatrix_3.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_subsystem_top_submatrix_3
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_top_submatrix_4.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_subsystem_top_submatrix_4
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_top_submatrix_5.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_subsystem_top_submatrix_5
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_top_submatrix_6.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_subsystem_top_submatrix_6
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_top_submatrix_7.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_subsystem_top_submatrix_7
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_top_submatrix_8.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_subsystem_top_submatrix_8
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/mem_subsystem_top_submatrix_9.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_subsystem_top_submatrix_9
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/partial_vnu/quant.4bits/mem_sys.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_sys
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_tb.v" into library xil_defaultlib
+WARNING: [VRFC 10-3507] macro 'CN_NUM' redefined [../../../../../../../../common_lib/CNU10/min_dc6/define.v:3]
+WARNING: [VRFC 10-3507] macro 'VN_NUM' redefined [../../../../../../../../common_lib/CNU10/min_dc6/define.v:4]
+WARNING: [VRFC 10-3507] macro 'CN_DEGREE' redefined [../../../../../../../../common_lib/CNU10/min_dc6/define.v:6]
+INFO: [VRFC 10-311] analyzing module min_tb
+WARNING: [VRFC 10-3609] overwriting previous definition of module 'min_tb' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_tb.v:3]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/opt_cnu_min_6.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module opt_cnu_min_6
+WARNING: [VRFC 10-3609] overwriting previous definition of module 'opt_cnu_min_6' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/opt_cnu_min_6.v:1]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/opt_cnu_min_8.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module opt_cnu_min_8
+WARNING: [VRFC 10-3609] overwriting previous definition of module 'opt_cnu_min_8' [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/opt_cnu_min_8.v:3]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/page_align_lib.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module align_cmd_gen_0
+INFO: [VRFC 10-311] analyzing module align_cmd_gen_1
+INFO: [VRFC 10-311] analyzing module align_cmd_gen_2
+INFO: [VRFC 10-311] analyzing module align_cmd_gen_3
+INFO: [VRFC 10-311] analyzing module align_cmd_gen_4
+INFO: [VRFC 10-311] analyzing module align_cmd_gen_5
+INFO: [VRFC 10-311] analyzing module page_align_depth_1_2
+INFO: [VRFC 10-311] analyzing module page_align_depth_1
+INFO: [VRFC 10-311] analyzing module page_align_depth_2
+INFO: [VRFC 10-311] analyzing module circular_align_cmd_gen_0
+INFO: [VRFC 10-311] analyzing module circular_align_cmd_gen_1
+INFO: [VRFC 10-311] analyzing module circular_align_cmd_gen_2
+INFO: [VRFC 10-311] analyzing module circular_align_cmd_gen_3
+INFO: [VRFC 10-311] analyzing module circular_align_cmd_gen_4
+INFO: [VRFC 10-311] analyzing module circular_align_cmd_gen_5
+INFO: [VRFC 10-311] analyzing module circular_page_align_depth_1_2
+INFO: [VRFC 10-311] analyzing module circular_page_align_depth_1
+INFO: [VRFC 10-311] analyzing module circular_page_align_depth_2
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/permutation_network/permutation_lib.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module permutation_wrapper
+INFO: [VRFC 10-311] analyzing module permutation_lib
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/permutation_network/qsn_controller_85b.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module qsn_controller_85b
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/permutation_network/qsn_left_85b.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module qsn_left_85b
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/permutation_network/qsn_merge_85b.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module qsn_merge_85b
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/permutation_network/qsn_right_85b.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module qsn_right_85b
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/permutation_network/qsn_top_85b.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module qsn_top_85b
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/row_PE_wrapper/row_process_element.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module row_process_element
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/row_PE_wrapper/row_vnu_wrapper.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module row_vnu_wrapper
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/partial_vnu/quant.4bits/sym_dn_lut.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sym_dn_lut
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/partial_vnu/quant.4bits/sym_dn_lut_out.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sym_dn_lut_out
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/partial_vnu/quant.4bits/sym_dn_rank.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sym_dn_rank
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/partial_vnu/quant.4bits/sym_vn_lut.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sym_vn_lut
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/partial_vnu/quant.4bits/sym_vn_lut_in.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sym_vn_lut_in
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/partial_vnu/quant.4bits/sym_vn_lut_internal.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sym_vn_lut_internal
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/partial_vnu/quant.4bits/sym_vn_lut_out.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sym_vn_lut_out
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/partial_vnu/quant.4bits/sym_vn_rank.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sym_vn_rank
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/memory_subsystem/test.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module test
+INFO: [VRFC 10-311] analyzing module reductin_or
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/partial_vnu/quant.4bits/vn_cascade_route.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ib_vnu3_f0_route
+INFO: [VRFC 10-311] analyzing module ib_f0_c2v_pipeline
+INFO: [VRFC 10-311] analyzing module ib_vnu3_f1_route
+INFO: [VRFC 10-311] analyzing module ib_f1_c2v_pipeline
+INFO: [VRFC 10-311] analyzing module ib_f2_c2v_pipeline
+INFO: [VRFC 10-311] analyzing module ib_vnu_3_pipeOut
+INFO: [VRFC 10-311] analyzing module ib_dnu_f0_route
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/partial_vnu/quant.4bits/vnu3_f0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module vnu3_f0
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/partial_vnu/quant.4bits/vnu3_f1.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module vnu3_f1
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/cnu_10_tb.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cnu_10_tb
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/cnu_6_tb.sv" into library xil_defaultlib
+WARNING: [VRFC 10-3507] macro 'CN_DEGREE' redefined [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/cnu_6_tb.sv:2]
+INFO: [VRFC 10-311] analyzing module cnu_6_tb
+WARNING: [VRFC 10-3248] data object 'p' is already declared [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/cnu_6_tb.sv:71]
+WARNING: [VRFC 10-3703] second declaration of 'p' ignored [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/cnu_6_tb.sv:71]
+WARNING: [VRFC 10-3029] 'p' was previously declared without a range [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/common_lib/CNU10/min_dc6/cnu_6_tb.sv:71]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/DecodingPRocessControl/vnu_control_unit.v" into library xil_defaultlib
+WARNING: [VRFC 10-3507] macro 'VN_NUM' redefined [../../../../../../BSP/Global_Header/define.vh:277]
+INFO: [VRFC 10-311] analyzing module vnu_control_unit
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/DecodingPRocessControl/vn_write_unit.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module vn_mem_latch
+INFO: [VRFC 10-311] analyzing module v3rom_iter_selector
+INFO: [VRFC 10-311] analyzing module vn_iter_counter
+INFO: [VRFC 10-311] analyzing module v3rom_iter_mux
+INFO: [VRFC 10-311] analyzing module vn_mem_latch_route
+INFO: [VRFC 10-311] analyzing module vn_Waddr_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/DecodingPRocessControl/vnu3_wr_fsm.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module vnu3_wr_fsm
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/DecodingPRocessControl/dnu3_wr_fsm.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module dnu3_wr_fsm
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/DecodingPRocessControl/vnu_wr_update_handshake.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module vnu_wr_update_handshake
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/DecodingPRocessControl/dn_write_unit.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module dn_mem_latch
+INFO: [VRFC 10-311] analyzing module d3rom_iter_selector
+INFO: [VRFC 10-311] analyzing module dn_iter_counter
+INFO: [VRFC 10-311] analyzing module d3rom_iter_mux
+INFO: [VRFC 10-311] analyzing module dn_mem_latch_route
+INFO: [VRFC 10-311] analyzing module dn_Waddr_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/simulationLogger/symbol_gen_ber_eval.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module symbol_gen_ber_eval
+INFO: [VRFC 10-311] analyzing module awgn_exist_dut
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/simulationLogger/errBit_cnt_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module errBit_cnt_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/simulationLogger/errBit_cnt.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module errBit_cnt_128b
+INFO: [VRFC 10-311] analyzing module errBit_cnt_96b
+INFO: [VRFC 10-311] analyzing module errBit_cnt_32b
+INFO: [VRFC 10-311] analyzing module errBit_cnt_12b
+INFO: [VRFC 10-311] analyzing module errBit_cnt_8b
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/simulationLogger/sum_tree.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sum850_tree
+INFO: [VRFC 10-311] analyzing module sum204_tree
+INFO: [VRFC 10-311] analyzing module sum16_tree
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/simulationLogger/receivedBlock_generator.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module receivedBlock_generator
+INFO: [VRFC 10-311] analyzing module subblock_generator
+INFO: [VRFC 10-311] analyzing module Handshake_Protocol
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/simulationLogger/symbol_gen_pl2ps.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module symbol_gen_pl2ps
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv" into library xil_defaultlib
+WARNING: [VRFC 10-3507] macro 'VN_NUM' redefined [../../../../../../BSP/Global_Header/define.vh:277]
+INFO: [VRFC 10-311] analyzing module tb_mem_subsystem_top_submatrix_1
+INFO: [VRFC 10-2458] undeclared symbol iter_termination, assumed default net type wire [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:188]
+WARNING: [VRFC 10-3248] data object 'layer_finish' is already declared [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:214]
+WARNING: [VRFC 10-3703] second declaration of 'layer_finish' ignored [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:214]
+WARNING: [VRFC 10-2938] 'iter_termination' is already implicitly declared on line 188 [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:215]
+WARNING: [VRFC 10-3248] data object 'fsm_en' is already declared [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:216]
+WARNING: [VRFC 10-3703] second declaration of 'fsm_en' ignored [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:216]
+WARNING: [VRFC 10-3248] data object 'vn_iter_update' is already declared [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:285]
+WARNING: [VRFC 10-3703] second declaration of 'vn_iter_update' ignored [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:285]
+INFO: [VRFC 10-2458] undeclared symbol dn_rom_port_fetch, assumed default net type wire [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:422]
+INFO: [VRFC 10-2458] undeclared symbol dn_ram_write_en, assumed default net type wire [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:423]
+INFO: [VRFC 10-2458] undeclared symbol dn_ram_mux_en, assumed default net type wire [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:424]
+INFO: [VRFC 10-2458] undeclared symbol d3ib_rom_rst, assumed default net type wire [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:426]
+INFO: [VRFC 10-2458] undeclared symbol dn_write_busy, assumed default net type wire [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:427]
+WARNING: [VRFC 10-3248] data object 'mem_to_cnu' is already declared [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:609]
+WARNING: [VRFC 10-3703] second declaration of 'mem_to_cnu' ignored [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:609]
+WARNING: [VRFC 10-3248] data object 'mem_to_vnu' is already declared [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:610]
+WARNING: [VRFC 10-3703] second declaration of 'mem_to_vnu' ignored [/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_mem_subsystem_top_submatrix_1.sv:610]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/ib_layered_decoder_4bits.rev0/ib_layered_decoder_4bits/ib_layered_decoder_4bits.sim/msg_pass_with_memWr_sim/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl

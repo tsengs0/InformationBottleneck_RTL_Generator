@@ -1,0 +1,14 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  --include "../../../../../../BSP/Global_Header" --include "../../../../../../../../common_lib/CNU10" --include "../../../../../../../../common_lib/CNU10/min_dc6" \
+"../../../../../../../../common_lib/CNU10/min_dc6/leq.v" \
+"../../../../../../../../common_lib/CNU10/min_dc6/m21.v" \
+"../../../../../../../../common_lib/CNU10/min_dc6/m22.v" \
+"../../../../../../../../common_lib/CNU10/opt_cnu_min_6.v" \
+"../../../../../../../../common_lib/CNU10/opt_cnu_min_8.v" \
+"../../../../../../../../common_lib/CNU10/min_tb.v" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort
