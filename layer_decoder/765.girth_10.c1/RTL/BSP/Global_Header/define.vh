@@ -269,6 +269,7 @@
 		`define MULTI_FRAME_NUM 2
 	`endif // DECODER_4bit
 `elsif QC_RC_7650
+	`define VN_NUM 7650
 	`define VN_DEGREE 3   // degree of one variable node
 	`define CN_DEGREE 10  // degree of one check node 
 	`define SUBMATRIX_Z 765
@@ -290,5 +291,8 @@
 	`ifdef SCHED_4_6
 		`define CNU_FSM_STATE_NUM 7
 		`define VNU_FSM_STATE_NUM 8
+		`define CH_FETCH_LATENCY 2
+		`define CNU_INIT_FETCH_LATENCY 1
+		`define BS_PIPELINE_LEVEL 2
 	`endif
 `endif 

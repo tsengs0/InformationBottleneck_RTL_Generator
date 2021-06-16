@@ -30,6 +30,7 @@ module errBit_cnt_top #(
 							  // Because the clock rate of errBit_cnt_top is double of the decoder top module's clcok rate
 )(
     output reg [ERR_BIT_BITWIDTH-1:0] err_count,
+    output reg isErrFrame,
 	output wire count_done,
 	output reg busy,
 	
@@ -196,6 +197,14 @@ localparam [9:0] block_length = N;
             err_count <= 0;
         else if(en_latch == 1'b1 && busy_cnt >= NORMALISE_LATENCY-1 && busy_cnt < ENTIRE_LATENCY-2)
             err_count <= err_count + submatrix_err_count;
+    end
+
+    initial isErrFrame <= 0;
+    always @(posedge eval_clk, negedge rstn) begin
+        if(rstn == 1'b0) 
+            isErrFrame <= 0;
+        else if(en_latch == 1'b1 && busy_cnt >= NORMALISE_LATENCY-1 && busy_cnt < ENTIRE_LATENCY-2)
+            isErrFrame <= (|err_count) && (|submatrix_err_count);
     end
 
 	initial busy_cnt <= 0;

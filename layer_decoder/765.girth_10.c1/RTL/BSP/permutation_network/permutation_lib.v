@@ -49,6 +49,83 @@ assign sw_out_bit3[CHECK_PARALLELISM-1:0] = sw_in_bit3[CHECK_PARALLELISM-1:0];
 `endif
 endmodule
 
+module shared_qsn_top_85b #(
+	parameter QUAN_SIZE = 4,
+	parameter CHECK_PARALLELISM = 85,
+	parameter BITWIDTH_SHIFT_FACTOR = $clog2(CHECK_PARALLELISM-1)
+) (
+	output wire [CHECK_PARALLELISM-1:0] sw_out_bit0,
+	output wire [CHECK_PARALLELISM-1:0] sw_out_bit1,
+	output wire [CHECK_PARALLELISM-1:0] sw_out_bit2,
+	output wire [CHECK_PARALLELISM-1:0] sw_out_bit3,
+
+	input wire [CHECK_PARALLELISM-1:0] sw_in0_bit0,
+	input wire [CHECK_PARALLELISM-1:0] sw_in0_bit1,
+	input wire [CHECK_PARALLELISM-1:0] sw_in0_bit2,
+	input wire [CHECK_PARALLELISM-1:0] sw_in0_bit3,
+
+	input wire [CHECK_PARALLELISM-1:0] sw_in1_bit0,
+	input wire [CHECK_PARALLELISM-1:0] sw_in1_bit1,
+	input wire [CHECK_PARALLELISM-1:0] sw_in1_bit2,
+	input wire [CHECK_PARALLELISM-1:0] sw_in1_bit3,
+
+	input wire [BITWIDTH_SHIFT_FACTOR-1:0] shift_factor,
+	input wire sw_in_src,
+	input wire sys_clk,
+	input wire rstn
+);
+
+wire [CHECK_PARALLELISM-1:0] shared_sw_in_bit [0:QUAN_SIZE-1];
+wire [6:0]  left_sel;
+wire [6:0]  right_sel;
+wire [83:0] merge_sel;
+qsn_top_85b cnu_qsn_top_85b_0_3 (
+	.sw_out_bit0 (sw_out_bit0),
+	.sw_out_bit1 (sw_out_bit1),	
+	.sw_out_bit2 (sw_out_bit2),	
+	.sw_out_bit3 (sw_out_bit3),
+`ifdef SCHED_4_6
+	.sys_clk     (sys_clk),
+	.rstn		 (rstn),
+`endif
+	.sw_in_bit0  (shared_sw_in_bit[0]),
+	.sw_in_bit1  (shared_sw_in_bit[1]),
+	.sw_in_bit2  (shared_sw_in_bit[2]),
+	.sw_in_bit3  (shared_sw_in_bit[3]),
+	.left_sel    (left_sel),
+	.right_sel   (right_sel),
+	.merge_sel   (merge_sel)
+);
+
+qsn_controller_85b #(
+	.PERMUTATION_LENGTH(CHECK_PARALLELISM)
+) cnu_qsn_controller_85b (
+	.left_sel     (left_sel ),
+	.right_sel    (right_sel),
+	.merge_sel    (merge_sel),
+	.shift_factor (shift_factor), // offset shift factor of submatrix_1
+	.rstn         (rstn),
+	.sys_clk      (sys_clk)
+);
+
+scalable_mux #(.BITWIDTH(CHECK_PARALLELISM)) shared_sw_in_u0 (.sw_out(shared_sw_in_bit[0]), .sw_in_0(sw_in0_bit0[CHECK_PARALLELISM-1:0]), .sw_in_1(sw_in1_bit0[CHECK_PARALLELISM-1:0]), .in_src(sw_in_src));
+scalable_mux #(.BITWIDTH(CHECK_PARALLELISM)) shared_sw_in_u1 (.sw_out(shared_sw_in_bit[1]), .sw_in_0(sw_in0_bit1[CHECK_PARALLELISM-1:0]), .sw_in_1(sw_in1_bit1[CHECK_PARALLELISM-1:0]), .in_src(sw_in_src));
+scalable_mux #(.BITWIDTH(CHECK_PARALLELISM)) shared_sw_in_u2 (.sw_out(shared_sw_in_bit[2]), .sw_in_0(sw_in0_bit2[CHECK_PARALLELISM-1:0]), .sw_in_1(sw_in1_bit2[CHECK_PARALLELISM-1:0]), .in_src(sw_in_src));
+scalable_mux #(.BITWIDTH(CHECK_PARALLELISM)) shared_sw_in_u3 (.sw_out(shared_sw_in_bit[3]), .sw_in_0(sw_in0_bit3[CHECK_PARALLELISM-1:0]), .sw_in_1(sw_in1_bit3[CHECK_PARALLELISM-1:0]), .in_src(sw_in_src));
+endmodule
+
+module scalable_mux #(
+	parameter BITWIDTH = 85
+) (
+	output wire [BITWIDTH-1:0] sw_out,
+	input wire [BITWIDTH-1:0] sw_in_0,
+	input wire [BITWIDTH-1:0] sw_in_1,
+	input wire in_src
+);
+
+assign sw_out[BITWIDTH-1:0] = (in_src == 1'b0) ? sw_in_0[BITWIDTH-1:0] : sw_in_1[BITWIDTH-1:0];
+endmodule
+
 // Obselete
 module permutation_wrapper #(
 	parameter CHECK_PARALLELISM = 85
