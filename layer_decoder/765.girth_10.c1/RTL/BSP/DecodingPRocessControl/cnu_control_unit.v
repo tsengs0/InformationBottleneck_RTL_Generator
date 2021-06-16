@@ -24,7 +24,7 @@ module cnu_control_unit #(
 	parameter QUAN_SIZE = 4,
 	parameter LAYER_NUM = 3,
 	parameter RESET_CYCLE = 100, // once rstn is deasserted, the system goes into reset mode for 100 clock cycles	
-	parameter CNU_FUNC_CYCLE = 4, // the latency of one CNU 2-LUT function based on symmetrical design
+	parameter CNU_FUNC_CYCLE = 4, // the latency of one CNU (min approximation)
 	parameter CNU_PIPELINE_LEVEL = 1*CNU_FUNC_CYCLE, // the last pipeline register is actually shared with P2P_C
     parameter PERMUTATION_LEVEL = 2, // every circular shifter takes 2 clock cycles
     parameter PAGE_ALIGN_LEVEL  = 1,

@@ -23,8 +23,9 @@
 module vnu_control_unit #(
 	parameter QUAN_SIZE = 4,
 	parameter LAYER_NUM = 3,
+	parameter ROW_CHUNK_NUM = 9,
 	parameter RESET_CYCLE = 100, // once rstn is deasserted, the system goes into reset mode for 100 clock cycles
-	parameter VN_PIPELINE_BUBBLE = 1, // the number of halt instructions within vnu pipelining
+	parameter VN_PIPELINE_BUBBLE = 0, // the number of halt instructions within vnu pipelining
 
 	parameter VN_LOAD_CYCLE = 64, // 128-entry with two interleaving banks requires 64 clock cycle to finish iteration update
 
@@ -39,21 +40,23 @@ module vnu_control_unit #(
 	
 	parameter VNU_PIPELINE_LEVEL = 2*VNU_FUNC_CYCLE+VN_PIPELINE_BUBBLE, // the last pipeline register is actually shared with P2P_V
 	parameter DNU_PIPELINE_LEVEL = 1*DNU_FUNC_CYCLE, 
-   
+
     parameter PERMUTATION_LEVEL = 2, // every circular shifter takes 2 clock cycles
     parameter PAGE_ALIGN_LEVEL  = 1,
+    parameter PAGE_MEM_WB_LEVEL = 1,
 	parameter MEM_RD_LEVEL      = 2, // every memory fetching process take 2 clock cycles
-	parameter FSM_STATE_NUM     = 9,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] INIT_LOAD     = 0,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_FETCH     = 1,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_IB_RAM_PEND   = 2,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_PIPE      = 3,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_OUT       = 4,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] BS_WB 		= 5,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] PAGE_ALIGN 	= 6,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_WB 		= 7,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] IDLE  		= 8
-)(
+	parameter FSM_STATE_NUM     = 10,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] INIT_LOAD       = 0,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] CH_FETCH        = 1,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_FETCH       = 2,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_IB_RAM_PEND = 3,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_PIPE        = 4,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_OUT         = 5,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] BS_WB 		  = 6,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] PAGE_ALIGN 	  = 7,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_WB 		  = 8,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] IDLE  		  = 9
+) (
 	// output port for IB-ROM update
 	output wire [`IB_VNU_DECOMP_funNum-1:0] vnu_wr,
 	output wire dnu_wr,
@@ -65,6 +68,13 @@ module vnu_control_unit #(
     output wire v2c_mem_we,
     output wire v2c_pa_en,
     output wire v2c_bs_en,
+`ifdef SCHED_4_6
+	output wire ch_ram_init_we,
+	output wire ch_bs_en,
+	output wire ch_pa_en,
+	output reg ch_ram_wb,
+`endif
+	output wire layer_finish,
 
     output wire [`IB_VNU_DECOMP_funNum-1:0] vnu_rd,
 	output wire dnu_rd,
@@ -75,7 +85,6 @@ module vnu_control_unit #(
 	input wire [`IB_VNU_DECOMP_funNum-1:0] vn_iter_update,
 	input wire dn_iter_update,
    
-    input wire layer_finish,
 	input wire termination, // finish deocding process of the current frame 
 	input wire fsm_en,
 	input wire read_clk,
@@ -338,11 +347,15 @@ always @(posedge read_clk) begin
       case (state[$clog2(FSM_STATE_NUM)-1:0])
 //////////////////////////////////////////////////////////////////////////////////////////////////////
         INIT_LOAD : begin
-			state <= MEM_FETCH;
+			state <= CH_FETCH;
 		end 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
+        CH_FETCH : begin
+			state <= MEM_FETCH;
+		end
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 		MEM_FETCH : begin
-			if(fetch_pipeline_level[MEM_RD_LEVEL-1] == 1'b1)
+			if(fetch_pipeline_level[MEM_RD_LEVEL-1] == 1'b1) begin
 				if(
 				  (vnu_pipe_load_finish[0] == 1'b1 || vnu_pipe_load_start[0] == 1'b0) &&
 				  (vnu_init_load_start == {`IB_VNU_DECOMP_funNum{1'b0}} || vnu_init_load_finish == {`IB_VNU_DECOMP_funNum{1'b1}})
@@ -350,6 +363,7 @@ always @(posedge read_clk) begin
 					state <= VNU_PIPE;
 				else
                 	state <= VNU_IB_RAM_PEND; // VNU IB-RAM pending
+            end
             else
 				state <= MEM_FETCH;
         end
@@ -393,7 +407,7 @@ always @(posedge read_clk) begin
 //////////////////////////////////////////////////////////////////////////////////////////////////////
         IDLE: begin
             if(layer_finish == 1'b1)
-                state <= MEM_FETCH;
+                state <= CH_FETCH;
             else
                 state <= IDLE;
         end  
@@ -528,7 +542,7 @@ endgenerate
 assign dnu_rd = (state == BS_WB || state == PAGE_ALIGN) ? 1'b1 : 1'b0; // DNUs are enabled since BS_WB till PAGE_ALIGN
 /*-------------------------------------------------------------------------------------------------------------------*/
 assign v2c_src = (state == MEM_FETCH && fetch_pipeline_level == fetch_shift_overflow) ? 1'b1 : 1'b0;
-assign v2c_mem_we = (state == MEM_WB) ? 1'b1 : 1'b0; 
+assign v2c_mem_we = (state == MEM_WB) ? 1'b1 : 1'b0;
 assign v2c_pa_en = (state == PAGE_ALIGN) ? 1'b1 : 1'b0;
 assign v2c_bs_en = (state == BS_WB && bs_pipeline_level[0] == 1'b1) ? 1'b1 : 1'b0; // only enable at first pipeline stage over all BS_WB
 assign 	vnu_update_pend = ( (state == MEM_FETCH || state == VNU_IB_RAM_PEND) &&
@@ -538,6 +552,47 @@ assign 	vnu_update_pend = ( (state == MEM_FETCH || state == VNU_IB_RAM_PEND) &&
 						  ( (state == MEM_FETCH || state == VNU_IB_RAM_PEND) &&
 							!((vnu_pipe_load_finish[0] == 1'b1 || vnu_pipe_load_start[0] == 1'b0) && (vnu_init_load_start == {`IB_VNU_DECOMP_funNum{1'b0}} || vnu_init_load_finish == {`IB_VNU_DECOMP_funNum{1'b1}}))
 						  ) ? 1'b1 : 1'b0;
+/*-------------------------------------------------------------------------------------------------------------------*/
+// Write-Back trace of channel buffer
+localparam VNU_MAIN_PIPELINE_LEVEL = VNU_PIPELINE_LEVEL+PERMUTATION_LEVEL+PAGE_ALIGN_LEVEL+PAGE_MEM_WB_LEVEL+ROW_CHUNK_NUM-1;
+reg [ROW_CHUNK_NUM-1:0] v2c_bs_pipeline_level; // to monitor the completion of v2c_bs_en and the remaining workload of ch_bs_en can continue
+reg [VNU_MAIN_PIPELINE_LEVEL-1:0] vnu_main_sys_cnt;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) v2c_bs_pipeline_level <= 1;
+	else if(state == BS_WB && v2c_bs_pipeline_level[0] == 1'b1) v2c_bs_pipeline_level[ROW_CHUNK_NUM-1:0] <= {v2c_bs_pipeline_level[ROW_CHUNK_NUM-2:0], v2c_bs_pipeline_level[ROW_CHUNK_NUM-1]};
+	else if(v2c_bs_pipeline_level[0] == 1'b0) v2c_bs_pipeline_level[ROW_CHUNK_NUM-1:0] <= {v2c_bs_pipeline_level[ROW_CHUNK_NUM-2:0], v2c_bs_pipeline_level[ROW_CHUNK_NUM-1]};
+	else v2c_bs_pipeline_level <= 1;
+end
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1:0] <= 1;
+	else if(state >= VNU_PIPE) vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1:0] <= {vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-2:0], vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1]};
+	else vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1:0] <= 1;
+end
+
+assign ch_ram_init_we = (state == INIT_LOAD && (iter_cnt[0] == 1'b1 && layer_cnt[0] == 1'b1)) ? 1'b1 : 1'b0;
+assign ch_bs_en = (
+					(
+				  	 (state >= MEM_FETCH && state < VNU_IB_RAM_PEND) || 
+				  	 (state >= VNU_PIPE && state <= VNU_OUT) || 
+				  	 (state == IDLE && vnu_main_sys_cnt[15] == 1'b1)
+				  	) &&
+				  	(iter_cnt[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b0)
+				  	// Since last layer is connectd to first layer and channel MSGs permutation for first layer has been done at first layer
+				  	// therefore, there is no need for permutaiton at last layer which is unlike the v2c message passing
+				  ) ? 1'b1 : 1'b0;
+
+`ifdef SCHED_4_6
+wire [7:0] ch_pa_en_phase_0; assign ch_pa_en_phase_0[7:0] = vnu_main_sys_cnt[7:0];
+wire ch_pa_en_phase_1; assign ch_pa_en_phase_1 = vnu_main_sys_cnt[17];
+assign ch_pa_en = (state >= VNU_PIPE && |ch_pa_en_phase_0 && (iter_cnt[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b0)) ? 1'b1 :
+				  (ch_pa_en_phase_1 == 1'b1 && (iter_cnt[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b0)) ? 1'b1 : 1'b0;
+
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) ch_ram_wb <= 1'b0;
+	else ch_ram_wb <= ch_pa_en; // assertion one clock cycle after enable-asserition of CH_PA
+end
+assign layer_finish = (vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1] == 1'b1) ? 1'b1 : 1'b0;
+`endif
 /*-------------------------------------------------------------------------------------------------------------------*/
 // State Signal - hard decision is going to be done one clock cycle later
 initial hard_decision_done <= 1'b0;

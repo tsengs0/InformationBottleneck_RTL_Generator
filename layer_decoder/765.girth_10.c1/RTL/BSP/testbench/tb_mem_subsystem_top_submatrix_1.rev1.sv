@@ -1,11 +1,14 @@
 `timescale 1ns/1ps
 
 `include "define.vh"
-module tb_mem_subsystem_top_submatrix_1 #(
+module tb_mem_subsystem_top_submatrix_1_rev1 #(
 	parameter QUAN_SIZE = 4,
 	parameter LAYER_NUM = 3,
 	parameter ROW_CHUNK_NUM = 9,
 	parameter CHECK_PARALLELISM = 85,
+	parameter READ_CLK_RATE  = 100, // 100MHz
+	parameter WRITE_CLK_RATE = 200, // 200MHz
+	parameter WRITE_CLK_RATIO = WRITE_CLK_RATE/READ_CLK_RATE, // the ratio of write_clk clock rate with respect to clock rate of read_clk, e.g., Ratio = write_clk / read_clk = 200MHz/100MHz = 2
 
 	parameter VN_DEGREE = 3,   // degree of one variable node
 	parameter IB_ROM_SIZE = 6, // width of one read-out port of RAMB36E1
@@ -65,7 +68,7 @@ module tb_mem_subsystem_top_submatrix_1 #(
 	parameter [$clog2(FSM_STATE_NUM)-1:0] IDLE 		   = 8,
 /*-------------------------------------------------------------------------------------*/
 	// VNU FSMs 
-	parameter                      VN_PIPELINE_BUBBLE = 1,
+	parameter                      VN_PIPELINE_BUBBLE = 0,
 	parameter                          VNU_FUNC_CYCLE = 3,
 	parameter                          DNU_FUNC_CYCLE = 3,
 	parameter                        VNU_FUNC_MEM_END = 2,
@@ -76,18 +79,21 @@ module tb_mem_subsystem_top_submatrix_1 #(
 	parameter                      DNU_PIPELINE_LEVEL = 1*DNU_FUNC_CYCLE,
 	parameter                       PERMUTATION_LEVEL = 2,
 	parameter                        PAGE_ALIGN_LEVEL = 1,
+	parameter                       PAGE_MEM_WB_LEVEL = 1,
 	parameter                            MEM_RD_LEVEL = 2,
-	parameter                           CTRL_FSM_STATE_NUM = 9,
+	parameter                           CTRL_FSM_STATE_NUM = 10,
 	parameter							WR_FSM_STATE_NUM   = 5,
-	parameter   [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_INIT_LOAD   = 0,
-	parameter   [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_MEM_FETCH   = 1,
-	//parameter   [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_IB_RAM_PEND = 2,
-	parameter   [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_VNU_PIPE 	 = 3,
-	parameter   [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_VNU_OUT 	 = 4,
-	parameter   [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_BS_WB 		 = 5,
-	parameter   [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_PAGE_ALIGN  = 6,
-	parameter   [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_MEM_WB      = 7,
-	parameter   [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_IDLE  	     = 8,
+
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_INIT_LOAD       = 0,
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_CH_FETCH        = 1,
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_MEM_FETCH       = 2,
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_VNU_IB_RAM_PEND = 3,
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_VNU_PIPE        = 4,
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_VNU_OUT         = 5,
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_BS_WB 		  = 6,
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_PAGE_ALIGN 	  = 7,
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_MEM_WB 		  = 8,
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_IDLE  		  = 9,
 /*-------------------------------------------------------------------------------------*/
 	// Parameters related to BS, PA and MEM
 	parameter RAM_DEPTH = 1024,
@@ -103,6 +109,7 @@ module tb_mem_subsystem_top_submatrix_1 #(
 `ifdef SCHED_4_6
 	parameter C2V_MEM_ADDR_BASE = 0,
 	parameter V2C_MEM_ADDR_BASE = ROW_CHUNK_NUM,
+	parameter  CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 `endif
 	parameter START_PAGE_1_0 = 2, // starting page address of layer 0 of submatrix_1
 	parameter START_PAGE_1_1 = 8, // starting page address of layer 1 of submatrix_1
@@ -145,7 +152,7 @@ module tb_mem_subsystem_top_submatrix_1 #(
 	wire							  c2v_last_layer;
 	wire                             de_frame_start;
 	wire [$clog2(FSM_STATE_NUM)-1:0] state;
-	logic                             layer_finish;
+	wire                             layer_finish;
 	logic                             fsm_en;
 	logic							  vnu_update_pend;
 
@@ -224,6 +231,12 @@ module tb_mem_subsystem_top_submatrix_1 #(
 	wire                             v2c_mem_we_propagateIn;
 	wire 							 v2c_pa_en;
 	wire 						 	 v2c_bs_en_propagateIn;
+
+	wire ch_ram_init_we_propagateIn;
+	wire ch_bs_en_propagateIn;
+	wire ch_pa_en;
+	wire ch_ram_wb;
+
 	wire [`IB_VNU_DECOMP_funNum-1:0] vnu_rd;
 	wire                             dnu_rd;
 	wire [$clog2(CTRL_FSM_STATE_NUM)-1:0] vnu_ctrl_state;
@@ -231,7 +244,7 @@ module tb_mem_subsystem_top_submatrix_1 #(
 	wire                             hard_decision_done;
 	logic [`IB_VNU_DECOMP_funNum-1:0] vn_iter_update;
 	logic                             dn_iter_update;
-	logic                             layer_finish;
+	//logic                             layer_finish;
 	logic                             iter_termination;
 	reg                               fsm_en;
 
@@ -249,9 +262,15 @@ module tb_mem_subsystem_top_submatrix_1 #(
 	always @(posedge read_clk) begin if(!rstn) v2c_last_row_chunk_propagate <= 0; else v2c_last_row_chunk_propagate[ROW_CHUNK_NUM-2:0] <= {v2c_last_row_chunk_propagate[ROW_CHUNK_NUM-3:0], v2c_pa_en}; end	
 	reg [ROW_CHUNK_NUM-2:0] v2c_bs_en_propagate;
 	always @(posedge read_clk) begin if(!rstn) v2c_bs_en_propagate <= 0; else v2c_bs_en_propagate[ROW_CHUNK_NUM-2:0] <= {v2c_bs_en_propagate[ROW_CHUNK_NUM-3:0], v2c_bs_en_propagateIn}; end	
+	reg [CH_INIT_LOAD_LEVEL-2:0] ch_ram_init_we_propagate;
+	always @(posedge read_clk) begin if(!rstn) ch_ram_init_we_propagate <= 0; else ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-2:0] <= {ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-3:0], ch_ram_init_we_propagateIn}; end
+	wire ch_ram_init_we; assign ch_ram_init_we = (ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-2:0] > 0 || ch_ram_init_we_propagateIn > 0) ? 1'b1 : 1'b0;
+	reg ch_bs_en_propagate; always @(posedge read_clk) begin if(!rstn) ch_bs_en_propagate <= 0; else ch_bs_en_propagate <= ch_bs_en_propagateIn; end
+	wire ch_bs_en; assign ch_bs_en = (ch_bs_en_propagate == 1'b1 || ch_bs_en_propagateIn == 1'b1) ? 1'b1 : 1'b0;
 	vnu_control_unit #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.LAYER_NUM(LAYER_NUM),
+		.ROW_CHUNK_NUM(ROW_CHUNK_NUM),
 		.RESET_CYCLE(RESET_CYCLE),
 		.VN_PIPELINE_BUBBLE(VN_PIPELINE_BUBBLE),
 		.VN_LOAD_CYCLE(VN_LOAD_CYCLE),
@@ -265,17 +284,20 @@ module tb_mem_subsystem_top_submatrix_1 #(
 		.DNU_PIPELINE_LEVEL(DNU_PIPELINE_LEVEL),
 		.PERMUTATION_LEVEL(PERMUTATION_LEVEL),
 		.PAGE_ALIGN_LEVEL(PAGE_ALIGN_LEVEL),
+		.PAGE_MEM_WB_LEVEL(PAGE_MEM_WB_LEVEL),
 		.MEM_RD_LEVEL(MEM_RD_LEVEL),
+
 		.FSM_STATE_NUM(CTRL_FSM_STATE_NUM),
-		.INIT_LOAD   (VNU_INIT_LOAD),
-		.MEM_FETCH   (VNU_MEM_FETCH),
-		.VNU_IB_RAM_PEND (VNU_IB_RAM_PEND),
-		.VNU_PIPE    (VNU_VNU_PIPE),
-		.VNU_OUT     (VNU_VNU_OUT),
-		.BS_WB       (VNU_BS_WB),
-		.PAGE_ALIGN  (VNU_PAGE_ALIGN),
-		.MEM_WB      (VNU_MEM_WB),
-		.IDLE        (VNU_IDLE)
+	    .INIT_LOAD       (VNU_INIT_LOAD      ),        
+	    .CH_FETCH        (VNU_CH_FETCH       ),        
+	    .MEM_FETCH       (VNU_MEM_FETCH      ),        
+	    .VNU_IB_RAM_PEND (VNU_VNU_IB_RAM_PEND),  
+	    .VNU_PIPE        (VNU_VNU_PIPE       ),        
+	    .VNU_OUT         (VNU_VNU_OUT        ),         
+	    .BS_WB 	         (VNU_BS_WB          ),	    
+	    .PAGE_ALIGN 	 (VNU_PAGE_ALIGN     ),
+	    .MEM_WB 		 (VNU_MEM_WB         ),
+	    .IDLE  		     (VNU_IDLE           ) 
 	) inst_vnu_control_unit (
 		.vnu_wr             (vnu_wr),
 		.dnu_wr             (dnu_wr),
@@ -286,6 +308,12 @@ module tb_mem_subsystem_top_submatrix_1 #(
 		.v2c_mem_we         (v2c_mem_we_propagateIn),
 		.v2c_pa_en          (v2c_pa_en),
 		.v2c_bs_en 			(v2c_bs_en_propagateIn),
+		.ch_ram_init_we     (ch_ram_init_we_propagateIn),
+		.ch_bs_en           (ch_bs_en_propagateIn      ),
+		.ch_pa_en           (ch_pa_en      ),
+		.ch_ram_wb          (ch_ram_wb     ),
+		.layer_finish       (layer_finish  ),
+
 		.vnu_rd             (vnu_rd),
 		.dnu_rd             (dnu_rd),
 		.state              (vnu_ctrl_state),
@@ -293,7 +321,6 @@ module tb_mem_subsystem_top_submatrix_1 #(
 
 		.vn_iter_update     (vn_iter_update),
 		.dn_iter_update     (dn_iter_update),
-		.layer_finish       (layer_finish),
 		.termination        (iter_termination),
 		.fsm_en             (fsm_en),
 		.read_clk           (read_clk),
@@ -1128,6 +1155,7 @@ qsn_controller_85b #(
 	end
 */
 /*-------------------------------------------------------------------------------------------------------------------------*/
+/*	
 	reg [4:0] sys_cnt;
 	always @(posedge read_clk) begin
 		if(rstn == 1'b0) sys_cnt <= 0;
@@ -1142,14 +1170,14 @@ qsn_controller_85b #(
 		else if(sys_cnt == 20) layer_finish <= 1;
 		else layer_finish <= 0;
 	end
-
+	*/
 	always @(posedge read_clk) begin
 			if(rstn == 1'b0) iter_termination <= 0;
 			else if(
 				//inst_vnu_control_unit.iter_cnt[MAX_ITER-1] == 1'b1 && 
 				//vnu_ctrl_state[$clog2(CTRL_FSM_STATE_NUM)-1:0] == MEM_WB
-				inst_vnu_control_unit.iter_cnt[1] == 1'b1 && // only simulating 1 iteration
-				vnu_ctrl_state[$clog2(CTRL_FSM_STATE_NUM)-1:0] == MEM_FETCH
+				inst_vnu_control_unit.iter_cnt[2] == 1'b1 && // only simulating 2 iteration
+				vnu_ctrl_state[$clog2(CTRL_FSM_STATE_NUM)-1:0] == VNU_CH_FETCH
 			)
 				iter_termination <= 1'b1;
 	end
