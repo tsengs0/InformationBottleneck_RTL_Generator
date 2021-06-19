@@ -22,7 +22,10 @@ A) QSN generator
     7) DUT readfile for SystemVerilog based TestBench results
 '''
 
-def left_shift_hdl_gen(out_bitwidth, in_bitwidth, sel_bitwidth, permutation_length):
+def left_shift_hdl_gen(out_bitwidth, in_bitwidth, sel_bitwidth, permutation_length, bs_pipeline_stage):
+    ## To determine the location of pipeline stage
+    #pipeline_loc =
+
     # To create the Verilog module file
     hdl_filename = 'qsn_left_' + str(permutation_length) + 'b.v'
     hdl_fd = open(hdl_filename, "w")
@@ -69,7 +72,7 @@ def left_shift_hdl_gen(out_bitwidth, in_bitwidth, sel_bitwidth, permutation_leng
     hdl_fd.write("endmodule")
     hdl_fd.close()
 
-def right_shift_hdl_gen(out_bitwidth, in_bitwidth, sel_bitwidth, permutation_length):
+def right_shift_hdl_gen(out_bitwidth, in_bitwidth, sel_bitwidth, permutation_length, bs_pipeline_stage):
     # To create the Verilog module file
     hdl_filename = 'qsn_right_' + str(permutation_length) + 'b.v'
     hdl_fd = open(hdl_filename, "w")
@@ -263,9 +266,10 @@ def qsn_top_hdl_gen(out_bitwidth, in_bitwidth, shift_sel_bitwidth, merge_sel_bit
 def main():
     q = 4  # 4-bit quantisation
     Pc=85
+    bs_pipeline_stage = 2
     sel_bitwidth = math.ceil(math.log2(Pc))
-    left_shift_hdl_gen(out_bitwidth=Pc-1, in_bitwidth=Pc, sel_bitwidth=sel_bitwidth, permutation_length=Pc)
-    right_shift_hdl_gen(out_bitwidth=Pc, in_bitwidth=Pc, sel_bitwidth=sel_bitwidth, permutation_length=Pc)
+    left_shift_hdl_gen(out_bitwidth=Pc-1, in_bitwidth=Pc, sel_bitwidth=sel_bitwidth, permutation_length=Pc, bs_pipeline_stage=bs_pipeline_stage)
+    right_shift_hdl_gen(out_bitwidth=Pc, in_bitwidth=Pc, sel_bitwidth=sel_bitwidth, permutation_length=Pc, bs_pipeline_stage=bs_pipeline_stage)
     merge_mux_hdl_gen(out_bitwidth=Pc, left_in_bitwidth=Pc-1, right_in_bitwidth=Pc, sel_bitwidth=Pc-1, permutation_length=Pc)
     qsn_top_hdl_gen(out_bitwidth=Pc, in_bitwidth=Pc, shift_sel_bitwidth=sel_bitwidth, merge_sel_bitwidth=Pc-1, permutation_length=Pc, quant=q)
     qsn_controller_hdl_gen(left_sel_bitwidth=sel_bitwidth, right_sel_bitwidth=sel_bitwidth, merge_sel_bitwidth=Pc-1, shift_factor_bitwidth=math.ceil(math.log2(Pc-1)), permutation_length=Pc)
