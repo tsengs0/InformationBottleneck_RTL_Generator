@@ -1,4 +1,5 @@
 `include "revision_def.vh"
+`include "define.vh"
 module sym_vn_lut_internal (
 	// For read operation
 	// Port A
@@ -27,7 +28,39 @@ module sym_vn_lut_internal (
 	input wire we,
 	input wire write_clk
 );
-`ifndef SYM_VN_REV_1
+`ifdef SYM_VN_REV_1
+	// Input port of Read Port A to D
+	wire [3:0] y0_mux_A, y1_mux_A;
+	assign y0_mux_A[2:0] = y0_in_A[2:0];//(y0_in_A[3] == 1'b1) ? ~y0_in_A[2:0] : y0_in_A[2:0];//y0_in_A[2:0];
+	xor transpose_y03A(y0_mux_A[3], transpose_en_inA, y0_in_A[3]);
+	assign y1_mux_A[3:0] = (y0_mux_A[3] == 1'b1) ? ~y1_in_A[3:0] : y1_in_A[3:0];
+
+	wire [3:0] y0_mux_B, y1_mux_B;
+	assign y0_mux_B[2:0] = y0_in_B[2:0];//(y0_in_B[3] == 1'b1) ? ~y0_in_B[2:0] : y0_in_B[2:0];//y0_in_B[2:0];
+	xor transpose_y03B(y0_mux_B[3], transpose_en_inB, y0_in_B[3]);
+	assign y1_mux_B[3:0] = (y0_mux_B[3] == 1'b1) ? ~y1_in_B[3:0] : y1_in_B[3:0];	
+	
+	wire msb_A, msb_B;
+	assign msb_A = y0_mux_A[3];
+	assign msb_B = y0_mux_B[3];
+`elsif SYM_NO_IO_CONV
+	// Input port of Read Port A to D
+	wire [3:0] y0_mux_A, y1_mux_A;
+	assign y0_mux_A[2:0] = y0_in_A[2:0];
+	xor transpose_y03A(y0_mux_A[3], transpose_en_inA, y0_in_A[3]);
+	xor sign_y1_A(y1_mux_A[3], y0_mux_A[3], y1_in_A[3]);
+	assign y1_mux_A[2:0] = y1_in_A[2:0];
+
+	wire [3:0] y0_mux_B, y1_mux_B;
+	assign y0_mux_B[2:0] = y0_in_B[2:0];
+	xor transpose_y03B(y0_mux_B[3], transpose_en_inB, y0_in_B[3]);
+	xor sign_y1_B(y1_mux_B[3], y0_mux_B[3], y1_in_B[3]);
+	assign y1_mux_B[2:0] = y1_in_B[2:0];	
+	
+	wire msb_A, msb_B;
+	assign msb_A = y0_mux_A[3];
+	assign msb_B = y0_mux_B[3];
+`else
 	// Input port of Read Port A to D
 	wire [3:0] y0_mux_A, y1_mux_A;
 	xor transpose_y02A(y0_mux_A[2], y0_in_A[2], y0_in_A[3]);
@@ -42,21 +75,6 @@ module sym_vn_lut_internal (
 	xor transpose_y00B(y0_mux_B[0], y0_in_B[0], y0_in_B[3]);
 	xor transpose_y03B(y0_mux_B[3], transpose_en_inB, y0_in_B[3]);
 	assign y1_mux_B[3:0] = (y0_mux_B[3] == 1'b1) ? ~y1_in_B[3:0] : y1_in_B[3:0];
-	
-	wire msb_A, msb_B;
-	assign msb_A = y0_mux_A[3];
-	assign msb_B = y0_mux_B[3];
-`else
-	// Input port of Read Port A to D
-	wire [3:0] y0_mux_A, y1_mux_A;
-	assign y0_mux_A[2:0] = y0_in_A[2:0];//(y0_in_A[3] == 1'b1) ? ~y0_in_A[2:0] : y0_in_A[2:0];//y0_in_A[2:0];
-	xor transpose_y03A(y0_mux_A[3], transpose_en_inA, y0_in_A[3]);
-	assign y1_mux_A[3:0] = (y0_mux_A[3] == 1'b1) ? ~y1_in_A[3:0] : y1_in_A[3:0];
-
-	wire [3:0] y0_mux_B, y1_mux_B;
-	assign y0_mux_B[2:0] = y0_in_B[2:0];//(y0_in_B[3] == 1'b1) ? ~y0_in_B[2:0] : y0_in_B[2:0];//y0_in_B[2:0];
-	xor transpose_y03B(y0_mux_B[3], transpose_en_inB, y0_in_B[3]);
-	assign y1_mux_B[3:0] = (y0_mux_B[3] == 1'b1) ? ~y1_in_B[3:0] : y1_in_B[3:0];	
 	
 	wire msb_A, msb_B;
 	assign msb_A = y0_mux_A[3];
