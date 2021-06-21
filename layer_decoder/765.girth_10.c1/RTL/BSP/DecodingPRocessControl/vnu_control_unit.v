@@ -73,6 +73,11 @@ module vnu_control_unit #(
 	output wire ch_bs_en,
 	output wire ch_pa_en,
 	output reg ch_ram_wb,
+
+	output wire v2c_outRotate_reg_we,
+	output wire dnu_inRotate_bs_en,
+	output wire dnu_inRotate_pa_en,
+	output wire dnu_inRotate_wb,
 `endif
 	output wire layer_finish,
 
@@ -554,6 +559,7 @@ assign 	vnu_update_pend = ( (state == MEM_FETCH || state == VNU_IB_RAM_PEND) &&
 						  ) ? 1'b1 : 1'b0;
 /*-------------------------------------------------------------------------------------------------------------------*/
 // Write-Back trace of channel buffer
+`ifdef SCHED_4_6
 localparam VNU_MAIN_PIPELINE_LEVEL = VNU_PIPELINE_LEVEL+PERMUTATION_LEVEL+PAGE_ALIGN_LEVEL+PAGE_MEM_WB_LEVEL+ROW_CHUNK_NUM-1;
 reg [ROW_CHUNK_NUM-1:0] v2c_bs_pipeline_level; // to monitor the completion of v2c_bs_en and the remaining workload of ch_bs_en can continue
 reg [VNU_MAIN_PIPELINE_LEVEL-1:0] vnu_main_sys_cnt;
@@ -581,7 +587,7 @@ assign ch_bs_en = (
 				  	// therefore, there is no need for permutaiton at last layer which is unlike the v2c message passing
 				  ) ? 1'b1 : 1'b0;
 
-`ifdef SCHED_4_6
+
 wire [7:0] ch_pa_en_phase_0; assign ch_pa_en_phase_0[7:0] = vnu_main_sys_cnt[7:0];
 wire ch_pa_en_phase_1; assign ch_pa_en_phase_1 = vnu_main_sys_cnt[17];
 assign ch_pa_en = (state >= VNU_PIPE && |ch_pa_en_phase_0 && (iter_cnt[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b0)) ? 1'b1 :
@@ -592,6 +598,17 @@ always @(posedge read_clk) begin
 	else ch_ram_wb <= ch_pa_en; // assertion one clock cycle after enable-asserition of CH_PA
 end
 assign layer_finish = (vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1] == 1'b1) ? 1'b1 : 1'b0;
+`endif
+/*-------------------------------------------------------------------------------------------------------------------*/
+// Rotate_en signal from output of last VNU decomposition level to second segment of DNU read_addr
+`ifdef SCHED_4_6
+assign v2c_outRotate_reg_we = (state == BS_WB && bs_pipeline_level[0] == 1'b1 && layer_cnt[1] == 1'b1) ? 1'b1 : 1'b0;
+assign dnu_inRotate_bs_en = (state == VNU_PIPE && 
+							 vnu_pipeline_level[PERMUTATION_LEVEL-1:0] > 0 && 
+							 layer_cnt[LAYER_NUM-1] == 1'b1
+							 ) ? 1'b1 : 1'b0;
+assign dnu_inRotate_pa_en = (layer_cnt[LAYER_NUM-1] == 1'b1 && vnu_pipeline_level[PERMUTATION_LEVEL] == 1'b1) ? 1'b1 : 1'b0;
+assign dnu_inRotate_wb = (layer_cnt[LAYER_NUM-1] == 1'b1 && vnu_pipeline_level[PERMUTATION_LEVEL+1] == 1'b1) ? 1'b1 : 1'b0;
 `endif
 /*-------------------------------------------------------------------------------------------------------------------*/
 // State Signal - hard decision is going to be done one clock cycle later

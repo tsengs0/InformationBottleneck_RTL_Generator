@@ -12,6 +12,9 @@ module zero_shuffle_top_85b #(
 `ifdef SCHED_4_6
 	input wire sys_clk,
 	input wire rstn,
+
+	input wire [CHECK_PARALLELISM-1:0] sw_in1_bit0,
+	input wire sw_in_bit0_src,
 `endif
 	input wire [CHECK_PARALLELISM-1:0] sw_in_bit0,
 	input wire [CHECK_PARALLELISM-1:0] sw_in_bit1,
@@ -24,7 +27,7 @@ reg [CHECK_PARALLELISM-1:0] sw_out_bit0_pipe [0:BS_PIPELINE_LEVEL-1];
 reg [CHECK_PARALLELISM-1:0] sw_out_bit1_pipe [0:BS_PIPELINE_LEVEL-1];
 reg [CHECK_PARALLELISM-1:0] sw_out_bit2_pipe [0:BS_PIPELINE_LEVEL-1];
 reg [CHECK_PARALLELISM-1:0] sw_out_bit3_pipe [0:BS_PIPELINE_LEVEL-1];
-always @(posedge sys_clk) begin if(!rstn) sw_out_bit0_pipe[0] <= 0; else sw_out_bit0_pipe[0] <= sw_in_bit0[CHECK_PARALLELISM-1:0]; end
+always @(posedge sys_clk) begin if(!rstn) sw_out_bit0_pipe[0] <= 0; else if (sw_in_bit0_src == 1'b1) sw_out_bit0_pipe[0] <= sw_in1_bit0[CHECK_PARALLELISM-1:0]; else sw_out_bit0_pipe[0] <= sw_in_bit0[CHECK_PARALLELISM-1:0]; end
 always @(posedge sys_clk) begin if(!rstn) sw_out_bit1_pipe[0] <= 0; else sw_out_bit1_pipe[0] <= sw_in_bit1[CHECK_PARALLELISM-1:0]; end
 always @(posedge sys_clk) begin if(!rstn) sw_out_bit2_pipe[0] <= 0; else sw_out_bit2_pipe[0] <= sw_in_bit2[CHECK_PARALLELISM-1:0]; end
 always @(posedge sys_clk) begin if(!rstn) sw_out_bit3_pipe[0] <= 0; else sw_out_bit3_pipe[0] <= sw_in_bit3[CHECK_PARALLELISM-1:0]; end
@@ -69,6 +72,10 @@ module shared_qsn_top_85b #(
 	input wire [CHECK_PARALLELISM-1:0] sw_in1_bit2,
 	input wire [CHECK_PARALLELISM-1:0] sw_in1_bit3,
 
+`ifdef SCHED_4_6
+	input wire [CHECK_PARALLELISM-1:0] sw_in2_bit0,
+	input wire [2:0] sw_in_bit0_src,
+`endif
 	input wire [BITWIDTH_SHIFT_FACTOR-1:0] shift_factor,
 	input wire sw_in_src,
 	input wire sys_clk,
@@ -108,7 +115,7 @@ qsn_controller_85b #(
 	.sys_clk      (sys_clk)
 );
 
-scalable_mux #(.BITWIDTH(CHECK_PARALLELISM)) shared_sw_in_u0 (.sw_out(shared_sw_in_bit[0]), .sw_in_0(sw_in0_bit0[CHECK_PARALLELISM-1:0]), .sw_in_1(sw_in1_bit0[CHECK_PARALLELISM-1:0]), .in_src(sw_in_src));
+scalable_mux_3_to_1 #(.BITWIDTH(CHECK_PARALLELISM)) shared_sw_in_u0 (.sw_out(shared_sw_in_bit[0]), .sw_in_0(sw_in0_bit0[CHECK_PARALLELISM-1:0]), .sw_in_1(sw_in1_bit0[CHECK_PARALLELISM-1:0]), .sw_in_2(sw_in2_bit0[CHECK_PARALLELISM-1:0]), .in_src(sw_in_src));
 scalable_mux #(.BITWIDTH(CHECK_PARALLELISM)) shared_sw_in_u1 (.sw_out(shared_sw_in_bit[1]), .sw_in_0(sw_in0_bit1[CHECK_PARALLELISM-1:0]), .sw_in_1(sw_in1_bit1[CHECK_PARALLELISM-1:0]), .in_src(sw_in_src));
 scalable_mux #(.BITWIDTH(CHECK_PARALLELISM)) shared_sw_in_u2 (.sw_out(shared_sw_in_bit[2]), .sw_in_0(sw_in0_bit2[CHECK_PARALLELISM-1:0]), .sw_in_1(sw_in1_bit2[CHECK_PARALLELISM-1:0]), .in_src(sw_in_src));
 scalable_mux #(.BITWIDTH(CHECK_PARALLELISM)) shared_sw_in_u3 (.sw_out(shared_sw_in_bit[3]), .sw_in_0(sw_in0_bit3[CHECK_PARALLELISM-1:0]), .sw_in_1(sw_in1_bit3[CHECK_PARALLELISM-1:0]), .in_src(sw_in_src));
@@ -124,6 +131,21 @@ module scalable_mux #(
 );
 
 assign sw_out[BITWIDTH-1:0] = (in_src == 1'b0) ? sw_in_0[BITWIDTH-1:0] : sw_in_1[BITWIDTH-1:0];
+endmodule
+
+module scalable_mux_3_to_1 #(
+	parameter BITWIDTH = 85
+) (
+	output wire [BITWIDTH-1:0] sw_out,
+	input wire [BITWIDTH-1:0] sw_in_0,
+	input wire [BITWIDTH-1:0] sw_in_1,
+	input wire [BITWIDTH-1:0] sw_in_2,
+	input wire [2:0] in_src
+);
+
+assign sw_out[BITWIDTH-1:0] = (in_src[0] == 1'b1) ? sw_in_0[BITWIDTH-1:0] : 
+							  (in_src[1] == 1'b1) ? sw_in_1[BITWIDTH-1:0] :
+							  (in_src[2] == 1'b1) ? sw_in_2[BITWIDTH-1:0] : 0;
 endmodule
 
 // Obselete
