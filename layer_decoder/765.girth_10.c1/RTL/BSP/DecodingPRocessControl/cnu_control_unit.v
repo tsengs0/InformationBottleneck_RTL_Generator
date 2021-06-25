@@ -30,21 +30,22 @@ module cnu_control_unit #(
     parameter PAGE_ALIGN_LEVEL  = 1,
 	parameter MEM_RD_LEVEL      = 2, // every memory fetching process take 2 clock cycles
 	parameter FSM_STATE_NUM     = 9,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] INIT_LOAD     = 0,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_FETCH     = 1,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_IB_RAM_PEND   = 2,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] CNU_PIPE      = 3,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] CNU_OUT       = 4,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] BS_WB 		= 5,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] PAGE_ALIGN 	= 6,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_WB 		= 7,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] IDLE 			= 8
+	parameter [$clog2(FSM_STATE_NUM)-1:0] INIT_LOAD        = 0,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_IB_RAM_PEND  = 1,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_FETCH        = 2,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] CNU_PIPE         = 3,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] CNU_OUT          = 4,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] BS_WB 		   = 5,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] PAGE_ALIGN 	   = 6,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_WB 		   = 7,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] IDLE 			   = 8
 )(
     output wire cnu_rd,
     output wire c2v_mem_we,
     output wire c2v_pa_en,
     output wire c2v_bs_en,
-    output wire v2c_src,
+    output wire v2c_mem_fetch,
+    //output wire v2c_src,
     output wire last_layer,
 
     output reg de_frame_start, // to inform system that decoding process of current frame has already started. The given "termination" signal will be thereby deasserted by system 
@@ -169,25 +170,22 @@ always @(posedge read_clk) begin
       case (state[$clog2(FSM_STATE_NUM)-1:0])
 //////////////////////////////////////////////////////////////////////////////////////////////////////
         INIT_LOAD : begin
-			state <= MEM_FETCH;
+			state <= VNU_IB_RAM_PEND;
 		end
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-		MEM_FETCH : begin
-			if(fetch_pipeline_level[MEM_RD_LEVEL-1] == 1'b1)
-				if(vnu_update_pend == 1'b0) 
-					state <= CNU_PIPE;
-				else
-                	state <= VNU_IB_RAM_PEND; // VNU IB-RAM pending
-            else
-				state <= MEM_FETCH;
-        end
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Halting the following process unitl VNU IB-RAMs are completely updated.
 		VNU_IB_RAM_PEND : begin
 			if(vnu_update_pend == 1'b0)
-				state <= CNU_PIPE;
+				state <= MEM_FETCH;
 			else
 				state <= VNU_IB_RAM_PEND;
+        end
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+		MEM_FETCH : begin
+			if(fetch_pipeline_level[MEM_RD_LEVEL-1] == 1'b1) 
+				state <= CNU_PIPE;
+            else
+				state <= MEM_FETCH;
         end
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 		CNU_PIPE : begin
@@ -217,8 +215,12 @@ always @(posedge read_clk) begin
         end
 //////////////////////////////////////////////////////////////////////////////////////////////////////
         IDLE: begin
-            if(layer_finish == 1'b1)
-                state <= MEM_FETCH;
+            if(layer_finish == 1'b1) begin
+            	if(vnu_update_pend == 1'b0)
+            		state <= MEM_FETCH;
+            	else
+            		state <= VNU_IB_RAM_PEND;
+            end
             else
                 state <= IDLE;
         end        
@@ -239,10 +241,11 @@ always @(posedge read_clk) begin
 		de_frame_start <= de_frame_start;
 end					  
 //////////////////////////////////////////////////////////////////////////////////////////////////////		
-assign v2c_src = (state == MEM_FETCH && fetch_pipeline_level == fetch_shift_overflow) ? 1'b1 : 1'b0;
+//assign v2c_src = (state == MEM_FETCH && fetch_pipeline_level == fetch_shift_overflow) ? 1'b1 : 1'b0;
 assign c2v_mem_we = (state == MEM_WB) ? 1'b1 : 1'b0; 
 assign c2v_pa_en = (state == PAGE_ALIGN) ? 1'b1 : 1'b0;
 assign c2v_bs_en = (state == BS_WB && bs_pipeline_level[0] == 1'b1) ? 1'b1 : 1'b0; // only enable at first pipeline stage over all BS_WB
 // CNU RD
 assign cnu_rd = (state == CNU_PIPE || state == CNU_OUT) ? 1'b1 : 1'b0;
+assign v2c_mem_fetch = (state == MEM_FETCH && fetch_pipeline_level[0] == 1'b1) ? 1'b1 : 1'b0;
 endmodule

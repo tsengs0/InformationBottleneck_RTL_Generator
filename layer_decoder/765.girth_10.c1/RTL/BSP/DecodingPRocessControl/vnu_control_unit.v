@@ -47,9 +47,9 @@ module vnu_control_unit #(
 	parameter MEM_RD_LEVEL      = 2, // every memory fetching process take 2 clock cycles
 	parameter FSM_STATE_NUM     = 10,
 	parameter [$clog2(FSM_STATE_NUM)-1:0] INIT_LOAD       = 0,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] CH_FETCH        = 1,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_FETCH       = 2,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_IB_RAM_PEND = 3,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_IB_RAM_PEND = 1,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] CH_FETCH        = 2,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_FETCH       = 3,
 	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_PIPE        = 4,
 	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_OUT         = 5,
 	parameter [$clog2(FSM_STATE_NUM)-1:0] BS_WB 		  = 6,
@@ -68,11 +68,13 @@ module vnu_control_unit #(
     output wire v2c_mem_we,
     output wire v2c_pa_en,
     output wire v2c_bs_en,
+    output wire c2v_mem_fetch,
 `ifdef SCHED_4_6
 	output wire ch_ram_init_we,
 	output wire ch_bs_en,
 	output wire ch_pa_en,
 	output reg ch_ram_wb,
+	output wire ch_ram_fetch, // Enable signal of fetching channel buffers
 
 	output wire v2c_outRotate_reg_we,
 	output wire dnu_inRotate_bs_en,
@@ -352,26 +354,8 @@ always @(posedge read_clk) begin
       case (state[$clog2(FSM_STATE_NUM)-1:0])
 //////////////////////////////////////////////////////////////////////////////////////////////////////
         INIT_LOAD : begin
-			state <= CH_FETCH;
-		end 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-        CH_FETCH : begin
-			state <= MEM_FETCH;
+			state <= VNU_IB_RAM_PEND;
 		end
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-		MEM_FETCH : begin
-			if(fetch_pipeline_level[MEM_RD_LEVEL-1] == 1'b1) begin
-				if(
-				  (vnu_pipe_load_finish[0] == 1'b1 || vnu_pipe_load_start[0] == 1'b0) &&
-				  (vnu_init_load_start == {`IB_VNU_DECOMP_funNum{1'b0}} || vnu_init_load_finish == {`IB_VNU_DECOMP_funNum{1'b1}})
-				) 
-					state <= VNU_PIPE;
-				else
-                	state <= VNU_IB_RAM_PEND; // VNU IB-RAM pending
-            end
-            else
-				state <= MEM_FETCH;
-        end
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Halting the following process unitl VNU IB-RAMs are completely updated.
 		VNU_IB_RAM_PEND : begin
@@ -379,9 +363,20 @@ always @(posedge read_clk) begin
 			  (vnu_pipe_load_finish[0] == 1'b1 || vnu_pipe_load_start[0] == 1'b0) &&
 			  (vnu_init_load_start == {`IB_VNU_DECOMP_funNum{1'b0}} || vnu_init_load_finish == {`IB_VNU_DECOMP_funNum{1'b1}})
 			)
-				state <= VNU_PIPE;
+				state <= CH_FETCH;
 			else
 				state <= VNU_IB_RAM_PEND;
+        end
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+        CH_FETCH : begin
+			state <= MEM_FETCH;
+		end
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+		MEM_FETCH : begin
+			if(fetch_pipeline_level[MEM_RD_LEVEL-1] == 1'b1)
+					state <= VNU_PIPE;
+            else
+				state <= MEM_FETCH;
         end
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 		VNU_PIPE : begin
@@ -411,8 +406,15 @@ always @(posedge read_clk) begin
         end
 //////////////////////////////////////////////////////////////////////////////////////////////////////
         IDLE: begin
-            if(layer_finish == 1'b1)
-                state <= CH_FETCH;
+            if(layer_finish == 1'b1) begin
+            	if(
+				  (vnu_pipe_load_finish[0] == 1'b1 || vnu_pipe_load_start[0] == 1'b0) &&
+				  (vnu_init_load_start == {`IB_VNU_DECOMP_funNum{1'b0}} || vnu_init_load_finish == {`IB_VNU_DECOMP_funNum{1'b1}})
+				) 
+            		state <= CH_FETCH;
+            	else 
+            		state <= VNU_IB_RAM_PEND;
+            end
             else
                 state <= IDLE;
         end  
@@ -550,11 +552,11 @@ assign v2c_src = (state == MEM_FETCH && fetch_pipeline_level == fetch_shift_over
 assign v2c_mem_we = (state == MEM_WB) ? 1'b1 : 1'b0;
 assign v2c_pa_en = (state == PAGE_ALIGN) ? 1'b1 : 1'b0;
 assign v2c_bs_en = (state == BS_WB && bs_pipeline_level[0] == 1'b1) ? 1'b1 : 1'b0; // only enable at first pipeline stage over all BS_WB
-assign 	vnu_update_pend = ( (state == MEM_FETCH || state == VNU_IB_RAM_PEND) &&
+assign 	vnu_update_pend = (  /*state == VNU_IB_RAM_PEND &&*/
 							(vnu_pipe_load_finish[0] == 1'b1 || vnu_pipe_load_start[0] == 1'b0) &&
 			  			    (vnu_init_load_start == {`IB_VNU_DECOMP_funNum{1'b0}} || vnu_init_load_finish == {`IB_VNU_DECOMP_funNum{1'b1}})
 						  ) ? 1'b0 : 
-						  ( (state == MEM_FETCH || state == VNU_IB_RAM_PEND) &&
+						  (/*state == VNU_IB_RAM_PEND &&*/
 							!((vnu_pipe_load_finish[0] == 1'b1 || vnu_pipe_load_start[0] == 1'b0) && (vnu_init_load_start == {`IB_VNU_DECOMP_funNum{1'b0}} || vnu_init_load_finish == {`IB_VNU_DECOMP_funNum{1'b1}}))
 						  ) ? 1'b1 : 1'b0;
 /*-------------------------------------------------------------------------------------------------------------------*/
@@ -575,10 +577,10 @@ always @(posedge read_clk) begin
 	else vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1:0] <= 1;
 end
 
-assign ch_ram_init_we = (state == INIT_LOAD && (iter_cnt[0] == 1'b1 && layer_cnt[0] == 1'b1)) ? 1'b1 : 1'b0;
+assign ch_ram_init_we = (state == INIT_LOAD && (iter_cnt[0] == 1'b1 && layer_cnt[0] == 1'b1)) ? 1'b1 && rstn : 1'b0;
 assign ch_bs_en = (
 					(
-				  	 (state >= MEM_FETCH && state < VNU_IB_RAM_PEND) || 
+				  	 (state == MEM_FETCH) || 
 				  	 (state >= VNU_PIPE && state <= VNU_OUT) || 
 				  	 (state == IDLE && vnu_main_sys_cnt[15] == 1'b1)
 				  	) &&
@@ -595,13 +597,19 @@ assign ch_pa_en = (state >= VNU_PIPE && |ch_pa_en_phase_0 && (iter_cnt[0] == 1'b
 
 always @(posedge read_clk) begin
 	if(rstn == 1'b0) ch_ram_wb <= 1'b0;
-	else ch_ram_wb <= ch_pa_en; // assertion one clock cycle after enable-asserition of CH_PA
+	else ch_ram_wb <= ch_pa_en; // assertion of one clock cycle after enable-asserition of CH_PA
 end
 assign layer_finish = (vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1] == 1'b1) ? 1'b1 : 1'b0;
+/*-------------------------------------------------------------------------------------------------------------------*/
+// Enable signal of fetching channel buffers
+assign ch_ram_fetch = (state == CH_FETCH) ? 1'b1 : 1'b0;
+// Enable signal of fetching V2C messages from V2C MEMs
+assign c2v_mem_fetch = (state == MEM_FETCH && fetch_pipeline_level[0] == 1'b1) ? 1'b1 : 1'b0;
 `endif
 /*-------------------------------------------------------------------------------------------------------------------*/
 // Rotate_en signal from output of last VNU decomposition level to second segment of DNU read_addr
 `ifdef SCHED_4_6
+// Basing on the fact that the Sign-Inversion Contrl signl is output by VNU_PIPE_OUT
 assign v2c_outRotate_reg_we = (state == BS_WB && bs_pipeline_level[0] == 1'b1 && layer_cnt[1] == 1'b1) ? 1'b1 : 1'b0;
 assign dnu_inRotate_bs_en = (state == VNU_PIPE && 
 							 vnu_pipeline_level[PERMUTATION_LEVEL-1:0] > 0 && 

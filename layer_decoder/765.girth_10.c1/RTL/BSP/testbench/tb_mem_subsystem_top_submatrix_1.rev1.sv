@@ -11,6 +11,8 @@ module tb_mem_subsystem_top_submatrix_1_rev1 #(
 	parameter WRITE_CLK_RATIO = WRITE_CLK_RATE/READ_CLK_RATE, // the ratio of write_clk clock rate with respect to clock rate of read_clk, e.g., Ratio = write_clk / read_clk = 200MHz/100MHz = 2
 
 	parameter VN_DEGREE = 3,   // degree of one variable node
+	parameter CN_DEGREE = 10, // degree of one check node
+	parameter SUBMATRIX_Z = 765,
 	parameter IB_ROM_SIZE = 6, // width of one read-out port of RAMB36E1
 	parameter IB_ROM_ADDR_WIDTH = 6, // ceil(log2(64-entry)) = 6-bit 
 	parameter IB_CNU_DECOMP_funNum = 1, // equivalent to one decomposed IB-LUT depth
@@ -24,15 +26,15 @@ module tb_mem_subsystem_top_submatrix_1_rev1 #(
 	/*VNUs and DNUs*/
 	parameter VN_QUAN_SIZE = 4,
 	parameter VN_ROM_RD_BW = 8,    // bit-width of one read port of BRAM based IB-ROM
-	parameter VN_ROM_ADDR_BW = 11,  // bit-width of read address of BRAM based IB-ROM
-								// #Entry: (128-entry*4-bit) / ROM_RD_BW)*25-iteration
+	parameter VN_ROM_ADDR_BW = 10,  // bit-width of read address of BRAM based IB-ROM
+								// #Entry: (128-entry*4-bit) / ROM_RD_BW)*10-iteration
 	parameter VN_PIPELINE_DEPTH = 3,
 
 	parameter VN_OVERPROVISION = 1, // the over-counted IB-ROM read address								// ceil(log2(#Entry)) = 11-bit
 	parameter DN_QUAN_SIZE = 1,
 	parameter DN_ROM_RD_BW = 2,    // bit-width of one read port of BRAM based IB-ROM
-	parameter DN_ROM_ADDR_BW = 11,  // bit-width of read address of BRAM based IB-ROM
-								// #Entry: (128-entry*4-bit) / ROM_RD_BW)*25-iteration
+	parameter DN_ROM_ADDR_BW = 10,  // bit-width of read address of BRAM based IB-ROM
+								// #Entry: (128-entry*4-bit) / ROM_RD_BW)*10-iteration
 								// ceil(log2(#Entry)) = 11-bit
 	
 	parameter DN_OVERPROVISION = 1, // the over-counted IB-ROM read address	
@@ -58,8 +60,8 @@ module tb_mem_subsystem_top_submatrix_1_rev1 #(
 	parameter                     CNU_PIPELINE_LEVEL = 1*CNU_FUNC_CYCLE,
 	parameter                          FSM_STATE_NUM = 9,
 	parameter  [$clog2(FSM_STATE_NUM)-1:0] INIT_LOAD   = 0,
-	parameter  [$clog2(FSM_STATE_NUM)-1:0] MEM_FETCH   = 1,
-	parameter  [$clog2(FSM_STATE_NUM)-1:0] VNU_IB_RAM_PEND = 2,
+	parameter  [$clog2(FSM_STATE_NUM)-1:0] VNU_IB_RAM_PEND = 1,
+	parameter  [$clog2(FSM_STATE_NUM)-1:0] MEM_FETCH   = 2,
 	parameter   [$clog2(FSM_STATE_NUM)-1:0] CNU_PIPE   = 3,
 	parameter    [$clog2(FSM_STATE_NUM)-1:0] CNU_OUT   = 4,
 	parameter      [$clog2(FSM_STATE_NUM)-1:0] BS_WB   = 5,
@@ -85,15 +87,15 @@ module tb_mem_subsystem_top_submatrix_1_rev1 #(
 	parameter							WR_FSM_STATE_NUM   = 5,
 
 	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_INIT_LOAD       = 0,
-	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_CH_FETCH        = 1,
-	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_MEM_FETCH       = 2,
-	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_VNU_IB_RAM_PEND = 3,
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_VNU_IB_RAM_PEND = 1,
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_CH_FETCH        = 2,
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_MEM_FETCH       = 3,
 	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_VNU_PIPE        = 4,
 	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_VNU_OUT         = 5,
-	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_BS_WB 		  = 6,
-	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_PAGE_ALIGN 	  = 7,
-	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_MEM_WB 		  = 8,
-	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_IDLE  		  = 9,
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_BS_WB 		   = 6,
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_PAGE_ALIGN 	   = 7,
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_MEM_WB 		   = 8,
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_IDLE  		   = 9,
 /*-------------------------------------------------------------------------------------*/
 	// Parameters related to BS, PA and MEM
 	parameter RAM_DEPTH = 1024,
@@ -109,7 +111,19 @@ module tb_mem_subsystem_top_submatrix_1_rev1 #(
 `ifdef SCHED_4_6
 	parameter C2V_MEM_ADDR_BASE = 0,
 	parameter V2C_MEM_ADDR_BASE = ROW_CHUNK_NUM,
-	parameter  CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
+	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
+	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
+	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
+/*-------------------------------------------------------------------------------------*/
+	// Parameter for Channel Buffers
+	parameter CH_FETCH_LATENCY = 2,
+	parameter CNU_INIT_FETCH_LATENCY = 1,
+	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
+	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
+	// Parameters of Channel RAM
+	parameter CH_RAM_DEPTH = ROW_CHUNK_NUM*LAYER_NUM,
+	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
+/*-------------------------------------------------------------------------------------*/
 `endif
 	parameter START_PAGE_1_0 = 2, // starting page address of layer 0 of submatrix_1
 	parameter START_PAGE_1_1 = 8, // starting page address of layer 1 of submatrix_1
@@ -121,7 +135,7 @@ module tb_mem_subsystem_top_submatrix_1_rev1 #(
 ) ();
 
 	// clock
-	logic read_clk, write_clk;
+	logic read_clk, write_clk, awgn_gen_clk;
 	initial begin
 		read_clk = 0;
 		forever #(10) read_clk = ~read_clk;
@@ -131,14 +145,27 @@ module tb_mem_subsystem_top_submatrix_1_rev1 #(
 		#5;
 		forever #(5) write_clk = ~write_clk;
 	end
+	initial begin
+		awgn_gen_clk = 0;
+		#5;
+		forever #(3.3) awgn_gen_clk = ~awgn_gen_clk;
+	end
 
 	// asynchronous reset
-	logic rstn;
+	reg sys_rstn;
 	initial begin
-		rstn <= 0;
+		sys_rstn <= 0;
 		repeat (10) @(posedge read_clk);
-		rstn <= 1;
+		sys_rstn <= 1;
 	end
+/*-----------------------------------------------------------------------------------------------------------------*/
+// Reset Signal for main decoder module 
+// Note that in the first codeword decoding process, 
+// the reset signal will be kept asserted until the first codeword is generated, i.e., 
+// the timing of first assertion of receivedBlock_generator.tvalid_master
+//(* max_fanout = 50 *) reg decoder_rstn; initial decoder_rstn <= 1'b0;
+reg decoder_rstn;
+reg decode_termination_reg;
 /*---------------------------------------------------------------------------------------------------*/
 	localparam                  RESET_CYCLE_BITWIDTH = $clog2(RESET_CYCLE);
 	localparam                     bs_shift_overflow = 2**(PERMUTATION_LEVEL-1);
@@ -148,24 +175,28 @@ module tb_mem_subsystem_top_submatrix_1_rev1 #(
 	wire                             c2v_mem_we_propagateIn;
 	wire  							 c2v_pa_en;
 	wire 						 	 c2v_bs_en_propagateIn;
+	wire  							 v2c_mem_fetch_propagateIn;
 	//wire                             v2c_src;
 	wire							  c2v_last_layer;
 	wire                             de_frame_start;
 	wire [$clog2(FSM_STATE_NUM)-1:0] state;
 	wire                             layer_finish;
-	logic                             fsm_en;
+	wire                             fsm_en;
 	logic							  vnu_update_pend;
 
 	// Duplication of all control signals in order to propagate "enable state" to following pipeline stages
 	reg [ROW_CHUNK_NUM-2:0] c2v_mem_we_propagate; // the first one has already instantiated by FSM itself
 	wire c2v_mem_we; assign c2v_mem_we = (c2v_mem_we_propagate[ROW_CHUNK_NUM-2:0] > 0 || c2v_mem_we_propagateIn > 0) ? 1'b1 : 1'b0;
 	//reg c2v_mem_we; always @(posedge read_clk) begin if(!rstn) c2v_mem_we <= 0; else if(c2v_mem_we_propagate[ROW_CHUNK_NUM-2:0] > 0 || c2v_mem_we_propagateIn > 0) c2v_mem_we <= 1; else c2v_mem_we <= 0; end
-	always @(posedge read_clk) begin if(!rstn) c2v_mem_we_propagate <= 0; else c2v_mem_we_propagate[ROW_CHUNK_NUM-2:0] <= {c2v_mem_we_propagate[ROW_CHUNK_NUM-3:0], c2v_mem_we_propagateIn}; end
+	always @(posedge read_clk) begin if(!decoder_rstn) c2v_mem_we_propagate <= 0; else c2v_mem_we_propagate[ROW_CHUNK_NUM-2:0] <= {c2v_mem_we_propagate[ROW_CHUNK_NUM-3:0], c2v_mem_we_propagateIn}; end
 	reg [ROW_CHUNK_NUM-2:0] c2v_last_row_chunk_propagate; // the first one has already instantiated by FSM itself
 	wire c2v_last_row_chunk; assign c2v_last_row_chunk = c2v_last_row_chunk_propagate[ROW_CHUNK_NUM-2];
-	always @(posedge read_clk) begin if(!rstn) c2v_last_row_chunk_propagate <= 0; else c2v_last_row_chunk_propagate[ROW_CHUNK_NUM-2:0] <= {c2v_last_row_chunk_propagate[ROW_CHUNK_NUM-3:0], c2v_pa_en}; end
+	always @(posedge read_clk) begin if(!decoder_rstn) c2v_last_row_chunk_propagate <= 0; else c2v_last_row_chunk_propagate[ROW_CHUNK_NUM-2:0] <= {c2v_last_row_chunk_propagate[ROW_CHUNK_NUM-3:0], c2v_pa_en}; end
 	reg [ROW_CHUNK_NUM-2:0] c2v_bs_en_propagate;
-	always @(posedge read_clk) begin if(!rstn) c2v_bs_en_propagate <= 0; else c2v_bs_en_propagate[ROW_CHUNK_NUM-2:0] <= {c2v_bs_en_propagate[ROW_CHUNK_NUM-3:0], c2v_bs_en_propagateIn}; end
+	always @(posedge read_clk) begin if(!decoder_rstn) c2v_bs_en_propagate <= 0; else c2v_bs_en_propagate[ROW_CHUNK_NUM-2:0] <= {c2v_bs_en_propagate[ROW_CHUNK_NUM-3:0], c2v_bs_en_propagateIn}; end
+	reg [ROW_CHUNK_NUM-2:0] v2c_mem_fetch_propagate;
+	always @(posedge read_clk) begin if(!decoder_rstn) v2c_mem_fetch_propagate <= 0; else v2c_mem_fetch_propagate[ROW_CHUNK_NUM-2:0] <= {v2c_mem_fetch_propagate[ROW_CHUNK_NUM-3:0], v2c_mem_fetch_propagateIn}; end
+	wire v2c_mem_fetch; assign v2c_mem_fetch = (v2c_mem_fetch_propagate > 0 || v2c_mem_fetch_propagateIn > 0) ? 1'b1 : 1'b0;
 	cnu_control_unit #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.LAYER_NUM(LAYER_NUM),
@@ -190,6 +221,7 @@ module tb_mem_subsystem_top_submatrix_1_rev1 #(
 			.c2v_mem_we         (c2v_mem_we_propagateIn),
 			.c2v_pa_en          (c2v_pa_en),
 			.c2v_bs_en 			(c2v_bs_en_propagateIn),
+			.v2c_mem_fetch      (v2c_mem_fetch_propagateIn),
 			//.v2c_src            (v2c_src),
 			.last_layer         (c2v_last_layer), 
 			.de_frame_start     (de_frame_start),
@@ -200,18 +232,18 @@ module tb_mem_subsystem_top_submatrix_1_rev1 #(
 			.termination        (iter_termination),
 			.fsm_en             (fsm_en),
 			.read_clk           (read_clk),
-			.rstn               (rstn)
+			.rstn               (decoder_rstn)
 		);
 		reg c2v_last_row_chunk_reg0;
 		reg c2v_last_row_chunk_reg1;
 		always @(posedge read_clk) begin
-			if(!rstn)
+			if(!decoder_rstn)
 				c2v_last_row_chunk_reg0 <= 0;
 			else
 				c2v_last_row_chunk_reg0 <= c2v_last_row_chunk;
 		end
 		always @(posedge read_clk) begin
-			if(!rstn)
+			if(!decoder_rstn)
 				c2v_last_row_chunk_reg1 <= 0;
 			else
 				c2v_last_row_chunk_reg1 <= c2v_last_row_chunk_reg0;
@@ -231,9 +263,14 @@ module tb_mem_subsystem_top_submatrix_1_rev1 #(
 	wire                             v2c_mem_we_propagateIn;
 	wire 							 v2c_pa_en;
 	wire 						 	 v2c_bs_en_propagateIn;
+	wire 							 c2v_mem_fetch_propagateIn;
+	wire 							 v2c_outRotate_reg_we_propagateIn;
+	wire 							 dnu_inRotate_bs_en_propagateIn;
+	wire 							 dnu_inRotate_pa_en_propagateIn;
+	wire 							 dnu_inRotate_wb_propagateIn;
 
 	wire ch_ram_init_we_propagateIn;
-	wire ch_bs_en_propagateIn;
+	//wire ch_bs_en_propagateIn;
 	wire ch_pa_en;
 	wire ch_ram_wb;
 
@@ -252,21 +289,41 @@ module tb_mem_subsystem_top_submatrix_1_rev1 #(
 	wire dn_wr_iter_finish; // to notify the completion of iteration refresh 
 	wire [ITER_ADDR_BW-1:0] vnu_iter_cnt [0:IB_VNU_DECOMP_funNum-1];
 	wire [ITER_ADDR_BW-1:0] dnu_iter_cnt;
-	
+/*------------------------------------------------------------------------------------------------------------------------------------------*/	
 	// Duplication of all control signals in order to propagate "enable state" to following pipeline stages
 	reg [ROW_CHUNK_NUM-2:0] v2c_mem_we_propagate; // the first one has already instantiated by FSM itself
 	wire v2c_mem_we; assign v2c_mem_we = (v2c_mem_we_propagate[ROW_CHUNK_NUM-2:0] > 0 || v2c_mem_we_propagateIn > 0) ? 1'b1 : 1'b0;
-	always @(posedge read_clk) begin if(!rstn) v2c_mem_we_propagate <= 0; else v2c_mem_we_propagate[ROW_CHUNK_NUM-2:0] <= {v2c_mem_we_propagate[ROW_CHUNK_NUM-3:0], v2c_mem_we_propagateIn}; end
+	always @(posedge read_clk) begin if(!decoder_rstn) v2c_mem_we_propagate <= 0; else v2c_mem_we_propagate[ROW_CHUNK_NUM-2:0] <= {v2c_mem_we_propagate[ROW_CHUNK_NUM-3:0], v2c_mem_we_propagateIn}; end
 	reg [ROW_CHUNK_NUM-2:0] v2c_last_row_chunk_propagate; // the first one has already instantiated by FSM itself
 	wire v2c_last_row_chunk; assign v2c_last_row_chunk = v2c_last_row_chunk_propagate[ROW_CHUNK_NUM-2];
-	always @(posedge read_clk) begin if(!rstn) v2c_last_row_chunk_propagate <= 0; else v2c_last_row_chunk_propagate[ROW_CHUNK_NUM-2:0] <= {v2c_last_row_chunk_propagate[ROW_CHUNK_NUM-3:0], v2c_pa_en}; end	
+	always @(posedge read_clk) begin if(!decoder_rstn) v2c_last_row_chunk_propagate <= 0; else v2c_last_row_chunk_propagate[ROW_CHUNK_NUM-2:0] <= {v2c_last_row_chunk_propagate[ROW_CHUNK_NUM-3:0], v2c_pa_en}; end	
 	reg [ROW_CHUNK_NUM-2:0] v2c_bs_en_propagate;
-	always @(posedge read_clk) begin if(!rstn) v2c_bs_en_propagate <= 0; else v2c_bs_en_propagate[ROW_CHUNK_NUM-2:0] <= {v2c_bs_en_propagate[ROW_CHUNK_NUM-3:0], v2c_bs_en_propagateIn}; end	
+	always @(posedge read_clk) begin if(!decoder_rstn) v2c_bs_en_propagate <= 0; else v2c_bs_en_propagate[ROW_CHUNK_NUM-2:0] <= {v2c_bs_en_propagate[ROW_CHUNK_NUM-3:0], v2c_bs_en_propagateIn}; end	
 	reg [CH_INIT_LOAD_LEVEL-2:0] ch_ram_init_we_propagate;
-	always @(posedge read_clk) begin if(!rstn) ch_ram_init_we_propagate <= 0; else ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-2:0] <= {ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-3:0], ch_ram_init_we_propagateIn}; end
+	always @(posedge read_clk) begin if(!decoder_rstn) ch_ram_init_we_propagate <= 0; else ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-2:0] <= {ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-3:0], ch_ram_init_we_propagateIn}; end
 	wire ch_ram_init_we; assign ch_ram_init_we = (ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-2:0] > 0 || ch_ram_init_we_propagateIn > 0) ? 1'b1 : 1'b0;
-	reg ch_bs_en_propagate; always @(posedge read_clk) begin if(!rstn) ch_bs_en_propagate <= 0; else ch_bs_en_propagate <= ch_bs_en_propagateIn; end
-	wire ch_bs_en; assign ch_bs_en = (ch_bs_en_propagate == 1'b1 || ch_bs_en_propagateIn == 1'b1) ? 1'b1 : 1'b0;
+	//reg ch_bs_en_propagate; always @(posedge read_clk) begin if(!decoder_rstn) ch_bs_en_propagate <= 0; else ch_bs_en_propagate <= ch_bs_en_propagateIn; end
+	wire ch_bs_en; //assign ch_bs_en = (ch_bs_en_propagate == 1'b1 || ch_bs_en_propagateIn == 1'b1) ? 1'b1 : 1'b0;
+	reg [ROW_CHUNK_NUM-2:0] ch_ram_fetch_propagate;
+	always @(posedge read_clk) begin if(!decoder_rstn) ch_ram_fetch_propagate <= 0; else ch_ram_fetch_propagate[ROW_CHUNK_NUM-2:0] <= {ch_ram_fetch_propagate[ROW_CHUNK_NUM-3:0], ch_ram_fetch_propagateIn}; end
+	wire ch_ram_fetch; assign ch_ram_fetch = (ch_ram_fetch_propagate > 0 || ch_ram_fetch_propagateIn > 0) ? 1'b1 : 1'b0;
+	reg [ROW_CHUNK_NUM-2:0] c2v_mem_fetch_propagate;
+	always @(posedge read_clk) begin if(!decoder_rstn) c2v_mem_fetch_propagate <= 0; else c2v_mem_fetch_propagate[ROW_CHUNK_NUM-2:0] <= {c2v_mem_fetch_propagate[ROW_CHUNK_NUM-3:0], c2v_mem_fetch_propagateIn}; end
+	wire c2v_mem_fetch; assign c2v_mem_fetch = (c2v_mem_fetch_propagate > 0 || c2v_mem_fetch_propagateIn > 0) ? 1'b1 : 1'b0;
+	
+	reg [ROW_CHUNK_NUM-2:0] v2c_outRotate_reg_we_propagate; 
+	reg [ROW_CHUNK_NUM-2:0] dnu_inRotate_bs_en_propagate;
+	reg [ROW_CHUNK_NUM-2:0] dnu_inRotate_pa_en_propagate;
+	reg [ROW_CHUNK_NUM-2:0] dnu_inRotate_wb_propagate;
+	always @(posedge read_clk) begin if(!decoder_rstn) v2c_outRotate_reg_we_propagate <= 0; else v2c_outRotate_reg_we_propagate[ROW_CHUNK_NUM-2:0] <= {v2c_outRotate_reg_we_propagate[ROW_CHUNK_NUM-3:0], v2c_outRotate_reg_we_propagateIn}; end
+	always @(posedge read_clk) begin if(!decoder_rstn) dnu_inRotate_bs_en_propagate <= 0; else dnu_inRotate_bs_en_propagate[ROW_CHUNK_NUM-2:0] <= {dnu_inRotate_bs_en_propagate[ROW_CHUNK_NUM-3:0], dnu_inRotate_bs_en_propagateIn}; end
+	always @(posedge read_clk) begin if(!decoder_rstn) dnu_inRotate_pa_en_propagate <= 0; else dnu_inRotate_pa_en_propagate[ROW_CHUNK_NUM-2:0] <= {dnu_inRotate_pa_en_propagate[ROW_CHUNK_NUM-3:0], dnu_inRotate_pa_en_propagateIn}; end
+	always @(posedge read_clk) begin if(!decoder_rstn) dnu_inRotate_wb_propagate <= 0; else dnu_inRotate_wb_propagate[ROW_CHUNK_NUM-2:0] <= {dnu_inRotate_wb_propagate[ROW_CHUNK_NUM-3:0], dnu_inRotate_wb_propagateIn}; end
+	wire v2c_outRotate_reg_we; assign v2c_outRotate_reg_we = (v2c_outRotate_reg_we_propagate > 0 || v2c_outRotate_reg_we_propagateIn > 0) ? 1'b1 : 1'b0; 
+	wire dnu_inRotate_bs_en; assign dnu_inRotate_bs_en = (dnu_inRotate_bs_en_propagate > 0 || dnu_inRotate_bs_en_propagateIn > 0) ? 1'b1 : 1'b0;
+	wire dnu_inRotate_pa_en; assign dnu_inRotate_pa_en = (dnu_inRotate_pa_en_propagate > 0 || dnu_inRotate_pa_en_propagateIn > 0) ? 1'b1 : 1'b0;
+	wire dnu_inRotate_wb; assign dnu_inRotate_wb = (dnu_inRotate_wb_propagate > 0 || dnu_inRotate_wb_propagateIn > 0) ? 1'b1 : 1'b0;
+/*------------------------------------------------------------------------------------------------------------------------------------------*/
 	vnu_control_unit #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.LAYER_NUM(LAYER_NUM),
@@ -288,10 +345,10 @@ module tb_mem_subsystem_top_submatrix_1_rev1 #(
 		.MEM_RD_LEVEL(MEM_RD_LEVEL),
 
 		.FSM_STATE_NUM(CTRL_FSM_STATE_NUM),
-	    .INIT_LOAD       (VNU_INIT_LOAD      ),        
+	    .INIT_LOAD       (VNU_INIT_LOAD      ),
+	    .VNU_IB_RAM_PEND (VNU_VNU_IB_RAM_PEND),        
 	    .CH_FETCH        (VNU_CH_FETCH       ),        
-	    .MEM_FETCH       (VNU_MEM_FETCH      ),        
-	    .VNU_IB_RAM_PEND (VNU_VNU_IB_RAM_PEND),  
+	    .MEM_FETCH       (VNU_MEM_FETCH      ),  
 	    .VNU_PIPE        (VNU_VNU_PIPE       ),        
 	    .VNU_OUT         (VNU_VNU_OUT        ),         
 	    .BS_WB 	         (VNU_BS_WB          ),	    
@@ -299,32 +356,39 @@ module tb_mem_subsystem_top_submatrix_1_rev1 #(
 	    .MEM_WB 		 (VNU_MEM_WB         ),
 	    .IDLE  		     (VNU_IDLE           ) 
 	) inst_vnu_control_unit (
-		.vnu_wr             (vnu_wr),
-		.dnu_wr             (dnu_wr),
-		.vnu_update_pend    (vnu_update_pend),
-		.v2c_src            (v2c_src),
-		.last_layer         (v2c_last_layer),
-		.layer_cnt 			(v2c_layer_cnt),
-		.v2c_mem_we         (v2c_mem_we_propagateIn),
-		.v2c_pa_en          (v2c_pa_en),
-		.v2c_bs_en 			(v2c_bs_en_propagateIn),
-		.ch_ram_init_we     (ch_ram_init_we_propagateIn),
-		.ch_bs_en           (ch_bs_en_propagateIn      ),
-		.ch_pa_en           (ch_pa_en      ),
-		.ch_ram_wb          (ch_ram_wb     ),
-		.layer_finish       (layer_finish  ),
+		.vnu_wr          (vnu_wr),
+		.dnu_wr          (dnu_wr),
+		.vnu_update_pend (vnu_update_pend),
+		.v2c_src         (v2c_src),
+		.last_layer      (v2c_last_layer),
+		.layer_cnt 		 (v2c_layer_cnt),
+		.v2c_mem_we      (v2c_mem_we_propagateIn),
+		.v2c_pa_en       (v2c_pa_en),
+		.v2c_bs_en 		 (v2c_bs_en_propagateIn),
+		.ch_ram_init_we  (ch_ram_init_we_propagateIn),
+		.ch_bs_en        (ch_bs_en), //(ch_bs_en_propagateIn),
+		.ch_pa_en        (ch_pa_en),
+		.ch_ram_wb       (ch_ram_wb),
+		.c2v_mem_fetch    (c2v_mem_fetch_propagateIn),
+		.ch_ram_fetch    (ch_ram_fetch_propagateIn), // Enable signal of fetching channel buffers
+		.layer_finish    (layer_finish),
+
+		.v2c_outRotate_reg_we (v2c_outRotate_reg_we_propagateIn),
+		.dnu_inRotate_bs_en   (dnu_inRotate_bs_en_propagateIn),
+		.dnu_inRotate_pa_en   (dnu_inRotate_pa_en_propagateIn),
+		.dnu_inRotate_wb      (dnu_inRotate_wb_propagateIn),
 
 		.vnu_rd             (vnu_rd),
 		.dnu_rd             (dnu_rd),
 		.state              (vnu_ctrl_state),
 		.hard_decision_done (hard_decision_done),
 
-		.vn_iter_update     (vn_iter_update),
-		.dn_iter_update     (dn_iter_update),
-		.termination        (iter_termination),
-		.fsm_en             (fsm_en),
-		.read_clk           (read_clk),
-		.rstn               (rstn)
+		.vn_iter_update (vn_iter_update),
+		.dn_iter_update (dn_iter_update),
+		.termination    (iter_termination),
+		.fsm_en         (fsm_en),
+		.read_clk       (read_clk),
+		.rstn           (decoder_rstn)
 	);
 /*---------------------------------------------------------------------*/
 // Instantiation of Write.FSMs (for simulation only)
@@ -353,6 +417,7 @@ wire [DN_RD_BW-1:0] dn_iter0_m2_portA_dout;
 wire [DN_RD_BW-1:0] dn_iter0_m2_portB_dout;
 wire [DN_RD_BW-1:0] dn_iter1_m2_portA_dout;
 wire [DN_RD_BW-1:0] dn_iter1_m2_portB_dout;
+wire vn_write_clk, dn_write_clk;
 
 // Memory System - Ouput of Mux
 /*Variable Node*/
@@ -377,6 +442,36 @@ wire [DN_ROM_ADDR_BW-1:0] dn_rom_read_addrB;
 // IB-RAM Write Page Address Counter - Output
 wire [VN_PAGE_ADDR_BW-1:0] vn_wr_page_addr [0:IB_VNU_DECOMP_funNum-1];
 wire [DN_PAGE_ADDR_BW-1:0] dn_wr_page_addr;
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// IB-ROMs
+ib_memory_system_wrapper ib_memory_system_inst_u0 (
+	// Memory System - Ouput
+	.vn_iter0_m0_portA_dout (vn_iter0_m0_portA_dout[VN_RD_BW-1:0]),
+	.vn_iter0_m0_portB_dout (vn_iter0_m0_portB_dout[VN_RD_BW-1:0]),
+	.vn_iter0_m1_portA_dout (vn_iter0_m1_portA_dout[VN_RD_BW-1:0]),
+	.vn_iter0_m1_portB_dout (vn_iter0_m1_portB_dout[VN_RD_BW-1:0]),
+
+   	.dn_iter0_portA_dout (dn_iter0_m2_portA_dout[DN_RD_BW-1:0]),
+   	.dn_iter0_portB_dout (dn_iter0_m2_portB_dout[DN_RD_BW-1:0]),
+
+   	// Memory System - Input
+    .vn_iter0_m0_portA_addr (vn_rom_read_addrA[0]),
+    .vn_iter0_m0_portB_addr (vn_rom_read_addrB[0]),
+    .vn_iter0_m1_portA_addr (vn_rom_read_addrA[1]),
+    .vn_iter0_m1_portB_addr (vn_rom_read_addrB[1]),
+
+   	.dn_iter0_portA_addr (dn_rom_read_addrA[DN_ROM_ADDR_BW-1:0]),
+    .dn_iter0_portB_addr (dn_rom_read_addrB[DN_ROM_ADDR_BW-1:0]),
+
+    .vn_iter0_m0_portA_clk (vn_write_clk),
+    .vn_iter0_m0_portB_clk (vn_write_clk),
+    .vn_iter0_m1_portA_clk (vn_write_clk),
+    .vn_iter0_m1_portB_clk (vn_write_clk),
+    .dn_iter0_portB_clk (dn_write_clk),
+    .dn_iter0_portA_clk (dn_write_clk) 
+);
+assign vn_write_clk = write_clk;
+assign dn_write_clk = write_clk;
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 generate
 		genvar i, j;
@@ -575,6 +670,10 @@ dn_Waddr_counter #(
 	reg [BITWIDTH_SHIFT_FACTOR-1:0] v2c_shift_factor_cur_0;
 	reg [BITWIDTH_SHIFT_FACTOR-1:0] v2c_shift_factor_cur_1;
 	reg [BITWIDTH_SHIFT_FACTOR-1:0] v2c_shift_factor_cur_2;
+	reg [BITWIDTH_SHIFT_FACTOR-1:0] ch_ramRD_shift_factor_cur_0;
+	reg [BITWIDTH_SHIFT_FACTOR-1:0] ch_ramRD_shift_factor_cur_1;
+	reg [BITWIDTH_SHIFT_FACTOR-1:0] ch_ramRD_shift_factor_cur_2;
+	wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
 
 	wire [6:0]  cnu_left_sel;
 	wire [6:0]  cnu_right_sel;
@@ -605,7 +704,7 @@ qsn_top_85b cnu_qsn_top_85b_0_3 (
 	.sw_out_bit3 ({cnu_msg_in[84][3],cnu_msg_in[83][3],cnu_msg_in[82][3],cnu_msg_in[81][3],cnu_msg_in[80][3],cnu_msg_in[79][3],cnu_msg_in[78][3],cnu_msg_in[77][3],cnu_msg_in[76][3],cnu_msg_in[75][3],cnu_msg_in[74][3],cnu_msg_in[73][3],cnu_msg_in[72][3],cnu_msg_in[71][3],cnu_msg_in[70][3],cnu_msg_in[69][3],cnu_msg_in[68][3],cnu_msg_in[67][3],cnu_msg_in[66][3],cnu_msg_in[65][3],cnu_msg_in[64][3],cnu_msg_in[63][3],cnu_msg_in[62][3],cnu_msg_in[61][3],cnu_msg_in[60][3],cnu_msg_in[59][3],cnu_msg_in[58][3],cnu_msg_in[57][3],cnu_msg_in[56][3],cnu_msg_in[55][3],cnu_msg_in[54][3],cnu_msg_in[53][3],cnu_msg_in[52][3],cnu_msg_in[51][3],cnu_msg_in[50][3],cnu_msg_in[49][3],cnu_msg_in[48][3],cnu_msg_in[47][3],cnu_msg_in[46][3],cnu_msg_in[45][3],cnu_msg_in[44][3],cnu_msg_in[43][3],cnu_msg_in[42][3],cnu_msg_in[41][3],cnu_msg_in[40][3],cnu_msg_in[39][3],cnu_msg_in[38][3],cnu_msg_in[37][3],cnu_msg_in[36][3],cnu_msg_in[35][3],cnu_msg_in[34][3],cnu_msg_in[33][3],cnu_msg_in[32][3],cnu_msg_in[31][3],cnu_msg_in[30][3],cnu_msg_in[29][3],cnu_msg_in[28][3],cnu_msg_in[27][3],cnu_msg_in[26][3],cnu_msg_in[25][3],cnu_msg_in[24][3],cnu_msg_in[23][3],cnu_msg_in[22][3],cnu_msg_in[21][3],cnu_msg_in[20][3],cnu_msg_in[19][3],cnu_msg_in[18][3],cnu_msg_in[17][3],cnu_msg_in[16][3],cnu_msg_in[15][3],cnu_msg_in[14][3],cnu_msg_in[13][3],cnu_msg_in[12][3],cnu_msg_in[11][3],cnu_msg_in[10][3],cnu_msg_in[9][3],cnu_msg_in[8][3],cnu_msg_in[7][3],cnu_msg_in[6][3],cnu_msg_in[5][3],cnu_msg_in[4][3],cnu_msg_in[3][3],cnu_msg_in[2][3],cnu_msg_in[1][3],cnu_msg_in[0][3]}),
 `ifdef SCHED_4_6
 	.sys_clk     (read_clk),
-	.rstn		 (rstn),
+	.rstn		 (decoder_rstn),
 `endif
 	.sw_in_bit0  (cnu_bs_in_bit[0]),
 	.sw_in_bit1  (cnu_bs_in_bit[1]),
@@ -622,7 +721,7 @@ qsn_controller_85b #(
 	.right_sel    (cnu_right_sel),
 	.merge_sel    (cnu_merge_sel),
 	.shift_factor (c2v_shift_factor_cur_0), // offset shift factor of submatrix_1
-	.rstn         (rstn),
+	.rstn         (decoder_rstn),
 	.sys_clk      (read_clk)
 );
 /*----------------------------------------------*/
@@ -634,7 +733,7 @@ qsn_top_85b vnu_qsn_top_85b_0_3 (
 	.sw_out_bit3 ({vnu_msg_in[84][3],vnu_msg_in[83][3],vnu_msg_in[82][3],vnu_msg_in[81][3],vnu_msg_in[80][3],vnu_msg_in[79][3],vnu_msg_in[78][3],vnu_msg_in[77][3],vnu_msg_in[76][3],vnu_msg_in[75][3],vnu_msg_in[74][3],vnu_msg_in[73][3],vnu_msg_in[72][3],vnu_msg_in[71][3],vnu_msg_in[70][3],vnu_msg_in[69][3],vnu_msg_in[68][3],vnu_msg_in[67][3],vnu_msg_in[66][3],vnu_msg_in[65][3],vnu_msg_in[64][3],vnu_msg_in[63][3],vnu_msg_in[62][3],vnu_msg_in[61][3],vnu_msg_in[60][3],vnu_msg_in[59][3],vnu_msg_in[58][3],vnu_msg_in[57][3],vnu_msg_in[56][3],vnu_msg_in[55][3],vnu_msg_in[54][3],vnu_msg_in[53][3],vnu_msg_in[52][3],vnu_msg_in[51][3],vnu_msg_in[50][3],vnu_msg_in[49][3],vnu_msg_in[48][3],vnu_msg_in[47][3],vnu_msg_in[46][3],vnu_msg_in[45][3],vnu_msg_in[44][3],vnu_msg_in[43][3],vnu_msg_in[42][3],vnu_msg_in[41][3],vnu_msg_in[40][3],vnu_msg_in[39][3],vnu_msg_in[38][3],vnu_msg_in[37][3],vnu_msg_in[36][3],vnu_msg_in[35][3],vnu_msg_in[34][3],vnu_msg_in[33][3],vnu_msg_in[32][3],vnu_msg_in[31][3],vnu_msg_in[30][3],vnu_msg_in[29][3],vnu_msg_in[28][3],vnu_msg_in[27][3],vnu_msg_in[26][3],vnu_msg_in[25][3],vnu_msg_in[24][3],vnu_msg_in[23][3],vnu_msg_in[22][3],vnu_msg_in[21][3],vnu_msg_in[20][3],vnu_msg_in[19][3],vnu_msg_in[18][3],vnu_msg_in[17][3],vnu_msg_in[16][3],vnu_msg_in[15][3],vnu_msg_in[14][3],vnu_msg_in[13][3],vnu_msg_in[12][3],vnu_msg_in[11][3],vnu_msg_in[10][3],vnu_msg_in[9][3],vnu_msg_in[8][3],vnu_msg_in[7][3],vnu_msg_in[6][3],vnu_msg_in[5][3],vnu_msg_in[4][3],vnu_msg_in[3][3],vnu_msg_in[2][3],vnu_msg_in[1][3],vnu_msg_in[0][3]}),
 `ifdef SCHED_4_6
 	.sys_clk     (read_clk),
-	.rstn		 (rstn),
+	.rstn		 (decoder_rstn),
 `endif
 	.sw_in_bit0  (vnu_bs_in_bit[0]),
 	.sw_in_bit1  (vnu_bs_in_bit[1]),
@@ -650,15 +749,20 @@ qsn_controller_85b #(
 	.left_sel     (vnu_left_sel ),
 	.right_sel    (vnu_right_sel),
 	.merge_sel    (vnu_merge_sel),
-	.shift_factor (v2c_shift_factor_cur_0), // offset shift factor of submatrix_1
-	.rstn         (rstn),
+	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix_1
+	.rstn         (decoder_rstn),
 	.sys_clk      (read_clk)
 );
+assign vnu_shift_factorIn = (ch_bs_en == 1'b0) ? v2c_shift_factor_cur_0 : ch_ramRD_shift_factor_cur_0;				
 /*----------------------------------------------*/	
 	wire [QUAN_SIZE-1:0] mem_to_cnu [0:CHECK_PARALLELISM-1];
 	wire [QUAN_SIZE-1:0] mem_to_vnu [0:CHECK_PARALLELISM-1];
-	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr [0:CHECK_PARALLELISM-1];
-	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr [0:CHECK_PARALLELISM-1];
+	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr [0:CN_DEGREE-1]; // page-write addresses
+	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr [0:CN_DEGREE-1]; // page-write addresses
+	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr [0:CN_DEGREE-1]; // page-read addresses
+	reg [ADDR_WIDTH-1:0] v2c_mem_page_rd_addr [0:CN_DEGREE-1]; // page-read addresses
+	reg [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr [0:CN_DEGREE-1]; // synchornous page-access addresses
+	reg [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr [0:CN_DEGREE-1]; // synchornous page-access addresses
 	mem_subsystem_top_submatrix_1 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -1012,22 +1116,27 @@ qsn_controller_85b #(
 			.cnu_to_mem_82    (cnu_msg_in[82]),
 			.cnu_to_mem_83    (cnu_msg_in[83]),
 			.cnu_to_mem_84    (cnu_msg_in[84]),
-			.cnu_sync_addr    (c2v_mem_page_addr[0]),
-			.vnu_sync_addr    (v2c_mem_page_addr[0]),
+			.cnu_sync_addr    (cnu_mem_page_sync_addr[0]),
+			.vnu_sync_addr    (vnu_mem_page_sync_addr[0]),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			//.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.last_row_chunk   ({c2v_last_row_chunk_reg0, c2v_last_row_chunk_reg0}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
-			.rstn             (rstn)
+			.rstn             (decoder_rstn)
 		);
+		assign cnu_mem_page_sync_addr[0] = (v2c_mem_fetch == 1'b1) ? v2c_mem_page_rd_addr[0] : 
+										   (c2v_mem_we == 1'b1) ? c2v_mem_page_addr[0] : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+
+		assign vnu_mem_page_sync_addr[0] = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr[0] : 
+										   (v2c_mem_we == 1'b1) ? v2c_mem_page_addr[0] : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	wire [ROW_CHUNK_NUM-1:0] c2v_row_chunk_cnt;
 	assign c2v_row_chunk_cnt[ROW_CHUNK_NUM-1:0] = {c2v_mem_we_propagate[ROW_CHUNK_NUM-2:0], c2v_mem_we_propagateIn};
 	always @(posedge read_clk) begin
-		if(rstn == 1'b0) 
+		if(decoder_rstn == 1'b0) 
 			c2v_mem_page_addr[0] <= START_PAGE_1_0+C2V_MEM_ADDR_BASE;
 		else if(c2v_mem_we == 1'b1) begin
 			// page increment pattern within layer 0
@@ -1060,9 +1169,9 @@ qsn_controller_85b #(
 		end
 	end
 	reg [5:0] c2v_bs_en_propagate_temp;
-	always @(posedge read_clk) begin if(!rstn) c2v_bs_en_propagate_temp <= 0; else c2v_bs_en_propagate_temp[5:0] <= {c2v_bs_en_propagate_temp[4:0], c2v_bs_en_propagate[ROW_CHUNK_NUM-2]}; end
+	always @(posedge read_clk) begin if(!decoder_rstn) c2v_bs_en_propagate_temp <= 0; else c2v_bs_en_propagate_temp[5:0] <= {c2v_bs_en_propagate_temp[4:0], c2v_bs_en_propagate[ROW_CHUNK_NUM-2]}; end
 	always @(posedge read_clk) begin
-		if(rstn == 1'b0) begin
+		if(decoder_rstn == 1'b0) begin
 			c2v_shift_factor_cur_2 <= shift_factor_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_1 <= shift_factor_1[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
@@ -1078,7 +1187,7 @@ qsn_controller_85b #(
 	wire [ROW_CHUNK_NUM-1:0] v2c_row_chunk_cnt;
 	assign v2c_row_chunk_cnt[ROW_CHUNK_NUM-1:0] = {v2c_mem_we_propagate[ROW_CHUNK_NUM-2:0], v2c_mem_we_propagateIn};
 	always @(posedge read_clk) begin
-		if(rstn == 1'b0) 
+		if(decoder_rstn == 1'b0) 
 			v2c_mem_page_addr[0] <= START_PAGE_1_0+V2C_MEM_ADDR_BASE;
 		else if(v2c_mem_we == 1'b1) begin
 			// page increment pattern within layer 0
@@ -1093,7 +1202,7 @@ qsn_controller_85b #(
 			// page increment pattern within layer 1
 			if(v2c_layer_cnt[1] == 1) begin
 				if(v2c_row_chunk_cnt[ROW_CHUNK_NUM-1] == 1'b1) 
-					v2c_mem_page_addr[0] <= START_PAGE_1_2+V2C_MEM_ADDR_BASE; // to move on to beginning of layer 1
+					v2c_mem_page_addr[0] <= START_PAGE_1_2+V2C_MEM_ADDR_BASE; // to move on to beginning of layer 2
 				else if(v2c_row_chunk_cnt[ROW_CHUNK_NUM-START_PAGE_1_1-1] == 1'b1)
 						v2c_mem_page_addr[0] <= V2C_MEM_ADDR_BASE; 
 				else
@@ -1102,7 +1211,7 @@ qsn_controller_85b #(
 			// page increment pattern within layer 2
 			if(v2c_layer_cnt[2] == 1) begin
 				if(v2c_row_chunk_cnt[ROW_CHUNK_NUM-1] == 1'b1) 
-					v2c_mem_page_addr[0] <= START_PAGE_1_0+V2C_MEM_ADDR_BASE; // to move on to beginning of layer 1
+					v2c_mem_page_addr[0] <= START_PAGE_1_0+V2C_MEM_ADDR_BASE; // to move on to beginning of layer 0
 				else if(v2c_row_chunk_cnt[ROW_CHUNK_NUM-START_PAGE_1_2-1] == 1'b1)
 						v2c_mem_page_addr[0] <= V2C_MEM_ADDR_BASE; 
 				else
@@ -1111,9 +1220,9 @@ qsn_controller_85b #(
 		end
 	end
 	reg [5:0] v2c_bs_en_propagate_temp;
-	always @(posedge read_clk) begin if(!rstn) v2c_bs_en_propagate_temp <= 0; else v2c_bs_en_propagate_temp[5:0] <= {v2c_bs_en_propagate_temp[4:0], v2c_bs_en_propagate[ROW_CHUNK_NUM-2]}; end
+	always @(posedge read_clk) begin if(!decoder_rstn) v2c_bs_en_propagate_temp <= 0; else v2c_bs_en_propagate_temp[5:0] <= {v2c_bs_en_propagate_temp[4:0], v2c_bs_en_propagate[ROW_CHUNK_NUM-2]}; end
 	always @(posedge read_clk) begin
-		if(rstn == 1'b0) begin
+		if(decoder_rstn == 1'b0) begin
 			v2c_shift_factor_cur_2 <= shift_factor_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_1 <= shift_factor_1[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
@@ -1126,7 +1235,7 @@ qsn_controller_85b #(
 	end
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//reg temp;
-	//always @(posedge read_clk) begin if(!rstn) temp <= 0; else temp <= c2v_mem_we; end
+	//always @(posedge read_clk) begin if(!decoder_rstn) temp <= 0; else temp <= c2v_mem_we; end
 	always @(posedge read_clk) begin
 		if(c2v_mem_we/*temp*/ == 1'b1) begin
 			$fwrite(pageAlign_tb_fd,"state_%d, mem_we: %b (page_addr: 0x%h), last_RC:%b -> ", $unsigned(inst_cnu_control_unit.state), c2v_mem_we, c2v_mem_page_addr[0], c2v_last_row_chunk);
@@ -1146,7 +1255,7 @@ qsn_controller_85b #(
 	end
 /*
 	always @(posedge read_clk) begin
-		if(rstn == 1'b1 && layer_msg_pass_en == 1'b1) begin
+		if(decoder_rstn == 1'b1 && layer_msg_pass_en == 1'b1) begin
 			//$fwrite(pageAlignIn_tb_fd[1], "%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
 			$fwrite(pageAlignIn_tb_fd[1], "%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h,%h\n",
 				$unsigned(vnu_msg_in_0),$unsigned(vnu_msg_in_1),$unsigned(vnu_msg_in_2),$unsigned(vnu_msg_in_3),$unsigned(vnu_msg_in_4),$unsigned(vnu_msg_in_5),$unsigned(vnu_msg_in_6),$unsigned(vnu_msg_in_7),$unsigned(vnu_msg_in_8),$unsigned(vnu_msg_in_9),$unsigned(vnu_msg_in_10),$unsigned(vnu_msg_in_11),$unsigned(vnu_msg_in_12),$unsigned(vnu_msg_in_13),$unsigned(vnu_msg_in_14),$unsigned(vnu_msg_in_15),$unsigned(vnu_msg_in_16),$unsigned(vnu_msg_in_17),$unsigned(vnu_msg_in_18),$unsigned(vnu_msg_in_19),$unsigned(vnu_msg_in_20),$unsigned(vnu_msg_in_21),$unsigned(vnu_msg_in_22),$unsigned(vnu_msg_in_23),$unsigned(vnu_msg_in_24),$unsigned(vnu_msg_in_25),$unsigned(vnu_msg_in_26),$unsigned(vnu_msg_in_27),$unsigned(vnu_msg_in_28),$unsigned(vnu_msg_in_29),$unsigned(vnu_msg_in_30),$unsigned(vnu_msg_in_31),$unsigned(vnu_msg_in_32),$unsigned(vnu_msg_in_33),$unsigned(vnu_msg_in_34),$unsigned(vnu_msg_in_35),$unsigned(vnu_msg_in_36),$unsigned(vnu_msg_in_37),$unsigned(vnu_msg_in_38),$unsigned(vnu_msg_in_39),$unsigned(vnu_msg_in_40),$unsigned(vnu_msg_in_41),$unsigned(vnu_msg_in_42),$unsigned(vnu_msg_in_43),$unsigned(vnu_msg_in_44),$unsigned(vnu_msg_in_45),$unsigned(vnu_msg_in_46),$unsigned(vnu_msg_in_47),$unsigned(vnu_msg_in_48),$unsigned(vnu_msg_in_49),$unsigned(vnu_msg_in_50),$unsigned(vnu_msg_in_51),$unsigned(vnu_msg_in_52),$unsigned(vnu_msg_in_53),$unsigned(vnu_msg_in_54),$unsigned(vnu_msg_in_55),$unsigned(vnu_msg_in_56),$unsigned(vnu_msg_in_57),$unsigned(vnu_msg_in_58),$unsigned(vnu_msg_in_59),$unsigned(vnu_msg_in_60),$unsigned(vnu_msg_in_61),$unsigned(vnu_msg_in_62),$unsigned(vnu_msg_in_63),$unsigned(vnu_msg_in_64),$unsigned(vnu_msg_in_65),$unsigned(vnu_msg_in_66),$unsigned(vnu_msg_in_67),$unsigned(vnu_msg_in_68),$unsigned(vnu_msg_in_69),$unsigned(vnu_msg_in_70),$unsigned(vnu_msg_in_71),$unsigned(vnu_msg_in_72),$unsigned(vnu_msg_in_73),$unsigned(vnu_msg_in_74),$unsigned(vnu_msg_in_75),$unsigned(vnu_msg_in_76),$unsigned(vnu_msg_in_77),$unsigned(vnu_msg_in_78),$unsigned(vnu_msg_in_79),$unsigned(vnu_msg_in_80),$unsigned(vnu_msg_in_81),$unsigned(vnu_msg_in_82),$unsigned(vnu_msg_in_83),$unsigned(vnu_msg_in_84)
@@ -1155,24 +1264,8 @@ qsn_controller_85b #(
 	end
 */
 /*-------------------------------------------------------------------------------------------------------------------------*/
-/*	
-	reg [4:0] sys_cnt;
 	always @(posedge read_clk) begin
-		if(rstn == 1'b0) sys_cnt <= 0;
-		else if(fsm_en == 1'b1 && sys_cnt == 0) sys_cnt <= 1;
-		else if(inst_vnu_control_unit.state != VNU_IB_RAM_PEND) begin
-			if(sys_cnt == 20) sys_cnt <= 1'b0;
-			else if(sys_cnt > 0) sys_cnt <= sys_cnt+1;
-		end
-	end
-	always @(posedge read_clk) begin
-		if(rstn == 1'b0) layer_finish <= 0;
-		else if(sys_cnt == 20) layer_finish <= 1;
-		else layer_finish <= 0;
-	end
-	*/
-	always @(posedge read_clk) begin
-			if(rstn == 1'b0) iter_termination <= 0;
+			if(decoder_rstn == 1'b0) iter_termination <= 0;
 			else if(
 				//inst_vnu_control_unit.iter_cnt[MAX_ITER-1] == 1'b1 && 
 				//vnu_ctrl_state[$clog2(CTRL_FSM_STATE_NUM)-1:0] == MEM_WB
@@ -1185,8 +1278,8 @@ qsn_controller_85b #(
 
 	task init();
 		iter_termination  <= 0;
-		fsm_en       <= 0;
 	endtask
+	assign fsm_en = decoder_rstn;
 
 	integer iter, vnu_iter; initial begin iter <= 1; vnu_iter <= 1; end
 	always @(posedge read_clk) begin
@@ -1225,13 +1318,590 @@ qsn_controller_85b #(
 			vnu_bs_in_bit[3] <= {vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+84][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+83][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+82][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+81][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+80][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+79][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+78][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+77][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+76][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+75][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+74][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+73][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+72][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+71][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+70][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+69][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+68][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+67][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+66][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+65][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+64][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+63][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+62][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+61][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+60][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+59][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+58][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+57][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+56][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+55][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+54][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+53][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+52][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+51][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+50][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+49][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+48][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+47][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+46][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+45][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+44][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+43][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+42][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+41][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+40][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+39][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+38][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+37][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+36][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+35][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+34][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+33][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+32][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+31][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+30][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+29][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+28][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+27][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+26][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+25][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+24][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+23][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+22][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+21][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+20][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+19][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+18][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+17][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+16][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+15][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+14][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+13][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+12][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+11][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+10][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+9][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+8][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+7][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+6][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+5][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+4][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+3][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+2][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+1][3],vnBsIn_pattern[CHECK_PARALLELISM*vnu_iter+0][3]};		
 		end
 	end
+/*-----------------------------------------------------------------------------------------------------------------*/
+// First codeword will takes 51+24=75 clock cycles to be generated
+// From the second codeword the latency is 12 clcok cycles due to the pipeline fashion
+`ifdef CODE_RATE_070
+	localparam [15:0] std_dev_0_0 = 16'b00000_11011000010;
+	localparam [15:0] std_dev_0_1 = 16'b00000_11010101111;
+	localparam [15:0] std_dev_0_2 = 16'b00000_11010011011;
+	localparam [15:0] std_dev_0_3 = 16'b00000_11010001000;
+	localparam [15:0] std_dev_0_4 = 16'b00000_11001110100;
+	localparam [15:0] std_dev_0_5 = 16'b00000_11001100010;
+	localparam [15:0] std_dev_0_6 = 16'b00000_11001001111;
+	localparam [15:0] std_dev_0_7 = 16'b00000_11000111100;
+	localparam [15:0] std_dev_0_8 = 16'b00000_11000101010;
+	localparam [15:0] std_dev_0_9 = 16'b00000_11000011000;
+	localparam [15:0] std_dev_1_0 = 16'b00000_11000000110;
+	localparam [15:0] std_dev_1_1 = 16'b00000_10111110100;
+	localparam [15:0] std_dev_1_2 = 16'b00000_10111100011;
+	localparam [15:0] std_dev_1_3 = 16'b00000_10111010010;
+	localparam [15:0] std_dev_1_4 = 16'b00000_10111000001;
+	localparam [15:0] std_dev_1_5 = 16'b00000_10110110000;
+	localparam [15:0] std_dev_1_6 = 16'b00000_10110011111;
+	localparam [15:0] std_dev_1_7 = 16'b00000_10110001111;
+	localparam [15:0] std_dev_1_8 = 16'b00000_10101111110;
+	localparam [15:0] std_dev_1_9 = 16'b00000_10101101110;
+	localparam [15:0] std_dev_2_0 = 16'b00000_10101011110;
+	localparam [15:0] std_dev_2_1 = 16'b00000_10101001111;
+	localparam [15:0] std_dev_2_2 = 16'b00000_10100111111;
+	localparam [15:0] std_dev_2_3 = 16'b00000_10100110000;
+	localparam [15:0] std_dev_2_4 = 16'b00000_10100100001;
+	localparam [15:0] std_dev_2_5 = 16'b00000_10100010001;
+	localparam [15:0] std_dev_2_6 = 16'b00000_10100000011;
+	localparam [15:0] std_dev_2_7 = 16'b00000_10011110100;
+	localparam [15:0] std_dev_2_8 = 16'b00000_10011100101;
+	localparam [15:0] std_dev_2_9 = 16'b00000_10011010111;
+	localparam [15:0] std_dev_3_0 = 16'b00000_10011001001;
+	localparam [15:0] std_dev_3_1 = 16'b00000_10010111011;
+	localparam [15:0] std_dev_3_2 = 16'b00000_10010101101;
+	localparam [15:0] std_dev_3_3 = 16'b00000_10010011111;
+	localparam [15:0] std_dev_3_4 = 16'b00000_10010010010;
+	localparam [15:0] std_dev_3_5 = 16'b00000_10010000100;
+	localparam [15:0] std_dev_3_6 = 16'b00000_10001110111;
+	localparam [15:0] std_dev_3_7 = 16'b00000_10001101010;
+	localparam [15:0] std_dev_3_8 = 16'b00000_10001011101;
+	localparam [15:0] std_dev_3_9 = 16'b00000_10001010000;
+	localparam [15:0] std_dev_4_0 = 16'b00000_10001000100;
+	localparam [15:0] std_dev_4_1 = 16'b00000_10000110111;
+	localparam [15:0] std_dev_4_2 = 16'b00000_10000101011;
+	localparam [15:0] std_dev_4_3 = 16'b00000_10000011111;
+	localparam [15:0] std_dev_4_4 = 16'b00000_10000010010;
+	localparam [15:0] std_dev_4_5 = 16'b00000_10000000111;
+	localparam [15:0] std_dev_4_6 = 16'b00000_01111111011;
+	localparam [15:0] std_dev_4_7 = 16'b00000_01111101111;
+	localparam [15:0] std_dev_4_8 = 16'b00000_01111100100;
+	localparam [15:0] std_dev_4_9 = 16'b00000_01111011000;
+	localparam [15:0] std_dev_5_0 = 16'b00000_01111001101;
+	localparam [15:0] std_dev_5_1 = 16'b00000_01111000010;
+	localparam [15:0] std_dev_5_2 = 16'b00000_01110110111;
+	localparam [15:0] std_dev_5_3 = 16'b00000_01110101100;
+	localparam [15:0] std_dev_5_4 = 16'b00000_01110100001;
+	localparam [15:0] std_dev_5_5 = 16'b00000_01110010110;
+	localparam [15:0] std_dev_5_6 = 16'b00000_01110001100;
+	localparam [15:0] std_dev_5_7 = 16'b00000_01110000001;
+	localparam [15:0] std_dev_5_8 = 16'b00000_01101110111;
+	localparam [15:0] std_dev_5_9 = 16'b00000_01101101101;
+	localparam [15:0] std_dev_6_0 = 16'b00000_01101100011;
+`endif
+	wire [15:0] sigma_in [0:`SNR_SET_NUM-1];
+	assign sigma_in[0 ] = std_dev_0_0[15:0];
+	assign sigma_in[1 ] = std_dev_0_1[15:0];
+	assign sigma_in[2 ] = std_dev_0_2[15:0];
+	assign sigma_in[3 ] = std_dev_0_3[15:0];
+	assign sigma_in[4 ] = std_dev_0_4[15:0];
+	assign sigma_in[5 ] = std_dev_0_5[15:0];
+	assign sigma_in[6 ] = std_dev_0_6[15:0];
+	assign sigma_in[7 ] = std_dev_0_7[15:0];
+	assign sigma_in[8 ] = std_dev_0_8[15:0];
+	assign sigma_in[9 ] = std_dev_0_9[15:0];
+	assign sigma_in[10] = std_dev_1_0[15:0];
+	assign sigma_in[11] = std_dev_1_1[15:0];
+	assign sigma_in[12] = std_dev_1_2[15:0];
+	assign sigma_in[13] = std_dev_1_3[15:0];
+	assign sigma_in[14] = std_dev_1_4[15:0];
+	assign sigma_in[15] = std_dev_1_5[15:0];
+	assign sigma_in[16] = std_dev_1_6[15:0];
+	assign sigma_in[17] = std_dev_1_7[15:0];
+	assign sigma_in[18] = std_dev_1_8[15:0];
+	assign sigma_in[19] = std_dev_1_9[15:0];
+	assign sigma_in[20] = std_dev_2_0[15:0];
+	assign sigma_in[21] = std_dev_2_1[15:0];
+	assign sigma_in[22] = std_dev_2_2[15:0];
+	assign sigma_in[23] = std_dev_2_3[15:0];
+	assign sigma_in[24] = std_dev_2_4[15:0];
+	assign sigma_in[25] = std_dev_2_5[15:0];
+	assign sigma_in[26] = std_dev_2_6[15:0];
+	assign sigma_in[27] = std_dev_2_7[15:0];
+	assign sigma_in[28] = std_dev_2_8[15:0];
+	assign sigma_in[29] = std_dev_2_9[15:0];
+	assign sigma_in[30] = std_dev_3_0[15:0];
+	assign sigma_in[31] = std_dev_3_1[15:0];
+	assign sigma_in[32] = std_dev_3_2[15:0];
+	assign sigma_in[33] = std_dev_3_3[15:0];
+	assign sigma_in[34] = std_dev_3_4[15:0];
+	assign sigma_in[35] = std_dev_3_5[15:0];
+	assign sigma_in[36] = std_dev_3_6[15:0];
+	assign sigma_in[37] = std_dev_3_7[15:0];
+	assign sigma_in[38] = std_dev_3_8[15:0];
+	assign sigma_in[39] = std_dev_3_9[15:0];
+	assign sigma_in[40] = std_dev_4_0[15:0];	
+	assign sigma_in[41] = std_dev_4_1[15:0];
+	assign sigma_in[42] = std_dev_4_2[15:0];
+	assign sigma_in[43] = std_dev_4_3[15:0];
+	assign sigma_in[44] = std_dev_4_4[15:0];
+	assign sigma_in[45] = std_dev_4_5[15:0];
+	assign sigma_in[46] = std_dev_4_6[15:0];
+	assign sigma_in[47] = std_dev_4_7[15:0];
+	assign sigma_in[48] = std_dev_4_8[15:0];
+	assign sigma_in[49] = std_dev_4_9[15:0];
+	assign sigma_in[50] = std_dev_5_0[15:0];
+	assign sigma_in[51] = std_dev_5_1[15:0];
+	assign sigma_in[52] = std_dev_5_2[15:0];
+	assign sigma_in[53] = std_dev_5_3[15:0];
+	assign sigma_in[54] = std_dev_5_4[15:0];
+	assign sigma_in[55] = std_dev_5_5[15:0];
+	assign sigma_in[56] = std_dev_5_6[15:0];
+	assign sigma_in[57] = std_dev_5_7[15:0];
+	assign sigma_in[58] = std_dev_5_8[15:0];
+	assign sigma_in[59] = std_dev_5_9[15:0];
+	assign sigma_in[60] = std_dev_6_0[15:0];
 
+	localparam AWGN_BLOCK_NUM = SUBMATRIX_Z*CN_DEGREE;
+	localparam SNR_PACKET_SIZE = $clog2(`SNR_SET_NUM);
+	wire [SUBMATRIX_Z*QUAN_SIZE-1:0] coded_block [0:CN_DEGREE-1];
+	wire tvalid_master, ready_slave;
+    //wire snr_next_sync; assign snr_next_sync = (|snr_next_reg[7:0]);
+	reg [SNR_PACKET_SIZE-1:0] snr_packet; initial snr_packet <= 0;
+	receivedBlock_generator #(
+		.N (AWGN_BLOCK_NUM), // block length, e.g., 7650
+		.NG_NUM (`NG_NUM), // 10 codeword segments
+		.NG_SIZE (`NG_SIZE), // the number of codebits in each codeword segment, e.g., 765
+		.QUAN_SIZE (QUAN_SIZE)// 4-bit quantisation for each channel message
+	) block_gen_u0(
+		.coded_block_0 (coded_block[0]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_1 (coded_block[1]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_2 (coded_block[2]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_3 (coded_block[3]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_4 (coded_block[4]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_5 (coded_block[5]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_6 (coded_block[6]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_7 (coded_block[7]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_8 (coded_block[8]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_9 (coded_block[9]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.tvalid_master (tvalid_master),
+		
+		.sigma_in (sigma_in[snr_packet[SNR_PACKET_SIZE-1:0]]),
+		//input wire [63:0] seed_base_0,
+		//input wire [63:0] seed_base_1,
+		//input wire [63:0] seed_base_2,
+		.ready_slave (1'b1),//(ready_slave),
+		.rstn (sys_rstn),//(~snr_next_sync && sys_rstn),//(sys_rstn),
+		.sys_clk (awgn_gen_clk)
+	);
+/*-----------------------------------------------------------------------------------------------------------------*/
+// Reset Signal for main decoder module 
+// Note that in the first codeword decoding process, 
+// the reset signal will be kept asserted until the first codeword is generated, i.e., 
+// the timing of first assertion of receivedBlock_generator.tvalid_master
+//(* max_fanout = 50 *) reg decoder_rstn; initial decoder_rstn <= 1'b0;
+initial decoder_rstn <= 1'b0;
+initial decode_termination_reg <= 0;
+always @(posedge awgn_gen_clk) begin if(!sys_rstn) decode_termination_reg <= 0; else decode_termination_reg <= iter_termination; end
+always @(posedge awgn_gen_clk, negedge sys_rstn) begin
+	if(sys_rstn == 1'b0) 
+		decoder_rstn <= 1'b0;
+	else begin
+		if(tvalid_master == 1'b1/* && snr_next_sync == 1'b0*/) decoder_rstn <= 1'b1 && (~decode_termination_reg);
+		//else if(tvalid_master == 1'b1 && snr_next_sync == 1'b1) decoder_rstn <= 1'b0 && (~decode_termination_reg);
+		//else if(tvalid_master == 1'b0/* && snr_next_sync == 1'b1*/) decoder_rstn <= 1'b0 && (~decode_termination_reg);
+		else decoder_rstn <= decoder_rstn && (~decode_termination_reg);
+	end
+end
+/*-----------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------*/
+// Channel Buffers
+reg [CH_DATA_WIDTH-1:0] ch_msg_genIn [0:CN_DEGREE-1];
+wire [QUAN_SIZE-1:0] ch_msg_fetchOut_0 [0:CH_MSG_NUM-1]; // [0:849]
+wire [QUAN_SIZE-1:0] ch_msg_fetchOut_1 [0:CH_MSG_NUM-1]; // [0:849]
+reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr [0:CN_DEGREE-1];
+reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr [0:CN_DEGREE-1];
+reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr [0:CN_DEGREE-1];
+reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chLayer_wr_addr [0:CN_DEGREE-1];
+/*----------------------------*/
+wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
+wire ch_ram_rd_clk; assign ch_ram_rd_clk = read_clk;
+wire ch_ram_wr_clk; assign ch_ram_wr_clk = write_clk;
+/*----------------------------*/
+genvar submatrix_id;
+generate
+	for(submatrix_id=0; submatrix_id<CN_DEGREE; submatrix_id=submatrix_id+1) begin : ch_buff_inst
+		ch_msg_ram #(
+			.QUAN_SIZE(QUAN_SIZE),
+			.LAYER_NUM(LAYER_NUM),
+			.ROW_CHUNK_NUM(ROW_CHUNK_NUM),
+			.CHECK_PARALLELISM(CHECK_PARALLELISM),
+			.DEPTH(CH_RAM_DEPTH),
+			.DATA_WIDTH(CH_DATA_WIDTH),
+			.ADDR_WIDTH($clog2(CH_RAM_DEPTH)),
+			.VNU_FETCH_LATENCY (CH_FETCH_LATENCY),
+			.CNU_FETCH_LATENCY (CNU_INIT_FETCH_LATENCY)
+		) inst_ch_msg_ram (
+			.dout_0     (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 0 ]),
+			.dout_1     (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 1 ]),
+			.dout_2     (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 2 ]),
+			.dout_3     (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 3 ]),
+			.dout_4     (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 4 ]),
+			.dout_5     (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 5 ]),
+			.dout_6     (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 6 ]),
+			.dout_7     (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 7 ]),
+			.dout_8     (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 8 ]),
+			.dout_9     (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 9 ]),
+			.dout_10    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 10]),
+			.dout_11    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 11]),
+			.dout_12    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 12]),
+			.dout_13    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 13]),
+			.dout_14    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 14]),
+			.dout_15    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 15]),
+			.dout_16    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 16]),
+			.dout_17    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 17]),
+			.dout_18    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 18]),
+			.dout_19    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 19]),
+			.dout_20    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 20]),
+			.dout_21    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 21]),
+			.dout_22    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 22]),
+			.dout_23    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 23]),
+			.dout_24    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 24]),
+			.dout_25    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 25]),
+			.dout_26    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 26]),
+			.dout_27    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 27]),
+			.dout_28    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 28]),
+			.dout_29    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 29]),
+			.dout_30    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 30]),
+			.dout_31    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 31]),
+			.dout_32    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 32]),
+			.dout_33    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 33]),
+			.dout_34    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 34]),
+			.dout_35    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 35]),
+			.dout_36    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 36]),
+			.dout_37    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 37]),
+			.dout_38    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 38]),
+			.dout_39    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 39]),
+			.dout_40    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 40]),
+			.dout_41    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 41]),
+			.dout_42    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 42]),
+			.dout_43    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 43]),
+			.dout_44    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 44]),
+			.dout_45    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 45]),
+			.dout_46    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 46]),
+			.dout_47    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 47]),
+			.dout_48    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 48]),
+			.dout_49    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 49]),
+			.dout_50    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 50]),
+			.dout_51    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 51]),
+			.dout_52    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 52]),
+			.dout_53    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 53]),
+			.dout_54    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 54]),
+			.dout_55    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 55]),
+			.dout_56    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 56]),
+			.dout_57    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 57]),
+			.dout_58    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 58]),
+			.dout_59    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 59]),
+			.dout_60    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 60]),
+			.dout_61    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 61]),
+			.dout_62    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 62]),
+			.dout_63    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 63]),
+			.dout_64    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 64]),
+			.dout_65    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 65]),
+			.dout_66    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 66]),
+			.dout_67    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 67]),
+			.dout_68    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 68]),
+			.dout_69    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 69]),
+			.dout_70    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 70]),
+			.dout_71    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 71]),
+			.dout_72    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 72]),
+			.dout_73    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 73]),
+			.dout_74    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 74]),
+			.dout_75    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 75]),
+			.dout_76    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 76]),
+			.dout_77    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 77]),
+			.dout_78    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 78]),
+			.dout_79    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 79]),
+			.dout_80    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 80]),
+			.dout_81    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 81]),
+			.dout_82    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 82]),
+			.dout_83    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 83]),
+			.dout_84    (ch_msg_fetchOut_1[submatrix_id*CHECK_PARALLELISM + 84]),
+			// For CNUs at first iteration as their inital v2c messages, i.e., channel messages of all associative VNUs
+			.cnu_init_dout_0     (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 0 ]),
+			.cnu_init_dout_1     (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 1 ]),
+			.cnu_init_dout_2     (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 2 ]),
+			.cnu_init_dout_3     (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 3 ]),
+			.cnu_init_dout_4     (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 4 ]),
+			.cnu_init_dout_5     (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 5 ]),
+			.cnu_init_dout_6     (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 6 ]),
+			.cnu_init_dout_7     (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 7 ]),
+			.cnu_init_dout_8     (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 8 ]),
+			.cnu_init_dout_9     (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 9 ]),
+			.cnu_init_dout_10    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 10]),
+			.cnu_init_dout_11    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 11]),
+			.cnu_init_dout_12    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 12]),
+			.cnu_init_dout_13    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 13]),
+			.cnu_init_dout_14    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 14]),
+			.cnu_init_dout_15    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 15]),
+			.cnu_init_dout_16    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 16]),
+			.cnu_init_dout_17    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 17]),
+			.cnu_init_dout_18    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 18]),
+			.cnu_init_dout_19    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 19]),
+			.cnu_init_dout_20    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 20]),
+			.cnu_init_dout_21    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 21]),
+			.cnu_init_dout_22    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 22]),
+			.cnu_init_dout_23    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 23]),
+			.cnu_init_dout_24    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 24]),
+			.cnu_init_dout_25    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 25]),
+			.cnu_init_dout_26    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 26]),
+			.cnu_init_dout_27    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 27]),
+			.cnu_init_dout_28    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 28]),
+			.cnu_init_dout_29    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 29]),
+			.cnu_init_dout_30    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 30]),
+			.cnu_init_dout_31    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 31]),
+			.cnu_init_dout_32    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 32]),
+			.cnu_init_dout_33    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 33]),
+			.cnu_init_dout_34    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 34]),
+			.cnu_init_dout_35    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 35]),
+			.cnu_init_dout_36    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 36]),
+			.cnu_init_dout_37    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 37]),
+			.cnu_init_dout_38    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 38]),
+			.cnu_init_dout_39    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 39]),
+			.cnu_init_dout_40    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 40]),
+			.cnu_init_dout_41    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 41]),
+			.cnu_init_dout_42    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 42]),
+			.cnu_init_dout_43    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 43]),
+			.cnu_init_dout_44    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 44]),
+			.cnu_init_dout_45    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 45]),
+			.cnu_init_dout_46    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 46]),
+			.cnu_init_dout_47    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 47]),
+			.cnu_init_dout_48    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 48]),
+			.cnu_init_dout_49    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 49]),
+			.cnu_init_dout_50    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 50]),
+			.cnu_init_dout_51    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 51]),
+			.cnu_init_dout_52    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 52]),
+			.cnu_init_dout_53    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 53]),
+			.cnu_init_dout_54    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 54]),
+			.cnu_init_dout_55    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 55]),
+			.cnu_init_dout_56    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 56]),
+			.cnu_init_dout_57    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 57]),
+			.cnu_init_dout_58    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 58]),
+			.cnu_init_dout_59    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 59]),
+			.cnu_init_dout_60    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 60]),
+			.cnu_init_dout_61    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 61]),
+			.cnu_init_dout_62    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 62]),
+			.cnu_init_dout_63    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 63]),
+			.cnu_init_dout_64    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 64]),
+			.cnu_init_dout_65    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 65]),
+			.cnu_init_dout_66    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 66]),
+			.cnu_init_dout_67    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 67]),
+			.cnu_init_dout_68    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 68]),
+			.cnu_init_dout_69    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 69]),
+			.cnu_init_dout_70    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 70]),
+			.cnu_init_dout_71    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 71]),
+			.cnu_init_dout_72    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 72]),
+			.cnu_init_dout_73    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 73]),
+			.cnu_init_dout_74    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 74]),
+			.cnu_init_dout_75    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 75]),
+			.cnu_init_dout_76    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 76]),
+			.cnu_init_dout_77    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 77]),
+			.cnu_init_dout_78    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 78]),
+			.cnu_init_dout_79    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 79]),
+			.cnu_init_dout_80    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 80]),
+			.cnu_init_dout_81    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 81]),
+			.cnu_init_dout_82    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 82]),
+			.cnu_init_dout_83    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 83]),
+			.cnu_init_dout_84    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 84]),
+
+			.din        (ch_msg_genIn[submatrix_id]),
+
+			.read_addr  (submatrix_ch_ram_rd_addr[submatrix_id]),
+			.write_addr (submatrix_ch_ram_wr_addr[submatrix_id]),
+			.we         (ch_ram_we),
+			.read_clk   (ch_ram_rd_clk),
+			.write_clk  (ch_ram_wr_clk),
+			.rstn       (decoder_rstn)
+		);
+		// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
+		assign submatrix_ch_ram_wr_addr[submatrix_id] = (ch_ram_init_we == 1'b1) ? submatrix_chInit_wr_addr[submatrix_id] :
+														(ch_ram_wb == 1'b1     ) ? submatrix_chLayer_wr_addr[submatrix_id] : 
+																				   CH_RAM_DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+
+
+		localparam 	CH_RAM_WR_UNIT = CHECK_PARALLELISM*ROW_CHUNK_NUM*QUAN_SIZE; // 85*4=340-bit
+		always @(*) begin
+			case (submatrix_ch_ram_wr_addr[submatrix_id])
+				0 : ch_msg_genIn[submatrix_id] <= coded_block[submatrix_id][(0+1)*CH_DATA_WIDTH-1:0*CH_DATA_WIDTH];
+				1 : ch_msg_genIn[submatrix_id] <= coded_block[submatrix_id][(1+1)*CH_DATA_WIDTH-1:1*CH_DATA_WIDTH];
+				2 : ch_msg_genIn[submatrix_id] <= coded_block[submatrix_id][(2+1)*CH_DATA_WIDTH-1:2*CH_DATA_WIDTH];
+				3 : ch_msg_genIn[submatrix_id] <= coded_block[submatrix_id][(3+1)*CH_DATA_WIDTH-1:3*CH_DATA_WIDTH];
+				4 : ch_msg_genIn[submatrix_id] <= coded_block[submatrix_id][(4+1)*CH_DATA_WIDTH-1:4*CH_DATA_WIDTH];
+				5 : ch_msg_genIn[submatrix_id] <= coded_block[submatrix_id][(5+1)*CH_DATA_WIDTH-1:5*CH_DATA_WIDTH];
+				6 : ch_msg_genIn[submatrix_id] <= coded_block[submatrix_id][(6+1)*CH_DATA_WIDTH-1:6*CH_DATA_WIDTH];
+				7 : ch_msg_genIn[submatrix_id] <= coded_block[submatrix_id][(7+1)*CH_DATA_WIDTH-1:7*CH_DATA_WIDTH];
+				8 : ch_msg_genIn[submatrix_id] <= coded_block[submatrix_id][(8+1)*CH_DATA_WIDTH-1:8*CH_DATA_WIDTH];
+				default : ch_msg_genIn[submatrix_id] <= coded_block[submatrix_id][(0+1)*CH_DATA_WIDTH-1:0*CH_DATA_WIDTH];
+			endcase
+		end
+
+		initial submatrix_chInit_wr_addr[submatrix_id] <= 0;
+		always @(posedge write_clk) begin
+			if(decoder_rstn == 1'b0)
+				submatrix_chInit_wr_addr[submatrix_id] <= 0;
+			else if(iter_termination == 1'b1)
+				submatrix_chInit_wr_addr[submatrix_id] <= 0;
+			else if(ch_ram_init_we == 1'b1) begin
+				// In the inital channel MSGs writing, execution is only done at the first layer of first iteration
+				// Thus, only the first (z/Pc) pages across CH-RAMs are written, e,g., z(=765) / Pc(=85) = 9
+				if(submatrix_chInit_wr_addr[submatrix_id] == ROW_CHUNK_NUM-1)
+					submatrix_chInit_wr_addr[submatrix_id] <= CH_RAM_DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+				else
+					submatrix_chInit_wr_addr[submatrix_id] <= submatrix_chInit_wr_addr[submatrix_id]+1;
+			end
+			else
+				submatrix_chInit_wr_addr[submatrix_id] <= submatrix_chInit_wr_addr[submatrix_id];
+		end
+	/*--------------------------------------------------------------------------*/
+	// Channel messages RAMs write-page addresses
+		reg [ROW_CHUNK_NUM-1:0] ch_ramRD_row_chunk_cnt;
+		reg [LAYER_NUM-1:0] chLayer_wr_layer_cnt; // to identify the currently target layer of which the channel messages is being written back onto CH-RAMs circularly.
+		always @(posedge read_clk) begin 
+			if(decoder_rstn == 1'b0) 
+				chLayer_wr_layer_cnt <= 1;
+			else if(ch_ram_wb == 1'b1 && ch_ramRD_row_chunk_cnt[ROW_CHUNK_NUM-1] == 1'b1)
+				chLayer_wr_layer_cnt[LAYER_NUM-1:0] <= {chLayer_wr_layer_cnt[LAYER_NUM-2:0], chLayer_wr_layer_cnt[LAYER_NUM-1]};
+		end
+		always @(posedge read_clk) begin
+			if(decoder_rstn == 1'b0) ch_ramRD_row_chunk_cnt <= 1;
+			else if(ch_ram_wb == 1'b1) ch_ramRD_row_chunk_cnt[ROW_CHUNK_NUM-1:0] <= {ch_ramRD_row_chunk_cnt[ROW_CHUNK_NUM-2:0], ch_ramRD_row_chunk_cnt[ROW_CHUNK_NUM-1]};
+			else ch_ramRD_row_chunk_cnt <= ch_ramRD_row_chunk_cnt;
+		end
+		initial submatrix_chLayer_wr_addr[submatrix_id] <= 0;
+		always @(posedge read_clk) begin
+			if(decoder_rstn == 1'b0) 
+				submatrix_chLayer_wr_addr[submatrix_id] <= START_PAGE_1_0+CH_RAM_WB_ADDR_BASE_1_0;
+			else if(ch_ram_wb == 1'b1) begin
+				// page increment pattern within layer 0
+				if(chLayer_wr_layer_cnt[0] == 1) begin
+					if(ch_ramRD_row_chunk_cnt[ROW_CHUNK_NUM-1] == 1'b1) 
+						submatrix_chLayer_wr_addr[submatrix_id] <= START_PAGE_1_1+CH_RAM_WB_ADDR_BASE_1_1; // to move on to beginning of layer 1
+					else if(ch_ramRD_row_chunk_cnt[ROW_CHUNK_NUM-START_PAGE_1_0-1] == 1'b1)
+							submatrix_chLayer_wr_addr[submatrix_id] <= CH_RAM_WB_ADDR_BASE_1_0; 
+					else
+						submatrix_chLayer_wr_addr[submatrix_id] <= submatrix_chLayer_wr_addr[submatrix_id]+1;
+				end
+				// page increment pattern within layer 1
+				if(chLayer_wr_layer_cnt[1] == 1) begin
+					if(ch_ramRD_row_chunk_cnt[ROW_CHUNK_NUM-1] == 1'b1) 
+						submatrix_chLayer_wr_addr[submatrix_id] <= CH_RAM_DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+					else if(ch_ramRD_row_chunk_cnt[ROW_CHUNK_NUM-START_PAGE_1_1-1] == 1'b1)
+						submatrix_chLayer_wr_addr[submatrix_id] <= CH_RAM_WB_ADDR_BASE_1_1; 
+					else
+						submatrix_chLayer_wr_addr[submatrix_id] <= submatrix_chLayer_wr_addr[submatrix_id]+1;
+				end
+				// Since channel messages are constant over all iterations of one codeword decoding process, 
+				// the channel messages are thereby not necessarily written back circularly at last layer.
+				// Because of the fact that the channel messages for first layer had been written onto their memory region at initial state of codeword decoding process.
+			end
+		end
+		always @(posedge read_clk) begin
+			if(decoder_rstn == 1'b0) begin
+				//ch_ramRD_shift_factor_cur_2 <= shift_factor_2[BITWIDTH_SHIFT_FACTOR-1:0];
+				ch_ramRD_shift_factor_cur_1 <= shift_factor_1[BITWIDTH_SHIFT_FACTOR-1:0];
+				ch_ramRD_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
+			end
+			else if(layer_finish == 1'b1) begin
+				//ch_ramRD_shift_factor_cur_2 <= 0;
+				ch_ramRD_shift_factor_cur_1 <= 0; //ch_ramRD_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
+				ch_ramRD_shift_factor_cur_0 <= ch_ramRD_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
+			end
+		end
+		/*--------------------------------------------------------------------------*/
+		// Channel messages RAMs Fetching addresses
+		always @(posedge read_clk) begin
+			if(decoder_rstn == 1'b0)
+				submatrix_ch_ram_rd_addr[submatrix_id] <= 0;
+			else if(ch_ram_fetch == 1'b1) begin
+				if(submatrix_ch_ram_rd_addr[submatrix_id] == CH_RAM_DEPTH-1)
+					submatrix_ch_ram_rd_addr[submatrix_id] <= 0;
+				else
+					submatrix_ch_ram_rd_addr[submatrix_id] <= submatrix_ch_ram_rd_addr[submatrix_id]+1;
+			end
+			else
+				submatrix_ch_ram_rd_addr[submatrix_id] <= submatrix_ch_ram_rd_addr[submatrix_id];
+		end
+		/*--------------------------------------------------------------------------*/
+		// V2C messages MEMs Fetching addresses
+			always @(posedge read_clk) begin
+				if(decoder_rstn == 1'b0)
+					v2c_mem_page_rd_addr[submatrix_id] <= V2C_MEM_ADDR_BASE;
+				else if(v2c_mem_fetch == 1'b1) begin
+					if(v2c_mem_page_rd_addr[submatrix_id] == V2C_MEM_ADDR_BASE+ROW_CHUNK_NUM-1)
+						v2c_mem_page_rd_addr[submatrix_id] <= V2C_MEM_ADDR_BASE;
+					else
+						v2c_mem_page_rd_addr[submatrix_id] <= v2c_mem_page_rd_addr[submatrix_id]+1;
+				end
+				else
+					v2c_mem_page_rd_addr[submatrix_id] <= v2c_mem_page_rd_addr[submatrix_id];
+			end
+		/*--------------------------------------------------------------------------*/
+		// C2V messages MEMs Fetching addresses
+			always @(posedge read_clk) begin
+				if(decoder_rstn == 1'b0)
+					c2v_mem_page_rd_addr[submatrix_id] <= C2V_MEM_ADDR_BASE;
+				else if(c2v_mem_fetch == 1'b1) begin
+					if(c2v_mem_page_rd_addr[submatrix_id] == C2V_MEM_ADDR_BASE+ROW_CHUNK_NUM-1)
+						c2v_mem_page_rd_addr[submatrix_id] <= C2V_MEM_ADDR_BASE;
+					else
+						c2v_mem_page_rd_addr[submatrix_id] <= c2v_mem_page_rd_addr[submatrix_id]+1;
+				end
+				else
+					c2v_mem_page_rd_addr[submatrix_id] <= c2v_mem_page_rd_addr[submatrix_id];
+			end
+		/*--------------------------------------------------------------------------*/
+	end
+endgenerate
+/*
+	) inst_vnu_control_unit (
+		.vnu_wr             (vnu_wr),
+		.dnu_wr             (dnu_wr),
+		.vnu_update_pend    (vnu_update_pend),
+		.v2c_src            (v2c_src),
+		.last_layer         (v2c_last_layer),
+		.layer_cnt 			(v2c_layer_cnt),
+		.v2c_mem_we         (v2c_mem_we_propagateIn),
+		.v2c_pa_en          (v2c_pa_en),
+		.v2c_bs_en 			(v2c_bs_en_propagateIn),
+		.ch_ram_init_we     (ch_ram_init_we_propagateIn),
+		.ch_bs_en           (ch_bs_en_propagateIn      ),
+		.ch_pa_en           (ch_pa_en      ),
+		.ch_ram_wb          (ch_ram_wb     ),
+		.layer_finish       (layer_finish  ),
+
+		.v2c_outRotate_reg_we (v2c_outRotate_reg_we_propagateIn),
+		.dnu_inRotate_bs_en   (dnu_inRotate_bs_en_propagateIn),
+		.dnu_inRotate_pa_en   (dnu_inRotate_pa_en_propagateIn),
+		.dnu_inRotate_wb      (dnu_inRotate_wb_propagateIn),
+
+		.vnu_rd             (vnu_rd),
+		.dnu_rd             (dnu_rd),
+		.state              (vnu_ctrl_state),
+		.hard_decision_done (hard_decision_done),
+
+		.vn_iter_update     (vn_iter_update),
+		.dn_iter_update     (dn_iter_update),
+		.termination        (iter_termination),
+		.fsm_en             (fsm_en),
+		.read_clk           (read_clk),
+		.rstn               (decoder_rstn)
+	);
+*/
+/*--------------------------------------------------------------------------*/
+// Channel messages RAMs write-page addresses
+always @(posedge read_clk) begin
+	if(decoder_rstn == 1'b0) begin
+		ch_ramRD_shift_factor_cur_2 <= shift_factor_2[BITWIDTH_SHIFT_FACTOR-1:0];
+		ch_ramRD_shift_factor_cur_1 <= shift_factor_1[BITWIDTH_SHIFT_FACTOR-1:0];
+		ch_ramRD_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
+	end
+	else if(layer_finish == 1'b1) begin
+		ch_ramRD_shift_factor_cur_2 <= 0;
+		ch_ramRD_shift_factor_cur_1 <= ch_ramRD_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
+		ch_ramRD_shift_factor_cur_0 <= ch_ramRD_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
+	end
+end
+/*--------------------------------------------------------------------------*/
 	initial begin
 		// do something
 
 		init();
 		repeat(10)@(posedge read_clk);
-		fsm_en       <= 1;
 
 		wait(iter_termination == 1'b1);
 		repeat(1)@(posedge read_clk);
