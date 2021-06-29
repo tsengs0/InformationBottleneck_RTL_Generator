@@ -299,6 +299,7 @@ reg decode_termination_reg;
 	always @(posedge read_clk) begin if(!decoder_rstn) v2c_last_row_chunk_propagate <= 0; else v2c_last_row_chunk_propagate[ROW_CHUNK_NUM-2:0] <= {v2c_last_row_chunk_propagate[ROW_CHUNK_NUM-3:0], v2c_pa_en}; end	
 	reg [ROW_CHUNK_NUM-2:0] v2c_bs_en_propagate;
 	always @(posedge read_clk) begin if(!decoder_rstn) v2c_bs_en_propagate <= 0; else v2c_bs_en_propagate[ROW_CHUNK_NUM-2:0] <= {v2c_bs_en_propagate[ROW_CHUNK_NUM-3:0], v2c_bs_en_propagateIn}; end	
+	wire v2c_bs_en; assign v2c_bs_en = (v2c_bs_en_propagate > 0 || v2c_bs_en_propagateIn > 0) ? 1'b1 : 1'b0;
 	reg [CH_INIT_LOAD_LEVEL-2:0] ch_ram_init_we_propagate;
 	always @(posedge read_clk) begin if(!decoder_rstn) ch_ram_init_we_propagate <= 0; else ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-2:0] <= {ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-3:0], ch_ram_init_we_propagateIn}; end
 	wire ch_ram_init_we; assign ch_ram_init_we = (ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-2:0] > 0 || ch_ram_init_we_propagateIn > 0) ? 1'b1 : 1'b0;
@@ -674,6 +675,7 @@ dn_Waddr_counter #(
 	reg [BITWIDTH_SHIFT_FACTOR-1:0] ch_ramRD_shift_factor_cur_1;
 	reg [BITWIDTH_SHIFT_FACTOR-1:0] ch_ramRD_shift_factor_cur_2;
 	wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
+	wire [BITWIDTH_SHIFT_FACTOR-1:0] dnu_inRotate_shift_factor; // a constant, because only needed at last layer
 
 	wire [6:0]  cnu_left_sel;
 	wire [6:0]  cnu_right_sel;
@@ -753,7 +755,9 @@ qsn_controller_85b #(
 	.rstn         (decoder_rstn),
 	.sys_clk      (read_clk)
 );
-assign vnu_shift_factorIn = (ch_bs_en == 1'b0) ? v2c_shift_factor_cur_0 : ch_ramRD_shift_factor_cur_0;				
+assign vnu_shift_factorIn = (v2c_bs_en == 1'b1) ? v2c_shift_factor_cur_0 :
+							(ch_bs_en == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
+							(dnu_inRotate_bs_en == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 /*----------------------------------------------*/	
 	wire [QUAN_SIZE-1:0] mem_to_cnu [0:CHECK_PARALLELISM-1];
 	wire [QUAN_SIZE-1:0] mem_to_vnu [0:CHECK_PARALLELISM-1];
@@ -1228,7 +1232,7 @@ assign vnu_shift_factorIn = (ch_bs_en == 1'b0) ? v2c_shift_factor_cur_0 : ch_ram
 			v2c_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(/*v2c_bs_en_propagate[ROW_CHUNK_NUM-2]*/v2c_bs_en_propagate_temp[5] == 1'b1) begin
-			v2c_shift_factor_cur_2 <= 0;
+			v2c_shift_factor_cur_2 <= v2c_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_1 <= v2c_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_0 <= v2c_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -1790,18 +1794,6 @@ generate
 				// Because of the fact that the channel messages for first layer had been written onto their memory region at initial state of codeword decoding process.
 			end
 		end
-		always @(posedge read_clk) begin
-			if(decoder_rstn == 1'b0) begin
-				//ch_ramRD_shift_factor_cur_2 <= shift_factor_2[BITWIDTH_SHIFT_FACTOR-1:0];
-				ch_ramRD_shift_factor_cur_1 <= shift_factor_1[BITWIDTH_SHIFT_FACTOR-1:0];
-				ch_ramRD_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
-			end
-			else if(layer_finish == 1'b1) begin
-				//ch_ramRD_shift_factor_cur_2 <= 0;
-				ch_ramRD_shift_factor_cur_1 <= 0; //ch_ramRD_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
-				ch_ramRD_shift_factor_cur_0 <= ch_ramRD_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
-			end
-		end
 		/*--------------------------------------------------------------------------*/
 		// Channel messages RAMs Fetching addresses
 		always @(posedge read_clk) begin
@@ -1844,9 +1836,26 @@ generate
 				else
 					c2v_mem_page_rd_addr[submatrix_id] <= c2v_mem_page_rd_addr[submatrix_id];
 			end
-		/*--------------------------------------------------------------------------*/
 	end
 endgenerate
+/*--------------------------------------------------------------------------*/
+// Channel messages Circular Shift Factor
+always @(posedge read_clk) begin
+	if(decoder_rstn == 1'b0) begin
+		ch_ramRD_shift_factor_cur_2 <= 0;//shift_factor_2[BITWIDTH_SHIFT_FACTOR-1:0];
+		ch_ramRD_shift_factor_cur_1 <= shift_factor_1[BITWIDTH_SHIFT_FACTOR-1:0];
+		ch_ramRD_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
+	end
+	else if(layer_finish == 1'b1) begin
+		ch_ramRD_shift_factor_cur_2 <= ch_ramRD_shift_factor_cur_0;
+		ch_ramRD_shift_factor_cur_1 <= ch_ramRD_shift_factor_cur_2; //ch_ramRD_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
+		ch_ramRD_shift_factor_cur_0 <= ch_ramRD_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
+	end
+end
+/*--------------------------------------------------------------------------*/
+// DNU Sign-Input Control Circular Shift Factor
+assign dnu_inRotate_shift_factor = shift_factor_1;
+/*--------------------------------------------------------------------------*/
 /*
 	) inst_vnu_control_unit (
 		.vnu_wr             (vnu_wr),
@@ -1882,20 +1891,6 @@ endgenerate
 		.rstn               (decoder_rstn)
 	);
 */
-/*--------------------------------------------------------------------------*/
-// Channel messages RAMs write-page addresses
-always @(posedge read_clk) begin
-	if(decoder_rstn == 1'b0) begin
-		ch_ramRD_shift_factor_cur_2 <= shift_factor_2[BITWIDTH_SHIFT_FACTOR-1:0];
-		ch_ramRD_shift_factor_cur_1 <= shift_factor_1[BITWIDTH_SHIFT_FACTOR-1:0];
-		ch_ramRD_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
-	end
-	else if(layer_finish == 1'b1) begin
-		ch_ramRD_shift_factor_cur_2 <= 0;
-		ch_ramRD_shift_factor_cur_1 <= ch_ramRD_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
-		ch_ramRD_shift_factor_cur_0 <= ch_ramRD_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
-	end
-end
 /*--------------------------------------------------------------------------*/
 	initial begin
 		// do something
