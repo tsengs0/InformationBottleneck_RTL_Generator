@@ -197,11 +197,22 @@ module entire_message_passing_wrapper #(
 	input wire [V2C_DATA_WIDTH-1:0] ch_bs_in_sub8,
 	input wire [V2C_DATA_WIDTH-1:0] ch_bs_in_sub9,
 	
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit_sub0,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit_sub1,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit_sub2,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit_sub3,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit_sub4,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit_sub5,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit_sub6,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit_sub7,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit_sub8,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit_sub9,
 
 	// control signals
 	input wire c2v_bs_en,
 	input wire v2c_bs_en,
 	input wire vnu_bs_src,
+	input wire [2:0] vnu_bs_bit0_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
@@ -247,6 +258,9 @@ module entire_message_passing_wrapper #(
 			.mem_to_vnu         (mem_to_vnu_sub0),
 			.c2v_bs_in          (c2v_bs_in_sub0 ),
 			.v2c_bs_in          (v2c_bs_in_sub0 ),
+
+			.dnu_inRotate_bit (dnu_inRotate_bit_sub0),
+			.vnu_bs_bit0_src (vnu_bs_bit0_src[2]), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 
 			.c2v_bs_en          (c2v_bs_en),
 			.v2c_bs_en          (v2c_bs_en),
@@ -294,6 +308,9 @@ module entire_message_passing_wrapper #(
 			.c2v_bs_in          (c2v_bs_in_sub1 ),
 			.v2c_bs_in          (v2c_bs_in_sub1 ),
 			.ch_bs_in   		(ch_bs_in_sub1),
+
+			.dnu_inRotate_bit (dnu_inRotate_bit_sub1),
+			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 
 			.vnu_bs_src 		(vnu_bs_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
 			.c2v_bs_en          (c2v_bs_en),
@@ -343,6 +360,9 @@ module entire_message_passing_wrapper #(
 			.v2c_bs_in          (v2c_bs_in_sub2 ),
 			.ch_bs_in   		(ch_bs_in_sub2),
 
+			.dnu_inRotate_bit (dnu_inRotate_bit_sub2),
+			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
+
 			.vnu_bs_src 		(vnu_bs_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
 			.c2v_bs_en          (c2v_bs_en),
 			.v2c_bs_en          (v2c_bs_en),
@@ -390,6 +410,9 @@ module entire_message_passing_wrapper #(
 			.c2v_bs_in          (c2v_bs_in_sub3 ),
 			.v2c_bs_in          (v2c_bs_in_sub3 ),
 			.ch_bs_in   		(ch_bs_in_sub3),
+
+			.dnu_inRotate_bit (dnu_inRotate_bit_sub3),
+			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 
 			.vnu_bs_src 		(vnu_bs_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
 			.c2v_bs_en          (c2v_bs_en),
@@ -439,6 +462,9 @@ module entire_message_passing_wrapper #(
 			.v2c_bs_in          (v2c_bs_in_sub4 ),
 			.ch_bs_in   		(ch_bs_in_sub4),
 
+			.dnu_inRotate_bit (dnu_inRotate_bit_sub4),
+			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
+
 			.vnu_bs_src 		(vnu_bs_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
 			.c2v_bs_en          (c2v_bs_en),
 			.v2c_bs_en          (v2c_bs_en),
@@ -486,6 +512,9 @@ module entire_message_passing_wrapper #(
 			.c2v_bs_in          (c2v_bs_in_sub5 ),
 			.v2c_bs_in          (v2c_bs_in_sub5 ),
 			.ch_bs_in   		(ch_bs_in_sub5),
+
+			.dnu_inRotate_bit (dnu_inRotate_bit_sub5),
+			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 
 			.vnu_bs_src 		(vnu_bs_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
 			.c2v_bs_en          (c2v_bs_en),
@@ -535,6 +564,9 @@ module entire_message_passing_wrapper #(
 			.v2c_bs_in          (v2c_bs_in_sub6 ),
 			.ch_bs_in   		(ch_bs_in_sub6),
 
+			.dnu_inRotate_bit (dnu_inRotate_bit_sub6),
+			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
+
 			.vnu_bs_src 		(vnu_bs_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
 			.c2v_bs_en          (c2v_bs_en),
 			.v2c_bs_en          (v2c_bs_en),
@@ -582,6 +614,9 @@ module entire_message_passing_wrapper #(
 			.c2v_bs_in          (c2v_bs_in_sub7 ),
 			.v2c_bs_in          (v2c_bs_in_sub7 ),
 			.ch_bs_in   		(ch_bs_in_sub7),
+
+			.dnu_inRotate_bit (dnu_inRotate_bit_sub7),
+			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 
 			.vnu_bs_src 		(vnu_bs_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
 			.c2v_bs_en          (c2v_bs_en),
@@ -631,6 +666,9 @@ module entire_message_passing_wrapper #(
 			.v2c_bs_in          (v2c_bs_in_sub8 ),
 			.ch_bs_in   		(ch_bs_in_sub8),
 
+			.dnu_inRotate_bit (dnu_inRotate_bit_sub8),
+			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
+
 			.vnu_bs_src 		(vnu_bs_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
 			.c2v_bs_en          (c2v_bs_en),
 			.v2c_bs_en          (v2c_bs_en),
@@ -678,6 +716,9 @@ module entire_message_passing_wrapper #(
 			.c2v_bs_in          (c2v_bs_in_sub9 ),
 			.v2c_bs_in          (v2c_bs_in_sub9 ),
 			.ch_bs_in   		(ch_bs_in_sub9),
+
+			.dnu_inRotate_bit (dnu_inRotate_bit_sub9),
+			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 
 			.vnu_bs_src 		(vnu_bs_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
 			.c2v_bs_en          (c2v_bs_en),
@@ -729,6 +770,7 @@ module msg_pass_submatrix_0_unit #(
 
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] v2c_bs_in,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit,
 
 	// control signals
 	input wire c2v_bs_en,
@@ -740,6 +782,8 @@ module msg_pass_submatrix_0_unit #(
 	input wire v2c_last_row_chunk,
 	input wire [ROW_CHUNK_NUM-1:0] c2v_row_chunk_cnt,
 	input wire [ROW_CHUNK_NUM-1:0] v2c_row_chunk_cnt,
+	input wire vnu_bs_bit0_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
+
 
 	input wire read_clk,
 	input wire rstn
@@ -802,6 +846,9 @@ zero_shuffle_top_85b #(
 `ifdef SCHED_4_6
 	.sys_clk     (read_clk),
 	.rstn		 (rstn),
+
+	.sw_in1_bit0 (dnu_inRotate_bit),
+	.sw_in_bit0_src (vnu_bs_bit0_src),
 `endif
 	.sw_in_bit0  (vnu_bs_in_bit[0]),
 	.sw_in_bit1  (vnu_bs_in_bit[1]),
@@ -1285,11 +1332,13 @@ module msg_pass_submatrix_1_unit #(
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] v2c_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] ch_bs_in,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit,
 
 	// control signals
 	input wire c2v_bs_en,
 	input wire v2c_bs_en,
 	input wire vnu_bs_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
+	input wire [2:0] vnu_bs_bit0_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
@@ -1360,6 +1409,7 @@ qsn_controller_85b #(
 );
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
+wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
 shared_qsn_top_85b #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -1382,9 +1432,16 @@ shared_qsn_top_85b #(
 	.sw_in1_bit1 (ch_bs_in_bit[1]),
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
-	.shift_factor (v2c_shift_factor_cur_0), // offset shift factor of submatrix
+
+	.sw_in2_bit0 (dnu_inRotate_bit),
+
+	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
+	.sw_in_bit0_src (vnu_bs_bit0_src),
 	.sw_in_src (vnu_bs_src)
 );
+assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 /*----------------------------------------------*/	
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr;
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr;
@@ -1840,7 +1897,7 @@ shared_qsn_top_85b #(
 			v2c_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(v2c_bs_en == 1'b1) begin
-			v2c_shift_factor_cur_2 <= 0;
+			v2c_shift_factor_cur_2 <= v2c_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_1 <= v2c_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_0 <= v2c_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -1887,11 +1944,13 @@ module msg_pass_submatrix_2_unit #(
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] v2c_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] ch_bs_in,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit,
 
 	// control signals
 	input wire c2v_bs_en,
 	input wire v2c_bs_en,
 	input wire vnu_bs_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
+	input wire [2:0] vnu_bs_bit0_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
@@ -1984,8 +2043,12 @@ shared_qsn_top_85b #(
 	.sw_in1_bit1 (ch_bs_in_bit[1]),
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
+
+	.sw_in2_bit0 (dnu_inRotate_bit),
+
 	.shift_factor (v2c_shift_factor_cur_0), // offset shift factor of submatrix
-	.sw_in_src (vnu_bs_src)
+	.sw_in_src (vnu_bs_src),
+	.sw_in_bit0_src (vnu_bs_bit0_src)
 );
 /*----------------------------------------------*/	
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr;
@@ -2442,7 +2505,7 @@ shared_qsn_top_85b #(
 			v2c_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(v2c_bs_en == 1'b1) begin
-			v2c_shift_factor_cur_2 <= 0;
+			v2c_shift_factor_cur_2 <= v2c_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_1 <= v2c_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_0 <= v2c_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -2489,11 +2552,13 @@ module msg_pass_submatrix_3_unit #(
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] v2c_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] ch_bs_in,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit,
 
 	// control signals
 	input wire c2v_bs_en,
 	input wire v2c_bs_en,
 	input wire vnu_bs_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
+	input wire [2:0] vnu_bs_bit0_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
@@ -2586,8 +2651,12 @@ shared_qsn_top_85b #(
 	.sw_in1_bit1 (ch_bs_in_bit[1]),
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
+
+	.sw_in2_bit0 (dnu_inRotate_bit),
+
 	.shift_factor (v2c_shift_factor_cur_0), // offset shift factor of submatrix
-	.sw_in_src (vnu_bs_src)
+	.sw_in_src (vnu_bs_src),
+	.sw_in_bit0_src (vnu_bs_bit0_src)
 );
 /*----------------------------------------------*/	
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr;
@@ -3044,7 +3113,7 @@ shared_qsn_top_85b #(
 			v2c_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(v2c_bs_en == 1'b1) begin
-			v2c_shift_factor_cur_2 <= 0;
+			v2c_shift_factor_cur_2 <= v2c_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_1 <= v2c_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_0 <= v2c_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -3091,11 +3160,13 @@ module msg_pass_submatrix_4_unit #(
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] v2c_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] ch_bs_in,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit,
 
 	// control signals
 	input wire c2v_bs_en,
 	input wire v2c_bs_en,
 	input wire vnu_bs_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
+	input wire [2:0] vnu_bs_bit0_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
@@ -3166,6 +3237,7 @@ qsn_controller_85b #(
 );
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
+wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
 shared_qsn_top_85b #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -3188,9 +3260,16 @@ shared_qsn_top_85b #(
 	.sw_in1_bit1 (ch_bs_in_bit[1]),
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
-	.shift_factor (v2c_shift_factor_cur_0), // offset shift factor of submatrix
+
+	.sw_in2_bit0 (dnu_inRotate_bit),
+
+	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
+	.sw_in_bit0_src (vnu_bs_bit0_src),
 	.sw_in_src (vnu_bs_src)
 );
+assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 /*----------------------------------------------*/	
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr;
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr;
@@ -3646,7 +3725,7 @@ shared_qsn_top_85b #(
 			v2c_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(v2c_bs_en == 1'b1) begin
-			v2c_shift_factor_cur_2 <= 0;
+			v2c_shift_factor_cur_2 <= v2c_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_1 <= v2c_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_0 <= v2c_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -3693,11 +3772,13 @@ module msg_pass_submatrix_5_unit #(
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] v2c_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] ch_bs_in,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit,
 
 	// control signals
 	input wire c2v_bs_en,
 	input wire v2c_bs_en,
 	input wire vnu_bs_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
+	input wire [2:0] vnu_bs_bit0_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
@@ -3768,6 +3849,7 @@ qsn_controller_85b #(
 );
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
+wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
 shared_qsn_top_85b #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -3790,9 +3872,16 @@ shared_qsn_top_85b #(
 	.sw_in1_bit1 (ch_bs_in_bit[1]),
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
-	.shift_factor (v2c_shift_factor_cur_0), // offset shift factor of submatrix
+
+	.sw_in2_bit0 (dnu_inRotate_bit),
+
+	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
+	.sw_in_bit0_src (vnu_bs_bit0_src),
 	.sw_in_src (vnu_bs_src)
 );
+assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 /*----------------------------------------------*/	
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr;
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr;
@@ -4248,7 +4337,7 @@ shared_qsn_top_85b #(
 			v2c_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(v2c_bs_en == 1'b1) begin
-			v2c_shift_factor_cur_2 <= 0;
+			v2c_shift_factor_cur_2 <= v2c_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_1 <= v2c_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_0 <= v2c_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -4295,11 +4384,13 @@ module msg_pass_submatrix_6_unit #(
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] v2c_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] ch_bs_in,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit,
 
 	// control signals
 	input wire c2v_bs_en,
 	input wire v2c_bs_en,
 	input wire vnu_bs_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
+	input wire [2:0] vnu_bs_bit0_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
@@ -4370,6 +4461,7 @@ qsn_controller_85b #(
 );
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
+wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
 shared_qsn_top_85b #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -4392,9 +4484,16 @@ shared_qsn_top_85b #(
 	.sw_in1_bit1 (ch_bs_in_bit[1]),
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
-	.shift_factor (v2c_shift_factor_cur_0), // offset shift factor of submatrix
+
+	.sw_in2_bit0 (dnu_inRotate_bit),
+
+	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
+	.sw_in_bit0_src (vnu_bs_bit0_src),
 	.sw_in_src (vnu_bs_src)
 );
+assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 /*----------------------------------------------*/	
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr;
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr;
@@ -4850,7 +4949,7 @@ shared_qsn_top_85b #(
 			v2c_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(v2c_bs_en == 1'b1) begin
-			v2c_shift_factor_cur_2 <= 0;
+			v2c_shift_factor_cur_2 <= v2c_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_1 <= v2c_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_0 <= v2c_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -4897,11 +4996,13 @@ module msg_pass_submatrix_7_unit #(
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] v2c_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] ch_bs_in,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit,
 
 	// control signals
 	input wire c2v_bs_en,
 	input wire v2c_bs_en,
 	input wire vnu_bs_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
+	input wire [2:0] vnu_bs_bit0_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
@@ -4972,6 +5073,7 @@ qsn_controller_85b #(
 );
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
+wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
 shared_qsn_top_85b #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -4994,9 +5096,16 @@ shared_qsn_top_85b #(
 	.sw_in1_bit1 (ch_bs_in_bit[1]),
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
-	.shift_factor (v2c_shift_factor_cur_0), // offset shift factor of submatrix
+
+	.sw_in2_bit0 (dnu_inRotate_bit),
+
+	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
+	.sw_in_bit0_src (vnu_bs_bit0_src),
 	.sw_in_src (vnu_bs_src)
 );
+assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 /*----------------------------------------------*/	
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr;
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr;
@@ -5452,7 +5561,7 @@ shared_qsn_top_85b #(
 			v2c_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(v2c_bs_en == 1'b1) begin
-			v2c_shift_factor_cur_2 <= 0;
+			v2c_shift_factor_cur_2 <= v2c_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_1 <= v2c_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_0 <= v2c_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -5499,11 +5608,13 @@ module msg_pass_submatrix_8_unit #(
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] v2c_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] ch_bs_in,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit,
 
 	// control signals
 	input wire c2v_bs_en,
 	input wire v2c_bs_en,
 	input wire vnu_bs_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
+	input wire [2:0] vnu_bs_bit0_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
@@ -5574,6 +5685,7 @@ qsn_controller_85b #(
 );
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
+wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
 shared_qsn_top_85b #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -5596,9 +5708,16 @@ shared_qsn_top_85b #(
 	.sw_in1_bit1 (ch_bs_in_bit[1]),
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
-	.shift_factor (v2c_shift_factor_cur_0), // offset shift factor of submatrix
+
+	.sw_in2_bit0 (dnu_inRotate_bit),
+
+	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
+	.sw_in_bit0_src (vnu_bs_bit0_src),
 	.sw_in_src (vnu_bs_src)
 );
+assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 /*----------------------------------------------*/	
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr;
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr;
@@ -6054,7 +6173,7 @@ shared_qsn_top_85b #(
 			v2c_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(v2c_bs_en == 1'b1) begin
-			v2c_shift_factor_cur_2 <= 0;
+			v2c_shift_factor_cur_2 <= v2c_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_1 <= v2c_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_0 <= v2c_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -6101,11 +6220,13 @@ module msg_pass_submatrix_9_unit #(
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] v2c_bs_in,
 	input wire [V2C_DATA_WIDTH-1:0] ch_bs_in,
+	input wire [CHECK_PARALLELISM-1:0] dnu_inRotate_bit,
 
 	// control signals
 	input wire c2v_bs_en,
 	input wire v2c_bs_en,
 	input wire vnu_bs_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message
+	input wire [2:0] vnu_bs_bit0_src, // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
@@ -6128,6 +6249,7 @@ reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_2;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] v2c_shift_factor_cur_0;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] v2c_shift_factor_cur_1;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] v2c_shift_factor_cur_2;
+wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
 wire [6:0]  cnu_left_sel;
 wire [6:0]  cnu_right_sel;
 wire [83:0] cnu_merge_sel;
@@ -6176,6 +6298,7 @@ qsn_controller_85b #(
 );
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
+wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
 shared_qsn_top_85b #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -6198,9 +6321,16 @@ shared_qsn_top_85b #(
 	.sw_in1_bit1 (ch_bs_in_bit[1]),
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
-	.shift_factor (v2c_shift_factor_cur_0), // offset shift factor of submatrix
+
+	.sw_in2_bit0 (dnu_inRotate_bit),
+
+	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
+	.sw_in_bit0_src (vnu_bs_bit0_src),
 	.sw_in_src (vnu_bs_src)
 );
+assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 /*----------------------------------------------*/	
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr;
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr;
@@ -6656,7 +6786,7 @@ shared_qsn_top_85b #(
 			v2c_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(v2c_bs_en == 1'b1) begin
-			v2c_shift_factor_cur_2 <= 0;
+			v2c_shift_factor_cur_2 <= v2c_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_1 <= v2c_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			v2c_shift_factor_cur_0 <= v2c_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end

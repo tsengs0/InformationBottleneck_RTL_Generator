@@ -1,10 +1,12 @@
+`include "define.vh"
+
 module submatrix_process_element #(
-//	parameter QUAN_SIZE = 4,
-//	parameter CN_DEGREE = 10,
-//	parameter VN_DEGREE = 3,
-//	parameter LAYER_NUM = 3,
-//	parameter ROW_CHUNK_NUM = 9,
-//	parameter CHECK_PARALLELISM = 85,
+	parameter QUAN_SIZE = 4,
+	parameter CN_DEGREE = 10,
+	parameter VN_DEGREE = 3,
+	parameter LAYER_NUM = 3,
+	parameter ROW_CHUNK_NUM = 9,
+	parameter CHECK_PARALLELISM = 85,
 //	parameter CNU_FUNC_CYCLE = 4, // the latency of one CNU (min approximation)
 //
 //	// Parameters of Partial-VNU IB-RAMs
@@ -14,27 +16,26 @@ module submatrix_process_element #(
 //	parameter DN_ROM_RD_BW = 2,
 //	parameter DN_ROM_ADDR_BW = 11,
 //	parameter DN_PAGE_ADDR_BW = 6,
-//	parameter VNU3_INSTANTIATE_NUM  = 5,
-//	parameter VNU3_INSTANTIATE_UNIT =  2, // number of partial-VNUs instatiated in one modules (in order to reduce source code size)
-//	parameter BANK_NUM = 2,
+	parameter VNU3_INSTANTIATE_NUM  = 5,
+	parameter VNU3_INSTANTIATE_UNIT =  2, // number of partial-VNUs instatiated in one modules (in order to reduce source code size)
+	parameter BANK_NUM = 2,
 //	parameter IB_VNU_DECOMP_funNum = 2,
-//	parameter PIPELINE_DEPTH = 3,
 //	parameter VN_PIPELINE_DEPTH = 3,
 //	parameter DN_PIPELINE_DEPTH = 3,
-//	parameter MULTI_FRAME_NUM   = 2,
+	parameter MULTI_FRAME_NUM   = 2,
 //
 //	// Parameter for Channel Buffers
-//	parameter CH_FETCH_LATENCY = 2,
-//	parameter CNU_INIT_FETCH_LATENCY = 1,
-//	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
-//	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE
+	parameter CH_FETCH_LATENCY = 2,
+	parameter CNU_INIT_FETCH_LATENCY = 1,
+	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
+	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	parameter QUAN_SIZE = 4,
-	parameter LAYER_NUM = 3,
-	parameter ROW_CHUNK_NUM = 9,
-	parameter CHECK_PARALLELISM = 85,
+//	parameter QUAN_SIZE = 4,
+//	parameter LAYER_NUM = 3,
+//	parameter ROW_CHUNK_NUM = 9,
+//	parameter CHECK_PARALLELISM = 85,
 
-	parameter VN_DEGREE = 3,   // degree of one variable node
+//	parameter VN_DEGREE = 3,   // degree of one variable node
 	parameter IB_ROM_SIZE = 6, // width of one read-out port of RAMB36E1
 	parameter IB_ROM_ADDR_WIDTH = 6, // ceil(log2(64-entry)) = 6-bit 
 	parameter IB_CNU_DECOMP_funNum = 1, // equivalent to one decomposed IB-LUT depth
@@ -164,6 +165,10 @@ module submatrix_process_element #(
 	parameter START_PAGE_9_0 = 1,
 	parameter START_PAGE_9_1 = 8,
 	parameter START_PAGE_9_2 = 2,
+
+	// Parameters of Channel RAM
+	parameter CH_RAM_DEPTH = ROW_CHUNK_NUM*LAYER_NUM,
+	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
 `endif
 	parameter DEPTH = 1024,
 	parameter DATA_WIDTH = 36,
@@ -251,6 +256,31 @@ module submatrix_process_element #(
 	input wire [DN_ROM_RD_BW-1:0] vnu_ram_write_dataA_2, // from portA of IB-ROM (for decision node)
 	input wire [DN_ROM_RD_BW-1:0] vnu_ram_write_dataB_2, // from portB of IB-ROM (for decision node)
 
+	// Channel Buffer RAM
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_0_ch_ram_wr_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_1_ch_ram_wr_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_2_ch_ram_wr_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_3_ch_ram_wr_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_4_ch_ram_wr_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_5_ch_ram_wr_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_6_ch_ram_wr_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_7_ch_ram_wr_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_8_ch_ram_wr_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_9_ch_ram_wr_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_0_ch_ram_rd_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_1_ch_ram_rd_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_2_ch_ram_rd_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_3_ch_ram_rd_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_4_ch_ram_rd_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_5_ch_ram_rd_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_6_ch_ram_rd_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_7_ch_ram_rd_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_8_ch_ram_rd_addr,
+	input wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_9_ch_ram_rd_addr,
+	input wire ch_ram_we,
+	input wire ch_ram_wr_clk,
+	input wire ch_ram_rd_clk,
+
 	input wire [VN_DEGREE-1:0] vnu_ib_ram_we,
 	input wire vn_write_clk,
 	input wire dn_write_clk
@@ -258,10 +288,11 @@ module submatrix_process_element #(
 
 /*--------------------------------------------------------------------------*/
 // Channel Buffers
-localparam CH_BUFF_DEPTH = ROW_CHUNK_NUM*LAYER_NUM;
 wire [CH_DATA_WIDTH-1:0] ch_msg_genIn [0:CN_DEGREE-1];
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_0 [0:CH_MSG_NUM-1]; // [0:849]
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_1 [0:CH_MSG_NUM-1]; // [0:849]
+wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr [0:CN_DEGREE-1];
+wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr [0:CN_DEGREE-1];
 genvar submatrix_id;
 generate
 	for(submatrix_id=0; submatrix_id<CN_DEGREE; submatrix_id=submatrix_id+1) begin : ch_buff_inst
@@ -270,9 +301,9 @@ generate
 			.LAYER_NUM(LAYER_NUM),
 			.ROW_CHUNK_NUM(ROW_CHUNK_NUM),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
-			.DEPTH(CH_BUFF_DEPTH),
+			.DEPTH(CH_RAM_DEPTH),
 			.DATA_WIDTH(CH_DATA_WIDTH),
-			.ADDR_WIDTH($clog2(CH_BUFF_DEPTH)),
+			.ADDR_WIDTH($clog2(CH_RAM_DEPTH)),
 			.VNU_FETCH_LATENCY (CH_FETCH_LATENCY),
 			.CNU_FETCH_LATENCY (CNU_INIT_FETCH_LATENCY)
 		) inst_ch_msg_ram (
@@ -448,14 +479,13 @@ generate
 			.cnu_init_dout_83    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 83]),
 			.cnu_init_dout_84    (ch_msg_fetchOut_0[submatrix_id*CHECK_PARALLELISM + 84]),
 
-
 			.din        (ch_msg_genIn[submatrix_id]),
 
-			.read_addr  (read_addr),
-			.write_addr (write_addr),
-			.we         (we),
-			.read_clk   (read_clk),
-			.write_clk  (write_clk),
+			.read_addr  (submatrix_ch_ram_rd_addr[submatrix_id]),
+			.write_addr (submatrix_ch_ram_wr_addr[submatrix_id]),
+			.we         (ch_ram_we),
+			.read_clk   (ch_ram_rd_clk),
+			.write_clk  (ch_ram_wr_clk),
 			.rstn       (rstn)
 		);
 	end
@@ -470,6 +500,27 @@ assign ch_msg_genIn[6] = submatrix_6_ch_msgIn[CH_DATA_WIDTH-1:0];
 assign ch_msg_genIn[7] = submatrix_7_ch_msgIn[CH_DATA_WIDTH-1:0]; 
 assign ch_msg_genIn[8] = submatrix_8_ch_msgIn[CH_DATA_WIDTH-1:0]; 
 assign ch_msg_genIn[9] = submatrix_9_ch_msgIn[CH_DATA_WIDTH-1:0]; 
+
+assign submatrix_ch_ram_wr_addr[0] = submatrix_0_ch_ram_wr_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_wr_addr[1] = submatrix_1_ch_ram_wr_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_wr_addr[2] = submatrix_2_ch_ram_wr_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_wr_addr[3] = submatrix_3_ch_ram_wr_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_wr_addr[4] = submatrix_4_ch_ram_wr_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_wr_addr[5] = submatrix_5_ch_ram_wr_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_wr_addr[6] = submatrix_6_ch_ram_wr_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_wr_addr[7] = submatrix_7_ch_ram_wr_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_wr_addr[8] = submatrix_8_ch_ram_wr_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_wr_addr[9] = submatrix_9_ch_ram_wr_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_rd_addr[0] = submatrix_0_ch_ram_rd_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_rd_addr[1] = submatrix_1_ch_ram_rd_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_rd_addr[2] = submatrix_2_ch_ram_rd_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_rd_addr[3] = submatrix_3_ch_ram_rd_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_rd_addr[4] = submatrix_4_ch_ram_rd_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_rd_addr[5] = submatrix_5_ch_ram_rd_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_rd_addr[6] = submatrix_6_ch_ram_rd_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_rd_addr[7] = submatrix_7_ch_ram_rd_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_rd_addr[8] = submatrix_8_ch_ram_rd_addr[CH_RAM_ADDR_WIDTH-1:0];
+assign submatrix_ch_ram_rd_addr[9] = submatrix_9_ch_ram_rd_addr[CH_RAM_ADDR_WIDTH-1:0];
 /*--------------------------------------------------------------------------*/
 // 1xPc number of CNUs and dcxPc number of VNUs in total
 genvar i;
@@ -490,7 +541,6 @@ generate
 			.VNU3_INSTANTIATE_UNIT(VNU3_INSTANTIATE_UNIT),
 			.BANK_NUM(BANK_NUM),
 			.IB_VNU_DECOMP_funNum(IB_VNU_DECOMP_funNum),
-			.PIPELINE_DEPTH(PIPELINE_DEPTH),
 			.VN_PIPELINE_DEPTH(VN_PIPELINE_DEPTH),
 			.DN_PIPELINE_DEPTH(DN_PIPELINE_DEPTH),
 			.MULTI_FRAME_NUM(MULTI_FRAME_NUM)
@@ -585,190 +635,4 @@ generate
 		);
 	end
 endgenerate
-/*--------------------------------------------------------------------------*/
-// Message Passing Wrapper consisting of:
-// BS, PA, Extrinsic Memories and control unit of memory write addresses
-entire_message_passing_wrapper #(
-	.QUAN_SIZE(QUAN_SIZE),
-	.LAYER_NUM(LAYER_NUM),
-	.ROW_CHUNK_NUM(ROW_CHUNK_NUM),
-	.CHECK_PARALLELISM(CHECK_PARALLELISM),
-	.VN_DEGREE(VN_DEGREE),
-	.IB_ROM_SIZE(IB_ROM_SIZE),
-	.IB_ROM_ADDR_WIDTH(IB_ROM_ADDR_WIDTH),
-	.IB_CNU_DECOMP_funNum(IB_CNU_DECOMP_funNum),
-	.IB_VNU_DECOMP_funNum(IB_VNU_DECOMP_funNum),
-	.IB_DNU_DECOMP_funNum(IB_DNU_DECOMP_funNum),
-	.ITER_ADDR_BW(ITER_ADDR_BW),
-	.ITER_ROM_GROUP(ITER_ROM_GROUP),
-	.MAX_ITER(MAX_ITER),
-	.VN_QUAN_SIZE(VN_QUAN_SIZE),
-	.VN_ROM_RD_BW(VN_ROM_RD_BW),
-	.VN_ROM_ADDR_BW(VN_ROM_ADDR_BW),
-	.VN_PIPELINE_DEPTH(VN_PIPELINE_DEPTH),
-	.VN_OVERPROVISION(VN_OVERPROVISION),
-	.DN_QUAN_SIZE(DN_QUAN_SIZE),
-	.DN_ROM_RD_BW(DN_ROM_RD_BW),
-	.DN_ROM_ADDR_BW(DN_ROM_ADDR_BW),
-	.DN_OVERPROVISION(DN_OVERPROVISION),
-	.VN_PAGE_ADDR_BW(VN_PAGE_ADDR_BW),
-	.VN_ITER_ADDR_BW(VN_ITER_ADDR_BW),
-	.DN_PAGE_ADDR_BW(DN_PAGE_ADDR_BW),
-	.DN_ITER_ADDR_BW(DN_ITER_ADDR_BW),
-	.DN_PIPELINE_DEPTH(DN_PIPELINE_DEPTH),
-	.VN_LOAD_CYCLE(VN_LOAD_CYCLE),
-	.DN_LOAD_CYCLE(DN_LOAD_CYCLE),
-	.VN_RD_BW(VN_RD_BW),
-	.DN_RD_BW(DN_RD_BW),
-	.VN_ADDR_BW(VN_ADDR_BW),
-	.DN_ADDR_BW(DN_ADDR_BW),
-	.RESET_CYCLE(RESET_CYCLE),
-	.CNU_FUNC_CYCLE(CNU_FUNC_CYCLE),
-	.CNU_PIPELINE_LEVEL(CNU_PIPELINE_LEVEL),
-	.FSM_STATE_NUM(FSM_STATE_NUM),
-	.INIT_LOAD(INIT_LOAD),
-	.MEM_FETCH(MEM_FETCH),
-	.VNU_IB_RAM_PEND(VNU_IB_RAM_PEND),
-	.CNU_PIPE(CNU_PIPE),
-	.CNU_OUT(CNU_OUT),
-	.BS_WB(BS_WB),
-	.PAGE_ALIGN(PAGE_ALIGN),
-	.MEM_WB(MEM_WB),
-	.IDLE(IDLE),
-	.VN_PIPELINE_BUBBLE(VN_PIPELINE_BUBBLE),
-	.VNU_FUNC_CYCLE(VNU_FUNC_CYCLE),
-	.DNU_FUNC_CYCLE(DNU_FUNC_CYCLE),
-	.VNU_FUNC_MEM_END(VNU_FUNC_MEM_END),
-	.DNU_FUNC_MEM_END(DNU_FUNC_MEM_END),
-	.VNU_WR_HANDSHAKE_RESPONSE(VNU_WR_HANDSHAKE_RESPONSE),
-	.DNU_WR_HANDSHAKE_RESPONSE(DNU_WR_HANDSHAKE_RESPONSE),
-	.VNU_PIPELINE_LEVEL(VNU_PIPELINE_LEVEL),
-	.DNU_PIPELINE_LEVEL(DNU_PIPELINE_LEVEL),
-	.PERMUTATION_LEVEL(PERMUTATION_LEVEL),
-	.PAGE_ALIGN_LEVEL(PAGE_ALIGN_LEVEL),
-	.MEM_RD_LEVEL(MEM_RD_LEVEL),
-	.CTRL_FSM_STATE_NUM(CTRL_FSM_STATE_NUM),
-	.WR_FSM_STATE_NUM(WR_FSM_STATE_NUM),
-	.VNU_INIT_LOAD(VNU_INIT_LOAD),
-	.VNU_MEM_FETCH(VNU_MEM_FETCH),
-	.VNU_VNU_PIPE(VNU_VNU_PIPE),
-	.VNU_VNU_OUT(VNU_VNU_OUT),
-	.VNU_BS_WB(VNU_BS_WB),
-	.VNU_PAGE_ALIGN(VNU_PAGE_ALIGN),
-	.VNU_MEM_WB(VNU_MEM_WB),
-	.VNU_IDLE(VNU_IDLE),
-	.RAM_DEPTH(RAM_DEPTH),
-	.RAM_ADDR_BITWIDTH(RAM_ADDR_BITWIDTH),
-	.BITWIDTH_SHIFT_FACTOR(BITWIDTH_SHIFT_FACTOR),
-	.RAM_PORTA_RANGE(RAM_PORTA_RANGE),
-	.RAM_PORTB_RANGE(RAM_PORTB_RANGE),
-	.MEM_DEVICE_NUM(MEM_DEVICE_NUM),
-	.C2V_MEM_ADDR_BASE(C2V_MEM_ADDR_BASE),
-	.V2C_MEM_ADDR_BASE(V2C_MEM_ADDR_BASE),
-	.V2C_DATA_WIDTH(V2C_DATA_WIDTH),
-	.C2V_DATA_WIDTH(C2V_DATA_WIDTH),
-	.BS_PIPELINE_LEVEL(BS_PIPELINE_LEVEL),
-	.START_PAGE_0_0(START_PAGE_0_0),
-	.START_PAGE_0_1(START_PAGE_0_1),
-	.START_PAGE_0_2(START_PAGE_0_2),
-	.START_PAGE_1_0(START_PAGE_1_0),
-	.START_PAGE_1_1(START_PAGE_1_1),
-	.START_PAGE_1_2(START_PAGE_1_2),
-	.START_PAGE_2_0(START_PAGE_2_0),
-	.START_PAGE_2_1(START_PAGE_2_1),
-	.START_PAGE_2_2(START_PAGE_2_2),
-	.START_PAGE_3_0(START_PAGE_3_0),
-	.START_PAGE_3_1(START_PAGE_3_1),
-	.START_PAGE_3_2(START_PAGE_3_2),
-	.START_PAGE_4_0(START_PAGE_4_0),
-	.START_PAGE_4_1(START_PAGE_4_1),
-	.START_PAGE_4_2(START_PAGE_4_2),
-	.START_PAGE_5_0(START_PAGE_5_0),
-	.START_PAGE_5_1(START_PAGE_5_1),
-	.START_PAGE_5_2(START_PAGE_5_2),
-	.START_PAGE_6_0(START_PAGE_6_0),
-	.START_PAGE_6_1(START_PAGE_6_1),
-	.START_PAGE_6_2(START_PAGE_6_2),
-	.START_PAGE_7_0(START_PAGE_7_0),
-	.START_PAGE_7_1(START_PAGE_7_1),
-	.START_PAGE_7_2(START_PAGE_7_2),
-	.START_PAGE_8_0(START_PAGE_8_0),
-	.START_PAGE_8_1(START_PAGE_8_1),
-	.START_PAGE_8_2(START_PAGE_8_2),
-	.START_PAGE_9_0(START_PAGE_9_0),
-	.START_PAGE_9_1(START_PAGE_9_1),
-	.START_PAGE_9_2(START_PAGE_9_2),
-	.DEPTH(DEPTH),
-	.DATA_WIDTH(DATA_WIDTH),
-	.FRAG_DATA_WIDTH(FRAG_DATA_WIDTH),
-	.ADDR_WIDTH(ADDR_WIDTH)
-) inst_entire_message_passing_wrapper (
-		.mem_to_cnu_sub0    (mem_to_cnu_sub0_reg0),
-		.mem_to_cnu_sub1    (mem_to_cnu_sub1_reg0),
-		.mem_to_cnu_sub2    (mem_to_cnu_sub2_reg0),
-		.mem_to_cnu_sub3    (mem_to_cnu_sub3_reg0),
-		.mem_to_cnu_sub4    (mem_to_cnu_sub4_reg0),
-		.mem_to_cnu_sub5    (mem_to_cnu_sub5_reg0),
-		.mem_to_cnu_sub6    (mem_to_cnu_sub6_reg0),
-		.mem_to_cnu_sub7    (mem_to_cnu_sub7_reg0),
-		.mem_to_cnu_sub8    (mem_to_cnu_sub8_reg0),
-		.mem_to_cnu_sub9    (mem_to_cnu_sub9_reg0),
-
-		.mem_to_vnu_sub0    (mem_to_vnu_sub0_reg0),
-		.mem_to_vnu_sub1    (mem_to_vnu_sub1_reg0),
-		.mem_to_vnu_sub2    (mem_to_vnu_sub2_reg0),
-		.mem_to_vnu_sub3    (mem_to_vnu_sub3_reg0),
-		.mem_to_vnu_sub4    (mem_to_vnu_sub4_reg0),
-		.mem_to_vnu_sub5    (mem_to_vnu_sub5_reg0),
-		.mem_to_vnu_sub6    (mem_to_vnu_sub6_reg0),
-		.mem_to_vnu_sub7    (mem_to_vnu_sub7_reg0),
-		.mem_to_vnu_sub8    (mem_to_vnu_sub8_reg0),
-		.mem_to_vnu_sub9    (mem_to_vnu_sub9_reg0),
-
-		.c2v_bs_in_sub0     ({{339{1'b1}}, c2v_bs_in_sub0}),
-		.c2v_bs_in_sub1     ({{339{1'b1}}, c2v_bs_in_sub1}),
-		.c2v_bs_in_sub2     ({{339{1'b1}}, c2v_bs_in_sub2}),
-		.c2v_bs_in_sub3     ({{339{1'b1}}, c2v_bs_in_sub3}),
-		.c2v_bs_in_sub4     ({{339{1'b1}}, c2v_bs_in_sub4}),
-		.c2v_bs_in_sub5     ({{339{1'b1}}, c2v_bs_in_sub5}),
-		.c2v_bs_in_sub6     ({{339{1'b1}}, c2v_bs_in_sub6}),
-		.c2v_bs_in_sub7     ({{339{1'b1}}, c2v_bs_in_sub7}),
-		.c2v_bs_in_sub8     ({{339{1'b1}}, c2v_bs_in_sub8}),
-		.c2v_bs_in_sub9     ({{339{1'b1}}, c2v_bs_in_sub9}),
-
-		.v2c_bs_in_sub0     ({{339{1'b1}}, v2c_bs_in_sub0}),
-		.v2c_bs_in_sub1     ({{339{1'b1}}, v2c_bs_in_sub1}),
-		.v2c_bs_in_sub2     ({{339{1'b1}}, v2c_bs_in_sub2}),
-		.v2c_bs_in_sub3     ({{339{1'b1}}, v2c_bs_in_sub3}),
-		.v2c_bs_in_sub4     ({{339{1'b1}}, v2c_bs_in_sub4}),
-		.v2c_bs_in_sub5     ({{339{1'b1}}, v2c_bs_in_sub5}),
-		.v2c_bs_in_sub6     ({{339{1'b1}}, v2c_bs_in_sub6}),
-		.v2c_bs_in_sub7     ({{339{1'b1}}, v2c_bs_in_sub7}),
-		.v2c_bs_in_sub8     ({{339{1'b1}}, v2c_bs_in_sub8}),
-		.v2c_bs_in_sub9     ({{339{1'b1}}, v2c_bs_in_sub9}),
-
-		.ch_bs_in_sub0      ({{339{1'b1}}, ch_bs_in_sub0}),
-		.ch_bs_in_sub1      ({{339{1'b1}}, ch_bs_in_sub1}),
-		.ch_bs_in_sub2      ({{339{1'b1}}, ch_bs_in_sub2}),
-		.ch_bs_in_sub3      ({{339{1'b1}}, ch_bs_in_sub3}),
-		.ch_bs_in_sub4      ({{339{1'b1}}, ch_bs_in_sub4}),
-		.ch_bs_in_sub5      ({{339{1'b1}}, ch_bs_in_sub5}),
-		.ch_bs_in_sub6      ({{339{1'b1}}, ch_bs_in_sub6}),
-		.ch_bs_in_sub7      ({{339{1'b1}}, ch_bs_in_sub7}),
-		.ch_bs_in_sub8      ({{339{1'b1}}, ch_bs_in_sub8}),
-		.ch_bs_in_sub9      ({{339{1'b1}}, ch_bs_in_sub9}),
-
-		.c2v_bs_en          (c2v_bs_en),
-		.v2c_bs_en          (v2c_bs_en),
-		.vnu_bs_src         (vnu_bs_src),
-		.c2v_mem_we         (c2v_mem_we),
-		.v2c_mem_we         (v2c_mem_we),
-		.v2c_layer_cnt      (v2c_layer_cnt),
-		.c2v_last_row_chunk (c2v_last_row_chunk),
-		.v2c_last_row_chunk (v2c_last_row_chunk),
-		.c2v_row_chunk_cnt  (c2v_row_chunk_cnt),
-		.v2c_row_chunk_cnt  (v2c_row_chunk_cnt),
-		.read_clk           (read_clk),
-		.rstn               (rstn)
-);
 endmodule
