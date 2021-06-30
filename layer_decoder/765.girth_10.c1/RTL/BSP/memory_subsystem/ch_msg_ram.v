@@ -195,9 +195,8 @@ module ch_msg_ram #(
 
 // Core Memory
 reg [DATA_WIDTH-1:0] ram_block [0:DEPTH-1];
-wire [DATA_WIDTH-1:0] din; 
 
- // Port-A
+// Port-A
 always @(posedge write_clk) begin
 	if(we == 1'b1)
 		ram_block[write_addr] <= din;

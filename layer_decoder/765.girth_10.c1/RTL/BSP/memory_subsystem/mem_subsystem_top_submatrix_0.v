@@ -14,6 +14,7 @@ module mem_subsystem_top_submatrix_0 #(
 	parameter FRAG_DATA_WIDTH = 16,
 	parameter ADDR_WIDTH = $clog2(DEPTH)
 ) (
+	output wire [CHECK_PARALLELISM-1:0] vnu_pa_msg_bit0,
 	// The memory Dout port to variable nodes as instrinsic messages
 	output wire [QUAN_SIZE-1:0] mem_to_vnu_0,
 	output wire [QUAN_SIZE-1:0] mem_to_vnu_1,
@@ -1094,5 +1095,6 @@ column_ram_pc85 #(
 	.we             (we),
 	.sys_clk        (sys_clk)
 );
+assign vnu_pa_msg_bit0[CHECK_PARALLELISM-1:0] = {vnu_pa_msg[84][0],vnu_pa_msg[83][0],vnu_pa_msg[82][0],vnu_pa_msg[81][0],vnu_pa_msg[80][0],vnu_pa_msg[79][0],vnu_pa_msg[78][0],vnu_pa_msg[77][0],vnu_pa_msg[76][0],vnu_pa_msg[75][0],vnu_pa_msg[74][0],vnu_pa_msg[73][0],vnu_pa_msg[72][0],vnu_pa_msg[71][0],vnu_pa_msg[70][0],vnu_pa_msg[69][0],vnu_pa_msg[68][0],vnu_pa_msg[67][0],vnu_pa_msg[66][0],vnu_pa_msg[65][0],vnu_pa_msg[64][0],vnu_pa_msg[63][0],vnu_pa_msg[62][0],vnu_pa_msg[61][0],vnu_pa_msg[60][0],vnu_pa_msg[59][0],vnu_pa_msg[58][0],vnu_pa_msg[57][0],vnu_pa_msg[56][0],vnu_pa_msg[55][0],vnu_pa_msg[54][0],vnu_pa_msg[53][0],vnu_pa_msg[52][0],vnu_pa_msg[51][0],vnu_pa_msg[50][0],vnu_pa_msg[49][0],vnu_pa_msg[48][0],vnu_pa_msg[47][0],vnu_pa_msg[46][0],vnu_pa_msg[45][0],vnu_pa_msg[44][0],vnu_pa_msg[43][0],vnu_pa_msg[42][0],vnu_pa_msg[41][0],vnu_pa_msg[40][0],vnu_pa_msg[39][0],vnu_pa_msg[38][0],vnu_pa_msg[37][0],vnu_pa_msg[36][0],vnu_pa_msg[35][0],vnu_pa_msg[34][0],vnu_pa_msg[33][0],vnu_pa_msg[32][0],vnu_pa_msg[31][0],vnu_pa_msg[30][0],vnu_pa_msg[29][0],vnu_pa_msg[28][0],vnu_pa_msg[27][0],vnu_pa_msg[26][0],vnu_pa_msg[25][0],vnu_pa_msg[24][0],vnu_pa_msg[23][0],vnu_pa_msg[22][0],vnu_pa_msg[21][0],vnu_pa_msg[20][0],vnu_pa_msg[19][0],vnu_pa_msg[18][0],vnu_pa_msg[17][0],vnu_pa_msg[16][0],vnu_pa_msg[15][0],vnu_pa_msg[14][0],vnu_pa_msg[13][0],vnu_pa_msg[12][0],vnu_pa_msg[11][0],vnu_pa_msg[10][0],vnu_pa_msg[9][0],vnu_pa_msg[8][0],vnu_pa_msg[7][0],vnu_pa_msg[6][0],vnu_pa_msg[5][0],vnu_pa_msg[4][0],vnu_pa_msg[3][0],vnu_pa_msg[2][0],vnu_pa_msg[1][0],vnu_pa_msg[0][0]};
 endmodule
 `endif
