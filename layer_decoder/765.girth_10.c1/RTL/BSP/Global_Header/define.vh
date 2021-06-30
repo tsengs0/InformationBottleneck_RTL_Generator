@@ -269,13 +269,16 @@
 		`define MULTI_FRAME_NUM 2
 	`endif // DECODER_4bit
 `elsif QC_RC_7650
-	`define VN_NUM 7650
 	`define VN_DEGREE 3   // degree of one variable node
 	`define CN_DEGREE 10  // degree of one check node 
 	`define SUBMATRIX_Z 765
+	`define CHECK_PARALLELISM 85
+	`define ROW_CHUNK_NUM `SUBMATRIX_Z / `CHECK_PARALLELISM
 	`define CN_NUM  SUBMATRIX_Z*VN_DEGREE // # CNs
 	`define VN_NUM  SUBMATRIX_Z*CN_DEGREE // # VNs 
 	`define QUAN_SIZE 4
+	`define READ_CLK_RATE 100 // 100MHz
+	`define WRITE_CLK_RATE 200 // 200MHz
 
 	//`define SCHED_4_4
 	`define SCHED_4_6
@@ -295,4 +298,12 @@
 		`define CNU_INIT_FETCH_LATENCY 1
 		`define BS_PIPELINE_LEVEL 2
 	`endif
+
+	`define CODE_RATE_070
+	`define NG_NUM 10  // 10 codeword segments
+	`define NG_SIZE (`SUBMATRIX_Z*`CN_DEGREE)/`NG_NUM // the number of codebits in each codeword segment
+	`define ERR_FRAME_HALT 1020
+	`define SNR_SET_NUM 61 // from SNR_0.1 (dB) to SNR_6.0 (dB)
+	`define START_SNR 1
+	`define ALL_ZERO_CODEWORD // only evaluating all-zero codewords
 `endif 
