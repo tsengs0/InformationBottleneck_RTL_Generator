@@ -43,19 +43,21 @@ module vnu_control_unit #(
 
     parameter PERMUTATION_LEVEL = 2, // every circular shifter takes 2 clock cycles
     parameter PAGE_ALIGN_LEVEL  = 1,
+    parameter CH_BUBBLE_LEVEL   = 2,
     parameter PAGE_MEM_WB_LEVEL = 1,
 	parameter MEM_RD_LEVEL      = 2, // every memory fetching process take 2 clock cycles
-	parameter FSM_STATE_NUM     = 10,
+	parameter FSM_STATE_NUM     = 11,
 	parameter [$clog2(FSM_STATE_NUM)-1:0] INIT_LOAD       = 0,
 	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_IB_RAM_PEND = 1,
 	parameter [$clog2(FSM_STATE_NUM)-1:0] CH_FETCH        = 2,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_FETCH       = 3,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_PIPE        = 4,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_OUT         = 5,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] BS_WB 		  = 6,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] PAGE_ALIGN 	  = 7,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_WB 		  = 8,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] IDLE  		  = 9
+	parameter [$clog2(FSM_STATE_NUM)-1:0] CH_BUBBLE       = 3,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_FETCH       = 4,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_PIPE        = 5,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_OUT         = 6,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] BS_WB 		  = 7,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] PAGE_ALIGN 	  = 8,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_WB 		  = 9,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] IDLE  		  = 10
 ) (
 	// output port for IB-ROM update
 	output wire [`IB_VNU_DECOMP_funNum-1:0] vnu_wr,
@@ -79,7 +81,8 @@ module vnu_control_unit #(
 	output wire v2c_outRotate_reg_we,
 	output wire dnu_inRotate_bs_en,
 	output wire dnu_inRotate_pa_en,
-	output wire dnu_inRotate_wb,
+	//output wire dnu_inRotate_wb,
+	output reg dnu_inRotate_wb,
 `endif
 	output wire layer_finish,
 
@@ -119,12 +122,23 @@ always @(posedge read_clk, negedge rstn) begin
 	else decode_start <= decode_start;
 end
 
-initial layer_cnt <= 0;
-always @(posedge read_clk) begin
-	if(rstn == 1'b0) layer_cnt <= 1;
-	else if(layer_finish == 1'b1) layer_cnt[LAYER_NUM-1:0] <= {layer_cnt[LAYER_NUM-2:0], layer_cnt[LAYER_NUM-1]};
-	else layer_cnt <= layer_cnt;
-end
+`ifdef SCHED_4_6
+	reg layer_finish_reg0;
+	initial begin layer_cnt <= 0; layer_finish_reg0 <= 0; end
+	always @(posedge read_clk) begin if(!rstn) layer_finish_reg0 <= 0; else layer_finish_reg0 <= layer_finish; end
+	always @(posedge read_clk) begin
+		if(rstn == 1'b0) layer_cnt <= 1;
+		else if(layer_finish_reg0 == 1'b1) layer_cnt[LAYER_NUM-1:0] <= {layer_cnt[LAYER_NUM-2:0], layer_cnt[LAYER_NUM-1]};
+		else layer_cnt <= layer_cnt;
+	end
+`else
+	initial layer_cnt <= 0;
+	always @(posedge read_clk) begin
+		if(rstn == 1'b0) layer_cnt <= 1;
+		else if(layer_finish == 1'b1) layer_cnt[LAYER_NUM-1:0] <= {layer_cnt[LAYER_NUM-2:0], layer_cnt[LAYER_NUM-1]};
+		else layer_cnt <= layer_cnt;
+	end
+`endif
 reg [`MAX_ITER-1:0] iter_cnt;
 always @(posedge read_clk) begin
 	if(rstn == 1'b0) iter_cnt <= 1;
@@ -194,6 +208,7 @@ reg [MEM_RD_LEVEL-1:0] fetch_pipeline_level;
 reg v2c_msg_busy; // Assertion whenever the message passing is done
 `ifdef SCHED_4_6 // only one clock cycle delay of page alignment when schedule 4.6 is configured
 	reg page_align_pipeline_level;
+	reg [CH_BUBBLE_LEVEL-1:0] ch_bubble_pipeline_level;
 `endif
 //------------------------------------------------------------------------------------
 // Control signals for handshaking scheme between System.FSM and WR.FSM
@@ -243,6 +258,15 @@ always @(posedge read_clk) begin
 	else page_align_pipeline_level[PAGE_ALIGN_LEVEL-1:0] <= {page_align_pipeline_level[PAGE_ALIGN_LEVEL-2:0], bs_pipeline_level[PERMUTATION_LEVEL-1]};
 `endif
 end
+
+`ifdef SCHED_4_6
+initial ch_bubble_pipeline_level <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) ch_bubble_pipeline_level <= 1;
+	else if(state == CH_BUBBLE) ch_bubble_pipeline_level[CH_BUBBLE_LEVEL-1:0] <= {ch_bubble_pipeline_level[CH_BUBBLE_LEVEL-2:0], ch_bubble_pipeline_level[CH_BUBBLE_LEVEL-1]};
+	else ch_bubble_pipeline_level <= 1;
+end
+`endif
 
 initial v2c_msg_busy <= 1'b0;
 always @(posedge read_clk, negedge rstn) begin
@@ -369,7 +393,14 @@ always @(posedge read_clk) begin
         end
 //////////////////////////////////////////////////////////////////////////////////////////////////////
         CH_FETCH : begin
-			state <= MEM_FETCH;
+			state <= CH_BUBBLE;
+		end
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+        CH_BUBBLE : begin
+        	if(ch_bubble_pipeline_level[CH_BUBBLE_LEVEL-1] == 1'b1)
+				state <= MEM_FETCH;
+			else
+				state <= CH_BUBBLE;
 		end
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 		MEM_FETCH : begin
@@ -573,32 +604,34 @@ always @(posedge read_clk) begin
 end
 always @(posedge read_clk) begin
 	if(rstn == 1'b0) vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1:0] <= 1;
-	else if(state >= VNU_PIPE) vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1:0] <= {vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-2:0], vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1]};
+	else if(
+			(state == MEM_FETCH && fetch_pipeline_level[0] == 1'b1) ||
+			state >= VNU_PIPE
+	) vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1:0] <= {vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-2:0], vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1]};
 	else vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1:0] <= 1;
 end
 
 assign ch_ram_init_we = (state == INIT_LOAD && (iter_cnt[0] == 1'b1 && layer_cnt[0] == 1'b1)) ? 1'b1 && rstn : 1'b0;
 assign ch_bs_en = (
 					(
-				  	 (state == MEM_FETCH) || 
-				  	 (state >= VNU_PIPE && state <= VNU_OUT) || 
-				  	 (state == IDLE && vnu_main_sys_cnt[15] == 1'b1)
+					 (state >= CH_BUBBLE && state <= VNU_OUT)
 				  	) &&
 				  	(iter_cnt[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b0)
 				  	// Since last layer is connectd to first layer and channel MSGs permutation for first layer has been done at first layer
 				  	// therefore, there is no need for permutaiton at last layer which is unlike the v2c message passing
 				  ) ? 1'b1 : 1'b0;
 
-
+/*
 wire [7:0] ch_pa_en_phase_0; assign ch_pa_en_phase_0[7:0] = vnu_main_sys_cnt[7:0];
 wire ch_pa_en_phase_1; assign ch_pa_en_phase_1 = vnu_main_sys_cnt[17];
 assign ch_pa_en = (state >= VNU_PIPE && |ch_pa_en_phase_0 && (iter_cnt[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b0)) ? 1'b1 :
 				  (ch_pa_en_phase_1 == 1'b1 && (iter_cnt[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b0)) ? 1'b1 : 1'b0;
-
+*/
 always @(posedge read_clk) begin
 	if(rstn == 1'b0) ch_ram_wb <= 1'b0;
 	else ch_ram_wb <= ch_pa_en; // assertion of one clock cycle after enable-asserition of CH_PA
 end
+assign ch_pa_en = (state == MEM_FETCH && fetch_pipeline_level[0] == 1'b1) ? 1'b1 : 1'b0;
 assign layer_finish = (vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1] == 1'b1) ? 1'b1 : 1'b0;
 /*-------------------------------------------------------------------------------------------------------------------*/
 // Enable signal of fetching channel buffers
@@ -611,12 +644,17 @@ assign c2v_mem_fetch = (state == MEM_FETCH && fetch_pipeline_level[0] == 1'b1) ?
 `ifdef SCHED_4_6
 // Basing on the fact that the Sign-Inversion Contrl signl is output by VNU_PIPE_OUT
 assign v2c_outRotate_reg_we = (state == BS_WB && bs_pipeline_level[0] == 1'b1 && layer_cnt[1] == 1'b1) ? 1'b1 : 1'b0;
-assign dnu_inRotate_bs_en = (state == VNU_PIPE && 
+assign dnu_inRotate_bs_en = (state == CH_BUBBLE && ch_bubble_pipeline_level[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b1) ? 1'b1 : 1'b0;
+							/*
+							(state == VNU_PIPE && 
 							 vnu_pipeline_level[PERMUTATION_LEVEL-1:0] > 0 && 
 							 layer_cnt[LAYER_NUM-1] == 1'b1
 							 ) ? 1'b1 : 1'b0;
-assign dnu_inRotate_pa_en = (layer_cnt[LAYER_NUM-1] == 1'b1 && vnu_pipeline_level[PERMUTATION_LEVEL] == 1'b1) ? 1'b1 : 1'b0;
-assign dnu_inRotate_wb = (layer_cnt[LAYER_NUM-1] == 1'b1 && vnu_pipeline_level[PERMUTATION_LEVEL+1] == 1'b1) ? 1'b1 : 1'b0;
+							*/
+assign dnu_inRotate_pa_en = (state == MEM_FETCH && fetch_pipeline_level[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b1) ? 1'b1 : 1'b0;
+							//(layer_cnt[LAYER_NUM-1] == 1'b1 && vnu_pipeline_level[PERMUTATION_LEVEL] == 1'b1) ? 1'b1 : 1'b0;
+//assign dnu_inRotate_wb = (state == VNU_PIPE && vnu_pipeline_level[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b1) ? 1'b1 : 1'b0;
+always @(posedge read_clk) begin if(!rstn) dnu_inRotate_wb <= 0; else dnu_inRotate_wb <= dnu_inRotate_pa_en; end
 `endif
 /*-------------------------------------------------------------------------------------------------------------------*/
 // State Signal - hard decision is going to be done one clock cycle later

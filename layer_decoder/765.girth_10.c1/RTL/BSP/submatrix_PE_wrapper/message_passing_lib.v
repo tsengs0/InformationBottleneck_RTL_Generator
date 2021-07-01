@@ -116,7 +116,7 @@ module entire_message_passing_wrapper #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 2,
+	parameter CH_FETCH_LATENCY = 3,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
@@ -271,7 +271,6 @@ module entire_message_passing_wrapper #(
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
-	input wire dnu_inRotate_pa_en,
 	input wire dnu_inRotate_wb,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -348,7 +347,7 @@ module entire_message_passing_wrapper #(
 			.dnu_signExten 		(dnu_signExten_sub0),
 			.c2v_bs_in          (c2v_bs_in_sub0 ),
 			.v2c_bs_in          (v2c_bs_in_sub0 ),
-
+			.coded_block 		(coded_block_sub0),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub0),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src[2]), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 
@@ -363,7 +362,6 @@ module entire_message_passing_wrapper #(
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
-			.dnu_inRotate_pa_en   (dnu_inRotate_pa_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -438,7 +436,7 @@ module entire_message_passing_wrapper #(
 			.c2v_bs_in          (c2v_bs_in_sub1 ),
 			.v2c_bs_in          (v2c_bs_in_sub1 ),
 			.ch_bs_in   		(ch_bs_in_sub1),
-
+			.coded_block 		(coded_block_sub1),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub1),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 
@@ -454,7 +452,6 @@ module entire_message_passing_wrapper #(
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
-			.dnu_inRotate_pa_en   (dnu_inRotate_pa_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -530,7 +527,7 @@ module entire_message_passing_wrapper #(
 			.c2v_bs_in          (c2v_bs_in_sub2 ),
 			.v2c_bs_in          (v2c_bs_in_sub2 ),
 			.ch_bs_in   		(ch_bs_in_sub2),
-
+			.coded_block 		(coded_block_sub2),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub2),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 
@@ -546,7 +543,6 @@ module entire_message_passing_wrapper #(
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
-			.dnu_inRotate_pa_en   (dnu_inRotate_pa_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -622,7 +618,7 @@ module entire_message_passing_wrapper #(
 			.c2v_bs_in          (c2v_bs_in_sub3 ),
 			.v2c_bs_in          (v2c_bs_in_sub3 ),
 			.ch_bs_in   		(ch_bs_in_sub3),
-
+			.coded_block 		(coded_block_sub3),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub3),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 
@@ -638,7 +634,6 @@ module entire_message_passing_wrapper #(
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
-			.dnu_inRotate_pa_en   (dnu_inRotate_pa_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -714,7 +709,7 @@ module entire_message_passing_wrapper #(
 			.c2v_bs_in          (c2v_bs_in_sub4 ),
 			.v2c_bs_in          (v2c_bs_in_sub4 ),
 			.ch_bs_in   		(ch_bs_in_sub4),
-
+			.coded_block 		(coded_block_sub4),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub4),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 
@@ -730,7 +725,6 @@ module entire_message_passing_wrapper #(
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
-			.dnu_inRotate_pa_en   (dnu_inRotate_pa_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -806,7 +800,7 @@ module entire_message_passing_wrapper #(
 			.c2v_bs_in          (c2v_bs_in_sub5 ),
 			.v2c_bs_in          (v2c_bs_in_sub5 ),
 			.ch_bs_in   		(ch_bs_in_sub5),
-
+			.coded_block 		(coded_block_sub5),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub5),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 
@@ -822,7 +816,6 @@ module entire_message_passing_wrapper #(
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
-			.dnu_inRotate_pa_en   (dnu_inRotate_pa_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -898,7 +891,7 @@ module entire_message_passing_wrapper #(
 			.c2v_bs_in          (c2v_bs_in_sub6 ),
 			.v2c_bs_in          (v2c_bs_in_sub6 ),
 			.ch_bs_in   		(ch_bs_in_sub6),
-
+			.coded_block 		(coded_block_sub6),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub6),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 
@@ -914,7 +907,6 @@ module entire_message_passing_wrapper #(
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
-			.dnu_inRotate_pa_en   (dnu_inRotate_pa_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -990,7 +982,7 @@ module entire_message_passing_wrapper #(
 			.c2v_bs_in          (c2v_bs_in_sub7 ),
 			.v2c_bs_in          (v2c_bs_in_sub7 ),
 			.ch_bs_in   		(ch_bs_in_sub7),
-
+			.coded_block 		(coded_block_sub7),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub7),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 
@@ -1006,7 +998,6 @@ module entire_message_passing_wrapper #(
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
-			.dnu_inRotate_pa_en   (dnu_inRotate_pa_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -1082,7 +1073,7 @@ module entire_message_passing_wrapper #(
 			.c2v_bs_in          (c2v_bs_in_sub8 ),
 			.v2c_bs_in          (v2c_bs_in_sub8 ),
 			.ch_bs_in   		(ch_bs_in_sub8),
-
+			.coded_block 		(coded_block_sub8),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub8),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 
@@ -1098,7 +1089,6 @@ module entire_message_passing_wrapper #(
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
-			.dnu_inRotate_pa_en   (dnu_inRotate_pa_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -1174,7 +1164,7 @@ module entire_message_passing_wrapper #(
 			.c2v_bs_in          (c2v_bs_in_sub9 ),
 			.v2c_bs_in          (v2c_bs_in_sub9 ),
 			.ch_bs_in   		(ch_bs_in_sub9),
-
+			.coded_block 		(coded_block_sub9),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub9),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
 
@@ -1190,7 +1180,6 @@ module entire_message_passing_wrapper #(
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
-			.dnu_inRotate_pa_en   (dnu_inRotate_pa_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -1242,7 +1231,7 @@ module msg_pass_submatrix_0_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 2,
+	parameter CH_FETCH_LATENCY = 3,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
@@ -1286,7 +1275,6 @@ module msg_pass_submatrix_0_unit #(
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
-	input wire dnu_inRotate_pa_en,
 	input wire dnu_inRotate_wb,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -1790,7 +1778,7 @@ zero_shuffle_top_85b #(
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.last_row_chunk   ({c2v_last_row_chunk, v2c_last_row_chunk}),
+			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
@@ -2195,7 +2183,7 @@ module msg_pass_submatrix_1_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 2,
+	parameter CH_FETCH_LATENCY = 3,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
@@ -2238,7 +2226,6 @@ module msg_pass_submatrix_1_unit #(
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
-	input wire dnu_inRotate_pa_en,
 	input wire dnu_inRotate_wb,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -2729,7 +2716,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.last_row_chunk   ({c2v_last_row_chunk, v2c_last_row_chunk}),
+			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
@@ -2782,7 +2769,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			c2v_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(c2v_bs_en == 1'b1) begin
-			c2v_shift_factor_cur_2 <= 0;
+			c2v_shift_factor_cur_2 <= c2v_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_1 <= c2v_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_0 <= c2v_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -3228,7 +3215,7 @@ module msg_pass_submatrix_2_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 2,
+	parameter CH_FETCH_LATENCY = 3,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
@@ -3272,7 +3259,6 @@ module msg_pass_submatrix_2_unit #(
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
-	input wire dnu_inRotate_pa_en,
 	input wire dnu_inRotate_wb,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -3758,7 +3744,7 @@ shared_qsn_top_85b #(
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.last_row_chunk   ({c2v_last_row_chunk, v2c_last_row_chunk}),
+			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
@@ -3811,7 +3797,7 @@ shared_qsn_top_85b #(
 			c2v_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(c2v_bs_en == 1'b1) begin
-			c2v_shift_factor_cur_2 <= 0;
+			c2v_shift_factor_cur_2 <= c2v_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_1 <= c2v_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_0 <= c2v_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -4257,7 +4243,7 @@ module msg_pass_submatrix_3_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 2,
+	parameter CH_FETCH_LATENCY = 3,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
@@ -4301,7 +4287,6 @@ module msg_pass_submatrix_3_unit #(
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
-	input wire dnu_inRotate_pa_en,
 	input wire dnu_inRotate_wb,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -4787,7 +4772,7 @@ shared_qsn_top_85b #(
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.last_row_chunk   ({c2v_last_row_chunk, v2c_last_row_chunk}),
+			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
@@ -4840,7 +4825,7 @@ shared_qsn_top_85b #(
 			c2v_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(c2v_bs_en == 1'b1) begin
-			c2v_shift_factor_cur_2 <= 0;
+			c2v_shift_factor_cur_2 <= c2v_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_1 <= c2v_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_0 <= c2v_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -5286,7 +5271,7 @@ module msg_pass_submatrix_4_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 2,
+	parameter CH_FETCH_LATENCY = 3,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
@@ -5329,7 +5314,6 @@ module msg_pass_submatrix_4_unit #(
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
-	input wire dnu_inRotate_pa_en,
 	input wire dnu_inRotate_wb,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -5822,7 +5806,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.last_row_chunk   ({c2v_last_row_chunk, v2c_last_row_chunk}),
+			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
@@ -5875,7 +5859,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			c2v_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(c2v_bs_en == 1'b1) begin
-			c2v_shift_factor_cur_2 <= 0;
+			c2v_shift_factor_cur_2 <= c2v_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_1 <= c2v_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_0 <= c2v_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -6321,7 +6305,7 @@ module msg_pass_submatrix_5_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 2,
+	parameter CH_FETCH_LATENCY = 3,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
@@ -6365,7 +6349,6 @@ module msg_pass_submatrix_5_unit #(
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
-	input wire dnu_inRotate_pa_en,
 	input wire dnu_inRotate_wb,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -6856,7 +6839,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.last_row_chunk   ({c2v_last_row_chunk, v2c_last_row_chunk}),
+			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
@@ -6909,7 +6892,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			c2v_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(c2v_bs_en == 1'b1) begin
-			c2v_shift_factor_cur_2 <= 0;
+			c2v_shift_factor_cur_2 <= c2v_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_1 <= c2v_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_0 <= c2v_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -7355,7 +7338,7 @@ module msg_pass_submatrix_6_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 2,
+	parameter CH_FETCH_LATENCY = 3,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
@@ -7399,7 +7382,6 @@ module msg_pass_submatrix_6_unit #(
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
-	input wire dnu_inRotate_pa_en,
 	input wire dnu_inRotate_wb,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -7890,7 +7872,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.last_row_chunk   ({c2v_last_row_chunk, v2c_last_row_chunk}),
+			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
@@ -7943,7 +7925,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			c2v_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(c2v_bs_en == 1'b1) begin
-			c2v_shift_factor_cur_2 <= 0;
+			c2v_shift_factor_cur_2 <= c2v_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_1 <= c2v_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_0 <= c2v_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -8389,7 +8371,7 @@ module msg_pass_submatrix_7_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 2,
+	parameter CH_FETCH_LATENCY = 3,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
@@ -8433,7 +8415,6 @@ module msg_pass_submatrix_7_unit #(
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
-	input wire dnu_inRotate_pa_en,
 	input wire dnu_inRotate_wb,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -8924,7 +8905,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.last_row_chunk   ({c2v_last_row_chunk, v2c_last_row_chunk}),
+			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
@@ -8977,7 +8958,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			c2v_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(c2v_bs_en == 1'b1) begin
-			c2v_shift_factor_cur_2 <= 0;
+			c2v_shift_factor_cur_2 <= c2v_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_1 <= c2v_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_0 <= c2v_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -9423,7 +9404,7 @@ module msg_pass_submatrix_8_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 2,
+	parameter CH_FETCH_LATENCY = 3,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
@@ -9466,7 +9447,6 @@ module msg_pass_submatrix_8_unit #(
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
-	input wire dnu_inRotate_pa_en,
 	input wire dnu_inRotate_wb,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -9957,7 +9937,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.last_row_chunk   ({c2v_last_row_chunk, v2c_last_row_chunk}),
+			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
@@ -10010,7 +9990,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			c2v_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(c2v_bs_en == 1'b1) begin
-			c2v_shift_factor_cur_2 <= 0;
+			c2v_shift_factor_cur_2 <= c2v_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_1 <= c2v_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_0 <= c2v_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
@@ -10456,7 +10436,7 @@ module msg_pass_submatrix_9_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 2,
+	parameter CH_FETCH_LATENCY = 3,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
@@ -10500,7 +10480,6 @@ module msg_pass_submatrix_9_unit #(
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
-	input wire dnu_inRotate_pa_en,
 	input wire dnu_inRotate_wb,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
@@ -10992,7 +10971,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.last_row_chunk   ({c2v_last_row_chunk, v2c_last_row_chunk}),
+			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
@@ -11045,7 +11024,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			c2v_shift_factor_cur_0 <= shift_factor_0[BITWIDTH_SHIFT_FACTOR-1:0];
 		end
 		else if(c2v_bs_en == 1'b1) begin
-			c2v_shift_factor_cur_2 <= 0;
+			c2v_shift_factor_cur_2 <= c2v_shift_factor_cur_0[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_1 <= c2v_shift_factor_cur_2[BITWIDTH_SHIFT_FACTOR-1:0];
 			c2v_shift_factor_cur_0 <= c2v_shift_factor_cur_1[BITWIDTH_SHIFT_FACTOR-1:0];
 		end

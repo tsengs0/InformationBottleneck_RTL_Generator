@@ -17,7 +17,6 @@ module row_process_element #(
 	parameter VNU3_INSTANTIATE_UNIT =  2, // number of partial-VNUs instatiated in one modules (in order to reduce source code size)
 	parameter BANK_NUM = 2,
 	parameter IB_VNU_DECOMP_funNum = 2,
-	parameter PIPELINE_DEPTH = 3,
 	parameter VN_PIPELINE_DEPTH = 3,
 	parameter DN_PIPELINE_DEPTH = 3,
 	parameter MULTI_FRAME_NUM   = 2
@@ -191,7 +190,6 @@ row_vnu_wrapper #(
 	.DN_PAGE_ADDR_BW       (DN_PAGE_ADDR_BW      ), // 6,
 	.BANK_NUM  	           (BANK_NUM             ), // 2,
 	.IB_VNU_DECOMP_funNum  (IB_VNU_DECOMP_funNum ), // 2,
-	.PIPELINE_DEPTH        (PIPELINE_DEPTH       ), // 3,
 	.VN_PIPELINE_DEPTH     (VN_PIPELINE_DEPTH    ), // 3,
 	.DN_PIPELINE_DEPTH     (DN_PIPELINE_DEPTH    ), // 3
 	.MULTI_FRAME_NUM       (MULTI_FRAME_NUM      )  // 2

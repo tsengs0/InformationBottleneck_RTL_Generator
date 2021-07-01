@@ -16,7 +16,6 @@ module row_vnu_wrapper #(
 	parameter DN_PAGE_ADDR_BW = 6,
 	parameter BANK_NUM = 2,
 	parameter IB_VNU_DECOMP_funNum = 2,
-	parameter PIPELINE_DEPTH = 3,
 	parameter VN_PIPELINE_DEPTH = 3,
 	parameter DN_PIPELINE_DEPTH = 3,
 	parameter MULTI_FRAME_NUM = 2

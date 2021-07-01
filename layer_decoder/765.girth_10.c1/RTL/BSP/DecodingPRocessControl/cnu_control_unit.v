@@ -27,18 +27,20 @@ module cnu_control_unit #(
 	parameter CNU_FUNC_CYCLE = 4, // the latency of one CNU (min approximation)
 	parameter CNU_PIPELINE_LEVEL = 1*CNU_FUNC_CYCLE, // the last pipeline register is actually shared with P2P_C
     parameter PERMUTATION_LEVEL = 2, // every circular shifter takes 2 clock cycles
+    parameter VNU_BUBBLE_LEVEL  = 2,
     parameter PAGE_ALIGN_LEVEL  = 1,
 	parameter MEM_RD_LEVEL      = 2, // every memory fetching process take 2 clock cycles
-	parameter FSM_STATE_NUM     = 9,
+	parameter FSM_STATE_NUM     = 10,
 	parameter [$clog2(FSM_STATE_NUM)-1:0] INIT_LOAD        = 0,
 	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_IB_RAM_PEND  = 1,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_FETCH        = 2,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] CNU_PIPE         = 3,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] CNU_OUT          = 4,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] BS_WB 		   = 5,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] PAGE_ALIGN 	   = 6,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_WB 		   = 7,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] IDLE 			   = 8
+	parameter [$clog2(FSM_STATE_NUM)-1:0] VNU_BUBBLE       = 2,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_FETCH        = 3,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] CNU_PIPE         = 4,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] CNU_OUT          = 5,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] BS_WB 		   = 6,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] PAGE_ALIGN 	   = 7,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_WB 		   = 8,
+	parameter [$clog2(FSM_STATE_NUM)-1:0] IDLE 			   = 9
 )(
     output wire cnu_rd,
     output wire c2v_mem_we,
@@ -103,6 +105,7 @@ reg [CNU_PIPELINE_LEVEL-1:0] cnu_pipeline_level;
 reg [PERMUTATION_LEVEL-1:0] bs_pipeline_level;
 `ifdef SCHED_4_6 // only one clock cycle delay of page alignment when schedule 4.6 is configured
 	reg page_align_pipeline_level;
+	reg [VNU_BUBBLE_LEVEL-1:0] vnu_bubble_pipeline_level;
 `endif
 reg c2v_msg_busy; // Assertion whenever the message passing is done
 //------------------------------------------------------------------------------------
@@ -136,6 +139,15 @@ always @(posedge read_clk) begin
 	else page_align_pipeline_level[PAGE_ALIGN_LEVEL-1:0] <= {page_align_pipeline_level[PAGE_ALIGN_LEVEL-2:0], bs_pipeline_level[PERMUTATION_LEVEL-1]};
 `endif
 end
+
+`ifdef SCHED_4_6
+initial vnu_bubble_pipeline_level <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) vnu_bubble_pipeline_level <= 1;
+	else if(state == VNU_BUBBLE) vnu_bubble_pipeline_level[VNU_BUBBLE_LEVEL-1:0] <= {vnu_bubble_pipeline_level[VNU_BUBBLE_LEVEL-2:0], vnu_bubble_pipeline_level[VNU_BUBBLE_LEVEL-1]};
+	else vnu_bubble_pipeline_level <= 1;
+end
+`endif
 
 initial c2v_msg_busy <= 1'b0;
 always @(posedge read_clk, negedge rstn) begin
@@ -176,10 +188,17 @@ always @(posedge read_clk) begin
 // Halting the following process unitl VNU IB-RAMs are completely updated.
 		VNU_IB_RAM_PEND : begin
 			if(vnu_update_pend == 1'b0)
-				state <= MEM_FETCH;
+				state <= VNU_BUBBLE;
 			else
 				state <= VNU_IB_RAM_PEND;
         end
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+        VNU_BUBBLE : begin
+        	if(vnu_bubble_pipeline_level[VNU_BUBBLE_LEVEL-1] == 1'b1)
+				state <= MEM_FETCH;
+			else
+				state <= VNU_BUBBLE;
+		end
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 		MEM_FETCH : begin
 			if(fetch_pipeline_level[MEM_RD_LEVEL-1] == 1'b1) 

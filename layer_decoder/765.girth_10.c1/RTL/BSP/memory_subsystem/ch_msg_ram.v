@@ -7,7 +7,7 @@ module ch_msg_ram #(
 	parameter DEPTH = ROW_CHUNK_NUM*LAYER_NUM,
 	parameter DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter ADDR_WIDTH = $clog2(DEPTH),
-	parameter VNU_FETCH_LATENCY = 2,
+	parameter VNU_FETCH_LATENCY = 3,
 	parameter CNU_FETCH_LATENCY = 1
 ) (
 	output wire [QUAN_SIZE-1:0] dout_0 ,
