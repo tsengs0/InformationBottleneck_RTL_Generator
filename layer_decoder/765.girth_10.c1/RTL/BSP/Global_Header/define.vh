@@ -282,7 +282,6 @@
 
 	//`define SCHED_4_4
 	`define SCHED_4_6
-	`define HDL_INFER // primitive of BRAM implementation
 	`define MAX_ITER 10
 	`define VN_ITER_ADDR_BW $clog2(`MAX_ITER)  // bit-width of addressing 10 iterationss
 	`define DN_ITER_ADDR_BW $clog2(`MAX_ITER)
