@@ -435,7 +435,7 @@ module entire_message_passing_wrapper #(
 			.dnu_signExten 		(dnu_signExten_sub1),
 			.c2v_bs_in          (c2v_bs_in_sub1 ),
 			.v2c_bs_in          (v2c_bs_in_sub1 ),
-			.ch_bs_in   		(ch_bs_in_sub1),
+			.ch_bs_in   		(ch_to_vnu_sub1), //(ch_bs_in_sub1),
 			.coded_block 		(coded_block_sub1),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub1),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -526,7 +526,7 @@ module entire_message_passing_wrapper #(
 			.dnu_signExten 		(dnu_signExten_sub2),
 			.c2v_bs_in          (c2v_bs_in_sub2 ),
 			.v2c_bs_in          (v2c_bs_in_sub2 ),
-			.ch_bs_in   		(ch_bs_in_sub2),
+			.ch_bs_in   		(ch_to_vnu_sub2), //(ch_bs_in_sub2),
 			.coded_block 		(coded_block_sub2),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub2),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -617,7 +617,7 @@ module entire_message_passing_wrapper #(
 			.dnu_signExten 		(dnu_signExten_sub3),
 			.c2v_bs_in          (c2v_bs_in_sub3 ),
 			.v2c_bs_in          (v2c_bs_in_sub3 ),
-			.ch_bs_in   		(ch_bs_in_sub3),
+			.ch_bs_in   		(ch_to_vnu_sub3), //(ch_bs_in_sub3),
 			.coded_block 		(coded_block_sub3),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub3),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -708,7 +708,7 @@ module entire_message_passing_wrapper #(
 			.dnu_signExten 		(dnu_signExten_sub4),
 			.c2v_bs_in          (c2v_bs_in_sub4 ),
 			.v2c_bs_in          (v2c_bs_in_sub4 ),
-			.ch_bs_in   		(ch_bs_in_sub4),
+			.ch_bs_in   		(ch_to_vnu_sub4), //(ch_bs_in_sub4),
 			.coded_block 		(coded_block_sub4),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub4),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -799,7 +799,7 @@ module entire_message_passing_wrapper #(
 			.dnu_signExten 		(dnu_signExten_sub5),
 			.c2v_bs_in          (c2v_bs_in_sub5 ),
 			.v2c_bs_in          (v2c_bs_in_sub5 ),
-			.ch_bs_in   		(ch_bs_in_sub5),
+			.ch_bs_in   		(ch_to_vnu_sub5), //(ch_bs_in_sub5),
 			.coded_block 		(coded_block_sub5),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub5),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -890,7 +890,7 @@ module entire_message_passing_wrapper #(
 			.dnu_signExten 		(dnu_signExten_sub6),
 			.c2v_bs_in          (c2v_bs_in_sub6 ),
 			.v2c_bs_in          (v2c_bs_in_sub6 ),
-			.ch_bs_in   		(ch_bs_in_sub6),
+			.ch_bs_in   		(ch_to_vnu_sub6), //(ch_bs_in_sub6),
 			.coded_block 		(coded_block_sub6),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub6),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -981,7 +981,7 @@ module entire_message_passing_wrapper #(
 			.dnu_signExten 		(dnu_signExten_sub7),
 			.c2v_bs_in          (c2v_bs_in_sub7 ),
 			.v2c_bs_in          (v2c_bs_in_sub7 ),
-			.ch_bs_in   		(ch_bs_in_sub7),
+			.ch_bs_in   		(ch_to_vnu_sub7), //(ch_bs_in_sub7),
 			.coded_block 		(coded_block_sub7),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub7),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -1072,7 +1072,7 @@ module entire_message_passing_wrapper #(
 			.dnu_signExten 		(dnu_signExten_sub8),
 			.c2v_bs_in          (c2v_bs_in_sub8 ),
 			.v2c_bs_in          (v2c_bs_in_sub8 ),
-			.ch_bs_in   		(ch_bs_in_sub8),
+			.ch_bs_in   		(ch_to_vnu_sub8), //(ch_bs_in_sub8),
 			.coded_block 		(coded_block_sub8),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub8),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -1163,7 +1163,7 @@ module entire_message_passing_wrapper #(
 			.dnu_signExten 		(dnu_signExten_sub9),
 			.c2v_bs_in          (c2v_bs_in_sub9 ),
 			.v2c_bs_in          (v2c_bs_in_sub9 ),
-			.ch_bs_in   		(ch_bs_in_sub9),
+			.ch_bs_in   		(ch_to_vnu_sub9), //(ch_bs_in_sub9),
 			.coded_block 		(coded_block_sub9),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub9),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)

@@ -308,7 +308,7 @@ reg decode_termination_reg;
 	reg [ROW_CHUNK_NUM-2:0] c2v_mem_fetch_propagate;
 	always @(posedge read_clk) begin if(!decoder_rstn) c2v_mem_fetch_propagate <= 0; else c2v_mem_fetch_propagate[ROW_CHUNK_NUM-2:0] <= {c2v_mem_fetch_propagate[ROW_CHUNK_NUM-3:0], c2v_mem_fetch_propagateIn}; end
 	wire c2v_mem_fetch; assign c2v_mem_fetch = (c2v_mem_fetch_propagate > 0 || c2v_mem_fetch_propagateIn > 0) ? 1'b1 : 1'b0;
-	
+
 	reg [ROW_CHUNK_NUM-2:0] v2c_outRotate_reg_we_propagate; 
 	reg [ROW_CHUNK_NUM-1:0] dnu_inRotate_last_row_chunk_propagate; // the first one has already instantiated by FSM itself
 	reg [ROW_CHUNK_NUM-2:0] dnu_inRotate_bs_en_propagate;
@@ -654,11 +654,13 @@ dn_Waddr_counter #(
 		$readmemh("/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/layer_decoder_solution/submatrix_1_v2c_bs_in.mem", vnBsIn_pattern);
 	end
 
-	integer pageAlign_tb_fd, v2c_pageAlign_tb_fd;
+	integer pageAlign_tb_fd, v2c_pageAlign_tb_fd, c2v_mem_fetch_fd, v2c_mem_fetch_fd;
 	//integer pageAlignIn_tb_fd;
 	initial begin
 		pageAlign_tb_fd = $fopen("pageAlign_result_submatrix_1", "w");
 		v2c_pageAlign_tb_fd = $fopen("v2c_pageAlign_result_submatrix_1", "w");
+		c2v_mem_fetch_fd = $fopen("c2v_mem_fetch_submatrix_1", "w");
+		v2c_mem_fetch_fd = $fopen("v2c_mem_fetch_submatrix_1", "w");
 		//pageAlignIn_tb_fd = $fopen("pageAlign_in_submatrix_1", "w");
 	end
 
@@ -700,19 +702,18 @@ dn_Waddr_counter #(
 	always @(posedge read_clk) begin
 		if(c2v_mem_we/*temp*/ == 1'b1) begin
 			$fwrite(pageAlign_tb_fd,"state_%d, mem_we: %b (page_addr: 0x%h), last_RC:%b -> ", $unsigned(inst_cnu_control_unit.state), c2v_mem_we, inst_msg_pass_submatrix_1_unit.c2v_mem_page_addr, c2v_last_row_chunk);
-			for(int i = 0; i < CHECK_PARALLELISM-1; i++) $fwrite(pageAlign_tb_fd, "%h,", $unsigned(inst_msg_pass_submatrix_1_unit.inst_mem_subsystem_top_submatrix_1.cnu_pa_msg[i]));
-			$fwrite(pageAlign_tb_fd, "%h\n", $unsigned(inst_msg_pass_submatrix_1_unit.inst_mem_subsystem_top_submatrix_1.cnu_pa_msg[CHECK_PARALLELISM-1]));
+			for(int i = CHECK_PARALLELISM-1; i >= 1; i--) $fwrite(pageAlign_tb_fd, "%h", $unsigned(inst_msg_pass_submatrix_1_unit.inst_mem_subsystem_top_submatrix_1.cnu_pa_msg[i]));
+			$fwrite(pageAlign_tb_fd, "%h\n", $unsigned(inst_msg_pass_submatrix_1_unit.inst_mem_subsystem_top_submatrix_1.cnu_pa_msg[0]));
 		end
 	end
 	// V2C page-aligned messages logger
 	always @(posedge read_clk) begin
 		if(v2c_mem_we/*temp*/ == 1'b1) begin
 			$fwrite(v2c_pageAlign_tb_fd,"state_%d, mem_we: %b (page_addr: 0x%h), last_RC:%b -> ", $unsigned(inst_vnu_control_unit.state), v2c_mem_we, inst_msg_pass_submatrix_1_unit.v2c_mem_page_addr, v2c_last_row_chunk);
-			for(int i = 0; i < CHECK_PARALLELISM-1; i++) $fwrite(v2c_pageAlign_tb_fd, "%h,", $unsigned(inst_msg_pass_submatrix_1_unit.inst_mem_subsystem_top_submatrix_1.vnu_pa_msg[i]));
-			$fwrite(v2c_pageAlign_tb_fd, "%h\n", $unsigned(inst_msg_pass_submatrix_1_unit.inst_mem_subsystem_top_submatrix_1.vnu_pa_msg[CHECK_PARALLELISM-1]));
+			for(int i = CHECK_PARALLELISM-1; i >= 1; i--) $fwrite(v2c_pageAlign_tb_fd, "%h", $unsigned(inst_msg_pass_submatrix_1_unit.inst_mem_subsystem_top_submatrix_1.vnu_pa_msg[i]));
+			$fwrite(v2c_pageAlign_tb_fd, "%h\n", $unsigned(inst_msg_pass_submatrix_1_unit.inst_mem_subsystem_top_submatrix_1.vnu_pa_msg[0]));
 		end
 	end
-
 /*-------------------------------------------------------------------------------------------------------------------------*/
 	always @(posedge read_clk) begin
 			if(decoder_rstn == 1'b0) iter_termination <= 0;
@@ -995,7 +996,7 @@ dn_Waddr_counter #(
 			.dnu_signExten 		(dnu_signExten_sub1),
 			.c2v_bs_in          (c2v_bs_in_sub1 ),
 			.v2c_bs_in          (v2c_bs_in_sub1 ),
-			.ch_bs_in   		(ch_bs_in_sub1),
+			.ch_bs_in   		(ch_to_vnu_sub1), //(ch_bs_in_sub1),
 			.coded_block 		(coded_block_sub1),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub1),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -1054,6 +1055,25 @@ always @(posedge awgn_gen_clk, negedge sys_rstn) begin
 	end
 end
 /*-----------------------------------------------------------------------------------------------------------------*/
+	/*only in testbench*/ reg v2c_mem_fetch_reg0; always @(posedge read_clk) begin v2c_mem_fetch_reg0 <= v2c_mem_fetch; end
+	/*only in testbench*/ reg c2v_mem_fetch_reg0; always @(posedge read_clk) begin c2v_mem_fetch_reg0 <= c2v_mem_fetch; end
+	/*only in testbench*/ reg v2c_mem_fetch_reg1; always @(posedge read_clk) begin v2c_mem_fetch_reg1 <= v2c_mem_fetch_reg0; end
+	/*only in testbench*/ reg c2v_mem_fetch_reg1; always @(posedge read_clk) begin c2v_mem_fetch_reg1 <= c2v_mem_fetch_reg0; end
+	// C2V message fetched from C2V MEMs and forworded to VNUs
+	always @(posedge read_clk) begin
+		if(c2v_mem_fetch_reg1 == 1'b1) begin
+			$fwrite(c2v_mem_fetch_fd,"state_%d (layer: %d, Iter: %d) -> ", $unsigned(inst_vnu_control_unit.state), $unsigned(inst_vnu_control_unit.layer_cnt), $unsigned(inst_vnu_control_unit.iter_cnt));
+			$fwrite(c2v_mem_fetch_fd, "%h\n", $unsigned(mem_to_vnu_sub1));
+		end
+	end
+	// V2C message fetched from V2C MEMs and forworded to CNUs
+	always @(posedge read_clk) begin
+	if(v2c_mem_fetch_reg1 == 1'b1) begin
+			$fwrite(v2c_mem_fetch_fd,"state_%d (layer: %d, Iter: %d) -> ", $unsigned(inst_cnu_control_unit.state), $unsigned(inst_vnu_control_unit.layer_cnt), $unsigned(inst_vnu_control_unit.iter_cnt));
+			$fwrite(v2c_mem_fetch_fd, "%h\n", $unsigned(mem_to_cnu_sub1));
+		end
+	end
+/*-----------------------------------------------------------------------------------------------------------------*/
 	initial begin
 		// do something
 
@@ -1064,6 +1084,8 @@ end
 		repeat(1)@(posedge read_clk);
 		$fclose(pageAlign_tb_fd);
 		$fclose(v2c_pageAlign_tb_fd);
+		$fclose(v2c_mem_fetch_fd);
+		$fclose(c2v_mem_fetch_fd);
 		//$fclose(cnu_bs_out_fd);
 		//$fclose(cnu_bs_in_fd);
 		$finish;
