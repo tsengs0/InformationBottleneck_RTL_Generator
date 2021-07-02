@@ -236,7 +236,7 @@ always @(posedge read_clk) begin
         IDLE: begin
             if(layer_finish == 1'b1) begin
             	if(vnu_update_pend == 1'b0)
-            		state <= MEM_FETCH;
+            		state <= VNU_BUBBLE;
             	else
             		state <= VNU_IB_RAM_PEND;
             end

@@ -1,4 +1,5 @@
 `include "define.vh"
+`include "mem_config.vh"
 module column_ram_pc85 #(
 	parameter QUAN_SIZE = 4,
 	parameter CHECK_PARALLELISM = 85,
@@ -813,6 +814,12 @@ module ram_unit #(
 `ifdef HDL_INFER
 // Core Memory
  reg [DATA_WIDTH-1:0] ram_block [0:DEPTH-1];
+ genvar i;
+ generate
+ 	for(i=0;i<DEPTH;i=i+1) begin : ram_block_zeroInit_inst
+ 		initial ram_block[i] <= 0;
+ 	end
+ endgenerate
 
  // Port-A
 always @(posedge sys_clk) begin
@@ -821,7 +828,11 @@ always @(posedge sys_clk) begin
 end
 reg [DATA_WIDTH-1:0] do_a;
 always @(posedge sys_clk) begin
-	if(we_a == 1'b0) do_a <= ram_block[AddrIn_a];
+	`ifdef RD_WR_CONCURRENT
+		do_a <= ram_block[AddrIn_a];
+	`else
+		if(we_a == 1'b0) do_a <= ram_block[AddrIn_a];
+	`endif
 end
 always @(posedge sys_clk) begin
 	Dout_a <= do_a;
@@ -834,7 +845,11 @@ always @(posedge sys_clk) begin
 end
 reg [DATA_WIDTH-1:0] do_b;
 always @(posedge sys_clk) begin
-	if(we_b == 1'b0) do_b <= ram_block[AddrIn_b];
+	`ifdef RD_WR_CONCURRENT
+		do_b <= ram_block[AddrIn_b];
+	`else
+		if(we_b == 1'b0) do_b <= ram_block[AddrIn_b];
+	`endif
 end
 always @(posedge sys_clk) begin
 	Dout_b <= do_b;
@@ -880,7 +895,13 @@ module ram_unit_frag #(
 `ifdef HDL_INFER
 // Core Memory
  reg [DATA_WIDTH-1:0] ram_block [0:DEPTH-1];
-
+ genvar i;
+ generate
+ 	for(i=0;i<DEPTH;i=i+1) begin : ram_block_zeroInit_inst
+ 		initial ram_block[i] <= 0;
+ 	end
+ endgenerate
+ 
  // Port-A
 always @(posedge sys_clk) begin
 	if(we_a == 1'b1)
@@ -888,7 +909,11 @@ always @(posedge sys_clk) begin
 end
 reg [DATA_WIDTH-1:0] do_a;
 always @(posedge sys_clk) begin
-	if(we_a == 1'b0) do_a <= ram_block[AddrIn_a];
+	`ifdef RD_WR_CONCURRENT
+		do_a <= ram_block[AddrIn_a];
+	`else
+		if(we_a == 1'b0) do_a <= ram_block[AddrIn_a];
+	`endif
 end
 always @(posedge sys_clk) begin
 	Dout_a <= do_a;
@@ -901,7 +926,11 @@ always @(posedge sys_clk) begin
 end
 reg [DATA_WIDTH-1:0] do_b;
 always @(posedge sys_clk) begin
-	if(we_b == 1'b0) do_b <= ram_block[AddrIn_b];
+	`ifdef RD_WR_CONCURRENT
+		do_b <= ram_block[AddrIn_b];
+	`else
+		if(we_b == 1'b0) do_b <= ram_block[AddrIn_b];
+	`endif
 end
 always @(posedge sys_clk) begin
 	Dout_b <= do_b;
