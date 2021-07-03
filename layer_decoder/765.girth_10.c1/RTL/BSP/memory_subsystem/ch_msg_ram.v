@@ -7,8 +7,8 @@ module ch_msg_ram #(
 	parameter DEPTH = ROW_CHUNK_NUM*LAYER_NUM,
 	parameter DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter ADDR_WIDTH = $clog2(DEPTH),
-	parameter VNU_FETCH_LATENCY = 3,
-	parameter CNU_FETCH_LATENCY = 1
+	parameter VNU_FETCH_LATENCY = 5,
+	parameter CNU_FETCH_LATENCY = 4
 ) (
 	output wire [QUAN_SIZE-1:0] dout_0 ,
 	output wire [QUAN_SIZE-1:0] dout_1 ,
@@ -181,6 +181,92 @@ module ch_msg_ram #(
 	output wire [QUAN_SIZE-1:0] cnu_init_dout_82,
 	output wire [QUAN_SIZE-1:0] cnu_init_dout_83,
 	output wire [QUAN_SIZE-1:0] cnu_init_dout_84,
+	// For input sources of permutation network 
+	output wire [QUAN_SIZE-1:0] bs_src_dout_0 ,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_1 ,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_2 ,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_3 ,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_4 ,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_5 ,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_6 ,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_7 ,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_8 ,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_9 ,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_10,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_11,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_12,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_13,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_14,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_15,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_16,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_17,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_18,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_19,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_20,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_21,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_22,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_23,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_24,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_25,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_26,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_27,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_28,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_29,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_30,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_31,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_32,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_33,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_34,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_35,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_36,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_37,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_38,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_39,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_40,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_41,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_42,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_43,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_44,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_45,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_46,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_47,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_48,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_49,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_50,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_51,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_52,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_53,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_54,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_55,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_56,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_57,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_58,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_59,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_60,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_61,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_62,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_63,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_64,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_65,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_66,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_67,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_68,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_69,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_70,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_71,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_72,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_73,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_74,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_75,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_76,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_77,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_78,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_79,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_80,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_81,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_82,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_83,
+	output wire [QUAN_SIZE-1:0] bs_src_dout_84,
 
 	input wire [DATA_WIDTH-1:0] din,
 
@@ -394,4 +480,90 @@ assign cnu_init_dout_81[QUAN_SIZE-1:0] = dout_pipe[CNU_FETCH_LATENCY-1][82*QUAN_
 assign cnu_init_dout_82[QUAN_SIZE-1:0] = dout_pipe[CNU_FETCH_LATENCY-1][83*QUAN_SIZE-1:82*QUAN_SIZE];
 assign cnu_init_dout_83[QUAN_SIZE-1:0] = dout_pipe[CNU_FETCH_LATENCY-1][84*QUAN_SIZE-1:83*QUAN_SIZE];
 assign cnu_init_dout_84[QUAN_SIZE-1:0] = dout_pipe[CNU_FETCH_LATENCY-1][85*QUAN_SIZE-1:84*QUAN_SIZE];
+
+assign bs_src_dout_0 [QUAN_SIZE-1:0] = dout_pipe[1][1*QUAN_SIZE-1:0*QUAN_SIZE ];
+assign bs_src_dout_1 [QUAN_SIZE-1:0] = dout_pipe[1][2*QUAN_SIZE-1:1*QUAN_SIZE ];
+assign bs_src_dout_2 [QUAN_SIZE-1:0] = dout_pipe[1][3*QUAN_SIZE-1:2*QUAN_SIZE ];
+assign bs_src_dout_3 [QUAN_SIZE-1:0] = dout_pipe[1][4*QUAN_SIZE-1:3*QUAN_SIZE ];
+assign bs_src_dout_4 [QUAN_SIZE-1:0] = dout_pipe[1][5*QUAN_SIZE-1:4*QUAN_SIZE ];
+assign bs_src_dout_5 [QUAN_SIZE-1:0] = dout_pipe[1][6*QUAN_SIZE-1:5*QUAN_SIZE ];
+assign bs_src_dout_6 [QUAN_SIZE-1:0] = dout_pipe[1][7*QUAN_SIZE-1:6*QUAN_SIZE ];
+assign bs_src_dout_7 [QUAN_SIZE-1:0] = dout_pipe[1][8*QUAN_SIZE-1:7*QUAN_SIZE ];
+assign bs_src_dout_8 [QUAN_SIZE-1:0] = dout_pipe[1][9*QUAN_SIZE-1:8*QUAN_SIZE ];
+assign bs_src_dout_9 [QUAN_SIZE-1:0] = dout_pipe[1][10*QUAN_SIZE-1:9*QUAN_SIZE];
+assign bs_src_dout_10[QUAN_SIZE-1:0] = dout_pipe[1][11*QUAN_SIZE-1:10*QUAN_SIZE];
+assign bs_src_dout_11[QUAN_SIZE-1:0] = dout_pipe[1][12*QUAN_SIZE-1:11*QUAN_SIZE];
+assign bs_src_dout_12[QUAN_SIZE-1:0] = dout_pipe[1][13*QUAN_SIZE-1:12*QUAN_SIZE];
+assign bs_src_dout_13[QUAN_SIZE-1:0] = dout_pipe[1][14*QUAN_SIZE-1:13*QUAN_SIZE];
+assign bs_src_dout_14[QUAN_SIZE-1:0] = dout_pipe[1][15*QUAN_SIZE-1:14*QUAN_SIZE];
+assign bs_src_dout_15[QUAN_SIZE-1:0] = dout_pipe[1][16*QUAN_SIZE-1:15*QUAN_SIZE];
+assign bs_src_dout_16[QUAN_SIZE-1:0] = dout_pipe[1][17*QUAN_SIZE-1:16*QUAN_SIZE];
+assign bs_src_dout_17[QUAN_SIZE-1:0] = dout_pipe[1][18*QUAN_SIZE-1:17*QUAN_SIZE];
+assign bs_src_dout_18[QUAN_SIZE-1:0] = dout_pipe[1][19*QUAN_SIZE-1:18*QUAN_SIZE];
+assign bs_src_dout_19[QUAN_SIZE-1:0] = dout_pipe[1][20*QUAN_SIZE-1:19*QUAN_SIZE];
+assign bs_src_dout_20[QUAN_SIZE-1:0] = dout_pipe[1][21*QUAN_SIZE-1:20*QUAN_SIZE];
+assign bs_src_dout_21[QUAN_SIZE-1:0] = dout_pipe[1][22*QUAN_SIZE-1:21*QUAN_SIZE];
+assign bs_src_dout_22[QUAN_SIZE-1:0] = dout_pipe[1][23*QUAN_SIZE-1:22*QUAN_SIZE];
+assign bs_src_dout_23[QUAN_SIZE-1:0] = dout_pipe[1][24*QUAN_SIZE-1:23*QUAN_SIZE];
+assign bs_src_dout_24[QUAN_SIZE-1:0] = dout_pipe[1][25*QUAN_SIZE-1:24*QUAN_SIZE];
+assign bs_src_dout_25[QUAN_SIZE-1:0] = dout_pipe[1][26*QUAN_SIZE-1:25*QUAN_SIZE];
+assign bs_src_dout_26[QUAN_SIZE-1:0] = dout_pipe[1][27*QUAN_SIZE-1:26*QUAN_SIZE];
+assign bs_src_dout_27[QUAN_SIZE-1:0] = dout_pipe[1][28*QUAN_SIZE-1:27*QUAN_SIZE];
+assign bs_src_dout_28[QUAN_SIZE-1:0] = dout_pipe[1][29*QUAN_SIZE-1:28*QUAN_SIZE];
+assign bs_src_dout_29[QUAN_SIZE-1:0] = dout_pipe[1][30*QUAN_SIZE-1:29*QUAN_SIZE];
+assign bs_src_dout_30[QUAN_SIZE-1:0] = dout_pipe[1][31*QUAN_SIZE-1:30*QUAN_SIZE];
+assign bs_src_dout_31[QUAN_SIZE-1:0] = dout_pipe[1][32*QUAN_SIZE-1:31*QUAN_SIZE];
+assign bs_src_dout_32[QUAN_SIZE-1:0] = dout_pipe[1][33*QUAN_SIZE-1:32*QUAN_SIZE];
+assign bs_src_dout_33[QUAN_SIZE-1:0] = dout_pipe[1][34*QUAN_SIZE-1:33*QUAN_SIZE];
+assign bs_src_dout_34[QUAN_SIZE-1:0] = dout_pipe[1][35*QUAN_SIZE-1:34*QUAN_SIZE];
+assign bs_src_dout_35[QUAN_SIZE-1:0] = dout_pipe[1][36*QUAN_SIZE-1:35*QUAN_SIZE];
+assign bs_src_dout_36[QUAN_SIZE-1:0] = dout_pipe[1][37*QUAN_SIZE-1:36*QUAN_SIZE];
+assign bs_src_dout_37[QUAN_SIZE-1:0] = dout_pipe[1][38*QUAN_SIZE-1:37*QUAN_SIZE];
+assign bs_src_dout_38[QUAN_SIZE-1:0] = dout_pipe[1][39*QUAN_SIZE-1:38*QUAN_SIZE];
+assign bs_src_dout_39[QUAN_SIZE-1:0] = dout_pipe[1][40*QUAN_SIZE-1:39*QUAN_SIZE];
+assign bs_src_dout_40[QUAN_SIZE-1:0] = dout_pipe[1][41*QUAN_SIZE-1:40*QUAN_SIZE];
+assign bs_src_dout_41[QUAN_SIZE-1:0] = dout_pipe[1][42*QUAN_SIZE-1:41*QUAN_SIZE];
+assign bs_src_dout_42[QUAN_SIZE-1:0] = dout_pipe[1][43*QUAN_SIZE-1:42*QUAN_SIZE];
+assign bs_src_dout_43[QUAN_SIZE-1:0] = dout_pipe[1][44*QUAN_SIZE-1:43*QUAN_SIZE];
+assign bs_src_dout_44[QUAN_SIZE-1:0] = dout_pipe[1][45*QUAN_SIZE-1:44*QUAN_SIZE];
+assign bs_src_dout_45[QUAN_SIZE-1:0] = dout_pipe[1][46*QUAN_SIZE-1:45*QUAN_SIZE];
+assign bs_src_dout_46[QUAN_SIZE-1:0] = dout_pipe[1][47*QUAN_SIZE-1:46*QUAN_SIZE];
+assign bs_src_dout_47[QUAN_SIZE-1:0] = dout_pipe[1][48*QUAN_SIZE-1:47*QUAN_SIZE];
+assign bs_src_dout_48[QUAN_SIZE-1:0] = dout_pipe[1][49*QUAN_SIZE-1:48*QUAN_SIZE];
+assign bs_src_dout_49[QUAN_SIZE-1:0] = dout_pipe[1][50*QUAN_SIZE-1:49*QUAN_SIZE];
+assign bs_src_dout_50[QUAN_SIZE-1:0] = dout_pipe[1][51*QUAN_SIZE-1:50*QUAN_SIZE];
+assign bs_src_dout_51[QUAN_SIZE-1:0] = dout_pipe[1][52*QUAN_SIZE-1:51*QUAN_SIZE];
+assign bs_src_dout_52[QUAN_SIZE-1:0] = dout_pipe[1][53*QUAN_SIZE-1:52*QUAN_SIZE];
+assign bs_src_dout_53[QUAN_SIZE-1:0] = dout_pipe[1][54*QUAN_SIZE-1:53*QUAN_SIZE];
+assign bs_src_dout_54[QUAN_SIZE-1:0] = dout_pipe[1][55*QUAN_SIZE-1:54*QUAN_SIZE];
+assign bs_src_dout_55[QUAN_SIZE-1:0] = dout_pipe[1][56*QUAN_SIZE-1:55*QUAN_SIZE];
+assign bs_src_dout_56[QUAN_SIZE-1:0] = dout_pipe[1][57*QUAN_SIZE-1:56*QUAN_SIZE];
+assign bs_src_dout_57[QUAN_SIZE-1:0] = dout_pipe[1][58*QUAN_SIZE-1:57*QUAN_SIZE];
+assign bs_src_dout_58[QUAN_SIZE-1:0] = dout_pipe[1][59*QUAN_SIZE-1:58*QUAN_SIZE];
+assign bs_src_dout_59[QUAN_SIZE-1:0] = dout_pipe[1][60*QUAN_SIZE-1:59*QUAN_SIZE];
+assign bs_src_dout_60[QUAN_SIZE-1:0] = dout_pipe[1][61*QUAN_SIZE-1:60*QUAN_SIZE];
+assign bs_src_dout_61[QUAN_SIZE-1:0] = dout_pipe[1][62*QUAN_SIZE-1:61*QUAN_SIZE];
+assign bs_src_dout_62[QUAN_SIZE-1:0] = dout_pipe[1][63*QUAN_SIZE-1:62*QUAN_SIZE];
+assign bs_src_dout_63[QUAN_SIZE-1:0] = dout_pipe[1][64*QUAN_SIZE-1:63*QUAN_SIZE];
+assign bs_src_dout_64[QUAN_SIZE-1:0] = dout_pipe[1][65*QUAN_SIZE-1:64*QUAN_SIZE];
+assign bs_src_dout_65[QUAN_SIZE-1:0] = dout_pipe[1][66*QUAN_SIZE-1:65*QUAN_SIZE];
+assign bs_src_dout_66[QUAN_SIZE-1:0] = dout_pipe[1][67*QUAN_SIZE-1:66*QUAN_SIZE];
+assign bs_src_dout_67[QUAN_SIZE-1:0] = dout_pipe[1][68*QUAN_SIZE-1:67*QUAN_SIZE];
+assign bs_src_dout_68[QUAN_SIZE-1:0] = dout_pipe[1][69*QUAN_SIZE-1:68*QUAN_SIZE];
+assign bs_src_dout_69[QUAN_SIZE-1:0] = dout_pipe[1][70*QUAN_SIZE-1:69*QUAN_SIZE];
+assign bs_src_dout_70[QUAN_SIZE-1:0] = dout_pipe[1][71*QUAN_SIZE-1:70*QUAN_SIZE];
+assign bs_src_dout_71[QUAN_SIZE-1:0] = dout_pipe[1][72*QUAN_SIZE-1:71*QUAN_SIZE];
+assign bs_src_dout_72[QUAN_SIZE-1:0] = dout_pipe[1][73*QUAN_SIZE-1:72*QUAN_SIZE];
+assign bs_src_dout_73[QUAN_SIZE-1:0] = dout_pipe[1][74*QUAN_SIZE-1:73*QUAN_SIZE];
+assign bs_src_dout_74[QUAN_SIZE-1:0] = dout_pipe[1][75*QUAN_SIZE-1:74*QUAN_SIZE];
+assign bs_src_dout_75[QUAN_SIZE-1:0] = dout_pipe[1][76*QUAN_SIZE-1:75*QUAN_SIZE];
+assign bs_src_dout_76[QUAN_SIZE-1:0] = dout_pipe[1][77*QUAN_SIZE-1:76*QUAN_SIZE];
+assign bs_src_dout_77[QUAN_SIZE-1:0] = dout_pipe[1][78*QUAN_SIZE-1:77*QUAN_SIZE];
+assign bs_src_dout_78[QUAN_SIZE-1:0] = dout_pipe[1][79*QUAN_SIZE-1:78*QUAN_SIZE];
+assign bs_src_dout_79[QUAN_SIZE-1:0] = dout_pipe[1][80*QUAN_SIZE-1:79*QUAN_SIZE];
+assign bs_src_dout_80[QUAN_SIZE-1:0] = dout_pipe[1][81*QUAN_SIZE-1:80*QUAN_SIZE];
+assign bs_src_dout_81[QUAN_SIZE-1:0] = dout_pipe[1][82*QUAN_SIZE-1:81*QUAN_SIZE];
+assign bs_src_dout_82[QUAN_SIZE-1:0] = dout_pipe[1][83*QUAN_SIZE-1:82*QUAN_SIZE];
+assign bs_src_dout_83[QUAN_SIZE-1:0] = dout_pipe[1][84*QUAN_SIZE-1:83*QUAN_SIZE];
+assign bs_src_dout_84[QUAN_SIZE-1:0] = dout_pipe[1][85*QUAN_SIZE-1:84*QUAN_SIZE];
 endmodule

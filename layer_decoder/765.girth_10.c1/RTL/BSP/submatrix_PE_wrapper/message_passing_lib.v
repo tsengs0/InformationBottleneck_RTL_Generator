@@ -116,13 +116,16 @@ module entire_message_passing_wrapper #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 3,
-	parameter CNU_INIT_FETCH_LATENCY = 1,
+	parameter CH_FETCH_LATENCY = 5,
+	parameter CNU_INIT_FETCH_LATENCY = 4,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
 	// Parameters of Channel RAM
 	parameter CH_RAM_DEPTH = ROW_CHUNK_NUM*LAYER_NUM,
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
+/*-------------------------------------------------------------------------------------*/
+	// Parameters for DNU Sign Extension related Control Signals
+	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 	parameter START_PAGE_0_0 = 0,
 	parameter START_PAGE_0_1 = 0,
@@ -296,6 +299,7 @@ module entire_message_passing_wrapper #(
 	input wire rstn
 );
 
+wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 /*-------------------------------------------------------------------------------------*/
 // Message Passing Instantiation of Submatrix_0 consisting of BS, PA and MEM
 	msg_pass_submatrix_0_unit #(
@@ -331,6 +335,8 @@ module entire_message_passing_wrapper #(
 			// Parameters of Channel RAM
 			.CH_RAM_DEPTH      (CH_RAM_DEPTH     ), // ROW_CHUNK_NUM*LAYER_NUM,
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
+			// Parameters of Sign Extenstion for DNUs
+			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -419,6 +425,8 @@ module entire_message_passing_wrapper #(
 			// Parameters of Channel RAM
 			.CH_RAM_DEPTH      (CH_RAM_DEPTH     ), // ROW_CHUNK_NUM*LAYER_NUM,
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
+			// Parameters of Sign Extenstion for DNUs
+			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -432,10 +440,11 @@ module entire_message_passing_wrapper #(
 			.mem_to_vnu         (mem_to_vnu_sub1),
 			.ch_to_cnu 			(ch_to_cnu_sub1 ),
 			.ch_to_vnu 			(ch_to_vnu_sub1 ),
+			.ch_to_bs           (ch_to_bs_sub[1]),
 			.dnu_signExten 		(dnu_signExten_sub1),
 			.c2v_bs_in          (c2v_bs_in_sub1 ),
 			.v2c_bs_in          (v2c_bs_in_sub1 ),
-			.ch_bs_in   		(ch_to_vnu_sub1), //(ch_bs_in_sub1),
+			.ch_bs_in   		(ch_to_bs_sub[1]), //(ch_bs_in_sub1),
 			.coded_block 		(coded_block_sub1),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub1),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -510,6 +519,8 @@ module entire_message_passing_wrapper #(
 			// Parameters of Channel RAM
 			.CH_RAM_DEPTH      (CH_RAM_DEPTH     ), // ROW_CHUNK_NUM*LAYER_NUM,
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
+			// Parameters of Sign Extenstion for DNUs
+			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -523,10 +534,11 @@ module entire_message_passing_wrapper #(
 			.mem_to_vnu         (mem_to_vnu_sub2),
 			.ch_to_cnu 			(ch_to_cnu_sub2 ),
 			.ch_to_vnu 			(ch_to_vnu_sub2 ),
+			.ch_to_bs           (ch_to_bs_sub[2]),
 			.dnu_signExten 		(dnu_signExten_sub2),
 			.c2v_bs_in          (c2v_bs_in_sub2 ),
 			.v2c_bs_in          (v2c_bs_in_sub2 ),
-			.ch_bs_in   		(ch_to_vnu_sub2), //(ch_bs_in_sub2),
+			.ch_bs_in   		(ch_to_bs_sub[2]), //(ch_bs_in_sub2),
 			.coded_block 		(coded_block_sub2),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub2),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -601,6 +613,8 @@ module entire_message_passing_wrapper #(
 			// Parameters of Channel RAM
 			.CH_RAM_DEPTH      (CH_RAM_DEPTH     ), // ROW_CHUNK_NUM*LAYER_NUM,
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
+			// Parameters of Sign Extenstion for DNUs
+			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -614,10 +628,11 @@ module entire_message_passing_wrapper #(
 			.mem_to_vnu         (mem_to_vnu_sub3),
 			.ch_to_cnu 			(ch_to_cnu_sub3 ),
 			.ch_to_vnu 			(ch_to_vnu_sub3 ),
+			.ch_to_bs           (ch_to_bs_sub[3]),
 			.dnu_signExten 		(dnu_signExten_sub3),
 			.c2v_bs_in          (c2v_bs_in_sub3 ),
 			.v2c_bs_in          (v2c_bs_in_sub3 ),
-			.ch_bs_in   		(ch_to_vnu_sub3), //(ch_bs_in_sub3),
+			.ch_bs_in   		(ch_to_bs_sub[3]), //(ch_bs_in_sub3),
 			.coded_block 		(coded_block_sub3),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub3),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -692,6 +707,8 @@ module entire_message_passing_wrapper #(
 			// Parameters of Channel RAM
 			.CH_RAM_DEPTH      (CH_RAM_DEPTH     ), // ROW_CHUNK_NUM*LAYER_NUM,
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
+			// Parameters of Sign Extenstion for DNUs
+			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -705,10 +722,11 @@ module entire_message_passing_wrapper #(
 			.mem_to_vnu         (mem_to_vnu_sub4),
 			.ch_to_cnu 			(ch_to_cnu_sub4 ),
 			.ch_to_vnu 			(ch_to_vnu_sub4 ),
+			.ch_to_bs           (ch_to_bs_sub[4]),
 			.dnu_signExten 		(dnu_signExten_sub4),
 			.c2v_bs_in          (c2v_bs_in_sub4 ),
 			.v2c_bs_in          (v2c_bs_in_sub4 ),
-			.ch_bs_in   		(ch_to_vnu_sub4), //(ch_bs_in_sub4),
+			.ch_bs_in   		(ch_to_bs_sub[4]), //(ch_bs_in_sub4),
 			.coded_block 		(coded_block_sub4),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub4),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -783,6 +801,8 @@ module entire_message_passing_wrapper #(
 			// Parameters of Channel RAM
 			.CH_RAM_DEPTH      (CH_RAM_DEPTH     ), // ROW_CHUNK_NUM*LAYER_NUM,
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
+			// Parameters of Sign Extenstion for DNUs
+			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -796,10 +816,11 @@ module entire_message_passing_wrapper #(
 			.mem_to_vnu         (mem_to_vnu_sub5),
 			.ch_to_cnu 			(ch_to_cnu_sub5 ),
 			.ch_to_vnu 			(ch_to_vnu_sub5 ),
+			.ch_to_bs           (ch_to_bs_sub[5]),
 			.dnu_signExten 		(dnu_signExten_sub5),
 			.c2v_bs_in          (c2v_bs_in_sub5 ),
 			.v2c_bs_in          (v2c_bs_in_sub5 ),
-			.ch_bs_in   		(ch_to_vnu_sub5), //(ch_bs_in_sub5),
+			.ch_bs_in   		(ch_to_bs_sub[5]), //(ch_bs_in_sub5),
 			.coded_block 		(coded_block_sub5),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub5),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -874,6 +895,8 @@ module entire_message_passing_wrapper #(
 			// Parameters of Channel RAM
 			.CH_RAM_DEPTH      (CH_RAM_DEPTH     ), // ROW_CHUNK_NUM*LAYER_NUM,
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
+			// Parameters of Sign Extenstion for DNUs
+			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -887,10 +910,11 @@ module entire_message_passing_wrapper #(
 			.mem_to_vnu         (mem_to_vnu_sub6),
 			.ch_to_cnu 			(ch_to_cnu_sub6 ),
 			.ch_to_vnu 			(ch_to_vnu_sub6 ),
+			.ch_to_bs           (ch_to_bs_sub[6]),
 			.dnu_signExten 		(dnu_signExten_sub6),
 			.c2v_bs_in          (c2v_bs_in_sub6 ),
 			.v2c_bs_in          (v2c_bs_in_sub6 ),
-			.ch_bs_in   		(ch_to_vnu_sub6), //(ch_bs_in_sub6),
+			.ch_bs_in   		(ch_to_bs_sub[6]), //(ch_bs_in_sub6),
 			.coded_block 		(coded_block_sub6),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub6),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -965,6 +989,8 @@ module entire_message_passing_wrapper #(
 			// Parameters of Channel RAM
 			.CH_RAM_DEPTH      (CH_RAM_DEPTH     ), // ROW_CHUNK_NUM*LAYER_NUM,
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
+			// Parameters of Sign Extenstion for DNUs
+			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -978,10 +1004,11 @@ module entire_message_passing_wrapper #(
 			.mem_to_vnu         (mem_to_vnu_sub7),
 			.ch_to_cnu 			(ch_to_cnu_sub7 ),
 			.ch_to_vnu 			(ch_to_vnu_sub7 ),
+			.ch_to_bs           (ch_to_bs_sub[7]),
 			.dnu_signExten 		(dnu_signExten_sub7),
 			.c2v_bs_in          (c2v_bs_in_sub7 ),
 			.v2c_bs_in          (v2c_bs_in_sub7 ),
-			.ch_bs_in   		(ch_to_vnu_sub7), //(ch_bs_in_sub7),
+			.ch_bs_in   		(ch_to_bs_sub[7]), //(ch_bs_in_sub7),
 			.coded_block 		(coded_block_sub7),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub7),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -1056,6 +1083,8 @@ module entire_message_passing_wrapper #(
 			// Parameters of Channel RAM
 			.CH_RAM_DEPTH      (CH_RAM_DEPTH     ), // ROW_CHUNK_NUM*LAYER_NUM,
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
+			// Parameters of Sign Extenstion for DNUs
+			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -1069,10 +1098,11 @@ module entire_message_passing_wrapper #(
 			.mem_to_vnu         (mem_to_vnu_sub8),
 			.ch_to_cnu 			(ch_to_cnu_sub8 ),
 			.ch_to_vnu 			(ch_to_vnu_sub8 ),
+			.ch_to_bs           (ch_to_bs_sub[8]),
 			.dnu_signExten 		(dnu_signExten_sub8),
 			.c2v_bs_in          (c2v_bs_in_sub8 ),
 			.v2c_bs_in          (v2c_bs_in_sub8 ),
-			.ch_bs_in   		(ch_to_vnu_sub8), //(ch_bs_in_sub8),
+			.ch_bs_in   		(ch_to_bs_sub[8]), //(ch_bs_in_sub8),
 			.coded_block 		(coded_block_sub8),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub8),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -1147,6 +1177,8 @@ module entire_message_passing_wrapper #(
 			// Parameters of Channel RAM
 			.CH_RAM_DEPTH      (CH_RAM_DEPTH     ), // ROW_CHUNK_NUM*LAYER_NUM,
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
+			// Parameters of Sign Extenstion for DNUs
+			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -1160,10 +1192,11 @@ module entire_message_passing_wrapper #(
 			.mem_to_vnu         (mem_to_vnu_sub9),
 			.ch_to_cnu 			(ch_to_cnu_sub9 ),
 			.ch_to_vnu 			(ch_to_vnu_sub9 ),
+			.ch_to_bs           (ch_to_bs_sub[9]),
 			.dnu_signExten 		(dnu_signExten_sub9),
 			.c2v_bs_in          (c2v_bs_in_sub9 ),
 			.v2c_bs_in          (v2c_bs_in_sub9 ),
-			.ch_bs_in   		(ch_to_vnu_sub9), //(ch_bs_in_sub9),
+			.ch_bs_in   		(ch_to_bs_sub[9]), //(ch_bs_in_sub9),
 			.coded_block 		(coded_block_sub9),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub9),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
@@ -1231,13 +1264,16 @@ module msg_pass_submatrix_0_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 3,
+	parameter CH_FETCH_LATENCY = 4,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
 	// Parameters of Channel RAM
 	parameter CH_RAM_DEPTH = ROW_CHUNK_NUM*LAYER_NUM,
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
+/*-------------------------------------------------------------------------------------*/
+	// Parameters for DNU Sign Extension related Control Signals
+	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
 	parameter DEPTH = 1024,
@@ -1253,6 +1289,7 @@ module msg_pass_submatrix_0_unit #(
 	output wire [C2V_DATA_WIDTH-1:0] mem_to_vnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_cnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_vnu,
+	output wire [CH_DATA_WIDTH-1:0] ch_to_bs,
 	output wire [CHECK_PARALLELISM-1:0] dnu_signExten,
 
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
@@ -1418,6 +1455,8 @@ zero_shuffle_top_85b #(
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_rd_addr; // page-read addresses
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
+	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_0 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -1431,7 +1470,7 @@ zero_shuffle_top_85b #(
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_0 (
 		`ifdef SHARED_ZERO_BS
-			.vnu_pa_msg_bit0  (dnu_signExten[CHECK_PARALLELISM-1:0]),
+			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
 		`endif
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
@@ -1788,6 +1827,14 @@ zero_shuffle_top_85b #(
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+		genvar dnu_signID;
+		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
+		generate
+			for(dnu_signID=1; dnu_signID<PA_TO_DNU_DELAY; dnu_signID=dnu_signID+1) begin : dnu_signExtenPipe_inst
+				always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[dnu_signID] <= 0; else dnu_signExten_reg[dnu_signID] <= dnu_signExten_reg[dnu_signID-1]; end
+			end
+		endgenerate
+		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -1864,6 +1911,7 @@ reg [CH_DATA_WIDTH-1:0] ch_msg_genIn;
 wire [CH_DATA_WIDTH-1:0] ch_ram_din;
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_0 [0:CHECK_PARALLELISM-1]; // [0:84]
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_1 [0:CHECK_PARALLELISM-1]; // [0:84]
+//wire [QUAN_SIZE-1:0] ch_msg_fetchOut_2 [0:CHECK_PARALLELISM-1]; // [0:84]
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
@@ -2051,7 +2099,95 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 		.cnu_init_dout_82    (ch_msg_fetchOut_0[82]),
 		.cnu_init_dout_83    (ch_msg_fetchOut_0[83]),
 		.cnu_init_dout_84    (ch_msg_fetchOut_0[84]),
+		/*
+			// For input sources of permutation network
+			.bs_src_dout_0     (ch_msg_fetchOut_2[0 ]),
+			.bs_src_dout_1     (ch_msg_fetchOut_2[1 ]),
+			.bs_src_dout_2     (ch_msg_fetchOut_2[2 ]),
+			.bs_src_dout_3     (ch_msg_fetchOut_2[3 ]),
+			.bs_src_dout_4     (ch_msg_fetchOut_2[4 ]),
+			.bs_src_dout_5     (ch_msg_fetchOut_2[5 ]),
+			.bs_src_dout_6     (ch_msg_fetchOut_2[6 ]),
+			.bs_src_dout_7     (ch_msg_fetchOut_2[7 ]),
+			.bs_src_dout_8     (ch_msg_fetchOut_2[8 ]),
+			.bs_src_dout_9     (ch_msg_fetchOut_2[9 ]),
+			.bs_src_dout_10    (ch_msg_fetchOut_2[10]),
+			.bs_src_dout_11    (ch_msg_fetchOut_2[11]),
+			.bs_src_dout_12    (ch_msg_fetchOut_2[12]),
+			.bs_src_dout_13    (ch_msg_fetchOut_2[13]),
+			.bs_src_dout_14    (ch_msg_fetchOut_2[14]),
+			.bs_src_dout_15    (ch_msg_fetchOut_2[15]),
+			.bs_src_dout_16    (ch_msg_fetchOut_2[16]),
+			.bs_src_dout_17    (ch_msg_fetchOut_2[17]),
+			.bs_src_dout_18    (ch_msg_fetchOut_2[18]),
+			.bs_src_dout_19    (ch_msg_fetchOut_2[19]),
+			.bs_src_dout_20    (ch_msg_fetchOut_2[20]),
+			.bs_src_dout_21    (ch_msg_fetchOut_2[21]),
+			.bs_src_dout_22    (ch_msg_fetchOut_2[22]),
+			.bs_src_dout_23    (ch_msg_fetchOut_2[23]),
+			.bs_src_dout_24    (ch_msg_fetchOut_2[24]),
+			.bs_src_dout_25    (ch_msg_fetchOut_2[25]),
+			.bs_src_dout_26    (ch_msg_fetchOut_2[26]),
+			.bs_src_dout_27    (ch_msg_fetchOut_2[27]),
+			.bs_src_dout_28    (ch_msg_fetchOut_2[28]),
+			.bs_src_dout_29    (ch_msg_fetchOut_2[29]),
+			.bs_src_dout_30    (ch_msg_fetchOut_2[30]),
+			.bs_src_dout_31    (ch_msg_fetchOut_2[31]),
+			.bs_src_dout_32    (ch_msg_fetchOut_2[32]),
+			.bs_src_dout_33    (ch_msg_fetchOut_2[33]),
+			.bs_src_dout_34    (ch_msg_fetchOut_2[34]),
+			.bs_src_dout_35    (ch_msg_fetchOut_2[35]),
+			.bs_src_dout_36    (ch_msg_fetchOut_2[36]),
+			.bs_src_dout_37    (ch_msg_fetchOut_2[37]),
+			.bs_src_dout_38    (ch_msg_fetchOut_2[38]),
+			.bs_src_dout_39    (ch_msg_fetchOut_2[39]),
+			.bs_src_dout_40    (ch_msg_fetchOut_2[40]),
+			.bs_src_dout_41    (ch_msg_fetchOut_2[41]),
+			.bs_src_dout_42    (ch_msg_fetchOut_2[42]),
+			.bs_src_dout_43    (ch_msg_fetchOut_2[43]),
+			.bs_src_dout_44    (ch_msg_fetchOut_2[44]),
+			.bs_src_dout_45    (ch_msg_fetchOut_2[45]),
+			.bs_src_dout_46    (ch_msg_fetchOut_2[46]),
+			.bs_src_dout_47    (ch_msg_fetchOut_2[47]),
+			.bs_src_dout_48    (ch_msg_fetchOut_2[48]),
+			.bs_src_dout_49    (ch_msg_fetchOut_2[49]),
+			.bs_src_dout_50    (ch_msg_fetchOut_2[50]),
+			.bs_src_dout_51    (ch_msg_fetchOut_2[51]),
+			.bs_src_dout_52    (ch_msg_fetchOut_2[52]),
+			.bs_src_dout_53    (ch_msg_fetchOut_2[53]),
+			.bs_src_dout_54    (ch_msg_fetchOut_2[54]),
+			.bs_src_dout_55    (ch_msg_fetchOut_2[55]),
+			.bs_src_dout_56    (ch_msg_fetchOut_2[56]),
+			.bs_src_dout_57    (ch_msg_fetchOut_2[57]),
+			.bs_src_dout_58    (ch_msg_fetchOut_2[58]),
+			.bs_src_dout_59    (ch_msg_fetchOut_2[59]),
+			.bs_src_dout_60    (ch_msg_fetchOut_2[60]),
+			.bs_src_dout_61    (ch_msg_fetchOut_2[61]),
+			.bs_src_dout_62    (ch_msg_fetchOut_2[62]),
+			.bs_src_dout_63    (ch_msg_fetchOut_2[63]),
+			.bs_src_dout_64    (ch_msg_fetchOut_2[64]),
+			.bs_src_dout_65    (ch_msg_fetchOut_2[65]),
+			.bs_src_dout_66    (ch_msg_fetchOut_2[66]),
+			.bs_src_dout_67    (ch_msg_fetchOut_2[67]),
+			.bs_src_dout_68    (ch_msg_fetchOut_2[68]),
+			.bs_src_dout_69    (ch_msg_fetchOut_2[69]),
+			.bs_src_dout_70    (ch_msg_fetchOut_2[70]),
+			.bs_src_dout_71    (ch_msg_fetchOut_2[71]),
+			.bs_src_dout_72    (ch_msg_fetchOut_2[72]),
+			.bs_src_dout_73    (ch_msg_fetchOut_2[73]),
+			.bs_src_dout_74    (ch_msg_fetchOut_2[74]),
+			.bs_src_dout_75    (ch_msg_fetchOut_2[75]),
+			.bs_src_dout_76    (ch_msg_fetchOut_2[76]),
+			.bs_src_dout_77    (ch_msg_fetchOut_2[77]),
+			.bs_src_dout_78    (ch_msg_fetchOut_2[78]),
+			.bs_src_dout_79    (ch_msg_fetchOut_2[79]),
+			.bs_src_dout_80    (ch_msg_fetchOut_2[80]),
+			.bs_src_dout_81    (ch_msg_fetchOut_2[81]),
+			.bs_src_dout_82    (ch_msg_fetchOut_2[82]),
+			.bs_src_dout_83    (ch_msg_fetchOut_2[83]),
+			.bs_src_dout_84    (ch_msg_fetchOut_2[84]),
 
+		*/
 		.din        (ch_ram_din[CH_DATA_WIDTH-1:0]),
 
 		.read_addr  (submatrix_ch_ram_rd_addr[CH_RAM_ADDR_WIDTH-1:0]),
@@ -2064,6 +2200,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
+	//assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
 	assign submatrix_ch_ram_wr_addr = (ch_ram_init_we == 1'b1) ? submatrix_chInit_wr_addr :
@@ -2183,13 +2320,16 @@ module msg_pass_submatrix_1_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 3,
+	parameter CH_FETCH_LATENCY = 4,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
 	// Parameters of Channel RAM
 	parameter CH_RAM_DEPTH = ROW_CHUNK_NUM*LAYER_NUM,
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
+/*-------------------------------------------------------------------------------------*/
+	// Parameters for DNU Sign Extension related Control Signals
+	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
 	parameter DEPTH = 1024,
@@ -2204,6 +2344,7 @@ module msg_pass_submatrix_1_unit #(
 	output wire [C2V_DATA_WIDTH-1:0] mem_to_vnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_cnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_vnu,
+	output wire [CH_DATA_WIDTH-1:0] ch_to_bs,
 	output wire [CHECK_PARALLELISM-1:0] dnu_signExten,
 
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
@@ -2358,6 +2499,8 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_rd_addr; // page-read addresses
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
+	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_1 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -2370,7 +2513,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.FRAG_DATA_WIDTH(FRAG_DATA_WIDTH),
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_1 (
-			.vnu_pa_msg_bit0  (dnu_signExten[CHECK_PARALLELISM-1:0]),
+			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -2726,6 +2869,14 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+		genvar dnu_signID;
+		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
+		generate
+			for(dnu_signID=1; dnu_signID<PA_TO_DNU_DELAY; dnu_signID=dnu_signID+1) begin : dnu_signExtenPipe_inst
+				always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[dnu_signID] <= 0; else dnu_signExten_reg[dnu_signID] <= dnu_signExten_reg[dnu_signID-1]; end
+			end
+		endgenerate
+		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -2828,6 +2979,7 @@ reg [CH_DATA_WIDTH-1:0] ch_msg_genIn;
 wire [CH_DATA_WIDTH-1:0] ch_ram_din;
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_0 [0:CHECK_PARALLELISM-1]; // [0:84]
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_1 [0:CHECK_PARALLELISM-1]; // [0:84]
+wire [QUAN_SIZE-1:0] ch_msg_fetchOut_2 [0:CHECK_PARALLELISM-1]; // [0:84]
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
@@ -3016,6 +3168,92 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 		.cnu_init_dout_82    (ch_msg_fetchOut_0[82]),
 		.cnu_init_dout_83    (ch_msg_fetchOut_0[83]),
 		.cnu_init_dout_84    (ch_msg_fetchOut_0[84]),
+		// For input sources of permutation network
+		.bs_src_dout_0     (ch_msg_fetchOut_2[0 ]),
+		.bs_src_dout_1     (ch_msg_fetchOut_2[1 ]),
+		.bs_src_dout_2     (ch_msg_fetchOut_2[2 ]),
+		.bs_src_dout_3     (ch_msg_fetchOut_2[3 ]),
+		.bs_src_dout_4     (ch_msg_fetchOut_2[4 ]),
+		.bs_src_dout_5     (ch_msg_fetchOut_2[5 ]),
+		.bs_src_dout_6     (ch_msg_fetchOut_2[6 ]),
+		.bs_src_dout_7     (ch_msg_fetchOut_2[7 ]),
+		.bs_src_dout_8     (ch_msg_fetchOut_2[8 ]),
+		.bs_src_dout_9     (ch_msg_fetchOut_2[9 ]),
+		.bs_src_dout_10    (ch_msg_fetchOut_2[10]),
+		.bs_src_dout_11    (ch_msg_fetchOut_2[11]),
+		.bs_src_dout_12    (ch_msg_fetchOut_2[12]),
+		.bs_src_dout_13    (ch_msg_fetchOut_2[13]),
+		.bs_src_dout_14    (ch_msg_fetchOut_2[14]),
+		.bs_src_dout_15    (ch_msg_fetchOut_2[15]),
+		.bs_src_dout_16    (ch_msg_fetchOut_2[16]),
+		.bs_src_dout_17    (ch_msg_fetchOut_2[17]),
+		.bs_src_dout_18    (ch_msg_fetchOut_2[18]),
+		.bs_src_dout_19    (ch_msg_fetchOut_2[19]),
+		.bs_src_dout_20    (ch_msg_fetchOut_2[20]),
+		.bs_src_dout_21    (ch_msg_fetchOut_2[21]),
+		.bs_src_dout_22    (ch_msg_fetchOut_2[22]),
+		.bs_src_dout_23    (ch_msg_fetchOut_2[23]),
+		.bs_src_dout_24    (ch_msg_fetchOut_2[24]),
+		.bs_src_dout_25    (ch_msg_fetchOut_2[25]),
+		.bs_src_dout_26    (ch_msg_fetchOut_2[26]),
+		.bs_src_dout_27    (ch_msg_fetchOut_2[27]),
+		.bs_src_dout_28    (ch_msg_fetchOut_2[28]),
+		.bs_src_dout_29    (ch_msg_fetchOut_2[29]),
+		.bs_src_dout_30    (ch_msg_fetchOut_2[30]),
+		.bs_src_dout_31    (ch_msg_fetchOut_2[31]),
+		.bs_src_dout_32    (ch_msg_fetchOut_2[32]),
+		.bs_src_dout_33    (ch_msg_fetchOut_2[33]),
+		.bs_src_dout_34    (ch_msg_fetchOut_2[34]),
+		.bs_src_dout_35    (ch_msg_fetchOut_2[35]),
+		.bs_src_dout_36    (ch_msg_fetchOut_2[36]),
+		.bs_src_dout_37    (ch_msg_fetchOut_2[37]),
+		.bs_src_dout_38    (ch_msg_fetchOut_2[38]),
+		.bs_src_dout_39    (ch_msg_fetchOut_2[39]),
+		.bs_src_dout_40    (ch_msg_fetchOut_2[40]),
+		.bs_src_dout_41    (ch_msg_fetchOut_2[41]),
+		.bs_src_dout_42    (ch_msg_fetchOut_2[42]),
+		.bs_src_dout_43    (ch_msg_fetchOut_2[43]),
+		.bs_src_dout_44    (ch_msg_fetchOut_2[44]),
+		.bs_src_dout_45    (ch_msg_fetchOut_2[45]),
+		.bs_src_dout_46    (ch_msg_fetchOut_2[46]),
+		.bs_src_dout_47    (ch_msg_fetchOut_2[47]),
+		.bs_src_dout_48    (ch_msg_fetchOut_2[48]),
+		.bs_src_dout_49    (ch_msg_fetchOut_2[49]),
+		.bs_src_dout_50    (ch_msg_fetchOut_2[50]),
+		.bs_src_dout_51    (ch_msg_fetchOut_2[51]),
+		.bs_src_dout_52    (ch_msg_fetchOut_2[52]),
+		.bs_src_dout_53    (ch_msg_fetchOut_2[53]),
+		.bs_src_dout_54    (ch_msg_fetchOut_2[54]),
+		.bs_src_dout_55    (ch_msg_fetchOut_2[55]),
+		.bs_src_dout_56    (ch_msg_fetchOut_2[56]),
+		.bs_src_dout_57    (ch_msg_fetchOut_2[57]),
+		.bs_src_dout_58    (ch_msg_fetchOut_2[58]),
+		.bs_src_dout_59    (ch_msg_fetchOut_2[59]),
+		.bs_src_dout_60    (ch_msg_fetchOut_2[60]),
+		.bs_src_dout_61    (ch_msg_fetchOut_2[61]),
+		.bs_src_dout_62    (ch_msg_fetchOut_2[62]),
+		.bs_src_dout_63    (ch_msg_fetchOut_2[63]),
+		.bs_src_dout_64    (ch_msg_fetchOut_2[64]),
+		.bs_src_dout_65    (ch_msg_fetchOut_2[65]),
+		.bs_src_dout_66    (ch_msg_fetchOut_2[66]),
+		.bs_src_dout_67    (ch_msg_fetchOut_2[67]),
+		.bs_src_dout_68    (ch_msg_fetchOut_2[68]),
+		.bs_src_dout_69    (ch_msg_fetchOut_2[69]),
+		.bs_src_dout_70    (ch_msg_fetchOut_2[70]),
+		.bs_src_dout_71    (ch_msg_fetchOut_2[71]),
+		.bs_src_dout_72    (ch_msg_fetchOut_2[72]),
+		.bs_src_dout_73    (ch_msg_fetchOut_2[73]),
+		.bs_src_dout_74    (ch_msg_fetchOut_2[74]),
+		.bs_src_dout_75    (ch_msg_fetchOut_2[75]),
+		.bs_src_dout_76    (ch_msg_fetchOut_2[76]),
+		.bs_src_dout_77    (ch_msg_fetchOut_2[77]),
+		.bs_src_dout_78    (ch_msg_fetchOut_2[78]),
+		.bs_src_dout_79    (ch_msg_fetchOut_2[79]),
+		.bs_src_dout_80    (ch_msg_fetchOut_2[80]),
+		.bs_src_dout_81    (ch_msg_fetchOut_2[81]),
+		.bs_src_dout_82    (ch_msg_fetchOut_2[82]),
+		.bs_src_dout_83    (ch_msg_fetchOut_2[83]),
+		.bs_src_dout_84    (ch_msg_fetchOut_2[84]),
 
 		.din        (ch_ram_din[CH_DATA_WIDTH-1:0]),
 
@@ -3029,6 +3267,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
 
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
@@ -3215,13 +3454,16 @@ module msg_pass_submatrix_2_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 3,
+	parameter CH_FETCH_LATENCY = 4,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
 	// Parameters of Channel RAM
 	parameter CH_RAM_DEPTH = ROW_CHUNK_NUM*LAYER_NUM,
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
+/*-------------------------------------------------------------------------------------*/
+	// Parameters for DNU Sign Extension related Control Signals
+	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
 	parameter DEPTH = 1024,
@@ -3236,6 +3478,7 @@ module msg_pass_submatrix_2_unit #(
 	output wire [C2V_DATA_WIDTH-1:0] mem_to_vnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_cnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_vnu,
+	output wire [CH_DATA_WIDTH-1:0] ch_to_bs,
 	output wire [CHECK_PARALLELISM-1:0] dnu_signExten,
 
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
@@ -3386,6 +3629,8 @@ shared_qsn_top_85b #(
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_rd_addr; // page-read addresses
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
+	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_2 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -3398,7 +3643,7 @@ shared_qsn_top_85b #(
 			.FRAG_DATA_WIDTH(FRAG_DATA_WIDTH),
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_2 (
-			.vnu_pa_msg_bit0  (dnu_signExten[CHECK_PARALLELISM-1:0]),
+			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -3754,6 +3999,14 @@ shared_qsn_top_85b #(
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+		genvar dnu_signID;
+		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
+		generate
+			for(dnu_signID=1; dnu_signID<PA_TO_DNU_DELAY; dnu_signID=dnu_signID+1) begin : dnu_signExtenPipe_inst
+				always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[dnu_signID] <= 0; else dnu_signExten_reg[dnu_signID] <= dnu_signExten_reg[dnu_signID-1]; end
+			end
+		endgenerate
+		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -3856,6 +4109,7 @@ reg [CH_DATA_WIDTH-1:0] ch_msg_genIn;
 wire [CH_DATA_WIDTH-1:0] ch_ram_din;
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_0 [0:CHECK_PARALLELISM-1]; // [0:84]
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_1 [0:CHECK_PARALLELISM-1]; // [0:84]
+wire [QUAN_SIZE-1:0] ch_msg_fetchOut_2 [0:CHECK_PARALLELISM-1]; // [0:84]
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
@@ -4044,6 +4298,93 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			.cnu_init_dout_82    (ch_msg_fetchOut_0[82]),
 			.cnu_init_dout_83    (ch_msg_fetchOut_0[83]),
 			.cnu_init_dout_84    (ch_msg_fetchOut_0[84]),
+			// For input sources of permutation network
+			.bs_src_dout_0     (ch_msg_fetchOut_2[0 ]),
+			.bs_src_dout_1     (ch_msg_fetchOut_2[1 ]),
+			.bs_src_dout_2     (ch_msg_fetchOut_2[2 ]),
+			.bs_src_dout_3     (ch_msg_fetchOut_2[3 ]),
+			.bs_src_dout_4     (ch_msg_fetchOut_2[4 ]),
+			.bs_src_dout_5     (ch_msg_fetchOut_2[5 ]),
+			.bs_src_dout_6     (ch_msg_fetchOut_2[6 ]),
+			.bs_src_dout_7     (ch_msg_fetchOut_2[7 ]),
+			.bs_src_dout_8     (ch_msg_fetchOut_2[8 ]),
+			.bs_src_dout_9     (ch_msg_fetchOut_2[9 ]),
+			.bs_src_dout_10    (ch_msg_fetchOut_2[10]),
+			.bs_src_dout_11    (ch_msg_fetchOut_2[11]),
+			.bs_src_dout_12    (ch_msg_fetchOut_2[12]),
+			.bs_src_dout_13    (ch_msg_fetchOut_2[13]),
+			.bs_src_dout_14    (ch_msg_fetchOut_2[14]),
+			.bs_src_dout_15    (ch_msg_fetchOut_2[15]),
+			.bs_src_dout_16    (ch_msg_fetchOut_2[16]),
+			.bs_src_dout_17    (ch_msg_fetchOut_2[17]),
+			.bs_src_dout_18    (ch_msg_fetchOut_2[18]),
+			.bs_src_dout_19    (ch_msg_fetchOut_2[19]),
+			.bs_src_dout_20    (ch_msg_fetchOut_2[20]),
+			.bs_src_dout_21    (ch_msg_fetchOut_2[21]),
+			.bs_src_dout_22    (ch_msg_fetchOut_2[22]),
+			.bs_src_dout_23    (ch_msg_fetchOut_2[23]),
+			.bs_src_dout_24    (ch_msg_fetchOut_2[24]),
+			.bs_src_dout_25    (ch_msg_fetchOut_2[25]),
+			.bs_src_dout_26    (ch_msg_fetchOut_2[26]),
+			.bs_src_dout_27    (ch_msg_fetchOut_2[27]),
+			.bs_src_dout_28    (ch_msg_fetchOut_2[28]),
+			.bs_src_dout_29    (ch_msg_fetchOut_2[29]),
+			.bs_src_dout_30    (ch_msg_fetchOut_2[30]),
+			.bs_src_dout_31    (ch_msg_fetchOut_2[31]),
+			.bs_src_dout_32    (ch_msg_fetchOut_2[32]),
+			.bs_src_dout_33    (ch_msg_fetchOut_2[33]),
+			.bs_src_dout_34    (ch_msg_fetchOut_2[34]),
+			.bs_src_dout_35    (ch_msg_fetchOut_2[35]),
+			.bs_src_dout_36    (ch_msg_fetchOut_2[36]),
+			.bs_src_dout_37    (ch_msg_fetchOut_2[37]),
+			.bs_src_dout_38    (ch_msg_fetchOut_2[38]),
+			.bs_src_dout_39    (ch_msg_fetchOut_2[39]),
+			.bs_src_dout_40    (ch_msg_fetchOut_2[40]),
+			.bs_src_dout_41    (ch_msg_fetchOut_2[41]),
+			.bs_src_dout_42    (ch_msg_fetchOut_2[42]),
+			.bs_src_dout_43    (ch_msg_fetchOut_2[43]),
+			.bs_src_dout_44    (ch_msg_fetchOut_2[44]),
+			.bs_src_dout_45    (ch_msg_fetchOut_2[45]),
+			.bs_src_dout_46    (ch_msg_fetchOut_2[46]),
+			.bs_src_dout_47    (ch_msg_fetchOut_2[47]),
+			.bs_src_dout_48    (ch_msg_fetchOut_2[48]),
+			.bs_src_dout_49    (ch_msg_fetchOut_2[49]),
+			.bs_src_dout_50    (ch_msg_fetchOut_2[50]),
+			.bs_src_dout_51    (ch_msg_fetchOut_2[51]),
+			.bs_src_dout_52    (ch_msg_fetchOut_2[52]),
+			.bs_src_dout_53    (ch_msg_fetchOut_2[53]),
+			.bs_src_dout_54    (ch_msg_fetchOut_2[54]),
+			.bs_src_dout_55    (ch_msg_fetchOut_2[55]),
+			.bs_src_dout_56    (ch_msg_fetchOut_2[56]),
+			.bs_src_dout_57    (ch_msg_fetchOut_2[57]),
+			.bs_src_dout_58    (ch_msg_fetchOut_2[58]),
+			.bs_src_dout_59    (ch_msg_fetchOut_2[59]),
+			.bs_src_dout_60    (ch_msg_fetchOut_2[60]),
+			.bs_src_dout_61    (ch_msg_fetchOut_2[61]),
+			.bs_src_dout_62    (ch_msg_fetchOut_2[62]),
+			.bs_src_dout_63    (ch_msg_fetchOut_2[63]),
+			.bs_src_dout_64    (ch_msg_fetchOut_2[64]),
+			.bs_src_dout_65    (ch_msg_fetchOut_2[65]),
+			.bs_src_dout_66    (ch_msg_fetchOut_2[66]),
+			.bs_src_dout_67    (ch_msg_fetchOut_2[67]),
+			.bs_src_dout_68    (ch_msg_fetchOut_2[68]),
+			.bs_src_dout_69    (ch_msg_fetchOut_2[69]),
+			.bs_src_dout_70    (ch_msg_fetchOut_2[70]),
+			.bs_src_dout_71    (ch_msg_fetchOut_2[71]),
+			.bs_src_dout_72    (ch_msg_fetchOut_2[72]),
+			.bs_src_dout_73    (ch_msg_fetchOut_2[73]),
+			.bs_src_dout_74    (ch_msg_fetchOut_2[74]),
+			.bs_src_dout_75    (ch_msg_fetchOut_2[75]),
+			.bs_src_dout_76    (ch_msg_fetchOut_2[76]),
+			.bs_src_dout_77    (ch_msg_fetchOut_2[77]),
+			.bs_src_dout_78    (ch_msg_fetchOut_2[78]),
+			.bs_src_dout_79    (ch_msg_fetchOut_2[79]),
+			.bs_src_dout_80    (ch_msg_fetchOut_2[80]),
+			.bs_src_dout_81    (ch_msg_fetchOut_2[81]),
+			.bs_src_dout_82    (ch_msg_fetchOut_2[82]),
+			.bs_src_dout_83    (ch_msg_fetchOut_2[83]),
+			.bs_src_dout_84    (ch_msg_fetchOut_2[84]),
+
 
 		.din        (ch_ram_din[CH_DATA_WIDTH-1:0]),
 
@@ -4057,6 +4398,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
 
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
@@ -4243,13 +4585,16 @@ module msg_pass_submatrix_3_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 3,
+	parameter CH_FETCH_LATENCY = 4,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
 	// Parameters of Channel RAM
 	parameter CH_RAM_DEPTH = ROW_CHUNK_NUM*LAYER_NUM,
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
+/*-------------------------------------------------------------------------------------*/
+	// Parameters for DNU Sign Extension related Control Signals
+	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
 	parameter DEPTH = 1024,
@@ -4264,6 +4609,7 @@ module msg_pass_submatrix_3_unit #(
 	output wire [C2V_DATA_WIDTH-1:0] mem_to_vnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_cnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_vnu,
+	output wire [CH_DATA_WIDTH-1:0] ch_to_bs,
 	output wire [CHECK_PARALLELISM-1:0] dnu_signExten,
 
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
@@ -4414,6 +4760,8 @@ shared_qsn_top_85b #(
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_rd_addr; // page-read addresses
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
+	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_3 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -4426,7 +4774,7 @@ shared_qsn_top_85b #(
 			.FRAG_DATA_WIDTH(FRAG_DATA_WIDTH),
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_3 (
-			.vnu_pa_msg_bit0  (dnu_signExten[CHECK_PARALLELISM-1:0]),
+			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -4782,6 +5130,14 @@ shared_qsn_top_85b #(
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+		genvar dnu_signID;
+		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
+		generate
+			for(dnu_signID=1; dnu_signID<PA_TO_DNU_DELAY; dnu_signID=dnu_signID+1) begin : dnu_signExtenPipe_inst
+				always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[dnu_signID] <= 0; else dnu_signExten_reg[dnu_signID] <= dnu_signExten_reg[dnu_signID-1]; end
+			end
+		endgenerate
+		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -4884,6 +5240,7 @@ reg [CH_DATA_WIDTH-1:0] ch_msg_genIn;
 wire [CH_DATA_WIDTH-1:0] ch_ram_din;
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_0 [0:CHECK_PARALLELISM-1]; // [0:84]
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_1 [0:CHECK_PARALLELISM-1]; // [0:84]
+wire [QUAN_SIZE-1:0] ch_msg_fetchOut_2 [0:CHECK_PARALLELISM-1]; // [0:84]
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
@@ -5072,6 +5429,93 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			.cnu_init_dout_82    (ch_msg_fetchOut_0[82]),
 			.cnu_init_dout_83    (ch_msg_fetchOut_0[83]),
 			.cnu_init_dout_84    (ch_msg_fetchOut_0[84]),
+			// For input sources of permutation network
+			.bs_src_dout_0     (ch_msg_fetchOut_2[0 ]),
+			.bs_src_dout_1     (ch_msg_fetchOut_2[1 ]),
+			.bs_src_dout_2     (ch_msg_fetchOut_2[2 ]),
+			.bs_src_dout_3     (ch_msg_fetchOut_2[3 ]),
+			.bs_src_dout_4     (ch_msg_fetchOut_2[4 ]),
+			.bs_src_dout_5     (ch_msg_fetchOut_2[5 ]),
+			.bs_src_dout_6     (ch_msg_fetchOut_2[6 ]),
+			.bs_src_dout_7     (ch_msg_fetchOut_2[7 ]),
+			.bs_src_dout_8     (ch_msg_fetchOut_2[8 ]),
+			.bs_src_dout_9     (ch_msg_fetchOut_2[9 ]),
+			.bs_src_dout_10    (ch_msg_fetchOut_2[10]),
+			.bs_src_dout_11    (ch_msg_fetchOut_2[11]),
+			.bs_src_dout_12    (ch_msg_fetchOut_2[12]),
+			.bs_src_dout_13    (ch_msg_fetchOut_2[13]),
+			.bs_src_dout_14    (ch_msg_fetchOut_2[14]),
+			.bs_src_dout_15    (ch_msg_fetchOut_2[15]),
+			.bs_src_dout_16    (ch_msg_fetchOut_2[16]),
+			.bs_src_dout_17    (ch_msg_fetchOut_2[17]),
+			.bs_src_dout_18    (ch_msg_fetchOut_2[18]),
+			.bs_src_dout_19    (ch_msg_fetchOut_2[19]),
+			.bs_src_dout_20    (ch_msg_fetchOut_2[20]),
+			.bs_src_dout_21    (ch_msg_fetchOut_2[21]),
+			.bs_src_dout_22    (ch_msg_fetchOut_2[22]),
+			.bs_src_dout_23    (ch_msg_fetchOut_2[23]),
+			.bs_src_dout_24    (ch_msg_fetchOut_2[24]),
+			.bs_src_dout_25    (ch_msg_fetchOut_2[25]),
+			.bs_src_dout_26    (ch_msg_fetchOut_2[26]),
+			.bs_src_dout_27    (ch_msg_fetchOut_2[27]),
+			.bs_src_dout_28    (ch_msg_fetchOut_2[28]),
+			.bs_src_dout_29    (ch_msg_fetchOut_2[29]),
+			.bs_src_dout_30    (ch_msg_fetchOut_2[30]),
+			.bs_src_dout_31    (ch_msg_fetchOut_2[31]),
+			.bs_src_dout_32    (ch_msg_fetchOut_2[32]),
+			.bs_src_dout_33    (ch_msg_fetchOut_2[33]),
+			.bs_src_dout_34    (ch_msg_fetchOut_2[34]),
+			.bs_src_dout_35    (ch_msg_fetchOut_2[35]),
+			.bs_src_dout_36    (ch_msg_fetchOut_2[36]),
+			.bs_src_dout_37    (ch_msg_fetchOut_2[37]),
+			.bs_src_dout_38    (ch_msg_fetchOut_2[38]),
+			.bs_src_dout_39    (ch_msg_fetchOut_2[39]),
+			.bs_src_dout_40    (ch_msg_fetchOut_2[40]),
+			.bs_src_dout_41    (ch_msg_fetchOut_2[41]),
+			.bs_src_dout_42    (ch_msg_fetchOut_2[42]),
+			.bs_src_dout_43    (ch_msg_fetchOut_2[43]),
+			.bs_src_dout_44    (ch_msg_fetchOut_2[44]),
+			.bs_src_dout_45    (ch_msg_fetchOut_2[45]),
+			.bs_src_dout_46    (ch_msg_fetchOut_2[46]),
+			.bs_src_dout_47    (ch_msg_fetchOut_2[47]),
+			.bs_src_dout_48    (ch_msg_fetchOut_2[48]),
+			.bs_src_dout_49    (ch_msg_fetchOut_2[49]),
+			.bs_src_dout_50    (ch_msg_fetchOut_2[50]),
+			.bs_src_dout_51    (ch_msg_fetchOut_2[51]),
+			.bs_src_dout_52    (ch_msg_fetchOut_2[52]),
+			.bs_src_dout_53    (ch_msg_fetchOut_2[53]),
+			.bs_src_dout_54    (ch_msg_fetchOut_2[54]),
+			.bs_src_dout_55    (ch_msg_fetchOut_2[55]),
+			.bs_src_dout_56    (ch_msg_fetchOut_2[56]),
+			.bs_src_dout_57    (ch_msg_fetchOut_2[57]),
+			.bs_src_dout_58    (ch_msg_fetchOut_2[58]),
+			.bs_src_dout_59    (ch_msg_fetchOut_2[59]),
+			.bs_src_dout_60    (ch_msg_fetchOut_2[60]),
+			.bs_src_dout_61    (ch_msg_fetchOut_2[61]),
+			.bs_src_dout_62    (ch_msg_fetchOut_2[62]),
+			.bs_src_dout_63    (ch_msg_fetchOut_2[63]),
+			.bs_src_dout_64    (ch_msg_fetchOut_2[64]),
+			.bs_src_dout_65    (ch_msg_fetchOut_2[65]),
+			.bs_src_dout_66    (ch_msg_fetchOut_2[66]),
+			.bs_src_dout_67    (ch_msg_fetchOut_2[67]),
+			.bs_src_dout_68    (ch_msg_fetchOut_2[68]),
+			.bs_src_dout_69    (ch_msg_fetchOut_2[69]),
+			.bs_src_dout_70    (ch_msg_fetchOut_2[70]),
+			.bs_src_dout_71    (ch_msg_fetchOut_2[71]),
+			.bs_src_dout_72    (ch_msg_fetchOut_2[72]),
+			.bs_src_dout_73    (ch_msg_fetchOut_2[73]),
+			.bs_src_dout_74    (ch_msg_fetchOut_2[74]),
+			.bs_src_dout_75    (ch_msg_fetchOut_2[75]),
+			.bs_src_dout_76    (ch_msg_fetchOut_2[76]),
+			.bs_src_dout_77    (ch_msg_fetchOut_2[77]),
+			.bs_src_dout_78    (ch_msg_fetchOut_2[78]),
+			.bs_src_dout_79    (ch_msg_fetchOut_2[79]),
+			.bs_src_dout_80    (ch_msg_fetchOut_2[80]),
+			.bs_src_dout_81    (ch_msg_fetchOut_2[81]),
+			.bs_src_dout_82    (ch_msg_fetchOut_2[82]),
+			.bs_src_dout_83    (ch_msg_fetchOut_2[83]),
+			.bs_src_dout_84    (ch_msg_fetchOut_2[84]),
+
 
 		.din        (ch_ram_din[CH_DATA_WIDTH-1:0]),
 
@@ -5085,6 +5529,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
 
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
@@ -5271,13 +5716,16 @@ module msg_pass_submatrix_4_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 3,
+	parameter CH_FETCH_LATENCY = 4,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
 	// Parameters of Channel RAM
 	parameter CH_RAM_DEPTH = ROW_CHUNK_NUM*LAYER_NUM,
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
+/*-------------------------------------------------------------------------------------*/
+	// Parameters for DNU Sign Extension related Control Signals
+	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
 	parameter DEPTH = 1024,
@@ -5292,6 +5740,7 @@ module msg_pass_submatrix_4_unit #(
 	output wire [C2V_DATA_WIDTH-1:0] mem_to_vnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_cnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_vnu,
+	output wire [CH_DATA_WIDTH-1:0] ch_to_bs,
 	output wire [CHECK_PARALLELISM-1:0] dnu_signExten,
 
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
@@ -5448,6 +5897,8 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_rd_addr; // page-read addresses
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
+	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_4 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -5460,7 +5911,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.FRAG_DATA_WIDTH(FRAG_DATA_WIDTH),
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_4 (
-			.vnu_pa_msg_bit0  (dnu_signExten[CHECK_PARALLELISM-1:0]),
+			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -5816,6 +6267,14 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+		genvar dnu_signID;
+		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
+		generate
+			for(dnu_signID=1; dnu_signID<PA_TO_DNU_DELAY; dnu_signID=dnu_signID+1) begin : dnu_signExtenPipe_inst
+				always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[dnu_signID] <= 0; else dnu_signExten_reg[dnu_signID] <= dnu_signExten_reg[dnu_signID-1]; end
+			end
+		endgenerate
+		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -5918,6 +6377,7 @@ reg [CH_DATA_WIDTH-1:0] ch_msg_genIn;
 wire [CH_DATA_WIDTH-1:0] ch_ram_din;
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_0 [0:CHECK_PARALLELISM-1]; // [0:84]
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_1 [0:CHECK_PARALLELISM-1]; // [0:84]
+wire [QUAN_SIZE-1:0] ch_msg_fetchOut_2 [0:CHECK_PARALLELISM-1]; // [0:84]
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
@@ -6106,6 +6566,93 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			.cnu_init_dout_82    (ch_msg_fetchOut_0[82]),
 			.cnu_init_dout_83    (ch_msg_fetchOut_0[83]),
 			.cnu_init_dout_84    (ch_msg_fetchOut_0[84]),
+			// For input sources of permutation network
+			.bs_src_dout_0     (ch_msg_fetchOut_2[0 ]),
+			.bs_src_dout_1     (ch_msg_fetchOut_2[1 ]),
+			.bs_src_dout_2     (ch_msg_fetchOut_2[2 ]),
+			.bs_src_dout_3     (ch_msg_fetchOut_2[3 ]),
+			.bs_src_dout_4     (ch_msg_fetchOut_2[4 ]),
+			.bs_src_dout_5     (ch_msg_fetchOut_2[5 ]),
+			.bs_src_dout_6     (ch_msg_fetchOut_2[6 ]),
+			.bs_src_dout_7     (ch_msg_fetchOut_2[7 ]),
+			.bs_src_dout_8     (ch_msg_fetchOut_2[8 ]),
+			.bs_src_dout_9     (ch_msg_fetchOut_2[9 ]),
+			.bs_src_dout_10    (ch_msg_fetchOut_2[10]),
+			.bs_src_dout_11    (ch_msg_fetchOut_2[11]),
+			.bs_src_dout_12    (ch_msg_fetchOut_2[12]),
+			.bs_src_dout_13    (ch_msg_fetchOut_2[13]),
+			.bs_src_dout_14    (ch_msg_fetchOut_2[14]),
+			.bs_src_dout_15    (ch_msg_fetchOut_2[15]),
+			.bs_src_dout_16    (ch_msg_fetchOut_2[16]),
+			.bs_src_dout_17    (ch_msg_fetchOut_2[17]),
+			.bs_src_dout_18    (ch_msg_fetchOut_2[18]),
+			.bs_src_dout_19    (ch_msg_fetchOut_2[19]),
+			.bs_src_dout_20    (ch_msg_fetchOut_2[20]),
+			.bs_src_dout_21    (ch_msg_fetchOut_2[21]),
+			.bs_src_dout_22    (ch_msg_fetchOut_2[22]),
+			.bs_src_dout_23    (ch_msg_fetchOut_2[23]),
+			.bs_src_dout_24    (ch_msg_fetchOut_2[24]),
+			.bs_src_dout_25    (ch_msg_fetchOut_2[25]),
+			.bs_src_dout_26    (ch_msg_fetchOut_2[26]),
+			.bs_src_dout_27    (ch_msg_fetchOut_2[27]),
+			.bs_src_dout_28    (ch_msg_fetchOut_2[28]),
+			.bs_src_dout_29    (ch_msg_fetchOut_2[29]),
+			.bs_src_dout_30    (ch_msg_fetchOut_2[30]),
+			.bs_src_dout_31    (ch_msg_fetchOut_2[31]),
+			.bs_src_dout_32    (ch_msg_fetchOut_2[32]),
+			.bs_src_dout_33    (ch_msg_fetchOut_2[33]),
+			.bs_src_dout_34    (ch_msg_fetchOut_2[34]),
+			.bs_src_dout_35    (ch_msg_fetchOut_2[35]),
+			.bs_src_dout_36    (ch_msg_fetchOut_2[36]),
+			.bs_src_dout_37    (ch_msg_fetchOut_2[37]),
+			.bs_src_dout_38    (ch_msg_fetchOut_2[38]),
+			.bs_src_dout_39    (ch_msg_fetchOut_2[39]),
+			.bs_src_dout_40    (ch_msg_fetchOut_2[40]),
+			.bs_src_dout_41    (ch_msg_fetchOut_2[41]),
+			.bs_src_dout_42    (ch_msg_fetchOut_2[42]),
+			.bs_src_dout_43    (ch_msg_fetchOut_2[43]),
+			.bs_src_dout_44    (ch_msg_fetchOut_2[44]),
+			.bs_src_dout_45    (ch_msg_fetchOut_2[45]),
+			.bs_src_dout_46    (ch_msg_fetchOut_2[46]),
+			.bs_src_dout_47    (ch_msg_fetchOut_2[47]),
+			.bs_src_dout_48    (ch_msg_fetchOut_2[48]),
+			.bs_src_dout_49    (ch_msg_fetchOut_2[49]),
+			.bs_src_dout_50    (ch_msg_fetchOut_2[50]),
+			.bs_src_dout_51    (ch_msg_fetchOut_2[51]),
+			.bs_src_dout_52    (ch_msg_fetchOut_2[52]),
+			.bs_src_dout_53    (ch_msg_fetchOut_2[53]),
+			.bs_src_dout_54    (ch_msg_fetchOut_2[54]),
+			.bs_src_dout_55    (ch_msg_fetchOut_2[55]),
+			.bs_src_dout_56    (ch_msg_fetchOut_2[56]),
+			.bs_src_dout_57    (ch_msg_fetchOut_2[57]),
+			.bs_src_dout_58    (ch_msg_fetchOut_2[58]),
+			.bs_src_dout_59    (ch_msg_fetchOut_2[59]),
+			.bs_src_dout_60    (ch_msg_fetchOut_2[60]),
+			.bs_src_dout_61    (ch_msg_fetchOut_2[61]),
+			.bs_src_dout_62    (ch_msg_fetchOut_2[62]),
+			.bs_src_dout_63    (ch_msg_fetchOut_2[63]),
+			.bs_src_dout_64    (ch_msg_fetchOut_2[64]),
+			.bs_src_dout_65    (ch_msg_fetchOut_2[65]),
+			.bs_src_dout_66    (ch_msg_fetchOut_2[66]),
+			.bs_src_dout_67    (ch_msg_fetchOut_2[67]),
+			.bs_src_dout_68    (ch_msg_fetchOut_2[68]),
+			.bs_src_dout_69    (ch_msg_fetchOut_2[69]),
+			.bs_src_dout_70    (ch_msg_fetchOut_2[70]),
+			.bs_src_dout_71    (ch_msg_fetchOut_2[71]),
+			.bs_src_dout_72    (ch_msg_fetchOut_2[72]),
+			.bs_src_dout_73    (ch_msg_fetchOut_2[73]),
+			.bs_src_dout_74    (ch_msg_fetchOut_2[74]),
+			.bs_src_dout_75    (ch_msg_fetchOut_2[75]),
+			.bs_src_dout_76    (ch_msg_fetchOut_2[76]),
+			.bs_src_dout_77    (ch_msg_fetchOut_2[77]),
+			.bs_src_dout_78    (ch_msg_fetchOut_2[78]),
+			.bs_src_dout_79    (ch_msg_fetchOut_2[79]),
+			.bs_src_dout_80    (ch_msg_fetchOut_2[80]),
+			.bs_src_dout_81    (ch_msg_fetchOut_2[81]),
+			.bs_src_dout_82    (ch_msg_fetchOut_2[82]),
+			.bs_src_dout_83    (ch_msg_fetchOut_2[83]),
+			.bs_src_dout_84    (ch_msg_fetchOut_2[84]),
+
 
 		.din        (ch_ram_din[CH_DATA_WIDTH-1:0]),
 
@@ -6119,6 +6666,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
 
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
@@ -6305,13 +6853,16 @@ module msg_pass_submatrix_5_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 3,
+	parameter CH_FETCH_LATENCY = 4,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
 	// Parameters of Channel RAM
 	parameter CH_RAM_DEPTH = ROW_CHUNK_NUM*LAYER_NUM,
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
+/*-------------------------------------------------------------------------------------*/
+	// Parameters for DNU Sign Extension related Control Signals
+	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
 	parameter DEPTH = 1024,
@@ -6326,6 +6877,7 @@ module msg_pass_submatrix_5_unit #(
 	output wire [C2V_DATA_WIDTH-1:0] mem_to_vnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_cnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_vnu,
+	output wire [CH_DATA_WIDTH-1:0] ch_to_bs,
 	output wire [CHECK_PARALLELISM-1:0] dnu_signExten,
 
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
@@ -6481,6 +7033,8 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_rd_addr; // page-read addresses
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
+	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_5 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -6493,7 +7047,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.FRAG_DATA_WIDTH(FRAG_DATA_WIDTH),
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_5 (
-			.vnu_pa_msg_bit0  (dnu_signExten[CHECK_PARALLELISM-1:0]),
+			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -6849,6 +7403,14 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+		genvar dnu_signID;
+		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
+		generate
+			for(dnu_signID=1; dnu_signID<PA_TO_DNU_DELAY; dnu_signID=dnu_signID+1) begin : dnu_signExtenPipe_inst
+				always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[dnu_signID] <= 0; else dnu_signExten_reg[dnu_signID] <= dnu_signExten_reg[dnu_signID-1]; end
+			end
+		endgenerate
+		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -6951,6 +7513,7 @@ reg [CH_DATA_WIDTH-1:0] ch_msg_genIn;
 wire [CH_DATA_WIDTH-1:0] ch_ram_din;
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_0 [0:CHECK_PARALLELISM-1]; // [0:84]
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_1 [0:CHECK_PARALLELISM-1]; // [0:84]
+wire [QUAN_SIZE-1:0] ch_msg_fetchOut_2 [0:CHECK_PARALLELISM-1]; // [0:84]
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
@@ -7139,6 +7702,93 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			.cnu_init_dout_82    (ch_msg_fetchOut_0[82]),
 			.cnu_init_dout_83    (ch_msg_fetchOut_0[83]),
 			.cnu_init_dout_84    (ch_msg_fetchOut_0[84]),
+			// For input sources of permutation network
+			.bs_src_dout_0     (ch_msg_fetchOut_2[0 ]),
+			.bs_src_dout_1     (ch_msg_fetchOut_2[1 ]),
+			.bs_src_dout_2     (ch_msg_fetchOut_2[2 ]),
+			.bs_src_dout_3     (ch_msg_fetchOut_2[3 ]),
+			.bs_src_dout_4     (ch_msg_fetchOut_2[4 ]),
+			.bs_src_dout_5     (ch_msg_fetchOut_2[5 ]),
+			.bs_src_dout_6     (ch_msg_fetchOut_2[6 ]),
+			.bs_src_dout_7     (ch_msg_fetchOut_2[7 ]),
+			.bs_src_dout_8     (ch_msg_fetchOut_2[8 ]),
+			.bs_src_dout_9     (ch_msg_fetchOut_2[9 ]),
+			.bs_src_dout_10    (ch_msg_fetchOut_2[10]),
+			.bs_src_dout_11    (ch_msg_fetchOut_2[11]),
+			.bs_src_dout_12    (ch_msg_fetchOut_2[12]),
+			.bs_src_dout_13    (ch_msg_fetchOut_2[13]),
+			.bs_src_dout_14    (ch_msg_fetchOut_2[14]),
+			.bs_src_dout_15    (ch_msg_fetchOut_2[15]),
+			.bs_src_dout_16    (ch_msg_fetchOut_2[16]),
+			.bs_src_dout_17    (ch_msg_fetchOut_2[17]),
+			.bs_src_dout_18    (ch_msg_fetchOut_2[18]),
+			.bs_src_dout_19    (ch_msg_fetchOut_2[19]),
+			.bs_src_dout_20    (ch_msg_fetchOut_2[20]),
+			.bs_src_dout_21    (ch_msg_fetchOut_2[21]),
+			.bs_src_dout_22    (ch_msg_fetchOut_2[22]),
+			.bs_src_dout_23    (ch_msg_fetchOut_2[23]),
+			.bs_src_dout_24    (ch_msg_fetchOut_2[24]),
+			.bs_src_dout_25    (ch_msg_fetchOut_2[25]),
+			.bs_src_dout_26    (ch_msg_fetchOut_2[26]),
+			.bs_src_dout_27    (ch_msg_fetchOut_2[27]),
+			.bs_src_dout_28    (ch_msg_fetchOut_2[28]),
+			.bs_src_dout_29    (ch_msg_fetchOut_2[29]),
+			.bs_src_dout_30    (ch_msg_fetchOut_2[30]),
+			.bs_src_dout_31    (ch_msg_fetchOut_2[31]),
+			.bs_src_dout_32    (ch_msg_fetchOut_2[32]),
+			.bs_src_dout_33    (ch_msg_fetchOut_2[33]),
+			.bs_src_dout_34    (ch_msg_fetchOut_2[34]),
+			.bs_src_dout_35    (ch_msg_fetchOut_2[35]),
+			.bs_src_dout_36    (ch_msg_fetchOut_2[36]),
+			.bs_src_dout_37    (ch_msg_fetchOut_2[37]),
+			.bs_src_dout_38    (ch_msg_fetchOut_2[38]),
+			.bs_src_dout_39    (ch_msg_fetchOut_2[39]),
+			.bs_src_dout_40    (ch_msg_fetchOut_2[40]),
+			.bs_src_dout_41    (ch_msg_fetchOut_2[41]),
+			.bs_src_dout_42    (ch_msg_fetchOut_2[42]),
+			.bs_src_dout_43    (ch_msg_fetchOut_2[43]),
+			.bs_src_dout_44    (ch_msg_fetchOut_2[44]),
+			.bs_src_dout_45    (ch_msg_fetchOut_2[45]),
+			.bs_src_dout_46    (ch_msg_fetchOut_2[46]),
+			.bs_src_dout_47    (ch_msg_fetchOut_2[47]),
+			.bs_src_dout_48    (ch_msg_fetchOut_2[48]),
+			.bs_src_dout_49    (ch_msg_fetchOut_2[49]),
+			.bs_src_dout_50    (ch_msg_fetchOut_2[50]),
+			.bs_src_dout_51    (ch_msg_fetchOut_2[51]),
+			.bs_src_dout_52    (ch_msg_fetchOut_2[52]),
+			.bs_src_dout_53    (ch_msg_fetchOut_2[53]),
+			.bs_src_dout_54    (ch_msg_fetchOut_2[54]),
+			.bs_src_dout_55    (ch_msg_fetchOut_2[55]),
+			.bs_src_dout_56    (ch_msg_fetchOut_2[56]),
+			.bs_src_dout_57    (ch_msg_fetchOut_2[57]),
+			.bs_src_dout_58    (ch_msg_fetchOut_2[58]),
+			.bs_src_dout_59    (ch_msg_fetchOut_2[59]),
+			.bs_src_dout_60    (ch_msg_fetchOut_2[60]),
+			.bs_src_dout_61    (ch_msg_fetchOut_2[61]),
+			.bs_src_dout_62    (ch_msg_fetchOut_2[62]),
+			.bs_src_dout_63    (ch_msg_fetchOut_2[63]),
+			.bs_src_dout_64    (ch_msg_fetchOut_2[64]),
+			.bs_src_dout_65    (ch_msg_fetchOut_2[65]),
+			.bs_src_dout_66    (ch_msg_fetchOut_2[66]),
+			.bs_src_dout_67    (ch_msg_fetchOut_2[67]),
+			.bs_src_dout_68    (ch_msg_fetchOut_2[68]),
+			.bs_src_dout_69    (ch_msg_fetchOut_2[69]),
+			.bs_src_dout_70    (ch_msg_fetchOut_2[70]),
+			.bs_src_dout_71    (ch_msg_fetchOut_2[71]),
+			.bs_src_dout_72    (ch_msg_fetchOut_2[72]),
+			.bs_src_dout_73    (ch_msg_fetchOut_2[73]),
+			.bs_src_dout_74    (ch_msg_fetchOut_2[74]),
+			.bs_src_dout_75    (ch_msg_fetchOut_2[75]),
+			.bs_src_dout_76    (ch_msg_fetchOut_2[76]),
+			.bs_src_dout_77    (ch_msg_fetchOut_2[77]),
+			.bs_src_dout_78    (ch_msg_fetchOut_2[78]),
+			.bs_src_dout_79    (ch_msg_fetchOut_2[79]),
+			.bs_src_dout_80    (ch_msg_fetchOut_2[80]),
+			.bs_src_dout_81    (ch_msg_fetchOut_2[81]),
+			.bs_src_dout_82    (ch_msg_fetchOut_2[82]),
+			.bs_src_dout_83    (ch_msg_fetchOut_2[83]),
+			.bs_src_dout_84    (ch_msg_fetchOut_2[84]),
+
 
 		.din        (ch_ram_din[CH_DATA_WIDTH-1:0]),
 
@@ -7152,6 +7802,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
 
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
@@ -7338,13 +7989,16 @@ module msg_pass_submatrix_6_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 3,
+	parameter CH_FETCH_LATENCY = 4,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
 	// Parameters of Channel RAM
 	parameter CH_RAM_DEPTH = ROW_CHUNK_NUM*LAYER_NUM,
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
+/*-------------------------------------------------------------------------------------*/
+	// Parameters for DNU Sign Extension related Control Signals
+	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
 	parameter DEPTH = 1024,
@@ -7359,6 +8013,7 @@ module msg_pass_submatrix_6_unit #(
 	output wire [C2V_DATA_WIDTH-1:0] mem_to_vnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_cnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_vnu,
+	output wire [CH_DATA_WIDTH-1:0] ch_to_bs,
 	output wire [CHECK_PARALLELISM-1:0] dnu_signExten,
 
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
@@ -7514,6 +8169,8 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_rd_addr; // page-read addresses
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
+	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_6 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -7526,7 +8183,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.FRAG_DATA_WIDTH(FRAG_DATA_WIDTH),
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_6 (
-			.vnu_pa_msg_bit0  (dnu_signExten[CHECK_PARALLELISM-1:0]),
+			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -7882,6 +8539,14 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+		genvar dnu_signID;
+		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
+		generate
+			for(dnu_signID=1; dnu_signID<PA_TO_DNU_DELAY; dnu_signID=dnu_signID+1) begin : dnu_signExtenPipe_inst
+				always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[dnu_signID] <= 0; else dnu_signExten_reg[dnu_signID] <= dnu_signExten_reg[dnu_signID-1]; end
+			end
+		endgenerate
+		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -7984,6 +8649,7 @@ reg [CH_DATA_WIDTH-1:0] ch_msg_genIn;
 wire [CH_DATA_WIDTH-1:0] ch_ram_din;
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_0 [0:CHECK_PARALLELISM-1]; // [0:84]
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_1 [0:CHECK_PARALLELISM-1]; // [0:84]
+wire [QUAN_SIZE-1:0] ch_msg_fetchOut_2 [0:CHECK_PARALLELISM-1]; // [0:84]
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
@@ -8172,6 +8838,93 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			.cnu_init_dout_82    (ch_msg_fetchOut_0[82]),
 			.cnu_init_dout_83    (ch_msg_fetchOut_0[83]),
 			.cnu_init_dout_84    (ch_msg_fetchOut_0[84]),
+			// For input sources of permutation network
+			.bs_src_dout_0     (ch_msg_fetchOut_2[0 ]),
+			.bs_src_dout_1     (ch_msg_fetchOut_2[1 ]),
+			.bs_src_dout_2     (ch_msg_fetchOut_2[2 ]),
+			.bs_src_dout_3     (ch_msg_fetchOut_2[3 ]),
+			.bs_src_dout_4     (ch_msg_fetchOut_2[4 ]),
+			.bs_src_dout_5     (ch_msg_fetchOut_2[5 ]),
+			.bs_src_dout_6     (ch_msg_fetchOut_2[6 ]),
+			.bs_src_dout_7     (ch_msg_fetchOut_2[7 ]),
+			.bs_src_dout_8     (ch_msg_fetchOut_2[8 ]),
+			.bs_src_dout_9     (ch_msg_fetchOut_2[9 ]),
+			.bs_src_dout_10    (ch_msg_fetchOut_2[10]),
+			.bs_src_dout_11    (ch_msg_fetchOut_2[11]),
+			.bs_src_dout_12    (ch_msg_fetchOut_2[12]),
+			.bs_src_dout_13    (ch_msg_fetchOut_2[13]),
+			.bs_src_dout_14    (ch_msg_fetchOut_2[14]),
+			.bs_src_dout_15    (ch_msg_fetchOut_2[15]),
+			.bs_src_dout_16    (ch_msg_fetchOut_2[16]),
+			.bs_src_dout_17    (ch_msg_fetchOut_2[17]),
+			.bs_src_dout_18    (ch_msg_fetchOut_2[18]),
+			.bs_src_dout_19    (ch_msg_fetchOut_2[19]),
+			.bs_src_dout_20    (ch_msg_fetchOut_2[20]),
+			.bs_src_dout_21    (ch_msg_fetchOut_2[21]),
+			.bs_src_dout_22    (ch_msg_fetchOut_2[22]),
+			.bs_src_dout_23    (ch_msg_fetchOut_2[23]),
+			.bs_src_dout_24    (ch_msg_fetchOut_2[24]),
+			.bs_src_dout_25    (ch_msg_fetchOut_2[25]),
+			.bs_src_dout_26    (ch_msg_fetchOut_2[26]),
+			.bs_src_dout_27    (ch_msg_fetchOut_2[27]),
+			.bs_src_dout_28    (ch_msg_fetchOut_2[28]),
+			.bs_src_dout_29    (ch_msg_fetchOut_2[29]),
+			.bs_src_dout_30    (ch_msg_fetchOut_2[30]),
+			.bs_src_dout_31    (ch_msg_fetchOut_2[31]),
+			.bs_src_dout_32    (ch_msg_fetchOut_2[32]),
+			.bs_src_dout_33    (ch_msg_fetchOut_2[33]),
+			.bs_src_dout_34    (ch_msg_fetchOut_2[34]),
+			.bs_src_dout_35    (ch_msg_fetchOut_2[35]),
+			.bs_src_dout_36    (ch_msg_fetchOut_2[36]),
+			.bs_src_dout_37    (ch_msg_fetchOut_2[37]),
+			.bs_src_dout_38    (ch_msg_fetchOut_2[38]),
+			.bs_src_dout_39    (ch_msg_fetchOut_2[39]),
+			.bs_src_dout_40    (ch_msg_fetchOut_2[40]),
+			.bs_src_dout_41    (ch_msg_fetchOut_2[41]),
+			.bs_src_dout_42    (ch_msg_fetchOut_2[42]),
+			.bs_src_dout_43    (ch_msg_fetchOut_2[43]),
+			.bs_src_dout_44    (ch_msg_fetchOut_2[44]),
+			.bs_src_dout_45    (ch_msg_fetchOut_2[45]),
+			.bs_src_dout_46    (ch_msg_fetchOut_2[46]),
+			.bs_src_dout_47    (ch_msg_fetchOut_2[47]),
+			.bs_src_dout_48    (ch_msg_fetchOut_2[48]),
+			.bs_src_dout_49    (ch_msg_fetchOut_2[49]),
+			.bs_src_dout_50    (ch_msg_fetchOut_2[50]),
+			.bs_src_dout_51    (ch_msg_fetchOut_2[51]),
+			.bs_src_dout_52    (ch_msg_fetchOut_2[52]),
+			.bs_src_dout_53    (ch_msg_fetchOut_2[53]),
+			.bs_src_dout_54    (ch_msg_fetchOut_2[54]),
+			.bs_src_dout_55    (ch_msg_fetchOut_2[55]),
+			.bs_src_dout_56    (ch_msg_fetchOut_2[56]),
+			.bs_src_dout_57    (ch_msg_fetchOut_2[57]),
+			.bs_src_dout_58    (ch_msg_fetchOut_2[58]),
+			.bs_src_dout_59    (ch_msg_fetchOut_2[59]),
+			.bs_src_dout_60    (ch_msg_fetchOut_2[60]),
+			.bs_src_dout_61    (ch_msg_fetchOut_2[61]),
+			.bs_src_dout_62    (ch_msg_fetchOut_2[62]),
+			.bs_src_dout_63    (ch_msg_fetchOut_2[63]),
+			.bs_src_dout_64    (ch_msg_fetchOut_2[64]),
+			.bs_src_dout_65    (ch_msg_fetchOut_2[65]),
+			.bs_src_dout_66    (ch_msg_fetchOut_2[66]),
+			.bs_src_dout_67    (ch_msg_fetchOut_2[67]),
+			.bs_src_dout_68    (ch_msg_fetchOut_2[68]),
+			.bs_src_dout_69    (ch_msg_fetchOut_2[69]),
+			.bs_src_dout_70    (ch_msg_fetchOut_2[70]),
+			.bs_src_dout_71    (ch_msg_fetchOut_2[71]),
+			.bs_src_dout_72    (ch_msg_fetchOut_2[72]),
+			.bs_src_dout_73    (ch_msg_fetchOut_2[73]),
+			.bs_src_dout_74    (ch_msg_fetchOut_2[74]),
+			.bs_src_dout_75    (ch_msg_fetchOut_2[75]),
+			.bs_src_dout_76    (ch_msg_fetchOut_2[76]),
+			.bs_src_dout_77    (ch_msg_fetchOut_2[77]),
+			.bs_src_dout_78    (ch_msg_fetchOut_2[78]),
+			.bs_src_dout_79    (ch_msg_fetchOut_2[79]),
+			.bs_src_dout_80    (ch_msg_fetchOut_2[80]),
+			.bs_src_dout_81    (ch_msg_fetchOut_2[81]),
+			.bs_src_dout_82    (ch_msg_fetchOut_2[82]),
+			.bs_src_dout_83    (ch_msg_fetchOut_2[83]),
+			.bs_src_dout_84    (ch_msg_fetchOut_2[84]),
+
 
 		.din        (ch_ram_din[CH_DATA_WIDTH-1:0]),
 
@@ -8185,6 +8938,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
 
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
@@ -8371,13 +9125,16 @@ module msg_pass_submatrix_7_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 3,
+	parameter CH_FETCH_LATENCY = 4,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
 	// Parameters of Channel RAM
 	parameter CH_RAM_DEPTH = ROW_CHUNK_NUM*LAYER_NUM,
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
+/*-------------------------------------------------------------------------------------*/
+	// Parameters for DNU Sign Extension related Control Signals
+	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
 	parameter DEPTH = 1024,
@@ -8392,6 +9149,7 @@ module msg_pass_submatrix_7_unit #(
 	output wire [C2V_DATA_WIDTH-1:0] mem_to_vnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_cnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_vnu,
+	output wire [CH_DATA_WIDTH-1:0] ch_to_bs,
 	output wire [CHECK_PARALLELISM-1:0] dnu_signExten,
 
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
@@ -8547,6 +9305,8 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_rd_addr; // page-read addresses
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
+	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_7 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -8559,7 +9319,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.FRAG_DATA_WIDTH(FRAG_DATA_WIDTH),
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_7 (
-			.vnu_pa_msg_bit0  (dnu_signExten[CHECK_PARALLELISM-1:0]),
+			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -8915,6 +9675,14 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+		genvar dnu_signID;
+		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
+		generate
+			for(dnu_signID=1; dnu_signID<PA_TO_DNU_DELAY; dnu_signID=dnu_signID+1) begin : dnu_signExtenPipe_inst
+				always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[dnu_signID] <= 0; else dnu_signExten_reg[dnu_signID] <= dnu_signExten_reg[dnu_signID-1]; end
+			end
+		endgenerate
+		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -9017,6 +9785,7 @@ reg [CH_DATA_WIDTH-1:0] ch_msg_genIn;
 wire [CH_DATA_WIDTH-1:0] ch_ram_din;
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_0 [0:CHECK_PARALLELISM-1]; // [0:84]
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_1 [0:CHECK_PARALLELISM-1]; // [0:84]
+wire [QUAN_SIZE-1:0] ch_msg_fetchOut_2 [0:CHECK_PARALLELISM-1]; // [0:84]
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
@@ -9205,6 +9974,93 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			.cnu_init_dout_82    (ch_msg_fetchOut_0[82]),
 			.cnu_init_dout_83    (ch_msg_fetchOut_0[83]),
 			.cnu_init_dout_84    (ch_msg_fetchOut_0[84]),
+			// For input sources of permutation network
+			.bs_src_dout_0     (ch_msg_fetchOut_2[0 ]),
+			.bs_src_dout_1     (ch_msg_fetchOut_2[1 ]),
+			.bs_src_dout_2     (ch_msg_fetchOut_2[2 ]),
+			.bs_src_dout_3     (ch_msg_fetchOut_2[3 ]),
+			.bs_src_dout_4     (ch_msg_fetchOut_2[4 ]),
+			.bs_src_dout_5     (ch_msg_fetchOut_2[5 ]),
+			.bs_src_dout_6     (ch_msg_fetchOut_2[6 ]),
+			.bs_src_dout_7     (ch_msg_fetchOut_2[7 ]),
+			.bs_src_dout_8     (ch_msg_fetchOut_2[8 ]),
+			.bs_src_dout_9     (ch_msg_fetchOut_2[9 ]),
+			.bs_src_dout_10    (ch_msg_fetchOut_2[10]),
+			.bs_src_dout_11    (ch_msg_fetchOut_2[11]),
+			.bs_src_dout_12    (ch_msg_fetchOut_2[12]),
+			.bs_src_dout_13    (ch_msg_fetchOut_2[13]),
+			.bs_src_dout_14    (ch_msg_fetchOut_2[14]),
+			.bs_src_dout_15    (ch_msg_fetchOut_2[15]),
+			.bs_src_dout_16    (ch_msg_fetchOut_2[16]),
+			.bs_src_dout_17    (ch_msg_fetchOut_2[17]),
+			.bs_src_dout_18    (ch_msg_fetchOut_2[18]),
+			.bs_src_dout_19    (ch_msg_fetchOut_2[19]),
+			.bs_src_dout_20    (ch_msg_fetchOut_2[20]),
+			.bs_src_dout_21    (ch_msg_fetchOut_2[21]),
+			.bs_src_dout_22    (ch_msg_fetchOut_2[22]),
+			.bs_src_dout_23    (ch_msg_fetchOut_2[23]),
+			.bs_src_dout_24    (ch_msg_fetchOut_2[24]),
+			.bs_src_dout_25    (ch_msg_fetchOut_2[25]),
+			.bs_src_dout_26    (ch_msg_fetchOut_2[26]),
+			.bs_src_dout_27    (ch_msg_fetchOut_2[27]),
+			.bs_src_dout_28    (ch_msg_fetchOut_2[28]),
+			.bs_src_dout_29    (ch_msg_fetchOut_2[29]),
+			.bs_src_dout_30    (ch_msg_fetchOut_2[30]),
+			.bs_src_dout_31    (ch_msg_fetchOut_2[31]),
+			.bs_src_dout_32    (ch_msg_fetchOut_2[32]),
+			.bs_src_dout_33    (ch_msg_fetchOut_2[33]),
+			.bs_src_dout_34    (ch_msg_fetchOut_2[34]),
+			.bs_src_dout_35    (ch_msg_fetchOut_2[35]),
+			.bs_src_dout_36    (ch_msg_fetchOut_2[36]),
+			.bs_src_dout_37    (ch_msg_fetchOut_2[37]),
+			.bs_src_dout_38    (ch_msg_fetchOut_2[38]),
+			.bs_src_dout_39    (ch_msg_fetchOut_2[39]),
+			.bs_src_dout_40    (ch_msg_fetchOut_2[40]),
+			.bs_src_dout_41    (ch_msg_fetchOut_2[41]),
+			.bs_src_dout_42    (ch_msg_fetchOut_2[42]),
+			.bs_src_dout_43    (ch_msg_fetchOut_2[43]),
+			.bs_src_dout_44    (ch_msg_fetchOut_2[44]),
+			.bs_src_dout_45    (ch_msg_fetchOut_2[45]),
+			.bs_src_dout_46    (ch_msg_fetchOut_2[46]),
+			.bs_src_dout_47    (ch_msg_fetchOut_2[47]),
+			.bs_src_dout_48    (ch_msg_fetchOut_2[48]),
+			.bs_src_dout_49    (ch_msg_fetchOut_2[49]),
+			.bs_src_dout_50    (ch_msg_fetchOut_2[50]),
+			.bs_src_dout_51    (ch_msg_fetchOut_2[51]),
+			.bs_src_dout_52    (ch_msg_fetchOut_2[52]),
+			.bs_src_dout_53    (ch_msg_fetchOut_2[53]),
+			.bs_src_dout_54    (ch_msg_fetchOut_2[54]),
+			.bs_src_dout_55    (ch_msg_fetchOut_2[55]),
+			.bs_src_dout_56    (ch_msg_fetchOut_2[56]),
+			.bs_src_dout_57    (ch_msg_fetchOut_2[57]),
+			.bs_src_dout_58    (ch_msg_fetchOut_2[58]),
+			.bs_src_dout_59    (ch_msg_fetchOut_2[59]),
+			.bs_src_dout_60    (ch_msg_fetchOut_2[60]),
+			.bs_src_dout_61    (ch_msg_fetchOut_2[61]),
+			.bs_src_dout_62    (ch_msg_fetchOut_2[62]),
+			.bs_src_dout_63    (ch_msg_fetchOut_2[63]),
+			.bs_src_dout_64    (ch_msg_fetchOut_2[64]),
+			.bs_src_dout_65    (ch_msg_fetchOut_2[65]),
+			.bs_src_dout_66    (ch_msg_fetchOut_2[66]),
+			.bs_src_dout_67    (ch_msg_fetchOut_2[67]),
+			.bs_src_dout_68    (ch_msg_fetchOut_2[68]),
+			.bs_src_dout_69    (ch_msg_fetchOut_2[69]),
+			.bs_src_dout_70    (ch_msg_fetchOut_2[70]),
+			.bs_src_dout_71    (ch_msg_fetchOut_2[71]),
+			.bs_src_dout_72    (ch_msg_fetchOut_2[72]),
+			.bs_src_dout_73    (ch_msg_fetchOut_2[73]),
+			.bs_src_dout_74    (ch_msg_fetchOut_2[74]),
+			.bs_src_dout_75    (ch_msg_fetchOut_2[75]),
+			.bs_src_dout_76    (ch_msg_fetchOut_2[76]),
+			.bs_src_dout_77    (ch_msg_fetchOut_2[77]),
+			.bs_src_dout_78    (ch_msg_fetchOut_2[78]),
+			.bs_src_dout_79    (ch_msg_fetchOut_2[79]),
+			.bs_src_dout_80    (ch_msg_fetchOut_2[80]),
+			.bs_src_dout_81    (ch_msg_fetchOut_2[81]),
+			.bs_src_dout_82    (ch_msg_fetchOut_2[82]),
+			.bs_src_dout_83    (ch_msg_fetchOut_2[83]),
+			.bs_src_dout_84    (ch_msg_fetchOut_2[84]),
+
 
 		.din        (ch_ram_din[CH_DATA_WIDTH-1:0]),
 
@@ -9218,6 +10074,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
 
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
@@ -9404,13 +10261,16 @@ module msg_pass_submatrix_8_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 3,
+	parameter CH_FETCH_LATENCY = 4,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
 	// Parameters of Channel RAM
 	parameter CH_RAM_DEPTH = ROW_CHUNK_NUM*LAYER_NUM,
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
+/*-------------------------------------------------------------------------------------*/
+	// Parameters for DNU Sign Extension related Control Signals
+	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
 	parameter DEPTH = 1024,
@@ -9425,6 +10285,7 @@ module msg_pass_submatrix_8_unit #(
 	output wire [C2V_DATA_WIDTH-1:0] mem_to_vnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_cnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_vnu,
+	output wire [CH_DATA_WIDTH-1:0] ch_to_bs,
 	output wire [CHECK_PARALLELISM-1:0] dnu_signExten,
 
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
@@ -9579,6 +10440,8 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_rd_addr; // page-read addresses
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
+	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_8 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -9591,7 +10454,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.FRAG_DATA_WIDTH(FRAG_DATA_WIDTH),
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_8 (
-			.vnu_pa_msg_bit0  (dnu_signExten[CHECK_PARALLELISM-1:0]),
+			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -9947,6 +10810,14 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+		genvar dnu_signID;
+		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
+		generate
+			for(dnu_signID=1; dnu_signID<PA_TO_DNU_DELAY; dnu_signID=dnu_signID+1) begin : dnu_signExtenPipe_inst
+				always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[dnu_signID] <= 0; else dnu_signExten_reg[dnu_signID] <= dnu_signExten_reg[dnu_signID-1]; end
+			end
+		endgenerate
+		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -10049,6 +10920,7 @@ reg [CH_DATA_WIDTH-1:0] ch_msg_genIn;
 wire [CH_DATA_WIDTH-1:0] ch_ram_din;
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_0 [0:CHECK_PARALLELISM-1]; // [0:84]
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_1 [0:CHECK_PARALLELISM-1]; // [0:84]
+wire [QUAN_SIZE-1:0] ch_msg_fetchOut_2 [0:CHECK_PARALLELISM-1]; // [0:84]
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
@@ -10237,6 +11109,93 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			.cnu_init_dout_82    (ch_msg_fetchOut_0[82]),
 			.cnu_init_dout_83    (ch_msg_fetchOut_0[83]),
 			.cnu_init_dout_84    (ch_msg_fetchOut_0[84]),
+			// For input sources of permutation network
+			.bs_src_dout_0     (ch_msg_fetchOut_2[0 ]),
+			.bs_src_dout_1     (ch_msg_fetchOut_2[1 ]),
+			.bs_src_dout_2     (ch_msg_fetchOut_2[2 ]),
+			.bs_src_dout_3     (ch_msg_fetchOut_2[3 ]),
+			.bs_src_dout_4     (ch_msg_fetchOut_2[4 ]),
+			.bs_src_dout_5     (ch_msg_fetchOut_2[5 ]),
+			.bs_src_dout_6     (ch_msg_fetchOut_2[6 ]),
+			.bs_src_dout_7     (ch_msg_fetchOut_2[7 ]),
+			.bs_src_dout_8     (ch_msg_fetchOut_2[8 ]),
+			.bs_src_dout_9     (ch_msg_fetchOut_2[9 ]),
+			.bs_src_dout_10    (ch_msg_fetchOut_2[10]),
+			.bs_src_dout_11    (ch_msg_fetchOut_2[11]),
+			.bs_src_dout_12    (ch_msg_fetchOut_2[12]),
+			.bs_src_dout_13    (ch_msg_fetchOut_2[13]),
+			.bs_src_dout_14    (ch_msg_fetchOut_2[14]),
+			.bs_src_dout_15    (ch_msg_fetchOut_2[15]),
+			.bs_src_dout_16    (ch_msg_fetchOut_2[16]),
+			.bs_src_dout_17    (ch_msg_fetchOut_2[17]),
+			.bs_src_dout_18    (ch_msg_fetchOut_2[18]),
+			.bs_src_dout_19    (ch_msg_fetchOut_2[19]),
+			.bs_src_dout_20    (ch_msg_fetchOut_2[20]),
+			.bs_src_dout_21    (ch_msg_fetchOut_2[21]),
+			.bs_src_dout_22    (ch_msg_fetchOut_2[22]),
+			.bs_src_dout_23    (ch_msg_fetchOut_2[23]),
+			.bs_src_dout_24    (ch_msg_fetchOut_2[24]),
+			.bs_src_dout_25    (ch_msg_fetchOut_2[25]),
+			.bs_src_dout_26    (ch_msg_fetchOut_2[26]),
+			.bs_src_dout_27    (ch_msg_fetchOut_2[27]),
+			.bs_src_dout_28    (ch_msg_fetchOut_2[28]),
+			.bs_src_dout_29    (ch_msg_fetchOut_2[29]),
+			.bs_src_dout_30    (ch_msg_fetchOut_2[30]),
+			.bs_src_dout_31    (ch_msg_fetchOut_2[31]),
+			.bs_src_dout_32    (ch_msg_fetchOut_2[32]),
+			.bs_src_dout_33    (ch_msg_fetchOut_2[33]),
+			.bs_src_dout_34    (ch_msg_fetchOut_2[34]),
+			.bs_src_dout_35    (ch_msg_fetchOut_2[35]),
+			.bs_src_dout_36    (ch_msg_fetchOut_2[36]),
+			.bs_src_dout_37    (ch_msg_fetchOut_2[37]),
+			.bs_src_dout_38    (ch_msg_fetchOut_2[38]),
+			.bs_src_dout_39    (ch_msg_fetchOut_2[39]),
+			.bs_src_dout_40    (ch_msg_fetchOut_2[40]),
+			.bs_src_dout_41    (ch_msg_fetchOut_2[41]),
+			.bs_src_dout_42    (ch_msg_fetchOut_2[42]),
+			.bs_src_dout_43    (ch_msg_fetchOut_2[43]),
+			.bs_src_dout_44    (ch_msg_fetchOut_2[44]),
+			.bs_src_dout_45    (ch_msg_fetchOut_2[45]),
+			.bs_src_dout_46    (ch_msg_fetchOut_2[46]),
+			.bs_src_dout_47    (ch_msg_fetchOut_2[47]),
+			.bs_src_dout_48    (ch_msg_fetchOut_2[48]),
+			.bs_src_dout_49    (ch_msg_fetchOut_2[49]),
+			.bs_src_dout_50    (ch_msg_fetchOut_2[50]),
+			.bs_src_dout_51    (ch_msg_fetchOut_2[51]),
+			.bs_src_dout_52    (ch_msg_fetchOut_2[52]),
+			.bs_src_dout_53    (ch_msg_fetchOut_2[53]),
+			.bs_src_dout_54    (ch_msg_fetchOut_2[54]),
+			.bs_src_dout_55    (ch_msg_fetchOut_2[55]),
+			.bs_src_dout_56    (ch_msg_fetchOut_2[56]),
+			.bs_src_dout_57    (ch_msg_fetchOut_2[57]),
+			.bs_src_dout_58    (ch_msg_fetchOut_2[58]),
+			.bs_src_dout_59    (ch_msg_fetchOut_2[59]),
+			.bs_src_dout_60    (ch_msg_fetchOut_2[60]),
+			.bs_src_dout_61    (ch_msg_fetchOut_2[61]),
+			.bs_src_dout_62    (ch_msg_fetchOut_2[62]),
+			.bs_src_dout_63    (ch_msg_fetchOut_2[63]),
+			.bs_src_dout_64    (ch_msg_fetchOut_2[64]),
+			.bs_src_dout_65    (ch_msg_fetchOut_2[65]),
+			.bs_src_dout_66    (ch_msg_fetchOut_2[66]),
+			.bs_src_dout_67    (ch_msg_fetchOut_2[67]),
+			.bs_src_dout_68    (ch_msg_fetchOut_2[68]),
+			.bs_src_dout_69    (ch_msg_fetchOut_2[69]),
+			.bs_src_dout_70    (ch_msg_fetchOut_2[70]),
+			.bs_src_dout_71    (ch_msg_fetchOut_2[71]),
+			.bs_src_dout_72    (ch_msg_fetchOut_2[72]),
+			.bs_src_dout_73    (ch_msg_fetchOut_2[73]),
+			.bs_src_dout_74    (ch_msg_fetchOut_2[74]),
+			.bs_src_dout_75    (ch_msg_fetchOut_2[75]),
+			.bs_src_dout_76    (ch_msg_fetchOut_2[76]),
+			.bs_src_dout_77    (ch_msg_fetchOut_2[77]),
+			.bs_src_dout_78    (ch_msg_fetchOut_2[78]),
+			.bs_src_dout_79    (ch_msg_fetchOut_2[79]),
+			.bs_src_dout_80    (ch_msg_fetchOut_2[80]),
+			.bs_src_dout_81    (ch_msg_fetchOut_2[81]),
+			.bs_src_dout_82    (ch_msg_fetchOut_2[82]),
+			.bs_src_dout_83    (ch_msg_fetchOut_2[83]),
+			.bs_src_dout_84    (ch_msg_fetchOut_2[84]),
+
 
 		.din        (ch_ram_din[CH_DATA_WIDTH-1:0]),
 
@@ -10250,6 +11209,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
 
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
@@ -10436,13 +11396,16 @@ module msg_pass_submatrix_9_unit #(
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 3,
+	parameter CH_FETCH_LATENCY = 4,
 	parameter CNU_INIT_FETCH_LATENCY = 1,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
 	// Parameters of Channel RAM
 	parameter CH_RAM_DEPTH = ROW_CHUNK_NUM*LAYER_NUM,
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
+/*-------------------------------------------------------------------------------------*/
+	// Parameters for DNU Sign Extension related Control Signals
+	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
 	parameter DEPTH = 1024,
@@ -10457,6 +11420,7 @@ module msg_pass_submatrix_9_unit #(
 	output wire [C2V_DATA_WIDTH-1:0] mem_to_vnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_cnu,
 	output wire [CH_DATA_WIDTH-1:0] ch_to_vnu,
+	output wire [CH_DATA_WIDTH-1:0] ch_to_bs,
 	output wire [CHECK_PARALLELISM-1:0] dnu_signExten,
 
 	input wire [C2V_DATA_WIDTH-1:0] c2v_bs_in,
@@ -10613,6 +11577,8 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_rd_addr; // page-read addresses
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
+	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_9 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -10625,7 +11591,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.FRAG_DATA_WIDTH(FRAG_DATA_WIDTH),
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_9 (
-			.vnu_pa_msg_bit0  (dnu_signExten[CHECK_PARALLELISM-1:0]),
+			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -10981,6 +11947,14 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+		genvar dnu_signID;
+		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
+		generate
+			for(dnu_signID=1; dnu_signID<PA_TO_DNU_DELAY; dnu_signID=dnu_signID+1) begin : dnu_signExtenPipe_inst
+				always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[dnu_signID] <= 0; else dnu_signExten_reg[dnu_signID] <= dnu_signExten_reg[dnu_signID-1]; end
+			end
+		endgenerate
+		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -11083,6 +12057,7 @@ reg [CH_DATA_WIDTH-1:0] ch_msg_genIn;
 wire [CH_DATA_WIDTH-1:0] ch_ram_din;
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_0 [0:CHECK_PARALLELISM-1]; // [0:84]
 wire [QUAN_SIZE-1:0] ch_msg_fetchOut_1 [0:CHECK_PARALLELISM-1]; // [0:84]
+wire [QUAN_SIZE-1:0] ch_msg_fetchOut_2 [0:CHECK_PARALLELISM-1]; // [0:84]
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
@@ -11271,6 +12246,93 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			.cnu_init_dout_82    (ch_msg_fetchOut_0[82]),
 			.cnu_init_dout_83    (ch_msg_fetchOut_0[83]),
 			.cnu_init_dout_84    (ch_msg_fetchOut_0[84]),
+			// For input sources of permutation network
+			.bs_src_dout_0     (ch_msg_fetchOut_2[0 ]),
+			.bs_src_dout_1     (ch_msg_fetchOut_2[1 ]),
+			.bs_src_dout_2     (ch_msg_fetchOut_2[2 ]),
+			.bs_src_dout_3     (ch_msg_fetchOut_2[3 ]),
+			.bs_src_dout_4     (ch_msg_fetchOut_2[4 ]),
+			.bs_src_dout_5     (ch_msg_fetchOut_2[5 ]),
+			.bs_src_dout_6     (ch_msg_fetchOut_2[6 ]),
+			.bs_src_dout_7     (ch_msg_fetchOut_2[7 ]),
+			.bs_src_dout_8     (ch_msg_fetchOut_2[8 ]),
+			.bs_src_dout_9     (ch_msg_fetchOut_2[9 ]),
+			.bs_src_dout_10    (ch_msg_fetchOut_2[10]),
+			.bs_src_dout_11    (ch_msg_fetchOut_2[11]),
+			.bs_src_dout_12    (ch_msg_fetchOut_2[12]),
+			.bs_src_dout_13    (ch_msg_fetchOut_2[13]),
+			.bs_src_dout_14    (ch_msg_fetchOut_2[14]),
+			.bs_src_dout_15    (ch_msg_fetchOut_2[15]),
+			.bs_src_dout_16    (ch_msg_fetchOut_2[16]),
+			.bs_src_dout_17    (ch_msg_fetchOut_2[17]),
+			.bs_src_dout_18    (ch_msg_fetchOut_2[18]),
+			.bs_src_dout_19    (ch_msg_fetchOut_2[19]),
+			.bs_src_dout_20    (ch_msg_fetchOut_2[20]),
+			.bs_src_dout_21    (ch_msg_fetchOut_2[21]),
+			.bs_src_dout_22    (ch_msg_fetchOut_2[22]),
+			.bs_src_dout_23    (ch_msg_fetchOut_2[23]),
+			.bs_src_dout_24    (ch_msg_fetchOut_2[24]),
+			.bs_src_dout_25    (ch_msg_fetchOut_2[25]),
+			.bs_src_dout_26    (ch_msg_fetchOut_2[26]),
+			.bs_src_dout_27    (ch_msg_fetchOut_2[27]),
+			.bs_src_dout_28    (ch_msg_fetchOut_2[28]),
+			.bs_src_dout_29    (ch_msg_fetchOut_2[29]),
+			.bs_src_dout_30    (ch_msg_fetchOut_2[30]),
+			.bs_src_dout_31    (ch_msg_fetchOut_2[31]),
+			.bs_src_dout_32    (ch_msg_fetchOut_2[32]),
+			.bs_src_dout_33    (ch_msg_fetchOut_2[33]),
+			.bs_src_dout_34    (ch_msg_fetchOut_2[34]),
+			.bs_src_dout_35    (ch_msg_fetchOut_2[35]),
+			.bs_src_dout_36    (ch_msg_fetchOut_2[36]),
+			.bs_src_dout_37    (ch_msg_fetchOut_2[37]),
+			.bs_src_dout_38    (ch_msg_fetchOut_2[38]),
+			.bs_src_dout_39    (ch_msg_fetchOut_2[39]),
+			.bs_src_dout_40    (ch_msg_fetchOut_2[40]),
+			.bs_src_dout_41    (ch_msg_fetchOut_2[41]),
+			.bs_src_dout_42    (ch_msg_fetchOut_2[42]),
+			.bs_src_dout_43    (ch_msg_fetchOut_2[43]),
+			.bs_src_dout_44    (ch_msg_fetchOut_2[44]),
+			.bs_src_dout_45    (ch_msg_fetchOut_2[45]),
+			.bs_src_dout_46    (ch_msg_fetchOut_2[46]),
+			.bs_src_dout_47    (ch_msg_fetchOut_2[47]),
+			.bs_src_dout_48    (ch_msg_fetchOut_2[48]),
+			.bs_src_dout_49    (ch_msg_fetchOut_2[49]),
+			.bs_src_dout_50    (ch_msg_fetchOut_2[50]),
+			.bs_src_dout_51    (ch_msg_fetchOut_2[51]),
+			.bs_src_dout_52    (ch_msg_fetchOut_2[52]),
+			.bs_src_dout_53    (ch_msg_fetchOut_2[53]),
+			.bs_src_dout_54    (ch_msg_fetchOut_2[54]),
+			.bs_src_dout_55    (ch_msg_fetchOut_2[55]),
+			.bs_src_dout_56    (ch_msg_fetchOut_2[56]),
+			.bs_src_dout_57    (ch_msg_fetchOut_2[57]),
+			.bs_src_dout_58    (ch_msg_fetchOut_2[58]),
+			.bs_src_dout_59    (ch_msg_fetchOut_2[59]),
+			.bs_src_dout_60    (ch_msg_fetchOut_2[60]),
+			.bs_src_dout_61    (ch_msg_fetchOut_2[61]),
+			.bs_src_dout_62    (ch_msg_fetchOut_2[62]),
+			.bs_src_dout_63    (ch_msg_fetchOut_2[63]),
+			.bs_src_dout_64    (ch_msg_fetchOut_2[64]),
+			.bs_src_dout_65    (ch_msg_fetchOut_2[65]),
+			.bs_src_dout_66    (ch_msg_fetchOut_2[66]),
+			.bs_src_dout_67    (ch_msg_fetchOut_2[67]),
+			.bs_src_dout_68    (ch_msg_fetchOut_2[68]),
+			.bs_src_dout_69    (ch_msg_fetchOut_2[69]),
+			.bs_src_dout_70    (ch_msg_fetchOut_2[70]),
+			.bs_src_dout_71    (ch_msg_fetchOut_2[71]),
+			.bs_src_dout_72    (ch_msg_fetchOut_2[72]),
+			.bs_src_dout_73    (ch_msg_fetchOut_2[73]),
+			.bs_src_dout_74    (ch_msg_fetchOut_2[74]),
+			.bs_src_dout_75    (ch_msg_fetchOut_2[75]),
+			.bs_src_dout_76    (ch_msg_fetchOut_2[76]),
+			.bs_src_dout_77    (ch_msg_fetchOut_2[77]),
+			.bs_src_dout_78    (ch_msg_fetchOut_2[78]),
+			.bs_src_dout_79    (ch_msg_fetchOut_2[79]),
+			.bs_src_dout_80    (ch_msg_fetchOut_2[80]),
+			.bs_src_dout_81    (ch_msg_fetchOut_2[81]),
+			.bs_src_dout_82    (ch_msg_fetchOut_2[82]),
+			.bs_src_dout_83    (ch_msg_fetchOut_2[83]),
+			.bs_src_dout_84    (ch_msg_fetchOut_2[84]),
+
 
 		.din        (ch_ram_din[CH_DATA_WIDTH-1:0]),
 
@@ -11284,6 +12346,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
 
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages

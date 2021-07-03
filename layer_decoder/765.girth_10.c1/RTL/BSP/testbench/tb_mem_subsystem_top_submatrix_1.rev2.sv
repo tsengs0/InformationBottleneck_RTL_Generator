@@ -119,17 +119,20 @@ module tb_mem_subsystem_top_submatrix_1_rev2 #(
 	parameter C2V_MEM_ADDR_BASE = 0,
 	parameter V2C_MEM_ADDR_BASE = ROW_CHUNK_NUM,
 /*-------------------------------------------------------------------------------------*/
-	// Parameter for Channel Buffers
+	// Parameters for Channel Buffers
 	parameter CH_INIT_LOAD_LEVEL = 5, // $ceil(ROW_CHUNK_NUM/WRITE_CLK_RATIO),
 	parameter CH_RAM_WB_ADDR_BASE_1_0 = ROW_CHUNK_NUM,
 	parameter CH_RAM_WB_ADDR_BASE_1_1 = ROW_CHUNK_NUM*2,
-	parameter CH_FETCH_LATENCY = 3,
-	parameter CNU_INIT_FETCH_LATENCY = 1,
+	parameter CH_FETCH_LATENCY = 5,
+	parameter CNU_INIT_FETCH_LATENCY = 4,
 	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter CH_MSG_NUM = CHECK_PARALLELISM*CN_DEGREE,
 	// Parameters of Channel RAM
 	parameter CH_RAM_DEPTH = ROW_CHUNK_NUM*LAYER_NUM,
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
+/*-------------------------------------------------------------------------------------*/
+	// Parameters for DNU Sign Extension related Control Signals
+	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
 	parameter START_PAGE_1_0 = 2, // starting page address of layer 0 of submatrix_1
@@ -265,9 +268,9 @@ reg decode_termination_reg;
 	wire 							 dnu_inRotate_wb_propagateIn;
 
 	wire ch_ram_init_we_propagateIn;
-	//wire ch_bs_en_propagateIn;
-	wire ch_pa_en;
-	wire ch_ram_wb;
+	wire ch_bs_en_propagateIn; 
+	wire ch_pa_en; 
+	wire ch_ram_wb_propagateIn;
 
 	wire [`IB_VNU_DECOMP_funNum-1:0] vnu_rd;
 	wire                             dnu_rd;
@@ -295,18 +298,22 @@ reg decode_termination_reg;
 	reg [ROW_CHUNK_NUM-2:0] v2c_bs_en_propagate;
 	always @(posedge read_clk) begin if(!decoder_rstn) v2c_bs_en_propagate <= 0; else v2c_bs_en_propagate[ROW_CHUNK_NUM-2:0] <= {v2c_bs_en_propagate[ROW_CHUNK_NUM-3:0], v2c_bs_en_propagateIn}; end	
 	wire v2c_bs_en; assign v2c_bs_en = (v2c_bs_en_propagate > 0 || v2c_bs_en_propagateIn > 0) ? 1'b1 : 1'b0;
+	
 	reg [CH_INIT_LOAD_LEVEL-2:0] ch_ram_init_we_propagate;
-	always @(posedge read_clk) begin if(!decoder_rstn) ch_ram_init_we_propagate <= 0; else ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-2:0] <= {ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-3:0], ch_ram_init_we_propagateIn}; end
-	wire ch_ram_init_we; assign ch_ram_init_we = (ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-2:0] > 0 || ch_ram_init_we_propagateIn > 0) ? 1'b1 : 1'b0;
 	reg [ROW_CHUNK_NUM-1:0] ch_last_row_chunk_propagate; // the first one has already instantiated by FSM itself
-	always @(posedge read_clk) begin if(!decoder_rstn) ch_last_row_chunk_propagate <= 0; else ch_last_row_chunk_propagate[ROW_CHUNK_NUM-1:0] <= {ch_last_row_chunk_propagate[ROW_CHUNK_NUM-2:0], ch_pa_en}; end	
-	wire ch_last_row_chunk; assign ch_last_row_chunk = ch_last_row_chunk_propagate[ROW_CHUNK_NUM-1];
-	wire ch_bs_en; //assign ch_bs_en = (ch_bs_en_propagate == 1'b1 || ch_bs_en_propagateIn == 1'b1) ? 1'b1 : 1'b0;
-	reg [ROW_CHUNK_NUM-2:0] ch_ram_fetch_propagate;
-	always @(posedge read_clk) begin if(!decoder_rstn) ch_ram_fetch_propagate <= 0; else ch_ram_fetch_propagate[ROW_CHUNK_NUM-2:0] <= {ch_ram_fetch_propagate[ROW_CHUNK_NUM-3:0], ch_ram_fetch_propagateIn}; end
-	wire ch_ram_fetch; assign ch_ram_fetch = (ch_ram_fetch_propagate > 0 || ch_ram_fetch_propagateIn > 0) ? 1'b1 : 1'b0;
+	reg [ROW_CHUNK_NUM-2:0]ch_bs_en_propagate; always @(posedge read_clk) begin if(!decoder_rstn) ch_bs_en_propagate <= 0; else ch_bs_en_propagate[ROW_CHUNK_NUM-2:0] <= {ch_bs_en_propagate[ROW_CHUNK_NUM-3:0], ch_bs_en_propagateIn}; end 
+	reg [ROW_CHUNK_NUM-2:0]ch_ram_wb_propagate; always @(posedge read_clk) begin if(!decoder_rstn) ch_ram_wb_propagate <= 0; else ch_ram_wb_propagate[ROW_CHUNK_NUM-2:0] <= {ch_ram_wb_propagate[ROW_CHUNK_NUM-3:0], ch_ram_wb_propagateIn}; end
 	reg [ROW_CHUNK_NUM-2:0] c2v_mem_fetch_propagate;
+	reg [ROW_CHUNK_NUM-2:0] ch_ram_fetch_propagate;
+	always @(posedge read_clk) begin if(!decoder_rstn) ch_ram_init_we_propagate <= 0; else ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-2:0] <= {ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-3:0], ch_ram_init_we_propagateIn}; end
+	always @(posedge read_clk) begin if(!decoder_rstn) ch_last_row_chunk_propagate <= 0; else ch_last_row_chunk_propagate[ROW_CHUNK_NUM-1:0] <= {ch_last_row_chunk_propagate[ROW_CHUNK_NUM-2:0], ch_pa_en}; end	
+	always @(posedge read_clk) begin if(!decoder_rstn) ch_ram_fetch_propagate <= 0; else ch_ram_fetch_propagate[ROW_CHUNK_NUM-2:0] <= {ch_ram_fetch_propagate[ROW_CHUNK_NUM-3:0], ch_ram_fetch_propagateIn}; end
 	always @(posedge read_clk) begin if(!decoder_rstn) c2v_mem_fetch_propagate <= 0; else c2v_mem_fetch_propagate[ROW_CHUNK_NUM-2:0] <= {c2v_mem_fetch_propagate[ROW_CHUNK_NUM-3:0], c2v_mem_fetch_propagateIn}; end
+	wire ch_ram_init_we; assign ch_ram_init_we = (ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-2:0] > 0 || ch_ram_init_we_propagateIn > 0) ? 1'b1 : 1'b0;
+	wire ch_last_row_chunk; assign ch_last_row_chunk = ch_last_row_chunk_propagate[ROW_CHUNK_NUM-1];
+	wire ch_bs_en; assign ch_bs_en = (ch_bs_en_propagate > 0 || ch_bs_en_propagateIn > 0) ? 1'b1 : 1'b0;
+	wire ch_ram_wb; assign ch_ram_wb = (ch_ram_wb_propagate > 0 || ch_ram_wb_propagateIn > 0) ? 1'b1 : 1'b0;
+	wire ch_ram_fetch; assign ch_ram_fetch = (ch_ram_fetch_propagate > 0 || ch_ram_fetch_propagateIn > 0) ? 1'b1 : 1'b0;
 	wire c2v_mem_fetch; assign c2v_mem_fetch = (c2v_mem_fetch_propagate > 0 || c2v_mem_fetch_propagateIn > 0) ? 1'b1 : 1'b0;
 
 	reg [ROW_CHUNK_NUM-2:0] v2c_outRotate_reg_we_propagate; 
@@ -367,9 +374,9 @@ reg decode_termination_reg;
 		.v2c_pa_en       (v2c_pa_en),
 		.v2c_bs_en 		 (v2c_bs_en_propagateIn),
 		.ch_ram_init_we  (ch_ram_init_we_propagateIn),
-		.ch_bs_en        (ch_bs_en), //(ch_bs_en_propagateIn),
+		.ch_bs_en        (ch_bs_en_propagateIn), //(ch_bs_en_propagateIn),
 		.ch_pa_en        (ch_pa_en),
-		.ch_ram_wb       (ch_ram_wb),
+		.ch_ram_wb       (ch_ram_wb_propagateIn),
 		.c2v_mem_fetch    (c2v_mem_fetch_propagateIn),
 		.ch_ram_fetch    (ch_ram_fetch_propagateIn), // Enable signal of fetching channel buffers
 		.layer_finish    (layer_finish),
@@ -930,11 +937,12 @@ dn_Waddr_counter #(
 	logic        [C2V_DATA_WIDTH-1:0] mem_to_vnu_sub1;
 	logic         [CH_DATA_WIDTH-1:0] ch_to_cnu_sub1;
 	logic         [CH_DATA_WIDTH-1:0] ch_to_vnu_sub1;
+	logic 		  [CH_DATA_WIDTH-1:0] ch_to_bs_sub1;
 	logic     [CHECK_PARALLELISM-1:0] dnu_signExten_sub1;
 	// Data In
 	logic        [V2C_DATA_WIDTH-1:0] ch_bs_in_sub_1;
-	logic [SUBMATRIX_Z*QUAN_SIZE-1:0] coded_block_sub1; assign coded_block_sub1 = coded_block[1]; 
-	logic     [CHECK_PARALLELISM-1:0] dnu_inRotate_bit_sub1;
+	logic [SUBMATRIX_Z*QUAN_SIZE-1:0] coded_block_sub1; assign coded_block_sub1 = {340'd9, 340'd8, 340'd7, 340'd6, 340'd5, 340'd4, 340'd3, 340'd2, 340'd1};//coded_block[1]; 
+	logic     [CHECK_PARALLELISM-1:0] dnu_inRotate_bit_sub1; assign dnu_inRotate_bit_sub1 = 85'd1;
 	// Control signals In
 	logic                             vnu_bs_src; assign vnu_bs_src = ch_bs_en;
 	logic                       [2:0] vnu_bs_bit0_src; assign vnu_bs_bit0_src[2:0] = {dnu_inRotate_bs_en, ch_bs_en, v2c_bs_en};
@@ -980,6 +988,7 @@ dn_Waddr_counter #(
 			// Parameters of Channel RAM
 			.CH_RAM_DEPTH      (CH_RAM_DEPTH     ), // ROW_CHUNK_NUM*LAYER_NUM,
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
+			.PA_TO_DNU_DELAY   (PA_TO_DNU_DELAY  ), // 4 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -993,10 +1002,11 @@ dn_Waddr_counter #(
 			.mem_to_vnu         (mem_to_vnu_sub1),
 			.ch_to_cnu 			(ch_to_cnu_sub1 ),
 			.ch_to_vnu 			(ch_to_vnu_sub1 ),
+			.ch_to_bs  			(ch_to_bs_sub1  ),
 			.dnu_signExten 		(dnu_signExten_sub1),
 			.c2v_bs_in          (c2v_bs_in_sub1 ),
 			.v2c_bs_in          (v2c_bs_in_sub1 ),
-			.ch_bs_in   		(ch_to_vnu_sub1), //(ch_bs_in_sub1),
+			.ch_bs_in   		(ch_to_bs_sub1), //(ch_bs_in_sub1),
 			.coded_block 		(coded_block_sub1),
 			.dnu_inRotate_bit (dnu_inRotate_bit_sub1),
 			.vnu_bs_bit0_src (vnu_bs_bit0_src), // selection of v2c_bs input source, i.e., '0': v2c; '1': channel message; '2': rotate_en of last VNU decomposition level (for 2nd segment read_addr of upcoming DNU)
