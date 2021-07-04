@@ -212,8 +212,8 @@ module sym_vn_lut_out (
 	genvar i;
 	generate
 		for(i=2;i>=0;i=i-1) begin : v2c_lookahead_rotate_inst
-			assign t_c_A[i] = OutA_pipe1[i];//(OutA_pipe1[i]^OutA_pipe1[3])^OutA_pipe1[3];
-			assign t_c_B[i] = OutB_pipe1[i];//(OutB_pipe1[i]^OutB_pipe1[3])^OutB_pipe1[3];
+			assign t_c_A[i] = OutA_pipe1[i];
+			assign t_c_B[i] = OutB_pipe1[i];
 		end
 	endgenerate
 `else

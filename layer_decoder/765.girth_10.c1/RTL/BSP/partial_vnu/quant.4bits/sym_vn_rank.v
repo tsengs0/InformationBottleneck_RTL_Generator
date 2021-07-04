@@ -52,6 +52,7 @@ module sym_vn_rank (
         
 	// Read page address and address offset
 	.read_addr0 ({page_addr_offset_0, page_addr_0}),
+	.read_addr1 ({page_addr_offset_1, page_addr_1}),
     
 	.we (we),
 	.write_clk (write_clk)

@@ -612,6 +612,7 @@ always @(posedge read_clk) begin
 end
 
 assign ch_ram_init_we = (state == INIT_LOAD && (iter_cnt[0] == 1'b1 && layer_cnt[0] == 1'b1)) ? 1'b1 && rstn : 1'b0;
+/*
 assign ch_bs_en = (
 					(
 					 (state >= CH_BUBBLE && state <= VNU_OUT)
@@ -620,6 +621,8 @@ assign ch_bs_en = (
 				  	// Since last layer is connectd to first layer and channel MSGs permutation for first layer has been done at first layer
 				  	// therefore, there is no need for permutaiton at last layer which is unlike the v2c message passing
 				  ) ? 1'b1 : 1'b0;
+*/
+assign ch_bs_en = (state == CH_BUBBLE && ch_bubble_pipeline_level[0] == 1'b1) ? 1'b1 : 1'b0;
 
 /*
 wire [7:0] ch_pa_en_phase_0; assign ch_pa_en_phase_0[7:0] = vnu_main_sys_cnt[7:0];
@@ -629,7 +632,8 @@ assign ch_pa_en = (state >= VNU_PIPE && |ch_pa_en_phase_0 && (iter_cnt[0] == 1'b
 */
 always @(posedge read_clk) begin
 	if(rstn == 1'b0) ch_ram_wb <= 1'b0;
-	else ch_ram_wb <= ch_pa_en; // assertion of one clock cycle after enable-asserition of CH_PA
+	else if(iter_cnt[0] == 1'b1) ch_ram_wb <= ch_pa_en; // assertion of one clock cycle after enable-asserition of CH_PA
+	else ch_ram_wb <= 1'b0;
 end
 assign ch_pa_en = (state == MEM_FETCH && fetch_pipeline_level[0] == 1'b1) ? 1'b1 : 1'b0;
 assign layer_finish = (vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1] == 1'b1) ? 1'b1 : 1'b0;

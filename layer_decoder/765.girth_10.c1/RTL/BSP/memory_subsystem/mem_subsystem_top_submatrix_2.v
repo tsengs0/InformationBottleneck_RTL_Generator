@@ -5,6 +5,7 @@ module mem_subsystem_top_submatrix_2 #(
 	parameter QUAN_SIZE = 4,
 	parameter CHECK_PARALLELISM = 85,
 	parameter LAYER_NUM = 3,
+	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	// Parameters of extrinsic RAMs
 	parameter RAM_PORTA_RANGE = 9, // 9 out of RAM_UNIT_MSG_NUM messages are from/to true dual-port of RAM unit port A,
 	parameter RAM_PORTB_RANGE = 9, // 8 out of RAM_UNIT_MSG_NUM messages are from/to true dual-port of RAM unit port b, 

@@ -1340,6 +1340,7 @@ module msg_pass_submatrix_0_unit #(
 // Instantiation of BS, PAs and MEMs
 wire [QUAN_SIZE-1:0] vnu_msg_in [0:CHECK_PARALLELISM-1];
 wire [QUAN_SIZE-1:0] cnu_msg_in [0:CHECK_PARALLELISM-1];
+wire [CH_DATA_WIDTH-1:0] pa_to_ch_ram;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_0;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_1;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_2;
@@ -2396,6 +2397,7 @@ module msg_pass_submatrix_1_unit #(
 // Instantiation of BS, PAs and MEMs
 wire [QUAN_SIZE-1:0] vnu_msg_in [0:CHECK_PARALLELISM-1];
 wire [QUAN_SIZE-1:0] cnu_msg_in [0:CHECK_PARALLELISM-1];
+wire [CH_DATA_WIDTH-1:0] pa_to_ch_ram;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_0;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_1;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_2;
@@ -2514,6 +2516,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_1 (
 			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+			.pa_to_ch_ram     (pa_to_ch_ram[CH_DATA_WIDTH-1:0]          ),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -3294,8 +3297,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			default : ch_msg_genIn <= coded_block[(0+1)*CH_DATA_WIDTH-1:0*CH_DATA_WIDTH];
 		endcase
 	end
-	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : 
-																	 {vnu_msg_in[84],vnu_msg_in[83],vnu_msg_in[82],vnu_msg_in[81],vnu_msg_in[80],vnu_msg_in[79],vnu_msg_in[78],vnu_msg_in[77],vnu_msg_in[76],vnu_msg_in[75],vnu_msg_in[74],vnu_msg_in[73],vnu_msg_in[72],vnu_msg_in[71],vnu_msg_in[70],vnu_msg_in[69],vnu_msg_in[68],vnu_msg_in[67],vnu_msg_in[66],vnu_msg_in[65],vnu_msg_in[64],vnu_msg_in[63],vnu_msg_in[62],vnu_msg_in[61],vnu_msg_in[60],vnu_msg_in[59],vnu_msg_in[58],vnu_msg_in[57],vnu_msg_in[56],vnu_msg_in[55],vnu_msg_in[54],vnu_msg_in[53],vnu_msg_in[52],vnu_msg_in[51],vnu_msg_in[50],vnu_msg_in[49],vnu_msg_in[48],vnu_msg_in[47],vnu_msg_in[46],vnu_msg_in[45],vnu_msg_in[44],vnu_msg_in[43],vnu_msg_in[42],vnu_msg_in[41],vnu_msg_in[40],vnu_msg_in[39],vnu_msg_in[38],vnu_msg_in[37],vnu_msg_in[36],vnu_msg_in[35],vnu_msg_in[34],vnu_msg_in[33],vnu_msg_in[32],vnu_msg_in[31],vnu_msg_in[30],vnu_msg_in[29],vnu_msg_in[28],vnu_msg_in[27],vnu_msg_in[26],vnu_msg_in[25],vnu_msg_in[24],vnu_msg_in[23],vnu_msg_in[22],vnu_msg_in[21],vnu_msg_in[20],vnu_msg_in[19],vnu_msg_in[18],vnu_msg_in[17],vnu_msg_in[16],vnu_msg_in[15],vnu_msg_in[14],vnu_msg_in[13],vnu_msg_in[12],vnu_msg_in[11],vnu_msg_in[10],vnu_msg_in[9],vnu_msg_in[8],vnu_msg_in[7],vnu_msg_in[6],vnu_msg_in[5],vnu_msg_in[4],vnu_msg_in[3],vnu_msg_in[2],vnu_msg_in[1],vnu_msg_in[0]};
+	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : pa_to_ch_ram[CH_DATA_WIDTH-1:0];															  
 	/*--------------------------------------------------------------------------*/
 	// Channel messages RAMs write-page addresses - For Initial Write Operation
 	// To store the channed messages onto Channel Buffer at first layer of first iteration only
@@ -3531,6 +3533,7 @@ module msg_pass_submatrix_2_unit #(
 // Instantiation of BS, PAs and MEMs
 wire [QUAN_SIZE-1:0] vnu_msg_in [0:CHECK_PARALLELISM-1];
 wire [QUAN_SIZE-1:0] cnu_msg_in [0:CHECK_PARALLELISM-1];
+wire [CH_DATA_WIDTH-1:0] pa_to_ch_ram;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_0;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_1;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_2;
@@ -3644,6 +3647,7 @@ shared_qsn_top_85b #(
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_2 (
 			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+			.pa_to_ch_ram     (pa_to_ch_ram[CH_DATA_WIDTH-1:0]          ),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -4425,8 +4429,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			default : ch_msg_genIn <= coded_block[(0+1)*CH_DATA_WIDTH-1:0*CH_DATA_WIDTH];
 		endcase
 	end
-	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : 
-																	 {vnu_msg_in[84],vnu_msg_in[83],vnu_msg_in[82],vnu_msg_in[81],vnu_msg_in[80],vnu_msg_in[79],vnu_msg_in[78],vnu_msg_in[77],vnu_msg_in[76],vnu_msg_in[75],vnu_msg_in[74],vnu_msg_in[73],vnu_msg_in[72],vnu_msg_in[71],vnu_msg_in[70],vnu_msg_in[69],vnu_msg_in[68],vnu_msg_in[67],vnu_msg_in[66],vnu_msg_in[65],vnu_msg_in[64],vnu_msg_in[63],vnu_msg_in[62],vnu_msg_in[61],vnu_msg_in[60],vnu_msg_in[59],vnu_msg_in[58],vnu_msg_in[57],vnu_msg_in[56],vnu_msg_in[55],vnu_msg_in[54],vnu_msg_in[53],vnu_msg_in[52],vnu_msg_in[51],vnu_msg_in[50],vnu_msg_in[49],vnu_msg_in[48],vnu_msg_in[47],vnu_msg_in[46],vnu_msg_in[45],vnu_msg_in[44],vnu_msg_in[43],vnu_msg_in[42],vnu_msg_in[41],vnu_msg_in[40],vnu_msg_in[39],vnu_msg_in[38],vnu_msg_in[37],vnu_msg_in[36],vnu_msg_in[35],vnu_msg_in[34],vnu_msg_in[33],vnu_msg_in[32],vnu_msg_in[31],vnu_msg_in[30],vnu_msg_in[29],vnu_msg_in[28],vnu_msg_in[27],vnu_msg_in[26],vnu_msg_in[25],vnu_msg_in[24],vnu_msg_in[23],vnu_msg_in[22],vnu_msg_in[21],vnu_msg_in[20],vnu_msg_in[19],vnu_msg_in[18],vnu_msg_in[17],vnu_msg_in[16],vnu_msg_in[15],vnu_msg_in[14],vnu_msg_in[13],vnu_msg_in[12],vnu_msg_in[11],vnu_msg_in[10],vnu_msg_in[9],vnu_msg_in[8],vnu_msg_in[7],vnu_msg_in[6],vnu_msg_in[5],vnu_msg_in[4],vnu_msg_in[3],vnu_msg_in[2],vnu_msg_in[1],vnu_msg_in[0]};
+	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : pa_to_ch_ram[CH_DATA_WIDTH-1:0];															  
 	/*--------------------------------------------------------------------------*/
 	// Channel messages RAMs write-page addresses - For Initial Write Operation
 	// To store the channed messages onto Channel Buffer at first layer of first iteration only
@@ -4662,6 +4665,7 @@ module msg_pass_submatrix_3_unit #(
 // Instantiation of BS, PAs and MEMs
 wire [QUAN_SIZE-1:0] vnu_msg_in [0:CHECK_PARALLELISM-1];
 wire [QUAN_SIZE-1:0] cnu_msg_in [0:CHECK_PARALLELISM-1];
+wire [CH_DATA_WIDTH-1:0] pa_to_ch_ram;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_0;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_1;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_2;
@@ -4766,6 +4770,7 @@ shared_qsn_top_85b #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
 			.LAYER_NUM(LAYER_NUM),
+			.CH_DATA_WIDTH(CH_DATA_WIDTH),
 			.RAM_PORTA_RANGE(RAM_PORTA_RANGE),
 			.RAM_PORTB_RANGE(RAM_PORTB_RANGE),
 			.MEM_DEVICE_NUM(MEM_DEVICE_NUM),
@@ -4775,6 +4780,7 @@ shared_qsn_top_85b #(
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_3 (
 			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+			.pa_to_ch_ram     (pa_to_ch_ram[CH_DATA_WIDTH-1:0]),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -5556,8 +5562,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			default : ch_msg_genIn <= coded_block[(0+1)*CH_DATA_WIDTH-1:0*CH_DATA_WIDTH];
 		endcase
 	end
-	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : 
-																	 {vnu_msg_in[84],vnu_msg_in[83],vnu_msg_in[82],vnu_msg_in[81],vnu_msg_in[80],vnu_msg_in[79],vnu_msg_in[78],vnu_msg_in[77],vnu_msg_in[76],vnu_msg_in[75],vnu_msg_in[74],vnu_msg_in[73],vnu_msg_in[72],vnu_msg_in[71],vnu_msg_in[70],vnu_msg_in[69],vnu_msg_in[68],vnu_msg_in[67],vnu_msg_in[66],vnu_msg_in[65],vnu_msg_in[64],vnu_msg_in[63],vnu_msg_in[62],vnu_msg_in[61],vnu_msg_in[60],vnu_msg_in[59],vnu_msg_in[58],vnu_msg_in[57],vnu_msg_in[56],vnu_msg_in[55],vnu_msg_in[54],vnu_msg_in[53],vnu_msg_in[52],vnu_msg_in[51],vnu_msg_in[50],vnu_msg_in[49],vnu_msg_in[48],vnu_msg_in[47],vnu_msg_in[46],vnu_msg_in[45],vnu_msg_in[44],vnu_msg_in[43],vnu_msg_in[42],vnu_msg_in[41],vnu_msg_in[40],vnu_msg_in[39],vnu_msg_in[38],vnu_msg_in[37],vnu_msg_in[36],vnu_msg_in[35],vnu_msg_in[34],vnu_msg_in[33],vnu_msg_in[32],vnu_msg_in[31],vnu_msg_in[30],vnu_msg_in[29],vnu_msg_in[28],vnu_msg_in[27],vnu_msg_in[26],vnu_msg_in[25],vnu_msg_in[24],vnu_msg_in[23],vnu_msg_in[22],vnu_msg_in[21],vnu_msg_in[20],vnu_msg_in[19],vnu_msg_in[18],vnu_msg_in[17],vnu_msg_in[16],vnu_msg_in[15],vnu_msg_in[14],vnu_msg_in[13],vnu_msg_in[12],vnu_msg_in[11],vnu_msg_in[10],vnu_msg_in[9],vnu_msg_in[8],vnu_msg_in[7],vnu_msg_in[6],vnu_msg_in[5],vnu_msg_in[4],vnu_msg_in[3],vnu_msg_in[2],vnu_msg_in[1],vnu_msg_in[0]};
+	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : pa_to_ch_ram[CH_DATA_WIDTH-1:0];
 	/*--------------------------------------------------------------------------*/
 	// Channel messages RAMs write-page addresses - For Initial Write Operation
 	// To store the channed messages onto Channel Buffer at first layer of first iteration only
@@ -5792,6 +5797,7 @@ module msg_pass_submatrix_4_unit #(
 // Instantiation of BS, PAs and MEMs
 wire [QUAN_SIZE-1:0] vnu_msg_in [0:CHECK_PARALLELISM-1];
 wire [QUAN_SIZE-1:0] cnu_msg_in [0:CHECK_PARALLELISM-1];
+wire [CH_DATA_WIDTH-1:0] pa_to_ch_ram;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_0;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_1;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_2;
@@ -5912,6 +5918,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_4 (
 			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+			.pa_to_ch_ram     (pa_to_ch_ram[CH_DATA_WIDTH-1:0]          ),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -6693,8 +6700,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			default : ch_msg_genIn <= coded_block[(0+1)*CH_DATA_WIDTH-1:0*CH_DATA_WIDTH];
 		endcase
 	end
-	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : 
-																	 {vnu_msg_in[84],vnu_msg_in[83],vnu_msg_in[82],vnu_msg_in[81],vnu_msg_in[80],vnu_msg_in[79],vnu_msg_in[78],vnu_msg_in[77],vnu_msg_in[76],vnu_msg_in[75],vnu_msg_in[74],vnu_msg_in[73],vnu_msg_in[72],vnu_msg_in[71],vnu_msg_in[70],vnu_msg_in[69],vnu_msg_in[68],vnu_msg_in[67],vnu_msg_in[66],vnu_msg_in[65],vnu_msg_in[64],vnu_msg_in[63],vnu_msg_in[62],vnu_msg_in[61],vnu_msg_in[60],vnu_msg_in[59],vnu_msg_in[58],vnu_msg_in[57],vnu_msg_in[56],vnu_msg_in[55],vnu_msg_in[54],vnu_msg_in[53],vnu_msg_in[52],vnu_msg_in[51],vnu_msg_in[50],vnu_msg_in[49],vnu_msg_in[48],vnu_msg_in[47],vnu_msg_in[46],vnu_msg_in[45],vnu_msg_in[44],vnu_msg_in[43],vnu_msg_in[42],vnu_msg_in[41],vnu_msg_in[40],vnu_msg_in[39],vnu_msg_in[38],vnu_msg_in[37],vnu_msg_in[36],vnu_msg_in[35],vnu_msg_in[34],vnu_msg_in[33],vnu_msg_in[32],vnu_msg_in[31],vnu_msg_in[30],vnu_msg_in[29],vnu_msg_in[28],vnu_msg_in[27],vnu_msg_in[26],vnu_msg_in[25],vnu_msg_in[24],vnu_msg_in[23],vnu_msg_in[22],vnu_msg_in[21],vnu_msg_in[20],vnu_msg_in[19],vnu_msg_in[18],vnu_msg_in[17],vnu_msg_in[16],vnu_msg_in[15],vnu_msg_in[14],vnu_msg_in[13],vnu_msg_in[12],vnu_msg_in[11],vnu_msg_in[10],vnu_msg_in[9],vnu_msg_in[8],vnu_msg_in[7],vnu_msg_in[6],vnu_msg_in[5],vnu_msg_in[4],vnu_msg_in[3],vnu_msg_in[2],vnu_msg_in[1],vnu_msg_in[0]};
+	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : pa_to_ch_ram[CH_DATA_WIDTH-1:0];															  
 	/*--------------------------------------------------------------------------*/
 	// Channel messages RAMs write-page addresses - For Initial Write Operation
 	// To store the channed messages onto Channel Buffer at first layer of first iteration only
@@ -6930,6 +6936,7 @@ module msg_pass_submatrix_5_unit #(
 // Instantiation of BS, PAs and MEMs
 wire [QUAN_SIZE-1:0] vnu_msg_in [0:CHECK_PARALLELISM-1];
 wire [QUAN_SIZE-1:0] cnu_msg_in [0:CHECK_PARALLELISM-1];
+wire [CH_DATA_WIDTH-1:0] pa_to_ch_ram;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_0;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_1;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_2;
@@ -7048,6 +7055,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_5 (
 			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+			.pa_to_ch_ram     (pa_to_ch_ram[CH_DATA_WIDTH-1:0]          ),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -7829,8 +7837,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			default : ch_msg_genIn <= coded_block[(0+1)*CH_DATA_WIDTH-1:0*CH_DATA_WIDTH];
 		endcase
 	end
-	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : 
-																	 {vnu_msg_in[84],vnu_msg_in[83],vnu_msg_in[82],vnu_msg_in[81],vnu_msg_in[80],vnu_msg_in[79],vnu_msg_in[78],vnu_msg_in[77],vnu_msg_in[76],vnu_msg_in[75],vnu_msg_in[74],vnu_msg_in[73],vnu_msg_in[72],vnu_msg_in[71],vnu_msg_in[70],vnu_msg_in[69],vnu_msg_in[68],vnu_msg_in[67],vnu_msg_in[66],vnu_msg_in[65],vnu_msg_in[64],vnu_msg_in[63],vnu_msg_in[62],vnu_msg_in[61],vnu_msg_in[60],vnu_msg_in[59],vnu_msg_in[58],vnu_msg_in[57],vnu_msg_in[56],vnu_msg_in[55],vnu_msg_in[54],vnu_msg_in[53],vnu_msg_in[52],vnu_msg_in[51],vnu_msg_in[50],vnu_msg_in[49],vnu_msg_in[48],vnu_msg_in[47],vnu_msg_in[46],vnu_msg_in[45],vnu_msg_in[44],vnu_msg_in[43],vnu_msg_in[42],vnu_msg_in[41],vnu_msg_in[40],vnu_msg_in[39],vnu_msg_in[38],vnu_msg_in[37],vnu_msg_in[36],vnu_msg_in[35],vnu_msg_in[34],vnu_msg_in[33],vnu_msg_in[32],vnu_msg_in[31],vnu_msg_in[30],vnu_msg_in[29],vnu_msg_in[28],vnu_msg_in[27],vnu_msg_in[26],vnu_msg_in[25],vnu_msg_in[24],vnu_msg_in[23],vnu_msg_in[22],vnu_msg_in[21],vnu_msg_in[20],vnu_msg_in[19],vnu_msg_in[18],vnu_msg_in[17],vnu_msg_in[16],vnu_msg_in[15],vnu_msg_in[14],vnu_msg_in[13],vnu_msg_in[12],vnu_msg_in[11],vnu_msg_in[10],vnu_msg_in[9],vnu_msg_in[8],vnu_msg_in[7],vnu_msg_in[6],vnu_msg_in[5],vnu_msg_in[4],vnu_msg_in[3],vnu_msg_in[2],vnu_msg_in[1],vnu_msg_in[0]};
+	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : pa_to_ch_ram[CH_DATA_WIDTH-1:0];															  
 	/*--------------------------------------------------------------------------*/
 	// Channel messages RAMs write-page addresses - For Initial Write Operation
 	// To store the channed messages onto Channel Buffer at first layer of first iteration only
@@ -8066,6 +8073,7 @@ module msg_pass_submatrix_6_unit #(
 // Instantiation of BS, PAs and MEMs
 wire [QUAN_SIZE-1:0] vnu_msg_in [0:CHECK_PARALLELISM-1];
 wire [QUAN_SIZE-1:0] cnu_msg_in [0:CHECK_PARALLELISM-1];
+wire [CH_DATA_WIDTH-1:0] pa_to_ch_ram;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_0;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_1;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_2;
@@ -8184,6 +8192,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_6 (
 			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+			.pa_to_ch_ram     (pa_to_ch_ram[CH_DATA_WIDTH-1:0]          ),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -8965,8 +8974,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			default : ch_msg_genIn <= coded_block[(0+1)*CH_DATA_WIDTH-1:0*CH_DATA_WIDTH];
 		endcase
 	end
-	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : 
-																	 {vnu_msg_in[84],vnu_msg_in[83],vnu_msg_in[82],vnu_msg_in[81],vnu_msg_in[80],vnu_msg_in[79],vnu_msg_in[78],vnu_msg_in[77],vnu_msg_in[76],vnu_msg_in[75],vnu_msg_in[74],vnu_msg_in[73],vnu_msg_in[72],vnu_msg_in[71],vnu_msg_in[70],vnu_msg_in[69],vnu_msg_in[68],vnu_msg_in[67],vnu_msg_in[66],vnu_msg_in[65],vnu_msg_in[64],vnu_msg_in[63],vnu_msg_in[62],vnu_msg_in[61],vnu_msg_in[60],vnu_msg_in[59],vnu_msg_in[58],vnu_msg_in[57],vnu_msg_in[56],vnu_msg_in[55],vnu_msg_in[54],vnu_msg_in[53],vnu_msg_in[52],vnu_msg_in[51],vnu_msg_in[50],vnu_msg_in[49],vnu_msg_in[48],vnu_msg_in[47],vnu_msg_in[46],vnu_msg_in[45],vnu_msg_in[44],vnu_msg_in[43],vnu_msg_in[42],vnu_msg_in[41],vnu_msg_in[40],vnu_msg_in[39],vnu_msg_in[38],vnu_msg_in[37],vnu_msg_in[36],vnu_msg_in[35],vnu_msg_in[34],vnu_msg_in[33],vnu_msg_in[32],vnu_msg_in[31],vnu_msg_in[30],vnu_msg_in[29],vnu_msg_in[28],vnu_msg_in[27],vnu_msg_in[26],vnu_msg_in[25],vnu_msg_in[24],vnu_msg_in[23],vnu_msg_in[22],vnu_msg_in[21],vnu_msg_in[20],vnu_msg_in[19],vnu_msg_in[18],vnu_msg_in[17],vnu_msg_in[16],vnu_msg_in[15],vnu_msg_in[14],vnu_msg_in[13],vnu_msg_in[12],vnu_msg_in[11],vnu_msg_in[10],vnu_msg_in[9],vnu_msg_in[8],vnu_msg_in[7],vnu_msg_in[6],vnu_msg_in[5],vnu_msg_in[4],vnu_msg_in[3],vnu_msg_in[2],vnu_msg_in[1],vnu_msg_in[0]};
+	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : pa_to_ch_ram[CH_DATA_WIDTH-1:0];															  
 	/*--------------------------------------------------------------------------*/
 	// Channel messages RAMs write-page addresses - For Initial Write Operation
 	// To store the channed messages onto Channel Buffer at first layer of first iteration only
@@ -9202,6 +9210,7 @@ module msg_pass_submatrix_7_unit #(
 // Instantiation of BS, PAs and MEMs
 wire [QUAN_SIZE-1:0] vnu_msg_in [0:CHECK_PARALLELISM-1];
 wire [QUAN_SIZE-1:0] cnu_msg_in [0:CHECK_PARALLELISM-1];
+wire [CH_DATA_WIDTH-1:0] pa_to_ch_ram;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_0;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_1;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_2;
@@ -9320,6 +9329,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_7 (
 			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+			.pa_to_ch_ram     (pa_to_ch_ram[CH_DATA_WIDTH-1:0]          ),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -10101,8 +10111,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			default : ch_msg_genIn <= coded_block[(0+1)*CH_DATA_WIDTH-1:0*CH_DATA_WIDTH];
 		endcase
 	end
-	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : 
-																	 {vnu_msg_in[84],vnu_msg_in[83],vnu_msg_in[82],vnu_msg_in[81],vnu_msg_in[80],vnu_msg_in[79],vnu_msg_in[78],vnu_msg_in[77],vnu_msg_in[76],vnu_msg_in[75],vnu_msg_in[74],vnu_msg_in[73],vnu_msg_in[72],vnu_msg_in[71],vnu_msg_in[70],vnu_msg_in[69],vnu_msg_in[68],vnu_msg_in[67],vnu_msg_in[66],vnu_msg_in[65],vnu_msg_in[64],vnu_msg_in[63],vnu_msg_in[62],vnu_msg_in[61],vnu_msg_in[60],vnu_msg_in[59],vnu_msg_in[58],vnu_msg_in[57],vnu_msg_in[56],vnu_msg_in[55],vnu_msg_in[54],vnu_msg_in[53],vnu_msg_in[52],vnu_msg_in[51],vnu_msg_in[50],vnu_msg_in[49],vnu_msg_in[48],vnu_msg_in[47],vnu_msg_in[46],vnu_msg_in[45],vnu_msg_in[44],vnu_msg_in[43],vnu_msg_in[42],vnu_msg_in[41],vnu_msg_in[40],vnu_msg_in[39],vnu_msg_in[38],vnu_msg_in[37],vnu_msg_in[36],vnu_msg_in[35],vnu_msg_in[34],vnu_msg_in[33],vnu_msg_in[32],vnu_msg_in[31],vnu_msg_in[30],vnu_msg_in[29],vnu_msg_in[28],vnu_msg_in[27],vnu_msg_in[26],vnu_msg_in[25],vnu_msg_in[24],vnu_msg_in[23],vnu_msg_in[22],vnu_msg_in[21],vnu_msg_in[20],vnu_msg_in[19],vnu_msg_in[18],vnu_msg_in[17],vnu_msg_in[16],vnu_msg_in[15],vnu_msg_in[14],vnu_msg_in[13],vnu_msg_in[12],vnu_msg_in[11],vnu_msg_in[10],vnu_msg_in[9],vnu_msg_in[8],vnu_msg_in[7],vnu_msg_in[6],vnu_msg_in[5],vnu_msg_in[4],vnu_msg_in[3],vnu_msg_in[2],vnu_msg_in[1],vnu_msg_in[0]};
+	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : pa_to_ch_ram[CH_DATA_WIDTH-1:0];															  
 	/*--------------------------------------------------------------------------*/
 	// Channel messages RAMs write-page addresses - For Initial Write Operation
 	// To store the channed messages onto Channel Buffer at first layer of first iteration only
@@ -10337,6 +10346,7 @@ module msg_pass_submatrix_8_unit #(
 // Instantiation of BS, PAs and MEMs
 wire [QUAN_SIZE-1:0] vnu_msg_in [0:CHECK_PARALLELISM-1];
 wire [QUAN_SIZE-1:0] cnu_msg_in [0:CHECK_PARALLELISM-1];
+wire [CH_DATA_WIDTH-1:0] pa_to_ch_ram;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_0;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_1;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_2;
@@ -10455,6 +10465,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_8 (
 			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+			.pa_to_ch_ram     (pa_to_ch_ram[CH_DATA_WIDTH-1:0]          ),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -11236,8 +11247,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			default : ch_msg_genIn <= coded_block[(0+1)*CH_DATA_WIDTH-1:0*CH_DATA_WIDTH];
 		endcase
 	end
-	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : 
-																	 {vnu_msg_in[84],vnu_msg_in[83],vnu_msg_in[82],vnu_msg_in[81],vnu_msg_in[80],vnu_msg_in[79],vnu_msg_in[78],vnu_msg_in[77],vnu_msg_in[76],vnu_msg_in[75],vnu_msg_in[74],vnu_msg_in[73],vnu_msg_in[72],vnu_msg_in[71],vnu_msg_in[70],vnu_msg_in[69],vnu_msg_in[68],vnu_msg_in[67],vnu_msg_in[66],vnu_msg_in[65],vnu_msg_in[64],vnu_msg_in[63],vnu_msg_in[62],vnu_msg_in[61],vnu_msg_in[60],vnu_msg_in[59],vnu_msg_in[58],vnu_msg_in[57],vnu_msg_in[56],vnu_msg_in[55],vnu_msg_in[54],vnu_msg_in[53],vnu_msg_in[52],vnu_msg_in[51],vnu_msg_in[50],vnu_msg_in[49],vnu_msg_in[48],vnu_msg_in[47],vnu_msg_in[46],vnu_msg_in[45],vnu_msg_in[44],vnu_msg_in[43],vnu_msg_in[42],vnu_msg_in[41],vnu_msg_in[40],vnu_msg_in[39],vnu_msg_in[38],vnu_msg_in[37],vnu_msg_in[36],vnu_msg_in[35],vnu_msg_in[34],vnu_msg_in[33],vnu_msg_in[32],vnu_msg_in[31],vnu_msg_in[30],vnu_msg_in[29],vnu_msg_in[28],vnu_msg_in[27],vnu_msg_in[26],vnu_msg_in[25],vnu_msg_in[24],vnu_msg_in[23],vnu_msg_in[22],vnu_msg_in[21],vnu_msg_in[20],vnu_msg_in[19],vnu_msg_in[18],vnu_msg_in[17],vnu_msg_in[16],vnu_msg_in[15],vnu_msg_in[14],vnu_msg_in[13],vnu_msg_in[12],vnu_msg_in[11],vnu_msg_in[10],vnu_msg_in[9],vnu_msg_in[8],vnu_msg_in[7],vnu_msg_in[6],vnu_msg_in[5],vnu_msg_in[4],vnu_msg_in[3],vnu_msg_in[2],vnu_msg_in[1],vnu_msg_in[0]};
+	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : pa_to_ch_ram[CH_DATA_WIDTH-1:0];															  
 	/*--------------------------------------------------------------------------*/
 	// Channel messages RAMs write-page addresses - For Initial Write Operation
 	// To store the channed messages onto Channel Buffer at first layer of first iteration only
@@ -11473,6 +11483,7 @@ module msg_pass_submatrix_9_unit #(
 // Instantiation of BS, PAs and MEMs
 wire [QUAN_SIZE-1:0] vnu_msg_in [0:CHECK_PARALLELISM-1];
 wire [QUAN_SIZE-1:0] cnu_msg_in [0:CHECK_PARALLELISM-1];
+wire [CH_DATA_WIDTH-1:0] pa_to_ch_ram;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_0;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_1;
 reg [BITWIDTH_SHIFT_FACTOR-1:0] c2v_shift_factor_cur_2;
@@ -11592,6 +11603,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			.ADDR_WIDTH(ADDR_WIDTH)
 		) inst_mem_subsystem_top_submatrix_9 (
 			.vnu_pa_msg_bit0  (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+			.pa_to_ch_ram     (pa_to_ch_ram[CH_DATA_WIDTH-1:0]          ),
 			.mem_to_vnu_0     (mem_to_vnu[(0 +1)*QUAN_SIZE-1:0 *QUAN_SIZE]),
 			.mem_to_vnu_1     (mem_to_vnu[(1 +1)*QUAN_SIZE-1:1 *QUAN_SIZE]),
 			.mem_to_vnu_2     (mem_to_vnu[(2 +1)*QUAN_SIZE-1:2 *QUAN_SIZE]),
@@ -12373,8 +12385,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			default : ch_msg_genIn <= coded_block[(0+1)*CH_DATA_WIDTH-1:0*CH_DATA_WIDTH];
 		endcase
 	end
-	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : 
-																	 {vnu_msg_in[84],vnu_msg_in[83],vnu_msg_in[82],vnu_msg_in[81],vnu_msg_in[80],vnu_msg_in[79],vnu_msg_in[78],vnu_msg_in[77],vnu_msg_in[76],vnu_msg_in[75],vnu_msg_in[74],vnu_msg_in[73],vnu_msg_in[72],vnu_msg_in[71],vnu_msg_in[70],vnu_msg_in[69],vnu_msg_in[68],vnu_msg_in[67],vnu_msg_in[66],vnu_msg_in[65],vnu_msg_in[64],vnu_msg_in[63],vnu_msg_in[62],vnu_msg_in[61],vnu_msg_in[60],vnu_msg_in[59],vnu_msg_in[58],vnu_msg_in[57],vnu_msg_in[56],vnu_msg_in[55],vnu_msg_in[54],vnu_msg_in[53],vnu_msg_in[52],vnu_msg_in[51],vnu_msg_in[50],vnu_msg_in[49],vnu_msg_in[48],vnu_msg_in[47],vnu_msg_in[46],vnu_msg_in[45],vnu_msg_in[44],vnu_msg_in[43],vnu_msg_in[42],vnu_msg_in[41],vnu_msg_in[40],vnu_msg_in[39],vnu_msg_in[38],vnu_msg_in[37],vnu_msg_in[36],vnu_msg_in[35],vnu_msg_in[34],vnu_msg_in[33],vnu_msg_in[32],vnu_msg_in[31],vnu_msg_in[30],vnu_msg_in[29],vnu_msg_in[28],vnu_msg_in[27],vnu_msg_in[26],vnu_msg_in[25],vnu_msg_in[24],vnu_msg_in[23],vnu_msg_in[22],vnu_msg_in[21],vnu_msg_in[20],vnu_msg_in[19],vnu_msg_in[18],vnu_msg_in[17],vnu_msg_in[16],vnu_msg_in[15],vnu_msg_in[14],vnu_msg_in[13],vnu_msg_in[12],vnu_msg_in[11],vnu_msg_in[10],vnu_msg_in[9],vnu_msg_in[8],vnu_msg_in[7],vnu_msg_in[6],vnu_msg_in[5],vnu_msg_in[4],vnu_msg_in[3],vnu_msg_in[2],vnu_msg_in[1],vnu_msg_in[0]};
+	assign ch_ram_din[CH_DATA_WIDTH-1:0] = (ch_ram_init_we == 1'b1) ? ch_msg_genIn[CH_DATA_WIDTH-1:0] : pa_to_ch_ram[CH_DATA_WIDTH-1:0];															  
 	/*--------------------------------------------------------------------------*/
 	// Channel messages RAMs write-page addresses - For Initial Write Operation
 	// To store the channed messages onto Channel Buffer at first layer of first iteration only

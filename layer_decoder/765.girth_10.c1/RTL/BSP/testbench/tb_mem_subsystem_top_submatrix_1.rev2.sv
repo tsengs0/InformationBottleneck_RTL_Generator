@@ -941,8 +941,8 @@ dn_Waddr_counter #(
 	logic     [CHECK_PARALLELISM-1:0] dnu_signExten_sub1;
 	// Data In
 	logic        [V2C_DATA_WIDTH-1:0] ch_bs_in_sub_1;
-	logic [SUBMATRIX_Z*QUAN_SIZE-1:0] coded_block_sub1; assign coded_block_sub1 = {340'd9, 340'd8, 340'd7, 340'd6, 340'd5, 340'd4, 340'd3, 340'd2, 340'd1};//coded_block[1]; 
-	logic     [CHECK_PARALLELISM-1:0] dnu_inRotate_bit_sub1; assign dnu_inRotate_bit_sub1 = 85'd1;
+	logic [SUBMATRIX_Z*QUAN_SIZE-1:0] coded_block_sub1; assign coded_block_sub1 = {340'd9, 340'd8, 340'd7, 340'd6, 340'd5, 340'd4, 340'd3, 340'd2, 340'd1}; //coded_block[1];
+	logic     [CHECK_PARALLELISM-1:0] dnu_inRotate_bit_sub1; //assign dnu_inRotate_bit_sub1 = 85'd1;
 	// Control signals In
 	logic                             vnu_bs_src; assign vnu_bs_src = ch_bs_en;
 	logic                       [2:0] vnu_bs_bit0_src; assign vnu_bs_bit0_src[2:0] = {dnu_inRotate_bs_en, ch_bs_en, v2c_bs_en};

@@ -5,6 +5,7 @@ module mem_subsystem_top_submatrix_3 #(
 	parameter QUAN_SIZE = 4,
 	parameter CHECK_PARALLELISM = 85,
 	parameter LAYER_NUM = 3,
+	parameter CH_DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	// Parameters of extrinsic RAMs
 	parameter RAM_PORTA_RANGE = 9, // 9 out of RAM_UNIT_MSG_NUM messages are from/to true dual-port of RAM unit port A,
 	parameter RAM_PORTB_RANGE = 9, // 8 out of RAM_UNIT_MSG_NUM messages are from/to true dual-port of RAM unit port b, 
@@ -15,6 +16,7 @@ module mem_subsystem_top_submatrix_3 #(
 	parameter ADDR_WIDTH = $clog2(DEPTH)
 ) (
 	output wire [CHECK_PARALLELISM-1:0] vnu_pa_msg_bit0,
+	output wire [CH_DATA_WIDTH-1:0] pa_to_ch_ram,
 	// The memory Dout port to variable nodes as instrinsic messages
 	output wire [QUAN_SIZE-1:0] mem_to_vnu_0,
 	output wire [QUAN_SIZE-1:0] mem_to_vnu_1,
