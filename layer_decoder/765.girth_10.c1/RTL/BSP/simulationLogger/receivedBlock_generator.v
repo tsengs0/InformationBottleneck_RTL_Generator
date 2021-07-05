@@ -20,12 +20,21 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module receivedBlock_generator #(
-	parameter N = 204, // block length
-	parameter NG_NUM = 1, // 17 codeword segments
+	parameter N = 7650, // block length
+	parameter NG_NUM = 10, // 10 codeword segments
 	parameter NG_SIZE = N / NG_NUM, // the number of codebits in each codeword segment
 	parameter QUAN_SIZE = 4 // 4-bit quantisation for each channel message
 )(
-	output wire [N*QUAN_SIZE-1:0] coded_block,
+	output wire [NG_SIZE*QUAN_SIZE-1:0] coded_block_0,
+	output wire [NG_SIZE*QUAN_SIZE-1:0] coded_block_1,
+	output wire [NG_SIZE*QUAN_SIZE-1:0] coded_block_2,
+	output wire [NG_SIZE*QUAN_SIZE-1:0] coded_block_3,
+	output wire [NG_SIZE*QUAN_SIZE-1:0] coded_block_4,
+	output wire [NG_SIZE*QUAN_SIZE-1:0] coded_block_5,
+	output wire [NG_SIZE*QUAN_SIZE-1:0] coded_block_6,
+	output wire [NG_SIZE*QUAN_SIZE-1:0] coded_block_7,
+	output wire [NG_SIZE*QUAN_SIZE-1:0] coded_block_8,
+	output wire [NG_SIZE*QUAN_SIZE-1:0] coded_block_9,
 	output wire tvalid_master,
 	
 	input wire [15:0] sigma_in,
@@ -52,7 +61,7 @@ generate
     genvar i;
 	for(i = 0; i < NG_NUM; i = i+1) begin : block_gen_inst
 		subblock_generator #(
-			.N (NG_SIZE), // block length
+			.N (NG_SIZE), // block length, e.g., 765
 			.QUAN_SIZE (QUAN_SIZE), // 4-bit quantisation for each channel message
 	        .RAND_SEED_0 (rand_seedIn_0[(64*(i+1+4))-1:64*(i+4)]),
 	        .RAND_SEED_1 (rand_seedIn_1[(64*(i+1+4))-1:64*(i+4)]),
@@ -81,21 +90,31 @@ generate
 			.rstn (rstn)
 		);
 		assign ready_i[i] = ready_slave;
-		assign coded_block[(i+1)*NG_SIZE*QUAN_SIZE-1:i*NG_SIZE*QUAN_SIZE] = codeword_segment_master[i];  
+		//assign coded_block[(i+1)*NG_SIZE*QUAN_SIZE-1:i*NG_SIZE*QUAN_SIZE] = codeword_segment_master[i];  
 	end
 endgenerate
+assign coded_block_0 = codeword_segment_master[0];
+assign coded_block_1 = codeword_segment_master[1];
+assign coded_block_2 = codeword_segment_master[2];
+assign coded_block_3 = codeword_segment_master[3];
+assign coded_block_4 = codeword_segment_master[4];
+assign coded_block_5 = codeword_segment_master[5];
+assign coded_block_6 = codeword_segment_master[6];
+assign coded_block_7 = codeword_segment_master[7];
+assign coded_block_8 = codeword_segment_master[8];
+assign coded_block_9 = codeword_segment_master[9];
 endmodule
 
 module subblock_generator #(
-	parameter integer N = 51, // block length
-	parameter integer QUAN_SIZE = 4, // 4-bit quantisation for each channel message
+	parameter N = 765, // block length
+	parameter QUAN_SIZE = 4, // 4-bit quantisation for each channel message
 	parameter RAND_SEED_0 = 64'd5030521883283424767,
     parameter RAND_SEED_1 = 64'd18445829279364155008,
     parameter RAND_SEED_2 = 64'd18436106298727503359,
 	
 	// The latency (clock cycle) of producing firt symbol, 
 	// equal to the pipeline depth of symbol generator 
-	parameter integer PIPELINE_DELAY = 25
+	parameter PIPELINE_DELAY = 25
 	)(
 	output reg [N*QUAN_SIZE-1:0] sub_block,
 	output reg tvalid,

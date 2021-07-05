@@ -949,7 +949,6 @@ dn_Waddr_counter #(
 
 	logic                             ch_ram_rd_clk; assign ch_ram_rd_clk = read_clk;
 	logic                             ch_ram_wr_clk; assign ch_ram_wr_clk = write_clk;
-	logic                             rstn; assign rstn = decoder_rstn;
 
 	reg [5:0] v2c_bs_en_propagate_temp; always @(posedge read_clk) begin if(!decoder_rstn) v2c_bs_en_propagate_temp <= 0; else v2c_bs_en_propagate_temp[5:0] <= {v2c_bs_en_propagate_temp[4:0], v2c_bs_en_propagate[ROW_CHUNK_NUM-2]}; end
 	reg [5:0] c2v_bs_en_propagate_temp; always @(posedge read_clk) begin if(!decoder_rstn) c2v_bs_en_propagate_temp <= 0; else c2v_bs_en_propagate_temp[5:0] <= {c2v_bs_en_propagate_temp[4:0], c2v_bs_en_propagate[ROW_CHUNK_NUM-2]}; end
@@ -1043,7 +1042,7 @@ dn_Waddr_counter #(
 			.write_clk (write_clk),
 			.ch_ram_rd_clk (ch_ram_rd_clk),
 			.ch_ram_wr_clk (ch_ram_wr_clk),			
-			.rstn          (rstn)
+			.rstn          (decoder_rstn)
 		);
 /*-----------------------------------------------------------------------------------------------------------------*/
 // Reset Signal for main decoder module 
