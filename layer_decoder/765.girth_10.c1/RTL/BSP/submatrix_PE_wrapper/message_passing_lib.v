@@ -125,6 +125,7 @@ module entire_message_passing_wrapper #(
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
 /*-------------------------------------------------------------------------------------*/
 	// Parameters for DNU Sign Extension related Control Signals
+	parameter SIGN_EXTEN_FF_TO_BS = 10, // 10 clock cycles between latch of VNU.F1.SignExtenOut and input of DNU.SignExtenIn.BS
 	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 	parameter START_PAGE_0_0 = 0,
@@ -275,6 +276,7 @@ module entire_message_passing_wrapper #(
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
+	input wire dnu_signExten_ram_fetch,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 	// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -337,6 +339,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
 			// Parameters of Sign Extenstion for DNUs
 			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
+			.SIGN_EXTEN_FF_TO_BS (SIGN_EXTEN_FF_TO_BS), // 10 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -369,6 +372,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
+			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 			// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -427,6 +431,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
 			// Parameters of Sign Extenstion for DNUs
 			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
+			.SIGN_EXTEN_FF_TO_BS (SIGN_EXTEN_FF_TO_BS), // 10 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -462,6 +467,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
+			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 			// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -521,6 +527,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
 			// Parameters of Sign Extenstion for DNUs
 			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
+			.SIGN_EXTEN_FF_TO_BS (SIGN_EXTEN_FF_TO_BS), // 10 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -556,6 +563,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
+			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 			// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -615,6 +623,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
 			// Parameters of Sign Extenstion for DNUs
 			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
+			.SIGN_EXTEN_FF_TO_BS (SIGN_EXTEN_FF_TO_BS), // 10 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -650,6 +659,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
+			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 			// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -709,6 +719,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
 			// Parameters of Sign Extenstion for DNUs
 			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
+			.SIGN_EXTEN_FF_TO_BS (SIGN_EXTEN_FF_TO_BS), // 10 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -744,6 +755,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
+			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 			// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -803,6 +815,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
 			// Parameters of Sign Extenstion for DNUs
 			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
+			.SIGN_EXTEN_FF_TO_BS (SIGN_EXTEN_FF_TO_BS), // 10 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -838,6 +851,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
+			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 			// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -897,6 +911,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
 			// Parameters of Sign Extenstion for DNUs
 			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
+			.SIGN_EXTEN_FF_TO_BS (SIGN_EXTEN_FF_TO_BS), // 10 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -932,6 +947,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
+			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 			// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -991,6 +1007,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
 			// Parameters of Sign Extenstion for DNUs
 			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
+			.SIGN_EXTEN_FF_TO_BS (SIGN_EXTEN_FF_TO_BS), // 10 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -1026,6 +1043,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
+			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 			// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -1085,6 +1103,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
 			// Parameters of Sign Extenstion for DNUs
 			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
+			.SIGN_EXTEN_FF_TO_BS (SIGN_EXTEN_FF_TO_BS), // 10 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -1120,6 +1139,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
+			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 			// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -1179,6 +1199,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.CH_RAM_ADDR_WIDTH (CH_RAM_ADDR_WIDTH), // $clog2(CH_RAM_DEPTH),
 			// Parameters of Sign Extenstion for DNUs
 			.PA_TO_DNU_DELAY (PA_TO_DNU_DELAY), // 4 clock cycles
+			.SIGN_EXTEN_FF_TO_BS (SIGN_EXTEN_FF_TO_BS), // 10 clock cycles
 `endif
 			.DEPTH(DEPTH),
 			.DATA_WIDTH(DATA_WIDTH),
@@ -1214,6 +1235,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
+			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
 			/*------------------------------*/
 			// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 			// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -1273,6 +1295,7 @@ module msg_pass_submatrix_0_unit #(
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
 /*-------------------------------------------------------------------------------------*/
 	// Parameters for DNU Sign Extension related Control Signals
+	parameter SIGN_EXTEN_FF_TO_BS = 10, // 10 clock cycles between latch of VNU.F1.SignExtenOut and input of DNU.SignExtenIn.BS
 	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
@@ -1313,6 +1336,7 @@ module msg_pass_submatrix_0_unit #(
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
+	input wire dnu_signExten_ram_fetch,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 	// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -1389,6 +1413,7 @@ zero_shuffle_top_85b #(
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
 `ifdef SHARED_ZERO_BS
+	reg [CHECK_PARALLELISM-1:0] vnu_signExtenOut_reg [0:SIGN_EXTEN_FF_TO_BS-1];
 	shared_zero_shuffle_top_85b #(
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
 		.BS_PIPELINE_LEVEL(BS_PIPELINE_LEVEL)
@@ -1401,7 +1426,7 @@ zero_shuffle_top_85b #(
 		.sys_clk     (read_clk),
 		.rstn		 (rstn),
 	
-		.sw_in1_bit0 (dnu_inRotate_bit),
+		.sw_in1_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
 
 		.sw_in_bit0_src (vnu_bs_bit0_src),	
 	`endif
@@ -1410,6 +1435,13 @@ zero_shuffle_top_85b #(
 		.sw_in_bit2  (vnu_bs_in_bit[2]),
 		.sw_in_bit3  (vnu_bs_in_bit[3])
 	);
+	always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+	genvar signExten_ff_id;
+	generate
+		for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
+			always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+		end
+	endgenerate
 `else
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
 	zero_shuffle_top_85b #(
@@ -1447,9 +1479,7 @@ zero_shuffle_top_85b #(
 	end
 	assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg0[CHECK_PARALLELISM-1:0];
 `endif
-/*----------------------------------------------*/	
-	wire [V2C_DATA_WIDTH-1:0] mem_to_cnu;
-	wire [C2V_DATA_WIDTH-1:0] mem_to_vnu;
+/*----------------------------------------------*/
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -1457,7 +1487,7 @@ zero_shuffle_top_85b #(
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
-	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
+	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_0 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -1828,6 +1858,7 @@ zero_shuffle_top_85b #(
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+		/*
 		genvar dnu_signID;
 		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
 		generate
@@ -1836,6 +1867,7 @@ zero_shuffle_top_85b #(
 			end
 		endgenerate
 		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];
+		*/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -1916,6 +1948,8 @@ wire [QUAN_SIZE-1:0] ch_msg_fetchOut_1 [0:CHECK_PARALLELISM-1]; // [0:84]
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_rd_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_wr_addr;
 /*----------------------------*/
 wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	ch_msg_ram #(
@@ -2203,6 +2237,28 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
 	//assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
 	/*--------------------------------------------------------------------------*/
+	// Sign-Extension Control Signals for second segment of DNU IB-LUT read addresses
+	// Source: sign extension output from last decomposition level of VNU IB-LUT
+	// Destination: sign extension input of DNU IB-LUT
+	dnu_signExtenIn_ram #(
+		.ROW_CHUNK_NUM (ROW_CHUNK_NUM),
+		.CHECK_PARALLELISM (CHECK_PARALLELISM),
+		.DEPTH (ROW_CHUNK_NUM),
+		.DATA_WIDTH (CHECK_PARALLELISM),
+		.ADDR_WIDTH ($clog2(ROW_CHUNK_NUM))
+	) dnu_signExtenIn_ram_u0 (
+		.mem_to_dnuIn (dnu_signExten[CHECK_PARALLELISM-1:0]),
+	
+		.signExten_din (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+		.read_addr     (submatrix_signExten_ram_rd_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.write_addr    (submatrix_signExten_ram_wr_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.we (dnu_inRotate_wb),
+	
+		.read_clk  (read_clk),
+		.write_clk (read_clk),
+		.rstn (rstn)
+	);
+	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
 	assign submatrix_ch_ram_wr_addr = (ch_ram_init_we == 1'b1) ? submatrix_chInit_wr_addr :
 																 CH_RAM_DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.	
@@ -2252,7 +2308,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 			if(rstn == 1'b0)
 				submatrix_ch_ram_rd_addr <= 0;
 			else if(ch_ram_fetch == 1'b1) begin
-				if(submatrix_ch_ram_rd_addr == CH_RAM_DEPTH-1)
+				if(submatrix_ch_ram_rd_addr == ROW_CHUNK_NUM-1)
 					submatrix_ch_ram_rd_addr <= 0;
 				else
 					submatrix_ch_ram_rd_addr <= submatrix_ch_ram_rd_addr+1;
@@ -2288,6 +2344,38 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 				else
 					c2v_mem_page_rd_addr <= c2v_mem_page_rd_addr;
 			end
+		/*--------------------------------------------------------------------------*/
+		// DNU Sign-Extension RAMs write-page addresses 
+			initial submatrix_signExten_ram_wr_addr <= 0;
+			always @(posedge read_clk) begin
+				if(rstn == 1'b0)
+					submatrix_signExten_ram_wr_addr <= 0;
+				else if(iter_termination == 1'b1)
+					submatrix_signExten_ram_wr_addr <= 0;
+				else if(dnu_inRotate_wb == 1'b1) begin
+					if(submatrix_signExten_ram_wr_addr == ROW_CHUNK_NUM-1)
+						submatrix_signExten_ram_wr_addr <= ROW_CHUNK_NUM; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+					else
+						submatrix_signExten_ram_wr_addr <= submatrix_signExten_ram_wr_addr+1;
+				end
+				else
+					submatrix_signExten_ram_wr_addr <= submatrix_signExten_ram_wr_addr;
+			end
+		/*--------------------------------------------------------------------------*/
+		// DNU Sign-Extension RAMs Fetching addresses
+			always @(posedge read_clk) begin
+				if(rstn == 1'b0)
+					submatrix_signExten_ram_rd_addr <= 0;
+				else if(dnu_signExten_ram_fetch == 1'b1) begin
+					if(submatrix_signExten_ram_rd_addr == ROW_CHUNK_NUM-1)
+						submatrix_signExten_ram_rd_addr <= 0;
+					else
+						submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr+1;
+				end
+				else
+					submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr;
+			end
+		/*--------------------------------------------------------------------------*/
 endmodule
 
 module msg_pass_submatrix_1_unit #(
@@ -2330,6 +2418,7 @@ module msg_pass_submatrix_1_unit #(
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
 /*-------------------------------------------------------------------------------------*/
 	// Parameters for DNU Sign Extension related Control Signals
+	parameter SIGN_EXTEN_FF_TO_BS = 10, // 10 clock cycles between latch of VNU.F1.SignExtenOut and input of DNU.SignExtenIn.BS
 	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
@@ -2369,6 +2458,7 @@ module msg_pass_submatrix_1_unit #(
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
+	input wire dnu_signExten_ram_fetch,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 	// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -2458,8 +2548,7 @@ qsn_controller_85b #(
 );
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
-wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
-wire [BITWIDTH_SHIFT_FACTOR-1:0] dnu_inRotate_shift_factor; // a constant, because only needed at last layer
+reg [CHECK_PARALLELISM-1:0] vnu_signExtenOut_reg [0:SIGN_EXTEN_FF_TO_BS-1];
 shared_qsn_top_85b #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -2483,7 +2572,7 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (dnu_inRotate_bit),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
 
 	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
 	.sw_in_bit0_src (vnu_bs_bit0_src),
@@ -2492,9 +2581,15 @@ shared_qsn_top_85b #(
 assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
-/*----------------------------------------------*/	
-	wire [V2C_DATA_WIDTH-1:0] mem_to_cnu;
-	wire [C2V_DATA_WIDTH-1:0] mem_to_vnu;
+	
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+genvar signExten_ff_id;
+generate
+	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+	end
+endgenerate
+/*----------------------------------------------*/		
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -2502,7 +2597,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
-	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
+	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_1 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -2872,6 +2967,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+/*		
 		genvar dnu_signID;
 		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
 		generate
@@ -2880,6 +2976,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			end
 		endgenerate
 		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];	
+*/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -2987,6 +3084,8 @@ reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chLayer_wr_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_rd_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_wr_addr;
 /*----------------------------*/
 wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	ch_msg_ram #(
@@ -3270,8 +3369,29 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
-	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
-
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};	
+	/*--------------------------------------------------------------------------*/
+	// Sign-Extension Control Signals for second segment of DNU IB-LUT read addresses
+	// Source: sign extension output from last decomposition level of VNU IB-LUT
+	// Destination: sign extension input of DNU IB-LUT
+	dnu_signExtenIn_ram #(
+		.ROW_CHUNK_NUM (ROW_CHUNK_NUM),
+		.CHECK_PARALLELISM (CHECK_PARALLELISM),
+		.DEPTH (ROW_CHUNK_NUM),
+		.DATA_WIDTH (CHECK_PARALLELISM),
+		.ADDR_WIDTH ($clog2(ROW_CHUNK_NUM))
+	) dnu_signExtenIn_ram_u0 (
+		.mem_to_dnuIn (dnu_signExten[CHECK_PARALLELISM-1:0]),
+	
+		.signExten_din (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+		.read_addr     (submatrix_signExten_ram_rd_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.write_addr    (submatrix_signExten_ram_wr_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.we (dnu_inRotate_wb),
+	
+		.read_clk  (read_clk),
+		.write_clk (read_clk),
+		.rstn (rstn)
+	);
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
 	assign submatrix_ch_ram_wr_addr = (ch_ram_init_we == 1'b1) ? submatrix_chInit_wr_addr :
@@ -3423,6 +3543,41 @@ end
 // DNU Sign-Input Control Circular Shift Factor
 assign dnu_inRotate_shift_factor = shift_factor_1;
 /*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs write-page addresses 
+reg [ROW_CHUNK_NUM-1:0] signExten_ramWR_row_chunk_cnt; initial signExten_ramWR_row_chunk_cnt <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) signExten_ramWR_row_chunk_cnt <= 1;
+	else if(dnu_inRotate_wb == 1'b1) signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1:0] <= {signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-2:0], signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1]};
+	else signExten_ramWR_row_chunk_cnt <= signExten_ramWR_row_chunk_cnt;
+end
+initial submatrix_signExten_ram_wr_addr <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) 
+		submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+	else if(dnu_inRotate_wb == 1'b1) begin
+		if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1] == 1'b1) 
+			submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+		else if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-START_PAGE_1_1-1] == 1'b1)
+			submatrix_signExten_ram_wr_addr <= 0; 
+		else
+			submatrix_signExten_ram_wr_addr <= submatrix_signExten_ram_wr_addr+1;
+	end
+end
+/*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs Fetching addresses
+always @(posedge read_clk) begin
+	if(rstn == 1'b0)
+		submatrix_signExten_ram_rd_addr <= 0;
+	else if(dnu_signExten_ram_fetch == 1'b1) begin
+		if(submatrix_signExten_ram_rd_addr == ROW_CHUNK_NUM-1)
+			submatrix_signExten_ram_rd_addr <= 0;
+		else
+			submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr+1;
+	end
+	else
+		submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr;
+end
+/*--------------------------------------------------------------------------*/
 endmodule
 
 module msg_pass_submatrix_2_unit #(
@@ -3465,6 +3620,7 @@ module msg_pass_submatrix_2_unit #(
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
 /*-------------------------------------------------------------------------------------*/
 	// Parameters for DNU Sign Extension related Control Signals
+	parameter SIGN_EXTEN_FF_TO_BS = 10, // 10 clock cycles between latch of VNU.F1.SignExtenOut and input of DNU.SignExtenIn.BS
 	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
@@ -3505,6 +3661,7 @@ module msg_pass_submatrix_2_unit #(
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
+	input wire dnu_signExten_ram_fetch,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 	// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -3594,6 +3751,7 @@ qsn_controller_85b #(
 );
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
+reg [CHECK_PARALLELISM-1:0] vnu_signExtenOut_reg [0:SIGN_EXTEN_FF_TO_BS-1];
 shared_qsn_top_85b #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -3617,15 +3775,24 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (dnu_inRotate_bit),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
 
-	.shift_factor (v2c_shift_factor_cur_0), // offset shift factor of submatrix
-	.sw_in_src (vnu_bs_src),
-	.sw_in_bit0_src (vnu_bs_bit0_src)
+	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
+	.sw_in_bit0_src (vnu_bs_bit0_src),
+	.sw_in_src (vnu_bs_src)
 );
-/*----------------------------------------------*/	
-	wire [V2C_DATA_WIDTH-1:0] mem_to_cnu;
-	wire [C2V_DATA_WIDTH-1:0] mem_to_vnu;
+assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
+	
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+genvar signExten_ff_id;
+generate
+	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+	end
+endgenerate
+/*----------------------------------------------*/
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -3633,7 +3800,7 @@ shared_qsn_top_85b #(
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
-	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
+	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_2 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -4003,6 +4170,7 @@ shared_qsn_top_85b #(
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+/*		
 		genvar dnu_signID;
 		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
 		generate
@@ -4011,6 +4179,7 @@ shared_qsn_top_85b #(
 			end
 		endgenerate
 		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];
+*/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -4118,6 +4287,8 @@ reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chLayer_wr_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_rd_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_wr_addr;
 /*----------------------------*/
 wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 		ch_msg_ram #(
@@ -4402,8 +4573,29 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
-	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
-
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};	
+	/*--------------------------------------------------------------------------*/
+	// Sign-Extension Control Signals for second segment of DNU IB-LUT read addresses
+	// Source: sign extension output from last decomposition level of VNU IB-LUT
+	// Destination: sign extension input of DNU IB-LUT
+	dnu_signExtenIn_ram #(
+		.ROW_CHUNK_NUM (ROW_CHUNK_NUM),
+		.CHECK_PARALLELISM (CHECK_PARALLELISM),
+		.DEPTH (ROW_CHUNK_NUM),
+		.DATA_WIDTH (CHECK_PARALLELISM),
+		.ADDR_WIDTH ($clog2(ROW_CHUNK_NUM))
+	) dnu_signExtenIn_ram_u0 (
+		.mem_to_dnuIn (dnu_signExten[CHECK_PARALLELISM-1:0]),
+	
+		.signExten_din (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+		.read_addr     (submatrix_signExten_ram_rd_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.write_addr    (submatrix_signExten_ram_wr_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.we (dnu_inRotate_wb),
+	
+		.read_clk  (read_clk),
+		.write_clk (read_clk),
+		.rstn (rstn)
+	);
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
 	assign submatrix_ch_ram_wr_addr = (ch_ram_init_we == 1'b1) ? submatrix_chInit_wr_addr :
@@ -4555,6 +4747,41 @@ end
 // DNU Sign-Input Control Circular Shift Factor
 assign dnu_inRotate_shift_factor = shift_factor_1;
 /*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs write-page addresses 
+reg [ROW_CHUNK_NUM-1:0] signExten_ramWR_row_chunk_cnt; initial signExten_ramWR_row_chunk_cnt <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) signExten_ramWR_row_chunk_cnt <= 1;
+	else if(dnu_inRotate_wb == 1'b1) signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1:0] <= {signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-2:0], signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1]};
+	else signExten_ramWR_row_chunk_cnt <= signExten_ramWR_row_chunk_cnt;
+end
+initial submatrix_signExten_ram_wr_addr <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) 
+		submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+	else if(dnu_inRotate_wb == 1'b1) begin
+		if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1] == 1'b1) 
+			submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+		else if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-START_PAGE_1_1-1] == 1'b1)
+			submatrix_signExten_ram_wr_addr <= 0; 
+		else
+			submatrix_signExten_ram_wr_addr <= submatrix_signExten_ram_wr_addr+1;
+	end
+end
+/*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs Fetching addresses
+always @(posedge read_clk) begin
+	if(rstn == 1'b0)
+		submatrix_signExten_ram_rd_addr <= 0;
+	else if(dnu_signExten_ram_fetch == 1'b1) begin
+		if(submatrix_signExten_ram_rd_addr == ROW_CHUNK_NUM-1)
+			submatrix_signExten_ram_rd_addr <= 0;
+		else
+			submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr+1;
+	end
+	else
+		submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr;
+end
+/*--------------------------------------------------------------------------*/
 endmodule
 
 module msg_pass_submatrix_3_unit #(
@@ -4597,6 +4824,7 @@ module msg_pass_submatrix_3_unit #(
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
 /*-------------------------------------------------------------------------------------*/
 	// Parameters for DNU Sign Extension related Control Signals
+	parameter SIGN_EXTEN_FF_TO_BS = 10, // 10 clock cycles between latch of VNU.F1.SignExtenOut and input of DNU.SignExtenIn.BS
 	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
@@ -4637,6 +4865,7 @@ module msg_pass_submatrix_3_unit #(
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
+	input wire dnu_signExten_ram_fetch,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 	// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -4726,6 +4955,7 @@ qsn_controller_85b #(
 );
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
+reg [CHECK_PARALLELISM-1:0] vnu_signExtenOut_reg [0:SIGN_EXTEN_FF_TO_BS-1];
 shared_qsn_top_85b #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -4749,15 +4979,24 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (dnu_inRotate_bit),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
 
-	.shift_factor (v2c_shift_factor_cur_0), // offset shift factor of submatrix
-	.sw_in_src (vnu_bs_src),
-	.sw_in_bit0_src (vnu_bs_bit0_src)
+	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
+	.sw_in_bit0_src (vnu_bs_bit0_src),
+	.sw_in_src (vnu_bs_src)
 );
-/*----------------------------------------------*/	
-	wire [V2C_DATA_WIDTH-1:0] mem_to_cnu;
-	wire [C2V_DATA_WIDTH-1:0] mem_to_vnu;
+assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
+							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
+	
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+genvar signExten_ff_id;
+generate
+	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+	end
+endgenerate
+/*----------------------------------------------*/
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -4765,7 +5004,7 @@ shared_qsn_top_85b #(
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
-	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
+	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_3 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -5136,6 +5375,7 @@ shared_qsn_top_85b #(
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+/*		
 		genvar dnu_signID;
 		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
 		generate
@@ -5144,6 +5384,7 @@ shared_qsn_top_85b #(
 			end
 		endgenerate
 		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];	
+*/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -5251,6 +5492,8 @@ reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chLayer_wr_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_rd_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_wr_addr;
 /*----------------------------*/
 wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 		ch_msg_ram #(
@@ -5535,8 +5778,29 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
-	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
-
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};	
+	/*--------------------------------------------------------------------------*/
+	// Sign-Extension Control Signals for second segment of DNU IB-LUT read addresses
+	// Source: sign extension output from last decomposition level of VNU IB-LUT
+	// Destination: sign extension input of DNU IB-LUT
+	dnu_signExtenIn_ram #(
+		.ROW_CHUNK_NUM (ROW_CHUNK_NUM),
+		.CHECK_PARALLELISM (CHECK_PARALLELISM),
+		.DEPTH (ROW_CHUNK_NUM),
+		.DATA_WIDTH (CHECK_PARALLELISM),
+		.ADDR_WIDTH ($clog2(ROW_CHUNK_NUM))
+	) dnu_signExtenIn_ram_u0 (
+		.mem_to_dnuIn (dnu_signExten[CHECK_PARALLELISM-1:0]),
+	
+		.signExten_din (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+		.read_addr     (submatrix_signExten_ram_rd_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.write_addr    (submatrix_signExten_ram_wr_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.we (dnu_inRotate_wb),
+	
+		.read_clk  (read_clk),
+		.write_clk (read_clk),
+		.rstn (rstn)
+	);
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
 	assign submatrix_ch_ram_wr_addr = (ch_ram_init_we == 1'b1) ? submatrix_chInit_wr_addr :
@@ -5688,6 +5952,41 @@ end
 // DNU Sign-Input Control Circular Shift Factor
 assign dnu_inRotate_shift_factor = shift_factor_1;
 /*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs write-page addresses 
+reg [ROW_CHUNK_NUM-1:0] signExten_ramWR_row_chunk_cnt; initial signExten_ramWR_row_chunk_cnt <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) signExten_ramWR_row_chunk_cnt <= 1;
+	else if(dnu_inRotate_wb == 1'b1) signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1:0] <= {signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-2:0], signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1]};
+	else signExten_ramWR_row_chunk_cnt <= signExten_ramWR_row_chunk_cnt;
+end
+initial submatrix_signExten_ram_wr_addr <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) 
+		submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+	else if(dnu_inRotate_wb == 1'b1) begin
+		if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1] == 1'b1) 
+			submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+		else if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-START_PAGE_1_1-1] == 1'b1)
+			submatrix_signExten_ram_wr_addr <= 0; 
+		else
+			submatrix_signExten_ram_wr_addr <= submatrix_signExten_ram_wr_addr+1;
+	end
+end
+/*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs Fetching addresses
+always @(posedge read_clk) begin
+	if(rstn == 1'b0)
+		submatrix_signExten_ram_rd_addr <= 0;
+	else if(dnu_signExten_ram_fetch == 1'b1) begin
+		if(submatrix_signExten_ram_rd_addr == ROW_CHUNK_NUM-1)
+			submatrix_signExten_ram_rd_addr <= 0;
+		else
+			submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr+1;
+	end
+	else
+		submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr;
+end
+/*--------------------------------------------------------------------------*/
 endmodule
 
 module msg_pass_submatrix_4_unit #(
@@ -5730,6 +6029,7 @@ module msg_pass_submatrix_4_unit #(
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
 /*-------------------------------------------------------------------------------------*/
 	// Parameters for DNU Sign Extension related Control Signals
+	parameter SIGN_EXTEN_FF_TO_BS = 10, // 10 clock cycles between latch of VNU.F1.SignExtenOut and input of DNU.SignExtenIn.BS
 	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
@@ -5769,6 +6069,7 @@ module msg_pass_submatrix_4_unit #(
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
+	input wire dnu_signExten_ram_fetch,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 	// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -5859,9 +6160,7 @@ qsn_controller_85b #(
 );
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
-wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
-wire [BITWIDTH_SHIFT_FACTOR-1:0] dnu_inRotate_shift_factor; // a constant, because only needed at last layer
-wire [BITWIDTH_SHIFT_FACTOR-1:0] dnu_inRotate_shift_factor; // a constant, because only needed at last layer
+reg [CHECK_PARALLELISM-1:0] vnu_signExtenOut_reg [0:SIGN_EXTEN_FF_TO_BS-1];
 shared_qsn_top_85b #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -5885,7 +6184,7 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (dnu_inRotate_bit),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
 
 	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
 	.sw_in_bit0_src (vnu_bs_bit0_src),
@@ -5894,9 +6193,15 @@ shared_qsn_top_85b #(
 assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
-/*----------------------------------------------*/	
-	wire [V2C_DATA_WIDTH-1:0] mem_to_cnu;
-	wire [C2V_DATA_WIDTH-1:0] mem_to_vnu;
+	
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+genvar signExten_ff_id;
+generate
+	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+	end
+endgenerate
+/*----------------------------------------------*/		
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -5904,7 +6209,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
-	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
+	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_4 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -6274,6 +6579,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+/*		
 		genvar dnu_signID;
 		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
 		generate
@@ -6282,6 +6588,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			end
 		endgenerate
 		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];
+*/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -6389,6 +6696,8 @@ reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chLayer_wr_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_rd_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_wr_addr;
 /*----------------------------*/
 wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 		ch_msg_ram #(
@@ -6673,8 +6982,29 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
-	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
-
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};	
+	/*--------------------------------------------------------------------------*/
+	// Sign-Extension Control Signals for second segment of DNU IB-LUT read addresses
+	// Source: sign extension output from last decomposition level of VNU IB-LUT
+	// Destination: sign extension input of DNU IB-LUT
+	dnu_signExtenIn_ram #(
+		.ROW_CHUNK_NUM (ROW_CHUNK_NUM),
+		.CHECK_PARALLELISM (CHECK_PARALLELISM),
+		.DEPTH (ROW_CHUNK_NUM),
+		.DATA_WIDTH (CHECK_PARALLELISM),
+		.ADDR_WIDTH ($clog2(ROW_CHUNK_NUM))
+	) dnu_signExtenIn_ram_u0 (
+		.mem_to_dnuIn (dnu_signExten[CHECK_PARALLELISM-1:0]),
+	
+		.signExten_din (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+		.read_addr     (submatrix_signExten_ram_rd_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.write_addr    (submatrix_signExten_ram_wr_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.we (dnu_inRotate_wb),
+	
+		.read_clk  (read_clk),
+		.write_clk (read_clk),
+		.rstn (rstn)
+	);
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
 	assign submatrix_ch_ram_wr_addr = (ch_ram_init_we == 1'b1) ? submatrix_chInit_wr_addr :
@@ -6826,6 +7156,41 @@ end
 // DNU Sign-Input Control Circular Shift Factor
 assign dnu_inRotate_shift_factor = shift_factor_1;
 /*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs write-page addresses 
+reg [ROW_CHUNK_NUM-1:0] signExten_ramWR_row_chunk_cnt; initial signExten_ramWR_row_chunk_cnt <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) signExten_ramWR_row_chunk_cnt <= 1;
+	else if(dnu_inRotate_wb == 1'b1) signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1:0] <= {signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-2:0], signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1]};
+	else signExten_ramWR_row_chunk_cnt <= signExten_ramWR_row_chunk_cnt;
+end
+initial submatrix_signExten_ram_wr_addr <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) 
+		submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+	else if(dnu_inRotate_wb == 1'b1) begin
+		if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1] == 1'b1) 
+			submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+		else if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-START_PAGE_1_1-1] == 1'b1)
+			submatrix_signExten_ram_wr_addr <= 0; 
+		else
+			submatrix_signExten_ram_wr_addr <= submatrix_signExten_ram_wr_addr+1;
+	end
+end
+/*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs Fetching addresses
+always @(posedge read_clk) begin
+	if(rstn == 1'b0)
+		submatrix_signExten_ram_rd_addr <= 0;
+	else if(dnu_signExten_ram_fetch == 1'b1) begin
+		if(submatrix_signExten_ram_rd_addr == ROW_CHUNK_NUM-1)
+			submatrix_signExten_ram_rd_addr <= 0;
+		else
+			submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr+1;
+	end
+	else
+		submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr;
+end
+/*--------------------------------------------------------------------------*/
 endmodule
 
 module msg_pass_submatrix_5_unit #(
@@ -6868,6 +7233,7 @@ module msg_pass_submatrix_5_unit #(
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
 /*-------------------------------------------------------------------------------------*/
 	// Parameters for DNU Sign Extension related Control Signals
+	parameter SIGN_EXTEN_FF_TO_BS = 10, // 10 clock cycles between latch of VNU.F1.SignExtenOut and input of DNU.SignExtenIn.BS
 	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
@@ -6908,6 +7274,7 @@ module msg_pass_submatrix_5_unit #(
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
+	input wire dnu_signExten_ram_fetch,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 	// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -6997,8 +7364,7 @@ qsn_controller_85b #(
 );
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
-wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
-wire [BITWIDTH_SHIFT_FACTOR-1:0] dnu_inRotate_shift_factor; // a constant, because only needed at last layer
+reg [CHECK_PARALLELISM-1:0] vnu_signExtenOut_reg [0:SIGN_EXTEN_FF_TO_BS-1];
 shared_qsn_top_85b #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -7022,7 +7388,7 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (dnu_inRotate_bit),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
 
 	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
 	.sw_in_bit0_src (vnu_bs_bit0_src),
@@ -7031,9 +7397,15 @@ shared_qsn_top_85b #(
 assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
-/*----------------------------------------------*/	
-	wire [V2C_DATA_WIDTH-1:0] mem_to_cnu;
-	wire [C2V_DATA_WIDTH-1:0] mem_to_vnu;
+	
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+genvar signExten_ff_id;
+generate
+	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+	end
+endgenerate
+/*----------------------------------------------*/		
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -7041,7 +7413,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
-	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
+	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_5 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -7411,6 +7783,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+/*		
 		genvar dnu_signID;
 		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
 		generate
@@ -7419,6 +7792,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			end
 		endgenerate
 		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];
+*/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -7526,6 +7900,8 @@ reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chLayer_wr_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_rd_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_wr_addr;
 /*----------------------------*/
 wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 		ch_msg_ram #(
@@ -7810,8 +8186,29 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
-	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
-
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};	
+	/*--------------------------------------------------------------------------*/
+	// Sign-Extension Control Signals for second segment of DNU IB-LUT read addresses
+	// Source: sign extension output from last decomposition level of VNU IB-LUT
+	// Destination: sign extension input of DNU IB-LUT
+	dnu_signExtenIn_ram #(
+		.ROW_CHUNK_NUM (ROW_CHUNK_NUM),
+		.CHECK_PARALLELISM (CHECK_PARALLELISM),
+		.DEPTH (ROW_CHUNK_NUM),
+		.DATA_WIDTH (CHECK_PARALLELISM),
+		.ADDR_WIDTH ($clog2(ROW_CHUNK_NUM))
+	) dnu_signExtenIn_ram_u0 (
+		.mem_to_dnuIn (dnu_signExten[CHECK_PARALLELISM-1:0]),
+	
+		.signExten_din (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+		.read_addr     (submatrix_signExten_ram_rd_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.write_addr    (submatrix_signExten_ram_wr_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.we (dnu_inRotate_wb),
+	
+		.read_clk  (read_clk),
+		.write_clk (read_clk),
+		.rstn (rstn)
+	);
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
 	assign submatrix_ch_ram_wr_addr = (ch_ram_init_we == 1'b1) ? submatrix_chInit_wr_addr :
@@ -7963,6 +8360,41 @@ end
 // DNU Sign-Input Control Circular Shift Factor
 assign dnu_inRotate_shift_factor = shift_factor_1;
 /*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs write-page addresses 
+reg [ROW_CHUNK_NUM-1:0] signExten_ramWR_row_chunk_cnt; initial signExten_ramWR_row_chunk_cnt <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) signExten_ramWR_row_chunk_cnt <= 1;
+	else if(dnu_inRotate_wb == 1'b1) signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1:0] <= {signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-2:0], signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1]};
+	else signExten_ramWR_row_chunk_cnt <= signExten_ramWR_row_chunk_cnt;
+end
+initial submatrix_signExten_ram_wr_addr <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) 
+		submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+	else if(dnu_inRotate_wb == 1'b1) begin
+		if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1] == 1'b1) 
+			submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+		else if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-START_PAGE_1_1-1] == 1'b1)
+			submatrix_signExten_ram_wr_addr <= 0; 
+		else
+			submatrix_signExten_ram_wr_addr <= submatrix_signExten_ram_wr_addr+1;
+	end
+end
+/*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs Fetching addresses
+always @(posedge read_clk) begin
+	if(rstn == 1'b0)
+		submatrix_signExten_ram_rd_addr <= 0;
+	else if(dnu_signExten_ram_fetch == 1'b1) begin
+		if(submatrix_signExten_ram_rd_addr == ROW_CHUNK_NUM-1)
+			submatrix_signExten_ram_rd_addr <= 0;
+		else
+			submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr+1;
+	end
+	else
+		submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr;
+end
+/*--------------------------------------------------------------------------*/
 endmodule
 
 module msg_pass_submatrix_6_unit #(
@@ -8005,6 +8437,7 @@ module msg_pass_submatrix_6_unit #(
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
 /*-------------------------------------------------------------------------------------*/
 	// Parameters for DNU Sign Extension related Control Signals
+	parameter SIGN_EXTEN_FF_TO_BS = 10, // 10 clock cycles between latch of VNU.F1.SignExtenOut and input of DNU.SignExtenIn.BS
 	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
@@ -8045,6 +8478,7 @@ module msg_pass_submatrix_6_unit #(
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
+	input wire dnu_signExten_ram_fetch,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 	// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -8134,8 +8568,7 @@ qsn_controller_85b #(
 );
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
-wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
-wire [BITWIDTH_SHIFT_FACTOR-1:0] dnu_inRotate_shift_factor; // a constant, because only needed at last layer
+reg [CHECK_PARALLELISM-1:0] vnu_signExtenOut_reg [0:SIGN_EXTEN_FF_TO_BS-1];
 shared_qsn_top_85b #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -8159,7 +8592,7 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (dnu_inRotate_bit),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
 
 	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
 	.sw_in_bit0_src (vnu_bs_bit0_src),
@@ -8168,9 +8601,15 @@ shared_qsn_top_85b #(
 assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
-/*----------------------------------------------*/	
-	wire [V2C_DATA_WIDTH-1:0] mem_to_cnu;
-	wire [C2V_DATA_WIDTH-1:0] mem_to_vnu;
+	
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+genvar signExten_ff_id;
+generate
+	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+	end
+endgenerate
+/*----------------------------------------------*/		
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -8178,7 +8617,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
-	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
+	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_6 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -8548,6 +8987,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+/*		
 		genvar dnu_signID;
 		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
 		generate
@@ -8556,6 +8996,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			end
 		endgenerate
 		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];
+*/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -8663,6 +9104,8 @@ reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chLayer_wr_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_rd_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_wr_addr;
 /*----------------------------*/
 wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 		ch_msg_ram #(
@@ -8947,8 +9390,29 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
-	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
-
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};	
+	/*--------------------------------------------------------------------------*/
+	// Sign-Extension Control Signals for second segment of DNU IB-LUT read addresses
+	// Source: sign extension output from last decomposition level of VNU IB-LUT
+	// Destination: sign extension input of DNU IB-LUT
+	dnu_signExtenIn_ram #(
+		.ROW_CHUNK_NUM (ROW_CHUNK_NUM),
+		.CHECK_PARALLELISM (CHECK_PARALLELISM),
+		.DEPTH (ROW_CHUNK_NUM),
+		.DATA_WIDTH (CHECK_PARALLELISM),
+		.ADDR_WIDTH ($clog2(ROW_CHUNK_NUM))
+	) dnu_signExtenIn_ram_u0 (
+		.mem_to_dnuIn (dnu_signExten[CHECK_PARALLELISM-1:0]),
+	
+		.signExten_din (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+		.read_addr     (submatrix_signExten_ram_rd_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.write_addr    (submatrix_signExten_ram_wr_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.we (dnu_inRotate_wb),
+	
+		.read_clk  (read_clk),
+		.write_clk (read_clk),
+		.rstn (rstn)
+	);
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
 	assign submatrix_ch_ram_wr_addr = (ch_ram_init_we == 1'b1) ? submatrix_chInit_wr_addr :
@@ -9100,6 +9564,41 @@ end
 // DNU Sign-Input Control Circular Shift Factor
 assign dnu_inRotate_shift_factor = shift_factor_1;
 /*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs write-page addresses 
+reg [ROW_CHUNK_NUM-1:0] signExten_ramWR_row_chunk_cnt; initial signExten_ramWR_row_chunk_cnt <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) signExten_ramWR_row_chunk_cnt <= 1;
+	else if(dnu_inRotate_wb == 1'b1) signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1:0] <= {signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-2:0], signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1]};
+	else signExten_ramWR_row_chunk_cnt <= signExten_ramWR_row_chunk_cnt;
+end
+initial submatrix_signExten_ram_wr_addr <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) 
+		submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+	else if(dnu_inRotate_wb == 1'b1) begin
+		if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1] == 1'b1) 
+			submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+		else if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-START_PAGE_1_1-1] == 1'b1)
+			submatrix_signExten_ram_wr_addr <= 0; 
+		else
+			submatrix_signExten_ram_wr_addr <= submatrix_signExten_ram_wr_addr+1;
+	end
+end
+/*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs Fetching addresses
+always @(posedge read_clk) begin
+	if(rstn == 1'b0)
+		submatrix_signExten_ram_rd_addr <= 0;
+	else if(dnu_signExten_ram_fetch == 1'b1) begin
+		if(submatrix_signExten_ram_rd_addr == ROW_CHUNK_NUM-1)
+			submatrix_signExten_ram_rd_addr <= 0;
+		else
+			submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr+1;
+	end
+	else
+		submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr;
+end
+/*--------------------------------------------------------------------------*/
 endmodule
 
 module msg_pass_submatrix_7_unit #(
@@ -9142,6 +9641,7 @@ module msg_pass_submatrix_7_unit #(
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
 /*-------------------------------------------------------------------------------------*/
 	// Parameters for DNU Sign Extension related Control Signals
+	parameter SIGN_EXTEN_FF_TO_BS = 10, // 10 clock cycles between latch of VNU.F1.SignExtenOut and input of DNU.SignExtenIn.BS
 	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
@@ -9182,6 +9682,7 @@ module msg_pass_submatrix_7_unit #(
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
+	input wire dnu_signExten_ram_fetch,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 	// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -9271,8 +9772,7 @@ qsn_controller_85b #(
 );
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
-wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
-wire [BITWIDTH_SHIFT_FACTOR-1:0] dnu_inRotate_shift_factor; // a constant, because only needed at last layer
+reg [CHECK_PARALLELISM-1:0] vnu_signExtenOut_reg [0:SIGN_EXTEN_FF_TO_BS-1];
 shared_qsn_top_85b #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -9296,7 +9796,7 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (dnu_inRotate_bit),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
 
 	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
 	.sw_in_bit0_src (vnu_bs_bit0_src),
@@ -9305,9 +9805,15 @@ shared_qsn_top_85b #(
 assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
-/*----------------------------------------------*/	
-	wire [V2C_DATA_WIDTH-1:0] mem_to_cnu;
-	wire [C2V_DATA_WIDTH-1:0] mem_to_vnu;
+	
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+genvar signExten_ff_id;
+generate
+	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+	end
+endgenerate
+/*----------------------------------------------*/		
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -9315,7 +9821,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
-	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
+	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_7 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -9685,6 +10191,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+/*		
 		genvar dnu_signID;
 		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
 		generate
@@ -9693,6 +10200,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			end
 		endgenerate
 		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];
+*/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -9800,6 +10308,8 @@ reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chLayer_wr_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_rd_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_wr_addr;
 /*----------------------------*/
 wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 		ch_msg_ram #(
@@ -10084,8 +10594,29 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
-	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
-
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};	
+	/*--------------------------------------------------------------------------*/
+	// Sign-Extension Control Signals for second segment of DNU IB-LUT read addresses
+	// Source: sign extension output from last decomposition level of VNU IB-LUT
+	// Destination: sign extension input of DNU IB-LUT
+	dnu_signExtenIn_ram #(
+		.ROW_CHUNK_NUM (ROW_CHUNK_NUM),
+		.CHECK_PARALLELISM (CHECK_PARALLELISM),
+		.DEPTH (ROW_CHUNK_NUM),
+		.DATA_WIDTH (CHECK_PARALLELISM),
+		.ADDR_WIDTH ($clog2(ROW_CHUNK_NUM))
+	) dnu_signExtenIn_ram_u0 (
+		.mem_to_dnuIn (dnu_signExten[CHECK_PARALLELISM-1:0]),
+	
+		.signExten_din (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+		.read_addr     (submatrix_signExten_ram_rd_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.write_addr    (submatrix_signExten_ram_wr_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.we (dnu_inRotate_wb),
+	
+		.read_clk  (read_clk),
+		.write_clk (read_clk),
+		.rstn (rstn)
+	);
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
 	assign submatrix_ch_ram_wr_addr = (ch_ram_init_we == 1'b1) ? submatrix_chInit_wr_addr :
@@ -10237,6 +10768,41 @@ end
 // DNU Sign-Input Control Circular Shift Factor
 assign dnu_inRotate_shift_factor = shift_factor_1;
 /*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs write-page addresses 
+reg [ROW_CHUNK_NUM-1:0] signExten_ramWR_row_chunk_cnt; initial signExten_ramWR_row_chunk_cnt <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) signExten_ramWR_row_chunk_cnt <= 1;
+	else if(dnu_inRotate_wb == 1'b1) signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1:0] <= {signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-2:0], signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1]};
+	else signExten_ramWR_row_chunk_cnt <= signExten_ramWR_row_chunk_cnt;
+end
+initial submatrix_signExten_ram_wr_addr <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) 
+		submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+	else if(dnu_inRotate_wb == 1'b1) begin
+		if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1] == 1'b1) 
+			submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+		else if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-START_PAGE_1_1-1] == 1'b1)
+			submatrix_signExten_ram_wr_addr <= 0; 
+		else
+			submatrix_signExten_ram_wr_addr <= submatrix_signExten_ram_wr_addr+1;
+	end
+end
+/*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs Fetching addresses
+always @(posedge read_clk) begin
+	if(rstn == 1'b0)
+		submatrix_signExten_ram_rd_addr <= 0;
+	else if(dnu_signExten_ram_fetch == 1'b1) begin
+		if(submatrix_signExten_ram_rd_addr == ROW_CHUNK_NUM-1)
+			submatrix_signExten_ram_rd_addr <= 0;
+		else
+			submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr+1;
+	end
+	else
+		submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr;
+end
+/*--------------------------------------------------------------------------*/
 endmodule
 
 module msg_pass_submatrix_8_unit #(
@@ -10279,6 +10845,7 @@ module msg_pass_submatrix_8_unit #(
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
 /*-------------------------------------------------------------------------------------*/
 	// Parameters for DNU Sign Extension related Control Signals
+	parameter SIGN_EXTEN_FF_TO_BS = 10, // 10 clock cycles between latch of VNU.F1.SignExtenOut and input of DNU.SignExtenIn.BS
 	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
@@ -10318,6 +10885,7 @@ module msg_pass_submatrix_8_unit #(
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
+	input wire dnu_signExten_ram_fetch,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 	// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -10407,8 +10975,7 @@ qsn_controller_85b #(
 );
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
-wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
-wire [BITWIDTH_SHIFT_FACTOR-1:0] dnu_inRotate_shift_factor; // a constant, because only needed at last layer
+reg [CHECK_PARALLELISM-1:0] vnu_signExtenOut_reg [0:SIGN_EXTEN_FF_TO_BS-1];
 shared_qsn_top_85b #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -10432,7 +10999,7 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (dnu_inRotate_bit),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
 
 	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
 	.sw_in_bit0_src (vnu_bs_bit0_src),
@@ -10441,9 +11008,15 @@ shared_qsn_top_85b #(
 assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
-/*----------------------------------------------*/	
-	wire [V2C_DATA_WIDTH-1:0] mem_to_cnu;
-	wire [C2V_DATA_WIDTH-1:0] mem_to_vnu;
+	
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+genvar signExten_ff_id;
+generate
+	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+	end
+endgenerate
+/*----------------------------------------------*/		
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -10451,7 +11024,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
-	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
+	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_8 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -10821,6 +11394,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+/*		
 		genvar dnu_signID;
 		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
 		generate
@@ -10829,6 +11403,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			end
 		endgenerate
 		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];	
+*/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -10936,6 +11511,8 @@ reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chLayer_wr_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_rd_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_wr_addr;
 /*----------------------------*/
 wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 		ch_msg_ram #(
@@ -11220,8 +11797,29 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
-	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
-
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};	
+	/*--------------------------------------------------------------------------*/
+	// Sign-Extension Control Signals for second segment of DNU IB-LUT read addresses
+	// Source: sign extension output from last decomposition level of VNU IB-LUT
+	// Destination: sign extension input of DNU IB-LUT
+	dnu_signExtenIn_ram #(
+		.ROW_CHUNK_NUM (ROW_CHUNK_NUM),
+		.CHECK_PARALLELISM (CHECK_PARALLELISM),
+		.DEPTH (ROW_CHUNK_NUM),
+		.DATA_WIDTH (CHECK_PARALLELISM),
+		.ADDR_WIDTH ($clog2(ROW_CHUNK_NUM))
+	) dnu_signExtenIn_ram_u0 (
+		.mem_to_dnuIn (dnu_signExten[CHECK_PARALLELISM-1:0]),
+	
+		.signExten_din (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+		.read_addr     (submatrix_signExten_ram_rd_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.write_addr    (submatrix_signExten_ram_wr_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.we (dnu_inRotate_wb),
+	
+		.read_clk  (read_clk),
+		.write_clk (read_clk),
+		.rstn (rstn)
+	);
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
 	assign submatrix_ch_ram_wr_addr = (ch_ram_init_we == 1'b1) ? submatrix_chInit_wr_addr :
@@ -11373,6 +11971,41 @@ end
 // DNU Sign-Input Control Circular Shift Factor
 assign dnu_inRotate_shift_factor = shift_factor_1;
 /*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs write-page addresses 
+reg [ROW_CHUNK_NUM-1:0] signExten_ramWR_row_chunk_cnt; initial signExten_ramWR_row_chunk_cnt <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) signExten_ramWR_row_chunk_cnt <= 1;
+	else if(dnu_inRotate_wb == 1'b1) signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1:0] <= {signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-2:0], signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1]};
+	else signExten_ramWR_row_chunk_cnt <= signExten_ramWR_row_chunk_cnt;
+end
+initial submatrix_signExten_ram_wr_addr <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) 
+		submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+	else if(dnu_inRotate_wb == 1'b1) begin
+		if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1] == 1'b1) 
+			submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+		else if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-START_PAGE_1_1-1] == 1'b1)
+			submatrix_signExten_ram_wr_addr <= 0; 
+		else
+			submatrix_signExten_ram_wr_addr <= submatrix_signExten_ram_wr_addr+1;
+	end
+end
+/*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs Fetching addresses
+always @(posedge read_clk) begin
+	if(rstn == 1'b0)
+		submatrix_signExten_ram_rd_addr <= 0;
+	else if(dnu_signExten_ram_fetch == 1'b1) begin
+		if(submatrix_signExten_ram_rd_addr == ROW_CHUNK_NUM-1)
+			submatrix_signExten_ram_rd_addr <= 0;
+		else
+			submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr+1;
+	end
+	else
+		submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr;
+end
+/*--------------------------------------------------------------------------*/
 endmodule
 
 module msg_pass_submatrix_9_unit #(
@@ -11415,6 +12048,7 @@ module msg_pass_submatrix_9_unit #(
 	parameter CH_RAM_ADDR_WIDTH = $clog2(CH_RAM_DEPTH),
 /*-------------------------------------------------------------------------------------*/
 	// Parameters for DNU Sign Extension related Control Signals
+	parameter SIGN_EXTEN_FF_TO_BS = 10, // 10 clock cycles between latch of VNU.F1.SignExtenOut and input of DNU.SignExtenIn.BS
 	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 /*-------------------------------------------------------------------------------------*/
 `endif
@@ -11455,6 +12089,7 @@ module msg_pass_submatrix_9_unit #(
 	input wire v2c_outRotate_reg_we,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
+	input wire dnu_signExten_ram_fetch,
 	/*------------------------------*/
 	// 1) to indicate the current status of message passing of VNUs, in order to synchronise the C2V MEM's read/write address
 	// 2) to indicate the current status of message passing of CNUs, in order to synchronise the V2C MEM's read/write address
@@ -11496,7 +12131,6 @@ reg [BITWIDTH_SHIFT_FACTOR-1:0] ch_ramRD_shift_factor_cur_2;
 wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
 wire [BITWIDTH_SHIFT_FACTOR-1:0] dnu_inRotate_shift_factor; // a constant, because only needed at last layer
 
-wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
 wire [6:0]  cnu_left_sel;
 wire [6:0]  cnu_right_sel;
 wire [83:0] cnu_merge_sel;
@@ -11545,8 +12179,7 @@ qsn_controller_85b #(
 );
 /*----------------------------------------------*/
 // Circular shifter of variable nodes 
-wire [BITWIDTH_SHIFT_FACTOR-1:0] vnu_shift_factorIn;
-wire [BITWIDTH_SHIFT_FACTOR-1:0] dnu_inRotate_shift_factor; // a constant, because only needed at last layer
+reg [CHECK_PARALLELISM-1:0] vnu_signExtenOut_reg [0:SIGN_EXTEN_FF_TO_BS-1];
 shared_qsn_top_85b #(
 		.QUAN_SIZE(QUAN_SIZE),
 		.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -11570,7 +12203,7 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (dnu_inRotate_bit),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
 
 	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
 	.sw_in_bit0_src (vnu_bs_bit0_src),
@@ -11579,9 +12212,15 @@ shared_qsn_top_85b #(
 assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
-/*----------------------------------------------*/	
-	wire [V2C_DATA_WIDTH-1:0] mem_to_cnu;
-	wire [C2V_DATA_WIDTH-1:0] mem_to_vnu;
+
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+genvar signExten_ff_id;
+generate
+	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+	end
+endgenerate
+/*----------------------------------------------*/
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -11589,7 +12228,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
-	reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
+	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_9 #(
 			.QUAN_SIZE(QUAN_SIZE),
 			.CHECK_PARALLELISM(CHECK_PARALLELISM),
@@ -11959,6 +12598,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 
 		assign vnu_mem_page_sync_addr = (c2v_mem_fetch == 1'b1) ? c2v_mem_page_rd_addr : 
 										(v2c_mem_we == 1'b1) ? v2c_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+/*		
 		genvar dnu_signID;
 		always @(posedge read_clk) begin if(!rstn) dnu_signExten_reg[0] <= 0; else dnu_signExten_reg[0] <= dnu_signExten_wire[CHECK_PARALLELISM-1:0]; end
 		generate
@@ -11967,6 +12607,7 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 			end
 		endgenerate
 		assign dnu_signExten[CHECK_PARALLELISM-1:0] = dnu_signExten_reg[PA_TO_DNU_DELAY-1];	
+*/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Check-to-Variable messages RAMs write-page addresses
 	always @(posedge read_clk) begin
@@ -12074,6 +12715,8 @@ reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_rd_addr;
 wire [CH_RAM_ADDR_WIDTH-1:0] submatrix_ch_ram_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chInit_wr_addr;
 reg [CH_RAM_ADDR_WIDTH-1:0] submatrix_chLayer_wr_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_rd_addr;
+reg [$clog2(ROW_CHUNK_NUM)-1:0] submatrix_signExten_ram_wr_addr;
 /*----------------------------*/
 wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 		ch_msg_ram #(
@@ -12358,8 +13001,29 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 	// To assign the net output ports of channel buffer
 	assign ch_to_vnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_1[84],ch_msg_fetchOut_1[83],ch_msg_fetchOut_1[82],ch_msg_fetchOut_1[81],ch_msg_fetchOut_1[80],ch_msg_fetchOut_1[79],ch_msg_fetchOut_1[78],ch_msg_fetchOut_1[77],ch_msg_fetchOut_1[76],ch_msg_fetchOut_1[75],ch_msg_fetchOut_1[74],ch_msg_fetchOut_1[73],ch_msg_fetchOut_1[72],ch_msg_fetchOut_1[71],ch_msg_fetchOut_1[70],ch_msg_fetchOut_1[69],ch_msg_fetchOut_1[68],ch_msg_fetchOut_1[67],ch_msg_fetchOut_1[66],ch_msg_fetchOut_1[65],ch_msg_fetchOut_1[64],ch_msg_fetchOut_1[63],ch_msg_fetchOut_1[62],ch_msg_fetchOut_1[61],ch_msg_fetchOut_1[60],ch_msg_fetchOut_1[59],ch_msg_fetchOut_1[58],ch_msg_fetchOut_1[57],ch_msg_fetchOut_1[56],ch_msg_fetchOut_1[55],ch_msg_fetchOut_1[54],ch_msg_fetchOut_1[53],ch_msg_fetchOut_1[52],ch_msg_fetchOut_1[51],ch_msg_fetchOut_1[50],ch_msg_fetchOut_1[49],ch_msg_fetchOut_1[48],ch_msg_fetchOut_1[47],ch_msg_fetchOut_1[46],ch_msg_fetchOut_1[45],ch_msg_fetchOut_1[44],ch_msg_fetchOut_1[43],ch_msg_fetchOut_1[42],ch_msg_fetchOut_1[41],ch_msg_fetchOut_1[40],ch_msg_fetchOut_1[39],ch_msg_fetchOut_1[38],ch_msg_fetchOut_1[37],ch_msg_fetchOut_1[36],ch_msg_fetchOut_1[35],ch_msg_fetchOut_1[34],ch_msg_fetchOut_1[33],ch_msg_fetchOut_1[32],ch_msg_fetchOut_1[31],ch_msg_fetchOut_1[30],ch_msg_fetchOut_1[29],ch_msg_fetchOut_1[28],ch_msg_fetchOut_1[27],ch_msg_fetchOut_1[26],ch_msg_fetchOut_1[25],ch_msg_fetchOut_1[24],ch_msg_fetchOut_1[23],ch_msg_fetchOut_1[22],ch_msg_fetchOut_1[21],ch_msg_fetchOut_1[20],ch_msg_fetchOut_1[19],ch_msg_fetchOut_1[18],ch_msg_fetchOut_1[17],ch_msg_fetchOut_1[16],ch_msg_fetchOut_1[15],ch_msg_fetchOut_1[14],ch_msg_fetchOut_1[13],ch_msg_fetchOut_1[12],ch_msg_fetchOut_1[11],ch_msg_fetchOut_1[10],ch_msg_fetchOut_1[9],ch_msg_fetchOut_1[8],ch_msg_fetchOut_1[7],ch_msg_fetchOut_1[6],ch_msg_fetchOut_1[5],ch_msg_fetchOut_1[4],ch_msg_fetchOut_1[3],ch_msg_fetchOut_1[2],ch_msg_fetchOut_1[1],ch_msg_fetchOut_1[0]};
 	assign ch_to_cnu[CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_0[84],ch_msg_fetchOut_0[83],ch_msg_fetchOut_0[82],ch_msg_fetchOut_0[81],ch_msg_fetchOut_0[80],ch_msg_fetchOut_0[79],ch_msg_fetchOut_0[78],ch_msg_fetchOut_0[77],ch_msg_fetchOut_0[76],ch_msg_fetchOut_0[75],ch_msg_fetchOut_0[74],ch_msg_fetchOut_0[73],ch_msg_fetchOut_0[72],ch_msg_fetchOut_0[71],ch_msg_fetchOut_0[70],ch_msg_fetchOut_0[69],ch_msg_fetchOut_0[68],ch_msg_fetchOut_0[67],ch_msg_fetchOut_0[66],ch_msg_fetchOut_0[65],ch_msg_fetchOut_0[64],ch_msg_fetchOut_0[63],ch_msg_fetchOut_0[62],ch_msg_fetchOut_0[61],ch_msg_fetchOut_0[60],ch_msg_fetchOut_0[59],ch_msg_fetchOut_0[58],ch_msg_fetchOut_0[57],ch_msg_fetchOut_0[56],ch_msg_fetchOut_0[55],ch_msg_fetchOut_0[54],ch_msg_fetchOut_0[53],ch_msg_fetchOut_0[52],ch_msg_fetchOut_0[51],ch_msg_fetchOut_0[50],ch_msg_fetchOut_0[49],ch_msg_fetchOut_0[48],ch_msg_fetchOut_0[47],ch_msg_fetchOut_0[46],ch_msg_fetchOut_0[45],ch_msg_fetchOut_0[44],ch_msg_fetchOut_0[43],ch_msg_fetchOut_0[42],ch_msg_fetchOut_0[41],ch_msg_fetchOut_0[40],ch_msg_fetchOut_0[39],ch_msg_fetchOut_0[38],ch_msg_fetchOut_0[37],ch_msg_fetchOut_0[36],ch_msg_fetchOut_0[35],ch_msg_fetchOut_0[34],ch_msg_fetchOut_0[33],ch_msg_fetchOut_0[32],ch_msg_fetchOut_0[31],ch_msg_fetchOut_0[30],ch_msg_fetchOut_0[29],ch_msg_fetchOut_0[28],ch_msg_fetchOut_0[27],ch_msg_fetchOut_0[26],ch_msg_fetchOut_0[25],ch_msg_fetchOut_0[24],ch_msg_fetchOut_0[23],ch_msg_fetchOut_0[22],ch_msg_fetchOut_0[21],ch_msg_fetchOut_0[20],ch_msg_fetchOut_0[19],ch_msg_fetchOut_0[18],ch_msg_fetchOut_0[17],ch_msg_fetchOut_0[16],ch_msg_fetchOut_0[15],ch_msg_fetchOut_0[14],ch_msg_fetchOut_0[13],ch_msg_fetchOut_0[12],ch_msg_fetchOut_0[11],ch_msg_fetchOut_0[10],ch_msg_fetchOut_0[9],ch_msg_fetchOut_0[8],ch_msg_fetchOut_0[7],ch_msg_fetchOut_0[6],ch_msg_fetchOut_0[5],ch_msg_fetchOut_0[4],ch_msg_fetchOut_0[3],ch_msg_fetchOut_0[2],ch_msg_fetchOut_0[1],ch_msg_fetchOut_0[0]};
-	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};
-
+	assign ch_to_bs [CH_DATA_WIDTH-1:0] = {ch_msg_fetchOut_2[84],ch_msg_fetchOut_2[83],ch_msg_fetchOut_2[82],ch_msg_fetchOut_2[81],ch_msg_fetchOut_2[80],ch_msg_fetchOut_2[79],ch_msg_fetchOut_2[78],ch_msg_fetchOut_2[77],ch_msg_fetchOut_2[76],ch_msg_fetchOut_2[75],ch_msg_fetchOut_2[74],ch_msg_fetchOut_2[73],ch_msg_fetchOut_2[72],ch_msg_fetchOut_2[71],ch_msg_fetchOut_2[70],ch_msg_fetchOut_2[69],ch_msg_fetchOut_2[68],ch_msg_fetchOut_2[67],ch_msg_fetchOut_2[66],ch_msg_fetchOut_2[65],ch_msg_fetchOut_2[64],ch_msg_fetchOut_2[63],ch_msg_fetchOut_2[62],ch_msg_fetchOut_2[61],ch_msg_fetchOut_2[60],ch_msg_fetchOut_2[59],ch_msg_fetchOut_2[58],ch_msg_fetchOut_2[57],ch_msg_fetchOut_2[56],ch_msg_fetchOut_2[55],ch_msg_fetchOut_2[54],ch_msg_fetchOut_2[53],ch_msg_fetchOut_2[52],ch_msg_fetchOut_2[51],ch_msg_fetchOut_2[50],ch_msg_fetchOut_2[49],ch_msg_fetchOut_2[48],ch_msg_fetchOut_2[47],ch_msg_fetchOut_2[46],ch_msg_fetchOut_2[45],ch_msg_fetchOut_2[44],ch_msg_fetchOut_2[43],ch_msg_fetchOut_2[42],ch_msg_fetchOut_2[41],ch_msg_fetchOut_2[40],ch_msg_fetchOut_2[39],ch_msg_fetchOut_2[38],ch_msg_fetchOut_2[37],ch_msg_fetchOut_2[36],ch_msg_fetchOut_2[35],ch_msg_fetchOut_2[34],ch_msg_fetchOut_2[33],ch_msg_fetchOut_2[32],ch_msg_fetchOut_2[31],ch_msg_fetchOut_2[30],ch_msg_fetchOut_2[29],ch_msg_fetchOut_2[28],ch_msg_fetchOut_2[27],ch_msg_fetchOut_2[26],ch_msg_fetchOut_2[25],ch_msg_fetchOut_2[24],ch_msg_fetchOut_2[23],ch_msg_fetchOut_2[22],ch_msg_fetchOut_2[21],ch_msg_fetchOut_2[20],ch_msg_fetchOut_2[19],ch_msg_fetchOut_2[18],ch_msg_fetchOut_2[17],ch_msg_fetchOut_2[16],ch_msg_fetchOut_2[15],ch_msg_fetchOut_2[14],ch_msg_fetchOut_2[13],ch_msg_fetchOut_2[12],ch_msg_fetchOut_2[11],ch_msg_fetchOut_2[10],ch_msg_fetchOut_2[9],ch_msg_fetchOut_2[8],ch_msg_fetchOut_2[7],ch_msg_fetchOut_2[6],ch_msg_fetchOut_2[5],ch_msg_fetchOut_2[4],ch_msg_fetchOut_2[3],ch_msg_fetchOut_2[2],ch_msg_fetchOut_2[1],ch_msg_fetchOut_2[0]};	
+	/*--------------------------------------------------------------------------*/
+	// Sign-Extension Control Signals for second segment of DNU IB-LUT read addresses
+	// Source: sign extension output from last decomposition level of VNU IB-LUT
+	// Destination: sign extension input of DNU IB-LUT
+	dnu_signExtenIn_ram #(
+		.ROW_CHUNK_NUM (ROW_CHUNK_NUM),
+		.CHECK_PARALLELISM (CHECK_PARALLELISM),
+		.DEPTH (ROW_CHUNK_NUM),
+		.DATA_WIDTH (CHECK_PARALLELISM),
+		.ADDR_WIDTH ($clog2(ROW_CHUNK_NUM))
+	) dnu_signExtenIn_ram_u0 (
+		.mem_to_dnuIn (dnu_signExten[CHECK_PARALLELISM-1:0]),
+	
+		.signExten_din (dnu_signExten_wire[CHECK_PARALLELISM-1:0]),
+		.read_addr     (submatrix_signExten_ram_rd_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.write_addr    (submatrix_signExten_ram_wr_addr[$clog2(ROW_CHUNK_NUM)-1:0]),
+		.we (dnu_inRotate_wb),
+	
+		.read_clk  (read_clk),
+		.write_clk (read_clk),
+		.rstn (rstn)
+	);
 	/*--------------------------------------------------------------------------*/
 	// Updating the Channel RAMs by either initally channel messages (from AWGNs) or circularly shifted channel messages
 	assign submatrix_ch_ram_wr_addr = (ch_ram_init_we == 1'b1) ? submatrix_chInit_wr_addr :
@@ -12510,5 +13174,40 @@ end
 /*--------------------------------------------------------------------------*/
 // DNU Sign-Input Control Circular Shift Factor
 assign dnu_inRotate_shift_factor = shift_factor_1;
+/*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs write-page addresses 
+reg [ROW_CHUNK_NUM-1:0] signExten_ramWR_row_chunk_cnt; initial signExten_ramWR_row_chunk_cnt <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) signExten_ramWR_row_chunk_cnt <= 1;
+	else if(dnu_inRotate_wb == 1'b1) signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1:0] <= {signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-2:0], signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1]};
+	else signExten_ramWR_row_chunk_cnt <= signExten_ramWR_row_chunk_cnt;
+end
+initial submatrix_signExten_ram_wr_addr <= 0;
+always @(posedge read_clk) begin
+	if(rstn == 1'b0) 
+		submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+	else if(dnu_inRotate_wb == 1'b1) begin
+		if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-1] == 1'b1) 
+			submatrix_signExten_ram_wr_addr <= START_PAGE_1_1;
+		else if(signExten_ramWR_row_chunk_cnt[ROW_CHUNK_NUM-START_PAGE_1_1-1] == 1'b1)
+			submatrix_signExten_ram_wr_addr <= 0; 
+		else
+			submatrix_signExten_ram_wr_addr <= submatrix_signExten_ram_wr_addr+1;
+	end
+end
+/*--------------------------------------------------------------------------*/
+// DNU Sign-Extension RAMs Fetching addresses
+always @(posedge read_clk) begin
+	if(rstn == 1'b0)
+		submatrix_signExten_ram_rd_addr <= 0;
+	else if(dnu_signExten_ram_fetch == 1'b1) begin
+		if(submatrix_signExten_ram_rd_addr == ROW_CHUNK_NUM-1)
+			submatrix_signExten_ram_rd_addr <= 0;
+		else
+			submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr+1;
+	end
+	else
+		submatrix_signExten_ram_rd_addr <= submatrix_signExten_ram_rd_addr;
+end
 /*--------------------------------------------------------------------------*/
 endmodule

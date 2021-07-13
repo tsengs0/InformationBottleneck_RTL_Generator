@@ -19,7 +19,9 @@ module row_process_element #(
 	parameter IB_VNU_DECOMP_funNum = 2,
 	parameter VN_PIPELINE_DEPTH = 3,
 	parameter DN_PIPELINE_DEPTH = 3,
-	parameter MULTI_FRAME_NUM   = 2
+	parameter MULTI_FRAME_NUM   = 2,
+	parameter V2C_TO_DNU_LATENCY = 9,
+	parameter C2V_TO_DNU_LATENCY = 5
 ) (
 	// Output prot of hard decision messages
 	output wire [CN_DEGREE-1:0] hard_decision,
@@ -34,6 +36,7 @@ module row_process_element #(
 	output wire [QUAN_SIZE-1:0] vnu7_v2c,
 	output wire [QUAN_SIZE-1:0] vnu8_v2c,
 	output wire [QUAN_SIZE-1:0] vnu9_v2c,
+	output wire [CN_DEGREE-1:0] dnu_signExten_gen, // the source of VNU.F1 rotateOut which will be used as sign Extension of DNU's second input
 	// Output port of extrinsic check-to-variable messages
 	output wire [QUAN_SIZE-1:0] cnu0_c2v,
 	output wire [QUAN_SIZE-1:0] cnu1_c2v,
@@ -112,13 +115,16 @@ module row_process_element #(
 	input wire [QUAN_SIZE-1:0] cnuIn_v2c8,
 	input wire [QUAN_SIZE-1:0] cnuIn_v2c9,
 
+	// Input port of sign Extension for second segment of read address of DNU IB-LUT, to recall it from VNU.F1 rotateOut 
+	input wire [CN_DEGREE-1:0] dnu_signExtenIn, 
+
 	input wire read_clk,
 	input wire vnu_read_addr_offset,
 	input wire v2c_src,
-	input wire v2c_latch_en,
-	input wire c2v_latch_en,
-	input wire [1:0] load, //({v2c_load[0], c2v_load[0]}),
-	input wire [1:0] parallel_en,//({v2c_msg_en[0], c2v_msg_en[0]}),
+	//input wire v2c_latch_en,
+	//input wire c2v_latch_en,
+	//input wire [1:0] load, //({v2c_load[0], c2v_load[0]}),
+	//input wire [1:0] parallel_en,//({v2c_msg_en[0], c2v_msg_en[0]}),
 	input wire rstn,
 
 	// Iteration-Refresh Page Address
@@ -140,6 +146,7 @@ module row_process_element #(
 );
 
 wire [QUAN_SIZE-1:0] cnu_Din [0:CN_DEGREE-1];
+wire [QUAN_SIZE-1:0] c2v_net [0:CN_DEGREE-1];
 wire [QUAN_SIZE-1:0] c2v_reg [0:CN_DEGREE-1];
 cnu_10 #(
 	.CN_DEGREE (CN_DEGREE), // 10
@@ -148,16 +155,16 @@ cnu_10 #(
 	/*Not used now*/ .alpha_2   (2) , // 0.25 -> x >> 2
 	/*Not used now*/ .gamma     (1)  // 0.50 -> x >> 1 
 ) row_cnu_u0 (
-	.ch_to_var_0 (c2v_reg[0]),
-	.ch_to_var_1 (c2v_reg[1]),
-	.ch_to_var_2 (c2v_reg[2]),
-	.ch_to_var_3 (c2v_reg[3]),
-	.ch_to_var_4 (c2v_reg[4]),
-	.ch_to_var_5 (c2v_reg[5]),
-	.ch_to_var_6 (c2v_reg[6]),
-	.ch_to_var_7 (c2v_reg[7]),
-	.ch_to_var_8 (c2v_reg[8]),
-	.ch_to_var_9 (c2v_reg[9]),
+	.ch_to_var_0 (c2v_net[0]),
+	.ch_to_var_1 (c2v_net[1]),
+	.ch_to_var_2 (c2v_net[2]),
+	.ch_to_var_3 (c2v_net[3]),
+	.ch_to_var_4 (c2v_net[4]),
+	.ch_to_var_5 (c2v_net[5]),
+	.ch_to_var_6 (c2v_net[6]),
+	.ch_to_var_7 (c2v_net[7]),
+	.ch_to_var_8 (c2v_net[8]),
+	.ch_to_var_9 (c2v_net[9]),
 
 	.var_to_ch_0 (cnu_Din[0]),
 	.var_to_ch_1 (cnu_Din[1]),
@@ -173,6 +180,51 @@ cnu_10 #(
 	.sys_clk (read_clk),
 	.rstn    (rstn)
 );
+
+`ifdef SCHED_4_6
+	reg [QUAN_SIZE-1:0] c2v0_pipe [0:C2V_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) c2v0_pipe[0] <= 0; else c2v0_pipe[0] <= c2v_net[0]; end
+	reg [QUAN_SIZE-1:0] c2v1_pipe [0:C2V_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) c2v1_pipe[0] <= 0; else c2v1_pipe[0] <= c2v_net[1]; end
+	reg [QUAN_SIZE-1:0] c2v2_pipe [0:C2V_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) c2v2_pipe[0] <= 0; else c2v2_pipe[0] <= c2v_net[2]; end
+	reg [QUAN_SIZE-1:0] c2v3_pipe [0:C2V_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) c2v3_pipe[0] <= 0; else c2v3_pipe[0] <= c2v_net[3]; end
+	reg [QUAN_SIZE-1:0] c2v4_pipe [0:C2V_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) c2v4_pipe[0] <= 0; else c2v4_pipe[0] <= c2v_net[4]; end
+	reg [QUAN_SIZE-1:0] c2v5_pipe [0:C2V_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) c2v5_pipe[0] <= 0; else c2v5_pipe[0] <= c2v_net[5]; end
+	reg [QUAN_SIZE-1:0] c2v6_pipe [0:C2V_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) c2v6_pipe[0] <= 0; else c2v6_pipe[0] <= c2v_net[6]; end
+	reg [QUAN_SIZE-1:0] c2v7_pipe [0:C2V_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) c2v7_pipe[0] <= 0; else c2v7_pipe[0] <= c2v_net[7]; end
+	reg [QUAN_SIZE-1:0] c2v8_pipe [0:C2V_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) c2v8_pipe[0] <= 0; else c2v8_pipe[0] <= c2v_net[8]; end
+	reg [QUAN_SIZE-1:0] c2v9_pipe [0:C2V_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) c2v9_pipe[0] <= 0; else c2v9_pipe[0] <= c2v_net[9]; end
+	genvar dc_id;
+	generate
+		for(dc_id=1;dc_id<C2V_TO_DNU_LATENCY;dc_id=dc_id+1) begin : imm_c2v_pipeline_inst
+			always @(posedge read_clk) begin if(!rstn) c2v0_pipe[dc_id] <= 0; else c2v0_pipe[dc_id] <= c2v0_pipe[dc_id-1]; end
+			always @(posedge read_clk) begin if(!rstn) c2v1_pipe[dc_id] <= 0; else c2v1_pipe[dc_id] <= c2v1_pipe[dc_id-1]; end
+			always @(posedge read_clk) begin if(!rstn) c2v2_pipe[dc_id] <= 0; else c2v2_pipe[dc_id] <= c2v2_pipe[dc_id-1]; end
+			always @(posedge read_clk) begin if(!rstn) c2v3_pipe[dc_id] <= 0; else c2v3_pipe[dc_id] <= c2v3_pipe[dc_id-1]; end
+			always @(posedge read_clk) begin if(!rstn) c2v4_pipe[dc_id] <= 0; else c2v4_pipe[dc_id] <= c2v4_pipe[dc_id-1]; end
+			always @(posedge read_clk) begin if(!rstn) c2v5_pipe[dc_id] <= 0; else c2v5_pipe[dc_id] <= c2v5_pipe[dc_id-1]; end
+			always @(posedge read_clk) begin if(!rstn) c2v6_pipe[dc_id] <= 0; else c2v6_pipe[dc_id] <= c2v6_pipe[dc_id-1]; end
+			always @(posedge read_clk) begin if(!rstn) c2v7_pipe[dc_id] <= 0; else c2v7_pipe[dc_id] <= c2v7_pipe[dc_id-1]; end
+			always @(posedge read_clk) begin if(!rstn) c2v8_pipe[dc_id] <= 0; else c2v8_pipe[dc_id] <= c2v8_pipe[dc_id-1]; end
+			always @(posedge read_clk) begin if(!rstn) c2v9_pipe[dc_id] <= 0; else c2v9_pipe[dc_id] <= c2v9_pipe[dc_id-1]; end
+		end
+	endgenerate
+	assign c2v_reg[0] = c2v0_pipe[C2V_TO_DNU_LATENCY-1];
+	assign c2v_reg[1] = c2v1_pipe[C2V_TO_DNU_LATENCY-1];
+	assign c2v_reg[2] = c2v2_pipe[C2V_TO_DNU_LATENCY-1];
+	assign c2v_reg[3] = c2v3_pipe[C2V_TO_DNU_LATENCY-1];
+	assign c2v_reg[4] = c2v4_pipe[C2V_TO_DNU_LATENCY-1];
+	assign c2v_reg[5] = c2v5_pipe[C2V_TO_DNU_LATENCY-1];
+	assign c2v_reg[6] = c2v6_pipe[C2V_TO_DNU_LATENCY-1];
+	assign c2v_reg[7] = c2v7_pipe[C2V_TO_DNU_LATENCY-1];
+	assign c2v_reg[8] = c2v8_pipe[C2V_TO_DNU_LATENCY-1];
+	assign c2v_reg[9] = c2v9_pipe[C2V_TO_DNU_LATENCY-1];
+`else
+	genvar dc_id;
+	generate
+		for(dc_id=0; dc_id<CN_DEGREE; dc_id=dc_id+1) begin : pipe_c2v_inst
+			assign c2v_reg[dc_id] = c2v_net[dc_id];
+		end
+	endgenerate
+`endif
 
 row_vnu_wrapper #(
 	.QUAN_SIZE (QUAN_SIZE), // 4,
@@ -216,6 +268,16 @@ row_vnu_wrapper #(
 	.v2c_7_out0 (vnu7_v2c[QUAN_SIZE-1:0]),
 	.v2c_8_out0 (vnu8_v2c[QUAN_SIZE-1:0]),
 	.v2c_9_out0 (vnu9_v2c[QUAN_SIZE-1:0]),
+	.dnu_0_signExten_gen (dnu_signExten_gen[0]), // the source of VNU.F1 rotateOut which will be used as sign Extension of DNU's second input
+	.dnu_1_signExten_gen (dnu_signExten_gen[1]), // the source of VNU.F1 rotateOut which will be used as sign Extension of DNU's second input
+	.dnu_2_signExten_gen (dnu_signExten_gen[2]), // the source of VNU.F1 rotateOut which will be used as sign Extension of DNU's second input
+	.dnu_3_signExten_gen (dnu_signExten_gen[3]), // the source of VNU.F1 rotateOut which will be used as sign Extension of DNU's second input
+	.dnu_4_signExten_gen (dnu_signExten_gen[4]), // the source of VNU.F1 rotateOut which will be used as sign Extension of DNU's second input
+	.dnu_5_signExten_gen (dnu_signExten_gen[5]), // the source of VNU.F1 rotateOut which will be used as sign Extension of DNU's second input
+	.dnu_6_signExten_gen (dnu_signExten_gen[6]), // the source of VNU.F1 rotateOut which will be used as sign Extension of DNU's second input
+	.dnu_7_signExten_gen (dnu_signExten_gen[7]), // the source of VNU.F1 rotateOut which will be used as sign Extension of DNU's second input
+	.dnu_8_signExten_gen (dnu_signExten_gen[8]), // the source of VNU.F1 rotateOut which will be used as sign Extension of DNU's second input
+	.dnu_9_signExten_gen (dnu_signExten_gen[9]), // the source of VNU.F1 rotateOut which will be used as sign Extension of DNU's second input
 
 	// Intrinsic check-to-variable messages and channel messages
 	.ch_msg_0 (vnu0_ch_msgIn[QUAN_SIZE-1:0]),
@@ -238,32 +300,45 @@ row_vnu_wrapper #(
 	.c2v_7_in0 (vnu7_post_c2v0[QUAN_SIZE-1:0]),
 	.c2v_8_in0 (vnu8_post_c2v0[QUAN_SIZE-1:0]),
 	.c2v_9_in0 (vnu9_post_c2v0[QUAN_SIZE-1:0]),
-	.c2v_0_in1 (c2v_reg[0]),//(vnu0_post_c2v1[QUAN_SIZE-1:0]),
-	.c2v_1_in1 (c2v_reg[1]),//(vnu1_post_c2v1[QUAN_SIZE-1:0]),
-	.c2v_2_in1 (c2v_reg[2]),//(vnu2_post_c2v1[QUAN_SIZE-1:0]),
-	.c2v_3_in1 (c2v_reg[3]),//(vnu3_post_c2v1[QUAN_SIZE-1:0]),
-	.c2v_4_in1 (c2v_reg[4]),//(vnu4_post_c2v1[QUAN_SIZE-1:0]),
-	.c2v_5_in1 (c2v_reg[5]),//(vnu5_post_c2v1[QUAN_SIZE-1:0]),
-	.c2v_6_in1 (c2v_reg[6]),//(vnu6_post_c2v1[QUAN_SIZE-1:0]),
-	.c2v_7_in1 (c2v_reg[7]),//(vnu7_post_c2v1[QUAN_SIZE-1:0]),
-	.c2v_8_in1 (c2v_reg[8]),//(vnu8_post_c2v1[QUAN_SIZE-1:0]),
-	.c2v_9_in1 (c2v_reg[9]),//(vnu9_post_c2v1[QUAN_SIZE-1:0]),
-	.c2v_0_in2 (vnu0_immediate_v2c_pipe[CNU_FUNC_CYCLE-1]),//(vnu0_post_c2v2[QUAN_SIZE-1:0]),
-	.c2v_1_in2 (vnu1_immediate_v2c_pipe[CNU_FUNC_CYCLE-1]),//(vnu1_post_c2v2[QUAN_SIZE-1:0]),
-	.c2v_2_in2 (vnu2_immediate_v2c_pipe[CNU_FUNC_CYCLE-1]),//(vnu2_post_c2v2[QUAN_SIZE-1:0]),
-	.c2v_3_in2 (vnu3_immediate_v2c_pipe[CNU_FUNC_CYCLE-1]),//(vnu3_post_c2v2[QUAN_SIZE-1:0]),
-	.c2v_4_in2 (vnu4_immediate_v2c_pipe[CNU_FUNC_CYCLE-1]),//(vnu4_post_c2v2[QUAN_SIZE-1:0]),
-	.c2v_5_in2 (vnu5_immediate_v2c_pipe[CNU_FUNC_CYCLE-1]),//(vnu5_post_c2v2[QUAN_SIZE-1:0]),
-	.c2v_6_in2 (vnu6_immediate_v2c_pipe[CNU_FUNC_CYCLE-1]),//(vnu6_post_c2v2[QUAN_SIZE-1:0]),
-	.c2v_7_in2 (vnu7_immediate_v2c_pipe[CNU_FUNC_CYCLE-1]),//(vnu7_post_c2v2[QUAN_SIZE-1:0]),
-	.c2v_8_in2 (vnu8_immediate_v2c_pipe[CNU_FUNC_CYCLE-1]),//(vnu8_post_c2v2[QUAN_SIZE-1:0]),
-	.c2v_9_in2 (vnu9_immediate_v2c_pipe[CNU_FUNC_CYCLE-1]),//(vnu9_post_c2v2[QUAN_SIZE-1:0]),
+	.c2v_0_in1 (c2v0_pipe[0]),//(vnu0_post_c2v1[QUAN_SIZE-1:0]),
+	.c2v_1_in1 (c2v1_pipe[0]),//(vnu1_post_c2v1[QUAN_SIZE-1:0]),
+	.c2v_2_in1 (c2v2_pipe[0]),//(vnu2_post_c2v1[QUAN_SIZE-1:0]),
+	.c2v_3_in1 (c2v3_pipe[0]),//(vnu3_post_c2v1[QUAN_SIZE-1:0]),
+	.c2v_4_in1 (c2v4_pipe[0]),//(vnu4_post_c2v1[QUAN_SIZE-1:0]),
+	.c2v_5_in1 (c2v5_pipe[0]),//(vnu5_post_c2v1[QUAN_SIZE-1:0]),
+	.c2v_6_in1 (c2v6_pipe[0]),//(vnu6_post_c2v1[QUAN_SIZE-1:0]),
+	.c2v_7_in1 (c2v7_pipe[0]),//(vnu7_post_c2v1[QUAN_SIZE-1:0]),
+	.c2v_8_in1 (c2v8_pipe[0]),//(vnu8_post_c2v1[QUAN_SIZE-1:0]),
+	.c2v_9_in1 (c2v9_pipe[0]),//(vnu9_post_c2v1[QUAN_SIZE-1:0]),
+	.c2v_0_in2 (vnu0_immediate_v2c_pipe[V2C_TO_DNU_LATENCY-1]),//(vnu0_post_c2v2[QUAN_SIZE-1:0]),
+	.c2v_1_in2 (vnu1_immediate_v2c_pipe[V2C_TO_DNU_LATENCY-1]),//(vnu1_post_c2v2[QUAN_SIZE-1:0]),
+	.c2v_2_in2 (vnu2_immediate_v2c_pipe[V2C_TO_DNU_LATENCY-1]),//(vnu2_post_c2v2[QUAN_SIZE-1:0]),
+	.c2v_3_in2 (vnu3_immediate_v2c_pipe[V2C_TO_DNU_LATENCY-1]),//(vnu3_post_c2v2[QUAN_SIZE-1:0]),
+	.c2v_4_in2 (vnu4_immediate_v2c_pipe[V2C_TO_DNU_LATENCY-1]),//(vnu4_post_c2v2[QUAN_SIZE-1:0]),
+	.c2v_5_in2 (vnu5_immediate_v2c_pipe[V2C_TO_DNU_LATENCY-1]),//(vnu5_post_c2v2[QUAN_SIZE-1:0]),
+	.c2v_6_in2 (vnu6_immediate_v2c_pipe[V2C_TO_DNU_LATENCY-1]),//(vnu6_post_c2v2[QUAN_SIZE-1:0]),
+	.c2v_7_in2 (vnu7_immediate_v2c_pipe[V2C_TO_DNU_LATENCY-1]),//(vnu7_post_c2v2[QUAN_SIZE-1:0]),
+	.c2v_8_in2 (vnu8_immediate_v2c_pipe[V2C_TO_DNU_LATENCY-1]),//(vnu8_post_c2v2[QUAN_SIZE-1:0]),
+	.c2v_9_in2 (vnu9_immediate_v2c_pipe[V2C_TO_DNU_LATENCY-1]),//(vnu9_post_c2v2[QUAN_SIZE-1:0]),
+	.c2v_0_to_dnu (c2v_reg[0]),
+	.c2v_1_to_dnu (c2v_reg[1]),
+	.c2v_2_to_dnu (c2v_reg[2]),
+	.c2v_3_to_dnu (c2v_reg[3]),
+	.c2v_4_to_dnu (c2v_reg[4]),
+	.c2v_5_to_dnu (c2v_reg[5]),
+	.c2v_6_to_dnu (c2v_reg[6]),
+	.c2v_7_to_dnu (c2v_reg[7]),
+	.c2v_8_to_dnu (c2v_reg[8]),
+	.c2v_9_to_dnu (c2v_reg[9]),
+	
+	// Input port of sign Extension for second segment of read address of DNU IB-LUT, to recall it from VNU.F1 rotateOut 
+	.dnu_signExtenIn (dnu_signExtenIn[CN_DEGREE-1:0]), 
 
 	.read_clk (read_clk),
 	.read_addr_offset (vnu_read_addr_offset),
 	.v2c_src (v2c_src),
-	.c2v_latch_en (c2v_latch_en),
-	.c2v_parallel_load (load[0]),
+	//.c2v_latch_en (c2v_latch_en),
+	//.c2v_parallel_load (load[0]),
 
 	// Iteration-Refresh Page Address
 	.page_addr_ram_0 (vnu_page_addr_ram_0[VN_PAGE_ADDR_BW+1-1:0]),
@@ -294,19 +369,19 @@ assign cnu_Din[7] = (v2c_src == 1'b1) ? cnu_ch_msgIn_7 : cnuIn_v2c7[QUAN_SIZE-1:
 assign cnu_Din[8] = (v2c_src == 1'b1) ? cnu_ch_msgIn_8 : cnuIn_v2c8[QUAN_SIZE-1:0];
 assign cnu_Din[9] = (v2c_src == 1'b1) ? cnu_ch_msgIn_9 : cnuIn_v2c9[QUAN_SIZE-1:0];
 
-reg [QUAN_SIZE-1:0] vnu0_immediate_v2c_pipe [0:CNU_FUNC_CYCLE-1]; always @(posedge read_clk) begin if(!rstn) vnu0_immediate_v2c_pipe[0] <= 0; else vnu0_immediate_v2c_pipe[0] <= cnu_Din[0]; end
-reg [QUAN_SIZE-1:0] vnu1_immediate_v2c_pipe [0:CNU_FUNC_CYCLE-1]; always @(posedge read_clk) begin if(!rstn) vnu1_immediate_v2c_pipe[0] <= 0; else vnu1_immediate_v2c_pipe[0] <= cnu_Din[1]; end
-reg [QUAN_SIZE-1:0] vnu2_immediate_v2c_pipe [0:CNU_FUNC_CYCLE-1]; always @(posedge read_clk) begin if(!rstn) vnu2_immediate_v2c_pipe[0] <= 0; else vnu2_immediate_v2c_pipe[0] <= cnu_Din[2]; end
-reg [QUAN_SIZE-1:0] vnu3_immediate_v2c_pipe [0:CNU_FUNC_CYCLE-1]; always @(posedge read_clk) begin if(!rstn) vnu3_immediate_v2c_pipe[0] <= 0; else vnu3_immediate_v2c_pipe[0] <= cnu_Din[3]; end
-reg [QUAN_SIZE-1:0] vnu4_immediate_v2c_pipe [0:CNU_FUNC_CYCLE-1]; always @(posedge read_clk) begin if(!rstn) vnu4_immediate_v2c_pipe[0] <= 0; else vnu4_immediate_v2c_pipe[0] <= cnu_Din[4]; end
-reg [QUAN_SIZE-1:0] vnu5_immediate_v2c_pipe [0:CNU_FUNC_CYCLE-1]; always @(posedge read_clk) begin if(!rstn) vnu5_immediate_v2c_pipe[0] <= 0; else vnu5_immediate_v2c_pipe[0] <= cnu_Din[5]; end
-reg [QUAN_SIZE-1:0] vnu6_immediate_v2c_pipe [0:CNU_FUNC_CYCLE-1]; always @(posedge read_clk) begin if(!rstn) vnu6_immediate_v2c_pipe[0] <= 0; else vnu6_immediate_v2c_pipe[0] <= cnu_Din[6]; end
-reg [QUAN_SIZE-1:0] vnu7_immediate_v2c_pipe [0:CNU_FUNC_CYCLE-1]; always @(posedge read_clk) begin if(!rstn) vnu7_immediate_v2c_pipe[0] <= 0; else vnu7_immediate_v2c_pipe[0] <= cnu_Din[7]; end
-reg [QUAN_SIZE-1:0] vnu8_immediate_v2c_pipe [0:CNU_FUNC_CYCLE-1]; always @(posedge read_clk) begin if(!rstn) vnu8_immediate_v2c_pipe[0] <= 0; else vnu8_immediate_v2c_pipe[0] <= cnu_Din[8]; end
-reg [QUAN_SIZE-1:0] vnu9_immediate_v2c_pipe [0:CNU_FUNC_CYCLE-1]; always @(posedge read_clk) begin if(!rstn) vnu9_immediate_v2c_pipe[0] <= 0; else vnu9_immediate_v2c_pipe[0] <= cnu_Din[9]; end
+reg [QUAN_SIZE-1:0] vnu0_immediate_v2c_pipe [0:V2C_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) vnu0_immediate_v2c_pipe[0] <= 0; else vnu0_immediate_v2c_pipe[0] <= cnu_Din[0]; end
+reg [QUAN_SIZE-1:0] vnu1_immediate_v2c_pipe [0:V2C_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) vnu1_immediate_v2c_pipe[0] <= 0; else vnu1_immediate_v2c_pipe[0] <= cnu_Din[1]; end
+reg [QUAN_SIZE-1:0] vnu2_immediate_v2c_pipe [0:V2C_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) vnu2_immediate_v2c_pipe[0] <= 0; else vnu2_immediate_v2c_pipe[0] <= cnu_Din[2]; end
+reg [QUAN_SIZE-1:0] vnu3_immediate_v2c_pipe [0:V2C_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) vnu3_immediate_v2c_pipe[0] <= 0; else vnu3_immediate_v2c_pipe[0] <= cnu_Din[3]; end
+reg [QUAN_SIZE-1:0] vnu4_immediate_v2c_pipe [0:V2C_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) vnu4_immediate_v2c_pipe[0] <= 0; else vnu4_immediate_v2c_pipe[0] <= cnu_Din[4]; end
+reg [QUAN_SIZE-1:0] vnu5_immediate_v2c_pipe [0:V2C_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) vnu5_immediate_v2c_pipe[0] <= 0; else vnu5_immediate_v2c_pipe[0] <= cnu_Din[5]; end
+reg [QUAN_SIZE-1:0] vnu6_immediate_v2c_pipe [0:V2C_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) vnu6_immediate_v2c_pipe[0] <= 0; else vnu6_immediate_v2c_pipe[0] <= cnu_Din[6]; end
+reg [QUAN_SIZE-1:0] vnu7_immediate_v2c_pipe [0:V2C_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) vnu7_immediate_v2c_pipe[0] <= 0; else vnu7_immediate_v2c_pipe[0] <= cnu_Din[7]; end
+reg [QUAN_SIZE-1:0] vnu8_immediate_v2c_pipe [0:V2C_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) vnu8_immediate_v2c_pipe[0] <= 0; else vnu8_immediate_v2c_pipe[0] <= cnu_Din[8]; end
+reg [QUAN_SIZE-1:0] vnu9_immediate_v2c_pipe [0:V2C_TO_DNU_LATENCY-1]; always @(posedge read_clk) begin if(!rstn) vnu9_immediate_v2c_pipe[0] <= 0; else vnu9_immediate_v2c_pipe[0] <= cnu_Din[9]; end
 genvar i;
 generate
-	for(i=1;i<CNU_FUNC_CYCLE;i=i+1) begin : imm_v2c_pipeline_inst
+	for(i=1;i<V2C_TO_DNU_LATENCY;i=i+1) begin : imm_v2c_pipeline_inst
 		always @(posedge read_clk) begin if(!rstn) vnu0_immediate_v2c_pipe[i] <= 0; else vnu0_immediate_v2c_pipe[i] <= vnu0_immediate_v2c_pipe[i-1]; end
 		always @(posedge read_clk) begin if(!rstn) vnu1_immediate_v2c_pipe[i] <= 0; else vnu1_immediate_v2c_pipe[i] <= vnu1_immediate_v2c_pipe[i-1]; end
 		always @(posedge read_clk) begin if(!rstn) vnu2_immediate_v2c_pipe[i] <= 0; else vnu2_immediate_v2c_pipe[i] <= vnu2_immediate_v2c_pipe[i-1]; end

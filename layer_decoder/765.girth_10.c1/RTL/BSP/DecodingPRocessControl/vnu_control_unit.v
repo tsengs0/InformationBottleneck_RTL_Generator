@@ -83,6 +83,7 @@ module vnu_control_unit #(
 	output wire dnu_inRotate_pa_en,
 	//output wire dnu_inRotate_wb,
 	output reg dnu_inRotate_wb,
+	output wire dnu_signExten_ram_fetch,
 `endif
 	output wire layer_finish,
 
@@ -123,12 +124,13 @@ always @(posedge read_clk, negedge rstn) begin
 end
 
 `ifdef SCHED_4_6
-	reg layer_finish_reg0;
-	initial begin layer_cnt <= 0; layer_finish_reg0 <= 0; end
-	always @(posedge read_clk) begin if(!rstn) layer_finish_reg0 <= 0; else layer_finish_reg0 <= layer_finish; end
+	//reg layer_finish_reg0;
+	//initial layer_finish_reg0 <= 0;
+	//always @(posedge read_clk) begin if(!rstn) layer_finish_reg0 <= 0; else layer_finish_reg0 <= layer_finish; end
+	initial layer_cnt <= 0;
 	always @(posedge read_clk) begin
 		if(rstn == 1'b0) layer_cnt <= 1;
-		else if(layer_finish_reg0 == 1'b1) layer_cnt[LAYER_NUM-1:0] <= {layer_cnt[LAYER_NUM-2:0], layer_cnt[LAYER_NUM-1]};
+		else if(/*layer_finish_reg0*/layer_finish == 1'b1) layer_cnt[LAYER_NUM-1:0] <= {layer_cnt[LAYER_NUM-2:0], layer_cnt[LAYER_NUM-1]};
 		else layer_cnt <= layer_cnt;
 	end
 `else
@@ -201,8 +203,10 @@ assign dn_slave_wr_rdy = dn_iter_update;
 localparam bs_shift_overflow = 2**(PERMUTATION_LEVEL-1);
 localparam fetch_shift_overflow = 2**(MEM_RD_LEVEL-1);
 localparam vnu_shift_overflow = 2**(VNU_PIPELINE_LEVEL-1-1);
+localparam dnu_shift_overflow = (DNU_PIPELINE_LEVEL-1)+ROW_CHUNK_NUM;
 reg [VNU_PIPELINE_LEVEL-1:0] vnu_pipeline_level;
-reg [DNU_PIPELINE_LEVEL-1:0] dnu_pipeline_level;
+reg [VNU_PIPELINE_LEVEL-1:0] vnu_pipeline_level_reg [0:ROW_CHUNK_NUM-2];
+reg [dnu_shift_overflow-1:0] dnu_pipeline_level;
 reg [PERMUTATION_LEVEL-1:0] bs_pipeline_level;
 reg [MEM_RD_LEVEL-1:0] fetch_pipeline_level;
 reg v2c_msg_busy; // Assertion whenever the message passing is done
@@ -287,18 +291,28 @@ always @(posedge read_clk, negedge rstn) begin
     else //if(state == VNU_OUT) 
 		vnu_pipeline_level[VNU_PIPELINE_LEVEL-1:0] <= 1;
 end
+`ifdef SCHED_4_6
+	initial vnu_pipeline_level_reg[0] <= 0;
+	always @(posedge read_clk, negedge rstn) begin if(!rstn) vnu_pipeline_level_reg[0] <= 0; else vnu_pipeline_level_reg[0] <= vnu_pipeline_level[VNU_PIPELINE_LEVEL-1:0]; end
+	genvar vnu_pipe_id;
+	generate
+		for(vnu_pipe_id=1; vnu_pipe_id<ROW_CHUNK_NUM-1; vnu_pipe_id=vnu_pipe_id+1) begin : vnu_pipe_propagate_inst
+			always @(posedge read_clk, negedge rstn) begin if(!rstn) vnu_pipeline_level_reg[vnu_pipe_id] <= 0; else vnu_pipeline_level_reg[vnu_pipe_id] <= vnu_pipeline_level_reg[vnu_pipe_id-1]; end
+		end
+	endgenerate
+`endif
 initial dnu_pipeline_level <= 0;
 always @(posedge read_clk, negedge rstn) begin
 	if(rstn == 1'b0)
 		dnu_pipeline_level <= 0;
-	else if(state == BS_WB || state == PAGE_ALIGN) begin // the Decision Node Operation starts from BS_WB till PAGE_ALIGN
-		if(dnu_pipeline_level[DNU_PIPELINE_LEVEL-1:0] == 0)
-			dnu_pipeline_level[DNU_PIPELINE_LEVEL-1:0] <= 1;
-		else
-			dnu_pipeline_level[DNU_PIPELINE_LEVEL-1:0] <= {dnu_pipeline_level[DNU_PIPELINE_LEVEL-2:0], 1'b0};
-	end
-    else //if(state == MEM_WB) 
-		dnu_pipeline_level[DNU_PIPELINE_LEVEL-1:0] <= 0;
+	else if(state == BS_WB && bs_pipeline_level[1] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b1)
+		dnu_pipeline_level <= 1;
+	else if(dnu_pipeline_level > 0 && dnu_pipeline_level[dnu_shift_overflow-1] == 1'b0)
+		dnu_pipeline_level[dnu_shift_overflow-1:0] <= {dnu_pipeline_level[dnu_shift_overflow-2:0], 1'b0};
+	else if(dnu_pipeline_level[dnu_shift_overflow-1] == 1'b1)
+		dnu_pipeline_level <= 0;
+	else
+		dnu_pipeline_level <= dnu_pipeline_level;
 end
 
 generate
@@ -498,10 +512,17 @@ generate
 		always @(posedge read_clk, negedge rstn) begin
 			if(rstn == 1'b0) vnu_pipe_load_start[j] <= 1'b0;
 			else if(
+`ifdef SCHED_4_6
+				(state == IDLE || state == VNU_IB_RAM_PEND) && 
+				vnu_pipeline_level_reg[ROW_CHUNK_NUM-2] > ((2**(VNU_FUNC_CYCLE*(j+1))) >> (VNU_FUNC_MEM_END)) &&
+				last_layer == 1'b1
+`else
 				(state == VNU_PIPE || state == VNU_OUT) && 
 				vnu_pipeline_level > ((2**(VNU_FUNC_CYCLE*(j+1))) >> (VNU_FUNC_MEM_END)) &&
 				last_layer == 1'b1
+`endif
 			) vnu_pipe_load_start[j] <= 1'b1;
+
 			else vnu_pipe_load_start[j] <= vnu_pipe_load_start[j]^vnu_pipe_load_finish[j];
 		end
 		
@@ -553,9 +574,13 @@ always @(posedge read_clk, negedge rstn) begin
 	if(rstn == 1'b0)
 		dnu_pipe_load_start <= 1'b0;
 	else if(
+`ifdef SCHED_4_6
+			dnu_pipeline_level[dnu_shift_overflow-1] == 1'b1
+`else
 			state > VNU_OUT && 
 			dnu_pipeline_level >= ((2**(DNU_FUNC_CYCLE)) >> (DNU_FUNC_MEM_END)) &&
 			last_layer == 1'b1
+`endif
 	)
 		dnu_pipe_load_start <= 1'b1;
 	else 
@@ -579,7 +604,7 @@ endgenerate
 // DNU RD
 assign dnu_rd = (state == BS_WB || state == PAGE_ALIGN) ? 1'b1 : 1'b0; // DNUs are enabled since BS_WB till PAGE_ALIGN
 /*-------------------------------------------------------------------------------------------------------------------*/
-assign v2c_src = (state == MEM_FETCH && fetch_pipeline_level == fetch_shift_overflow) ? 1'b1 : 1'b0;
+assign v2c_src = (state == MEM_FETCH && fetch_pipeline_level == fetch_shift_overflow && layer_cnt[0] == 1'b1 && iter_cnt[0] == 1'b1) ? 1'b1 : 1'b0;
 assign v2c_mem_we = (state == MEM_WB) ? 1'b1 : 1'b0;
 assign v2c_pa_en = (state == PAGE_ALIGN) ? 1'b1 : 1'b0;
 assign v2c_bs_en = (state == BS_WB && bs_pipeline_level[0] == 1'b1) ? 1'b1 : 1'b0; // only enable at first pipeline stage over all BS_WB
@@ -604,10 +629,7 @@ always @(posedge read_clk) begin
 end
 always @(posedge read_clk) begin
 	if(rstn == 1'b0) vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1:0] <= 1;
-	else if(
-			(state == MEM_FETCH && fetch_pipeline_level[0] == 1'b1) ||
-			state >= VNU_PIPE
-	) vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1:0] <= {vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-2:0], vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1]};
+	else if(state >= MEM_FETCH) vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1:0] <= {vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-2:0], vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1]};
 	else vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1:0] <= 1;
 end
 
@@ -622,7 +644,7 @@ assign ch_bs_en = (
 				  	// therefore, there is no need for permutaiton at last layer which is unlike the v2c message passing
 				  ) ? 1'b1 : 1'b0;
 */
-assign ch_bs_en = (state == CH_BUBBLE && ch_bubble_pipeline_level[0] == 1'b1) ? 1'b1 : 1'b0;
+assign ch_bs_en = (state == CH_BUBBLE && ch_bubble_pipeline_level[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b0) ? 1'b1 : 1'b0;
 
 /*
 wire [7:0] ch_pa_en_phase_0; assign ch_pa_en_phase_0[7:0] = vnu_main_sys_cnt[7:0];
@@ -632,10 +654,10 @@ assign ch_pa_en = (state >= VNU_PIPE && |ch_pa_en_phase_0 && (iter_cnt[0] == 1'b
 */
 always @(posedge read_clk) begin
 	if(rstn == 1'b0) ch_ram_wb <= 1'b0;
-	else if(iter_cnt[0] == 1'b1) ch_ram_wb <= ch_pa_en; // assertion of one clock cycle after enable-asserition of CH_PA
+	else if(iter_cnt[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b0) ch_ram_wb <= ch_pa_en; // assertion of one clock cycle after enable-asserition of CH_PA
 	else ch_ram_wb <= 1'b0;
 end
-assign ch_pa_en = (state == MEM_FETCH && fetch_pipeline_level[0] == 1'b1) ? 1'b1 : 1'b0;
+assign ch_pa_en = (state == MEM_FETCH && fetch_pipeline_level[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b0) ? 1'b1 : 1'b0;
 assign layer_finish = (vnu_main_sys_cnt[VNU_MAIN_PIPELINE_LEVEL-1] == 1'b1) ? 1'b1 : 1'b0;
 /*-------------------------------------------------------------------------------------------------------------------*/
 // Enable signal of fetching channel buffers
@@ -647,18 +669,19 @@ assign c2v_mem_fetch = (state == MEM_FETCH && fetch_pipeline_level[0] == 1'b1) ?
 // Rotate_en signal from output of last VNU decomposition level to second segment of DNU read_addr
 `ifdef SCHED_4_6
 // Basing on the fact that the Sign-Inversion Contrl signl is output by VNU_PIPE_OUT
-assign v2c_outRotate_reg_we = (state == BS_WB && bs_pipeline_level[0] == 1'b1 && layer_cnt[1] == 1'b1) ? 1'b1 : 1'b0;
-assign dnu_inRotate_bs_en = (state == CH_BUBBLE && ch_bubble_pipeline_level[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b1) ? 1'b1 : 1'b0;
+assign v2c_outRotate_reg_we = (state == BS_WB && bs_pipeline_level[0] == 1'b1 && layer_cnt[LAYER_NUM-2] == 1'b1) ? 1'b1 : 1'b0;
+assign dnu_inRotate_bs_en = (state == CH_FETCH && layer_cnt[LAYER_NUM-1] == 1'b1) ? 1'b1 : 1'b0;
 							/*
 							(state == VNU_PIPE && 
 							 vnu_pipeline_level[PERMUTATION_LEVEL-1:0] > 0 && 
 							 layer_cnt[LAYER_NUM-1] == 1'b1
 							 ) ? 1'b1 : 1'b0;
 							*/
-assign dnu_inRotate_pa_en = (state == MEM_FETCH && fetch_pipeline_level[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b1) ? 1'b1 : 1'b0;
+assign dnu_inRotate_pa_en = (state == CH_BUBBLE && ch_bubble_pipeline_level[1] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b1) ? 1'b1 : 1'b0;
 							//(layer_cnt[LAYER_NUM-1] == 1'b1 && vnu_pipeline_level[PERMUTATION_LEVEL] == 1'b1) ? 1'b1 : 1'b0;
 //assign dnu_inRotate_wb = (state == VNU_PIPE && vnu_pipeline_level[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b1) ? 1'b1 : 1'b0;
 always @(posedge read_clk) begin if(!rstn) dnu_inRotate_wb <= 0; else dnu_inRotate_wb <= dnu_inRotate_pa_en; end
+assign dnu_signExten_ram_fetch = (state == BS_WB && bs_pipeline_level[1] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b1) ? 1'b1 : 1'b0;
 `endif
 /*-------------------------------------------------------------------------------------------------------------------*/
 // State Signal - hard decision is going to be done one clock cycle later

@@ -2,13 +2,13 @@
 module sym_dn_lut_out (
 	// For read operation
 	// Port A
-	output wire t_c_A,
+	output `ifdef SYM_NO_IO_CONV reg `else wire `endif t_c_A,
 	input wire transpose_en_inA,
 	input wire [3:0] y0_in_A,
 	input wire [3:0] y1_in_A,
 
 	// Port B
-	output wire t_c_B,
+	output `ifdef SYM_NO_IO_CONV reg `else wire `endif t_c_B,
 	input wire transpose_en_inB,
 	input wire [3:0] y0_in_B,
 	input wire [3:0] y1_in_B,
@@ -40,13 +40,13 @@ module sym_dn_lut_out (
 	// Input port of Read Port A to D
 	wire [3:0] y0_mux_A, y1_mux_A;
 	assign y0_mux_A[2:0] = y0_in_A[2:0];
-	xor transpose_y03A(y0_mux_A[3], transpose_en_inA, y0_in_A[3]);
+	xor transpose_y03A(y0_mux_A[3], transpose_en_inA, y0_in_A[3]^transpose_en_inA);
 	xor sign_y1_A(y1_mux_A[3], y0_mux_A[3], y1_in_A[3]);
 	assign y1_mux_A[2:0] = y1_in_A[2:0];
 
 	wire [3:0] y0_mux_B, y1_mux_B;
 	assign y0_mux_B[2:0] = y0_in_B[2:0];
-	xor transpose_y03B(y0_mux_B[3], transpose_en_inB, y0_in_B[3]);
+	xor transpose_y03B(y0_mux_B[3], transpose_en_inB, y0_in_B[3]^transpose_en_inB);
 	xor sign_y1_B(y1_mux_B[3], y0_mux_B[3], y1_in_B[3]);
 	assign y1_mux_B[2:0] = y1_in_B[2:0];	
 `else
@@ -158,8 +158,13 @@ module sym_dn_lut_out (
 	end
 	//always @(posedge read_clk) read_addr_offset_pipe1 <= read_addr_offset_pipe0;
 ////////////////////////////////////////////////////////////////////////////////////////////
-	// Pipeline Stage 2	
+	// Pipeline Stage 2
+`ifdef SYM_NO_IO_CONV
+	always @(posedge read_clk) t_c_A <= OutA_pipe1^msb_pipe1_A;
+	always @(posedge read_clk) t_c_B <= OutB_pipe1^msb_pipe1_B;
+`else
 	xor hard_decision_portA (t_c_A, OutA_pipe1, msb_pipe1_A);
 	xor hard_decision_portB (t_c_B, OutB_pipe1, msb_pipe1_B);
+`endif
 	//assign read_addr_offset_out = read_addr_offset_pipe1;
 endmodule

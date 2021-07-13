@@ -23,22 +23,22 @@
 module sym_vn_lut_out (
 	// For read operation
 	// Port A
-	output wire [3:0] t_c_A,
-	output wire [3:0] t_c_dinA, // the input source to decision node in the next step (without complement conversion)
-	output wire transpose_en_outA,
+	output `ifdef SYM_NO_IO_CONV reg `else wire `endif [3:0] t_c_A,
+	output `ifdef SYM_NO_IO_CONV reg `else wire `endif [3:0] t_c_dinA, // the input source to decision node in the next step (without complement conversion)
+	output `ifdef SYM_NO_IO_CONV reg `else wire `endif transpose_en_outA,
 	input wire transpose_en_inA,
 	input wire [3:0] y0_in_A,
 	input wire [3:0] y1_in_A,
 
 	// Port B
-	output wire [3:0] t_c_B,
-	output wire [3:0] t_c_dinB, // the input source to decision node in the next step (without complement conversion)
-	output wire transpose_en_outB,
+	output `ifdef SYM_NO_IO_CONV reg `else wire `endif [3:0] t_c_B,
+	output `ifdef SYM_NO_IO_CONV reg `else wire `endif [3:0] t_c_dinB, // the input source to decision node in the next step (without complement conversion)
+	output `ifdef SYM_NO_IO_CONV reg `else wire `endif transpose_en_outB,
 	input wire transpose_en_inB,
 	input wire [3:0] y0_in_B,
 	input wire [3:0] y1_in_B,
 
-	output wire read_addr_offset_out,
+	output `ifdef SYM_NO_IO_CONV reg `else wire `endif read_addr_offset_out,
 	input wire read_addr_offset,
 	input wire read_clk,
 //////////////////////////////////////////////////////////
@@ -205,7 +205,15 @@ module sym_vn_lut_out (
 			assign t_c_B[i] = OutB_pipe1[i];//(OutB_pipe1[i]^OutB_pipe1[3])^OutB_pipe1[3];
 		end
 	endgenerate
+
+	assign t_c_dinA[3:0] = OutA_pipe1[3:0];
+	assign t_c_dinB[3:0] = OutB_pipe1[3:0];
+
+	assign transpose_en_outA = msb_pipe1_A; // for the decision node in the next stage
+	assign transpose_en_outB = msb_pipe1_B; // for the decision node in the next stage
+	assign read_addr_offset_out = read_addr_offset_pipe1;
 `elsif SYM_NO_IO_CONV
+	/*
 	assign t_c_A[3] = msb_pipe1_A^OutA_pipe1[3];
 	assign t_c_B[3] = msb_pipe1_B^OutB_pipe1[3];	
 
@@ -216,14 +224,40 @@ module sym_vn_lut_out (
 			assign t_c_B[i] = OutB_pipe1[i];
 		end
 	endgenerate
-`else
-	assign t_c_A[3:0] = (msb_pipe1_A == 1'b1) ? ~OutA_pipe1[3:0] : OutA_pipe1[3:0];
-	assign t_c_B[3:0] = (msb_pipe1_B == 1'b1) ? ~OutB_pipe1[3:0] : OutB_pipe1[3:0];
-`endif
+
 	assign t_c_dinA[3:0] = OutA_pipe1[3:0];
 	assign t_c_dinB[3:0] = OutB_pipe1[3:0];
 
 	assign transpose_en_outA = msb_pipe1_A; // for the decision node in the next stage
 	assign transpose_en_outB = msb_pipe1_B; // for the decision node in the next stage
 	assign read_addr_offset_out = read_addr_offset_pipe1;
+	*/
+	always @(posedge read_clk) t_c_A[3] <= msb_pipe1_A^OutA_pipe1[3];
+	always @(posedge read_clk) t_c_B[3] <= msb_pipe1_B^OutB_pipe1[3];	
+
+	genvar i;
+	generate
+		for(i=2;i>=0;i=i-1) begin : v2c_lookahead_rotate_inst
+			always @(posedge read_clk) t_c_A[i] <= OutA_pipe1[i];
+			always @(posedge read_clk) t_c_B[i] <= OutB_pipe1[i];
+		end
+	endgenerate
+
+	always @(posedge read_clk) t_c_dinA[3:0] <= OutA_pipe1[3:0];
+	always @(posedge read_clk) t_c_dinB[3:0] <= OutB_pipe1[3:0];
+
+	always @(posedge read_clk) transpose_en_outA <= msb_pipe1_A; // for the decision node in the next stage
+	always @(posedge read_clk) transpose_en_outB <= msb_pipe1_B; // for the decision node in the next stage
+	always @(posedge read_clk) read_addr_offset_out <= read_addr_offset_pipe1;
+`else
+	assign t_c_A[3:0] = (msb_pipe1_A == 1'b1) ? ~OutA_pipe1[3:0] : OutA_pipe1[3:0];
+	assign t_c_B[3:0] = (msb_pipe1_B == 1'b1) ? ~OutB_pipe1[3:0] : OutB_pipe1[3:0];
+
+	assign t_c_dinA[3:0] = OutA_pipe1[3:0];
+	assign t_c_dinB[3:0] = OutB_pipe1[3:0];
+
+	assign transpose_en_outA = msb_pipe1_A; // for the decision node in the next stage
+	assign transpose_en_outB = msb_pipe1_B; // for the decision node in the next stage
+	assign read_addr_offset_out = read_addr_offset_pipe1;
+`endif
 endmodule

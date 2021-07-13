@@ -24,18 +24,18 @@
 module sym_vn_lut_in (
 	// For read operation
 	// Port A
-	output wire [3:0] t_c_A,
-	output wire transpose_en_outA,
+	output `ifdef SYM_NO_IO_CONV reg `else wire `endif [3:0] t_c_A,
+	output `ifdef SYM_NO_IO_CONV reg `else wire `endif transpose_en_outA,
 	input wire [3:0] y0_in_A,
 	input wire [3:0] y1_in_A,
 
 	// Port B
-	output wire [3:0] t_c_B,
-	output wire transpose_en_outB,
+	output `ifdef SYM_NO_IO_CONV reg `else wire `endif [3:0] t_c_B,
+	output `ifdef SYM_NO_IO_CONV reg `else wire `endif transpose_en_outB,
 	input wire [3:0] y0_in_B,
 	input wire [3:0] y1_in_B,
 
-	output wire read_addr_offset_out,
+	output `ifdef SYM_NO_IO_CONV reg `else wire `endif read_addr_offset_out,
 	input wire read_addr_offset,
 	input wire read_clk,
 //////////////////////////////////////////////////////////
@@ -186,7 +186,16 @@ module sym_vn_lut_in (
 	end
 	always @(posedge read_clk) read_addr_offset_pipe1 <= read_addr_offset_pipe0;
 ////////////////////////////////////////////////////////////////////////////////////////////
-	// Pipeline Stage 2	
+	// Pipeline Stage 2
+`ifdef SYM_NO_IO_CONV
+	always @(posedge read_clk) read_addr_offset_out <= read_addr_offset_pipe1;
+	// Output of 2-input IB-LUT
+	always @(posedge read_clk) t_c_A[3:0] <= OutA_pipe1[3:0];
+	always @(posedge read_clk) t_c_B[3:0] <= OutB_pipe1[3:0];
+	// Enable signal of matrix transpose 
+	always @(posedge read_clk) transpose_en_outA <= msb_pipe1_A;
+	always @(posedge read_clk) transpose_en_outB <= msb_pipe1_B;
+`else
 	assign read_addr_offset_out = read_addr_offset_pipe1;
 	// Output of 2-input IB-LUT
 	assign t_c_A[3:0] = OutA_pipe1[3:0];
@@ -194,4 +203,5 @@ module sym_vn_lut_in (
 	// Enable signal of matrix transpose 
 	assign transpose_en_outA = msb_pipe1_A;
 	assign transpose_en_outB = msb_pipe1_B;
+`endif
 endmodule
