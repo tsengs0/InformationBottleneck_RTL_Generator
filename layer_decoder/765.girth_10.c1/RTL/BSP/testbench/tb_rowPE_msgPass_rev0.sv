@@ -1,6 +1,8 @@
 `timescale 1ns/1ps
 
 `include "define.vh"
+//`define HARD_DECISION_VIEW
+
 module tb_rowPE_msgPass_rev0 #(
 	parameter QUAN_SIZE = 4,
 	parameter LAYER_NUM = 3,
@@ -140,8 +142,37 @@ module tb_rowPE_msgPass_rev0 #(
 	parameter SIGN_EXTEN_FF_TO_BS = 10, // 10 clock cycles between latch of VNU.F1.SignExtenOut and input of DNU.SignExtenIn.BS
 	/*obsolete*/ parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
 	parameter V2C_TO_DNU_LATENCY = 9,
-	parameter C2V_TO_DNU_LATENCY = 5,
+	parameter C2V_TO_DNU_LATENCY = 7,
+	parameter SIGN_EXTEN_LAYER_CNT_EXTEN = 10,
 /*-------------------------------------------------------------------------------------*/
+	parameter shift_factor_1_0 = CHECK_PARALLELISM-24,
+	parameter shift_factor_1_1 = CHECK_PARALLELISM-39,
+	parameter shift_factor_1_2 = CHECK_PARALLELISM-22,	
+	parameter shift_factor_2_0 = CHECK_PARALLELISM-9 ,
+	parameter shift_factor_2_1 = CHECK_PARALLELISM-21,
+	parameter shift_factor_2_2 = CHECK_PARALLELISM-55,
+	parameter shift_factor_3_0 = CHECK_PARALLELISM-38,
+	parameter shift_factor_3_1 = CHECK_PARALLELISM-28,
+	parameter shift_factor_3_2 = CHECK_PARALLELISM-19,	
+	parameter shift_factor_4_0 = CHECK_PARALLELISM-71,
+	parameter shift_factor_4_1 = CHECK_PARALLELISM-22,
+	parameter shift_factor_4_2 = CHECK_PARALLELISM-77,
+	parameter shift_factor_5_0 = CHECK_PARALLELISM-22,
+	parameter shift_factor_5_1 = CHECK_PARALLELISM-83,
+	parameter shift_factor_5_2 = CHECK_PARALLELISM-65,
+	parameter shift_factor_6_0 = CHECK_PARALLELISM-39,
+	parameter shift_factor_6_1 = CHECK_PARALLELISM-8 ,
+	parameter shift_factor_6_2 = CHECK_PARALLELISM-38,
+	parameter shift_factor_7_0 = CHECK_PARALLELISM-20,
+	parameter shift_factor_7_1 = CHECK_PARALLELISM-25,
+	parameter shift_factor_7_2 = CHECK_PARALLELISM-40,
+	parameter shift_factor_8_0 = CHECK_PARALLELISM-51,
+	parameter shift_factor_8_1 = CHECK_PARALLELISM-28,
+	parameter shift_factor_8_2 = CHECK_PARALLELISM-6, 
+	parameter shift_factor_9_0 = CHECK_PARALLELISM-50,
+	parameter shift_factor_9_1 = CHECK_PARALLELISM-20,
+	parameter shift_factor_9_2 = CHECK_PARALLELISM-15,	
+
 	parameter START_PAGE_0_0 = 0,
 	parameter START_PAGE_0_1 = 0,
 	parameter START_PAGE_0_2 = 0,
@@ -365,31 +396,44 @@ reg decode_termination_reg;
 	reg [ROW_CHUNK_NUM-2:0]ch_ram_wb_propagate; always @(posedge read_clk) begin if(!decoder_rstn) ch_ram_wb_propagate <= 0; else ch_ram_wb_propagate[ROW_CHUNK_NUM-2:0] <= {ch_ram_wb_propagate[ROW_CHUNK_NUM-3:0], ch_ram_wb_propagateIn}; end
 	reg [ROW_CHUNK_NUM-2:0] c2v_mem_fetch_propagate;
 	reg [ROW_CHUNK_NUM-2:0] ch_ram_fetch_propagate;
-	reg [1:0] v2c_layer_cnt_pa_propagate;
+	reg [LAYER_NUM-1:0] v2c_layer_cnt_pa_propagate [0:1];
+	reg [LAYER_NUM-1:0] signExten_layer_cnt_pa_propagate [0:SIGN_EXTEN_LAYER_CNT_EXTEN-1];
 	always @(posedge read_clk) begin if(!decoder_rstn) ch_ram_init_we_propagate <= 0; else ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-2:0] <= {ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-3:0], ch_ram_init_we_propagateIn}; end
 	always @(posedge read_clk) begin if(!decoder_rstn) ch_last_row_chunk_propagate <= 0; else ch_last_row_chunk_propagate[ROW_CHUNK_NUM-1:0] <= {ch_last_row_chunk_propagate[ROW_CHUNK_NUM-2:0], ch_pa_en}; end	
 	always @(posedge read_clk) begin if(!decoder_rstn) ch_ram_fetch_propagate <= 0; else ch_ram_fetch_propagate[ROW_CHUNK_NUM-2:0] <= {ch_ram_fetch_propagate[ROW_CHUNK_NUM-3:0], ch_ram_fetch_propagateIn}; end
 	always @(posedge read_clk) begin if(!decoder_rstn) c2v_mem_fetch_propagate <= 0; else c2v_mem_fetch_propagate[ROW_CHUNK_NUM-2:0] <= {c2v_mem_fetch_propagate[ROW_CHUNK_NUM-3:0], c2v_mem_fetch_propagateIn}; end
-	always @(posedge read_clk) begin if(!decoder_rstn) v2c_layer_cnt_pa_propagate <= 0; else v2c_layer_cnt_pa_propagate[1:0] <= {v2c_layer_cnt_pa_propagate[0], v2c_layer_cnt}; end
+	always @(posedge read_clk) begin if(!decoder_rstn) v2c_layer_cnt_pa_propagate[0] <= 0; else v2c_layer_cnt_pa_propagate[0] <= v2c_layer_cnt[LAYER_NUM-1:0]; end
+	always @(posedge read_clk) begin if(!decoder_rstn) v2c_layer_cnt_pa_propagate[1] <= 0; else v2c_layer_cnt_pa_propagate[1] <= v2c_layer_cnt_pa_propagate[0]; end
+	always @(posedge read_clk) begin if(!decoder_rstn) signExten_layer_cnt_pa_propagate[0] <= 0; else /*if(v2c_layer_cnt_pa_propagate[1][LAYER_NUM-2])*/ signExten_layer_cnt_pa_propagate[0] <= v2c_layer_cnt_pa_propagate[1]; end
+	genvar signExten_id;
+	generate
+		for(signExten_id=1; signExten_id<SIGN_EXTEN_LAYER_CNT_EXTEN; signExten_id=signExten_id+1) begin : propagation_signExten_layer_cnt_pa
+			always @(posedge read_clk) begin if(!decoder_rstn) signExten_layer_cnt_pa_propagate[signExten_id] <= 0; else signExten_layer_cnt_pa_propagate[signExten_id] <= signExten_layer_cnt_pa_propagate[signExten_id-1]; end
+		end
+	endgenerate
 	wire ch_ram_init_we; assign ch_ram_init_we = (ch_ram_init_we_propagate[CH_INIT_LOAD_LEVEL-2:0] > 0 || ch_ram_init_we_propagateIn > 0) ? 1'b1 : 1'b0;
 	wire ch_last_row_chunk; assign ch_last_row_chunk = ch_last_row_chunk_propagate[ROW_CHUNK_NUM-1];
 	wire ch_bs_en; assign ch_bs_en = (ch_bs_en_propagate > 0 || ch_bs_en_propagateIn > 0) ? 1'b1 : 1'b0;
 	wire ch_ram_wb; assign ch_ram_wb = (ch_ram_wb_propagate > 0 || ch_ram_wb_propagateIn > 0) ? 1'b1 : 1'b0;
 	wire ch_ram_fetch; assign ch_ram_fetch = (ch_ram_fetch_propagate > 0 || ch_ram_fetch_propagateIn > 0) ? 1'b1 : 1'b0;
 	wire c2v_mem_fetch; assign c2v_mem_fetch = (c2v_mem_fetch_propagate > 0 || c2v_mem_fetch_propagateIn > 0) ? 1'b1 : 1'b0;
-	wire v2c_layer_cnt_pa; assign v2c_layer_cnt_pa = v2c_layer_cnt_pa_propagate[1];
+	wire [LAYER_NUM-1:0] v2c_layer_cnt_pa; assign v2c_layer_cnt_pa = v2c_layer_cnt_pa_propagate[1];
+	wire [LAYER_NUM-1:0] signExten_layer_cnt_pa; assign signExten_layer_cnt_pa = signExten_layer_cnt_pa_propagate[SIGN_EXTEN_LAYER_CNT_EXTEN-1];
 
-	reg [ROW_CHUNK_NUM-2:0] v2c_outRotate_reg_we_propagate; 
+	reg [ROW_CHUNK_NUM-2:0] v2c_outRotate_reg_we_propagate;
+	reg [ROW_CHUNK_NUM:0] v2c_outRotate_reg_we_flush_propagate; 
 	reg [ROW_CHUNK_NUM-1:0] dnu_inRotate_last_row_chunk_propagate; // the first one has already instantiated by FSM itself
 	reg [ROW_CHUNK_NUM-2:0] dnu_inRotate_bs_en_propagate;
 	reg [ROW_CHUNK_NUM-2:0] dnu_inRotate_wb_propagate;
 	reg [ROW_CHUNK_NUM-2:0] dnu_signExten_ram_fetch_propagate;
 	always @(posedge read_clk) begin if(!decoder_rstn) v2c_outRotate_reg_we_propagate <= 0; else v2c_outRotate_reg_we_propagate[ROW_CHUNK_NUM-2:0] <= {v2c_outRotate_reg_we_propagate[ROW_CHUNK_NUM-3:0], v2c_outRotate_reg_we_propagateIn}; end
+	always @(posedge read_clk) begin if(!decoder_rstn) v2c_outRotate_reg_we_flush_propagate <= 0; else v2c_outRotate_reg_we_flush_propagate[ROW_CHUNK_NUM:0] <= {v2c_outRotate_reg_we_flush_propagate[ROW_CHUNK_NUM-1:0], v2c_outRotate_reg_we_propagate[ROW_CHUNK_NUM-2]}; end
 	always @(posedge read_clk) begin if(!decoder_rstn) dnu_inRotate_last_row_chunk_propagate <= 0; else dnu_inRotate_last_row_chunk_propagate[ROW_CHUNK_NUM-1:0] <= {dnu_inRotate_last_row_chunk_propagate[ROW_CHUNK_NUM-2:0], dnu_inRotate_pa_en}; end	
 	always @(posedge read_clk) begin if(!decoder_rstn) dnu_inRotate_bs_en_propagate <= 0; else dnu_inRotate_bs_en_propagate[ROW_CHUNK_NUM-2:0] <= {dnu_inRotate_bs_en_propagate[ROW_CHUNK_NUM-3:0], dnu_inRotate_bs_en_propagateIn}; end
 	always @(posedge read_clk) begin if(!decoder_rstn) dnu_inRotate_wb_propagate <= 0; else dnu_inRotate_wb_propagate[ROW_CHUNK_NUM-2:0] <= {dnu_inRotate_wb_propagate[ROW_CHUNK_NUM-3:0], dnu_inRotate_wb_propagateIn}; end
 	always @(posedge read_clk) begin if(!decoder_rstn) dnu_signExten_ram_fetch_propagate <= 0; else dnu_signExten_ram_fetch_propagate[ROW_CHUNK_NUM-2:0] <= {dnu_signExten_ram_fetch_propagate[ROW_CHUNK_NUM-3:0], dnu_signExten_ram_fetch_propagateIn}; end
 	wire v2c_outRotate_reg_we; assign v2c_outRotate_reg_we = (v2c_outRotate_reg_we_propagate > 0 || v2c_outRotate_reg_we_propagateIn > 0) ? 1'b1 : 1'b0; 
+	wire v2c_outRotate_reg_we_flush; assign v2c_outRotate_reg_we_flush = (v2c_outRotate_reg_we_flush_propagate > 0) ? 1'b1 : 1'b0;
 	wire dnu_inRotate_last_row_chunk; assign dnu_inRotate_last_row_chunk = dnu_inRotate_last_row_chunk_propagate[ROW_CHUNK_NUM-1];	
 	wire dnu_inRotate_bs_en; assign dnu_inRotate_bs_en = (dnu_inRotate_bs_en_propagate > 0 || dnu_inRotate_bs_en_propagateIn > 0) ? 1'b1 : 1'b0;
 	wire dnu_inRotate_wb; assign dnu_inRotate_wb = (dnu_inRotate_wb_propagate > 0 || dnu_inRotate_wb_propagateIn > 0) ? 1'b1 : 1'b0;
@@ -944,9 +988,9 @@ dn_Waddr_counter #(
 			else if(
 				//inst_vnu_control_unit.iter_cnt[MAX_ITER-1] == 1'b1 && 
 				//vnu_ctrl_state[$clog2(CTRL_FSM_STATE_NUM)-1:0] == MEM_WB
-				inst_vnu_control_unit.iter_cnt[1] == 1'b1 && // only simulating 2 iteration
+				inst_vnu_control_unit.iter_cnt[9] == 1'b1 && // only simulating 2 iteration
 				inst_vnu_control_unit.state == VNU_CH_FETCH
-				&& inst_vnu_control_unit.layer_cnt[1] == 1'b1
+				&& inst_vnu_control_unit.layer_cnt[LAYER_NUM-1] == 1'b1
 			)
 				iter_termination <= 1'b1;
 	end
@@ -1020,6 +1064,68 @@ dn_Waddr_counter #(
 	localparam [15:0] std_dev_5_8 = 16'b00000_01101110111;
 	localparam [15:0] std_dev_5_9 = 16'b00000_01101101101;
 	localparam [15:0] std_dev_6_0 = 16'b00000_01101100011;
+`else // code rate = 1.0
+	localparam [15:0] std_dev_0_0 = 16'b00000_10110101000;
+    localparam [15:0] std_dev_0_1 = 16'b00000_10110010111;
+    localparam [15:0] std_dev_0_2 = 16'b00000_10110000111;
+    localparam [15:0] std_dev_0_3 = 16'b00000_10101110110;
+    localparam [15:0] std_dev_0_4 = 16'b00000_10101100110;
+    localparam [15:0] std_dev_0_5 = 16'b00000_10101010111;
+    localparam [15:0] std_dev_0_6 = 16'b00000_10101000111;
+    localparam [15:0] std_dev_0_7 = 16'b00000_10100111000;
+    localparam [15:0] std_dev_0_8 = 16'b00000_10100101000;
+    localparam [15:0] std_dev_0_9 = 16'b00000_10100011001;
+    localparam [15:0] std_dev_1_0 = 16'b00000_10100001010;
+    localparam [15:0] std_dev_1_1 = 16'b00000_10011111011;
+    localparam [15:0] std_dev_1_2 = 16'b00000_10011101101;
+    localparam [15:0] std_dev_1_3 = 16'b00000_10011011110;
+    localparam [15:0] std_dev_1_4 = 16'b00000_10011010000;
+    localparam [15:0] std_dev_1_5 = 16'b00000_10011000010;
+    localparam [15:0] std_dev_1_6 = 16'b00000_10010110100;
+    localparam [15:0] std_dev_1_7 = 16'b00000_10010100110;
+    localparam [15:0] std_dev_1_8 = 16'b00000_10010011001;
+    localparam [15:0] std_dev_1_9 = 16'b00000_10010001011;
+    localparam [15:0] std_dev_2_0 = 16'b00000_10001111110;
+    localparam [15:0] std_dev_2_1 = 16'b00000_10001110001;
+    localparam [15:0] std_dev_2_2 = 16'b00000_10001100100;
+    localparam [15:0] std_dev_2_3 = 16'b00000_10001010111;
+    localparam [15:0] std_dev_2_4 = 16'b00000_10001001010;
+    localparam [15:0] std_dev_2_5 = 16'b00000_10000111101;
+    localparam [15:0] std_dev_2_6 = 16'b00000_10000110001;
+    localparam [15:0] std_dev_2_7 = 16'b00000_10000100101;
+    localparam [15:0] std_dev_2_8 = 16'b00000_10000011001;
+    localparam [15:0] std_dev_2_9 = 16'b00000_10000001101;
+    localparam [15:0] std_dev_3_0 = 16'b00000_10000000001;
+    localparam [15:0] std_dev_3_1 = 16'b00000_01111110101;
+    localparam [15:0] std_dev_3_2 = 16'b00000_01111101001;
+    localparam [15:0] std_dev_3_3 = 16'b00000_01111011110;
+    localparam [15:0] std_dev_3_4 = 16'b00000_01111010011;
+    localparam [15:0] std_dev_3_5 = 16'b00000_01111000111;
+    localparam [15:0] std_dev_3_6 = 16'b00000_01110111100;
+    localparam [15:0] std_dev_3_7 = 16'b00000_01110110001;
+    localparam [15:0] std_dev_3_8 = 16'b00000_01110100111;
+    localparam [15:0] std_dev_3_9 = 16'b00000_01110011100;
+    localparam [15:0] std_dev_4_0 = 16'b00000_01110010001;
+    localparam [15:0] std_dev_4_1 = 16'b00000_01110000111;
+    localparam [15:0] std_dev_4_2 = 16'b00000_01101111100;
+    localparam [15:0] std_dev_4_3 = 16'b00000_01101110010;
+    localparam [15:0] std_dev_4_4 = 16'b00000_01101101000;
+    localparam [15:0] std_dev_4_5 = 16'b00000_01101011110;
+    localparam [15:0] std_dev_4_6 = 16'b00000_01101010100;
+    localparam [15:0] std_dev_4_7 = 16'b00000_01101001010;
+    localparam [15:0] std_dev_4_8 = 16'b00000_01101000001;
+    localparam [15:0] std_dev_4_9 = 16'b00000_01100110111;
+    localparam [15:0] std_dev_5_0 = 16'b00000_01100101110;
+    localparam [15:0] std_dev_5_1 = 16'b00000_01100100101;
+    localparam [15:0] std_dev_5_2 = 16'b00000_01100011011;
+    localparam [15:0] std_dev_5_3 = 16'b00000_01100010010;
+    localparam [15:0] std_dev_5_4 = 16'b00000_01100001001;
+    localparam [15:0] std_dev_5_5 = 16'b00000_01100000000;
+    localparam [15:0] std_dev_5_6 = 16'b00000_01011111000;
+    localparam [15:0] std_dev_5_7 = 16'b00000_01011101111;
+    localparam [15:0] std_dev_5_8 = 16'b00000_01011100110;
+    localparam [15:0] std_dev_5_9 = 16'b00000_01011011110;
+    localparam [15:0] std_dev_6_0 = 16'b00000_01011010101;
 `endif
 	wire [15:0] sigma_in [0:`SNR_SET_NUM-1];
 	assign sigma_in[0 ] = std_dev_0_0[15:0];
@@ -1108,7 +1214,7 @@ dn_Waddr_counter #(
 		.coded_block_9 (coded_block[9]), // each segment consists of Z*q bits, e.g., 765*4-bit
 		.tvalid_master (tvalid_master),
 		
-		.sigma_in (sigma_in[/*snr_packet[SNR_PACKET_SIZE-1:0]*/55]),
+		.sigma_in (sigma_in[/*snr_packet[SNR_PACKET_SIZE-1:0]*/34]), // offset: 2.4-dB is actually 3.8 dB
 		//input wire [63:0] seed_base_0,
 		//input wire [63:0] seed_base_1,
 		//input wire [63:0] seed_base_2,
@@ -1266,6 +1372,33 @@ wire         [CN_DEGREE*QUAN_SIZE-1:0] ch_to_vnu [0:CHECK_PARALLELISM-1];
 			.CH_RAM_ADDR_WIDTH(CH_RAM_ADDR_WIDTH),
 			.PA_TO_DNU_DELAY(PA_TO_DNU_DELAY),
 			.SIGN_EXTEN_FF_TO_BS(SIGN_EXTEN_FF_TO_BS),
+			.shift_factor_1_0(shift_factor_1_0),
+			.shift_factor_1_1(shift_factor_1_1),
+			.shift_factor_1_2(shift_factor_1_2),
+			.shift_factor_2_0(shift_factor_2_0),
+			.shift_factor_2_1(shift_factor_2_1),
+			.shift_factor_2_2(shift_factor_2_2),
+			.shift_factor_3_0(shift_factor_3_0),
+			.shift_factor_3_1(shift_factor_3_1),
+			.shift_factor_3_2(shift_factor_3_2),
+			.shift_factor_4_0(shift_factor_4_0),
+			.shift_factor_4_1(shift_factor_4_1),
+			.shift_factor_4_2(shift_factor_4_2),
+			.shift_factor_5_0(shift_factor_5_0),
+			.shift_factor_5_1(shift_factor_5_1),
+			.shift_factor_5_2(shift_factor_5_2),
+			.shift_factor_6_0(shift_factor_6_0),
+			.shift_factor_6_1(shift_factor_6_1),
+			.shift_factor_6_2(shift_factor_6_2),
+			.shift_factor_7_0(shift_factor_7_0),
+			.shift_factor_7_1(shift_factor_7_1),
+			.shift_factor_7_2(shift_factor_7_2),
+			.shift_factor_8_0(shift_factor_8_0),
+			.shift_factor_8_1(shift_factor_8_1),
+			.shift_factor_8_2(shift_factor_8_2),
+			.shift_factor_9_0(shift_factor_9_0),
+			.shift_factor_9_1(shift_factor_9_1),
+			.shift_factor_9_2(shift_factor_9_2),
 			.START_PAGE_0_0(START_PAGE_0_0),
 			.START_PAGE_0_1(START_PAGE_0_1),
 			.START_PAGE_0_2(START_PAGE_0_2),
@@ -1384,6 +1517,7 @@ wire         [CN_DEGREE*QUAN_SIZE-1:0] ch_to_vnu [0:CHECK_PARALLELISM-1];
 			.coded_block_sub7      (coded_block_sub[7]),
 			.coded_block_sub8      (coded_block_sub[8]),
 			.coded_block_sub9      (coded_block_sub[9]),
+
 			.dnu_inRotate_bit_sub0 (signExten_to_bs[0]),
 			.dnu_inRotate_bit_sub1 (signExten_to_bs[1]),
 			.dnu_inRotate_bit_sub2 (signExten_to_bs[2]),
@@ -1406,6 +1540,7 @@ wire         [CN_DEGREE*QUAN_SIZE-1:0] ch_to_vnu [0:CHECK_PARALLELISM-1];
 			.ch_ram_fetch            (ch_ram_fetch),
 			.layer_finish            (layer_finish),
 			.v2c_outRotate_reg_we    (v2c_outRotate_reg_we),
+			.v2c_outRotate_reg_we_flush (v2c_outRotate_reg_we_flush),
 			.dnu_inRotate_bs_en      (dnu_inRotate_bs_en),
 			.dnu_inRotate_wb         (dnu_inRotate_wb),
 			.dnu_signExten_ram_fetch (dnu_signExten_ram_fetch),
@@ -1420,7 +1555,8 @@ wire         [CN_DEGREE*QUAN_SIZE-1:0] ch_to_vnu [0:CHECK_PARALLELISM-1];
 
 			.c2v_mem_we            (c2v_mem_we),
 			.v2c_mem_we            (v2c_mem_we),
-			.v2c_layer_cnt         (v2c_layer_cnt_pa), //(v2c_layer_cnt),
+			.v2c_layer_cnt         (v2c_layer_cnt_pa[LAYER_NUM-1:0]), //(v2c_layer_cnt),
+			.signExten_layer_cnt   (signExten_layer_cnt_pa),
 			.c2v_last_row_chunk    (c2v_last_row_chunk),
 			.v2c_last_row_chunk    (shared_vnu_last_row_chunk), // (v2c_last_row_chunk),
 			.c2v_row_chunk_cnt     (c2v_row_chunk_cnt),
@@ -1444,6 +1580,11 @@ wire         [CN_DEGREE*QUAN_SIZE-1:0] ch_to_vnu [0:CHECK_PARALLELISM-1];
 // Log Files of V2C message to BS.in
 integer v2c_to_bs [CN_DEGREE-1:0];
 integer c2v_to_bs [CN_DEGREE-1:0];
+integer vnu_signExtenOut_to_bs [CN_DEGREE-1:0];
+integer mem_to_vnu_signExten [CN_DEGREE-1:0];
+integer chMsg_gen [CN_DEGREE-1:0];
+integer chMsg_to_bs [CN_DEGREE-1:0];
+integer mem_to_chMsg [CN_DEGREE-1:0];
 initial begin
 	v2c_to_bs[0] = $fopen("submatrix_0_v2c_to_bs.mem", "w");
 	v2c_to_bs[1] = $fopen("submatrix_1_v2c_to_bs.mem", "w");
@@ -1466,7 +1607,63 @@ initial begin
 	c2v_to_bs[7] = $fopen("submatrix_7_c2v_to_bs.mem", "w");
 	c2v_to_bs[8] = $fopen("submatrix_8_c2v_to_bs.mem", "w");
 	c2v_to_bs[9] = $fopen("submatrix_9_c2v_to_bs.mem", "w");
+
+	vnu_signExtenOut_to_bs[0] = $fopen("submatrix_0_signExtenOut_to_bs.mem", "w");
+	vnu_signExtenOut_to_bs[1] = $fopen("submatrix_1_signExtenOut_to_bs.mem", "w");
+	vnu_signExtenOut_to_bs[2] = $fopen("submatrix_2_signExtenOut_to_bs.mem", "w");
+	vnu_signExtenOut_to_bs[3] = $fopen("submatrix_3_signExtenOut_to_bs.mem", "w");
+	vnu_signExtenOut_to_bs[4] = $fopen("submatrix_4_signExtenOut_to_bs.mem", "w");
+	vnu_signExtenOut_to_bs[5] = $fopen("submatrix_5_signExtenOut_to_bs.mem", "w");
+	vnu_signExtenOut_to_bs[6] = $fopen("submatrix_6_signExtenOut_to_bs.mem", "w");
+	vnu_signExtenOut_to_bs[7] = $fopen("submatrix_7_signExtenOut_to_bs.mem", "w");
+	vnu_signExtenOut_to_bs[8] = $fopen("submatrix_8_signExtenOut_to_bs.mem", "w");
+	vnu_signExtenOut_to_bs[9] = $fopen("submatrix_9_signExtenOut_to_bs.mem", "w");
+
+	mem_to_vnu_signExten[0] = $fopen("mem_to_signExten_sub0.mem", "w");
+	mem_to_vnu_signExten[1] = $fopen("mem_to_signExten_sub1.mem", "w");
+	mem_to_vnu_signExten[2] = $fopen("mem_to_signExten_sub2.mem", "w");
+	mem_to_vnu_signExten[3] = $fopen("mem_to_signExten_sub3.mem", "w");
+	mem_to_vnu_signExten[4] = $fopen("mem_to_signExten_sub4.mem", "w");
+	mem_to_vnu_signExten[5] = $fopen("mem_to_signExten_sub5.mem", "w");
+	mem_to_vnu_signExten[6] = $fopen("mem_to_signExten_sub6.mem", "w");
+	mem_to_vnu_signExten[7] = $fopen("mem_to_signExten_sub7.mem", "w");
+	mem_to_vnu_signExten[8] = $fopen("mem_to_signExten_sub8.mem", "w");
+	mem_to_vnu_signExten[9] = $fopen("mem_to_signExten_sub9.mem", "w");
+
+	chMsg_gen[0] = $fopen("ChMsg_initGen/chMsg_gen.mem_sub0", "w");
+	chMsg_gen[1] = $fopen("ChMsg_initGen/chMsg_gen.mem_sub1", "w");
+	chMsg_gen[2] = $fopen("ChMsg_initGen/chMsg_gen.mem_sub2", "w");
+	chMsg_gen[3] = $fopen("ChMsg_initGen/chMsg_gen.mem_sub3", "w");
+	chMsg_gen[4] = $fopen("ChMsg_initGen/chMsg_gen.mem_sub4", "w");
+	chMsg_gen[5] = $fopen("ChMsg_initGen/chMsg_gen.mem_sub5", "w");
+	chMsg_gen[6] = $fopen("ChMsg_initGen/chMsg_gen.mem_sub6", "w");
+	chMsg_gen[7] = $fopen("ChMsg_initGen/chMsg_gen.mem_sub7", "w");
+	chMsg_gen[8] = $fopen("ChMsg_initGen/chMsg_gen.mem_sub8", "w");
+	chMsg_gen[9] = $fopen("ChMsg_initGen/chMsg_gen.mem_sub9", "w");
+
+	//chMsg_to_bs[0] = $fopen("ChMsg_to_bs/chMsg_to_bs.mem_sub0", "w");
+	chMsg_to_bs[1] = $fopen("ChMsg_to_bs/chMsg_to_bs.mem_sub1", "w");
+	chMsg_to_bs[2] = $fopen("ChMsg_to_bs/chMsg_to_bs.mem_sub2", "w");
+	chMsg_to_bs[3] = $fopen("ChMsg_to_bs/chMsg_to_bs.mem_sub3", "w");
+	chMsg_to_bs[4] = $fopen("ChMsg_to_bs/chMsg_to_bs.mem_sub4", "w");
+	chMsg_to_bs[5] = $fopen("ChMsg_to_bs/chMsg_to_bs.mem_sub5", "w");
+	chMsg_to_bs[6] = $fopen("ChMsg_to_bs/chMsg_to_bs.mem_sub6", "w");
+	chMsg_to_bs[7] = $fopen("ChMsg_to_bs/chMsg_to_bs.mem_sub7", "w");
+	chMsg_to_bs[8] = $fopen("ChMsg_to_bs/chMsg_to_bs.mem_sub8", "w");
+	chMsg_to_bs[9] = $fopen("ChMsg_to_bs/chMsg_to_bs.mem_sub9", "w");
+
+	mem_to_chMsg[0] = $fopen("ChMsg_mem_fetch/mem_to_chMsg_sub0", "w");
+	mem_to_chMsg[1] = $fopen("ChMsg_mem_fetch/mem_to_chMsg_sub1", "w");
+	mem_to_chMsg[2] = $fopen("ChMsg_mem_fetch/mem_to_chMsg_sub2", "w");
+	mem_to_chMsg[3] = $fopen("ChMsg_mem_fetch/mem_to_chMsg_sub3", "w");
+	mem_to_chMsg[4] = $fopen("ChMsg_mem_fetch/mem_to_chMsg_sub4", "w");
+	mem_to_chMsg[5] = $fopen("ChMsg_mem_fetch/mem_to_chMsg_sub5", "w");
+	mem_to_chMsg[6] = $fopen("ChMsg_mem_fetch/mem_to_chMsg_sub6", "w");
+	mem_to_chMsg[7] = $fopen("ChMsg_mem_fetch/mem_to_chMsg_sub7", "w");
+	mem_to_chMsg[8] = $fopen("ChMsg_mem_fetch/mem_to_chMsg_sub8", "w");
+	mem_to_chMsg[9] = $fopen("ChMsg_mem_fetch/mem_to_chMsg_sub9", "w");
 end
+
 always @(posedge read_clk) begin
 	if(decoder_rstn == 1'b1) begin
 		if(v2c_bs_en == 1'b1) begin
@@ -1500,8 +1697,140 @@ always @(posedge read_clk) begin
 		end
 	end
 end
+
+always @(posedge read_clk) begin
+	if(decoder_rstn == 1'b1) begin
+		if(inst_vnu_control_unit.vnu_main_sys_cnt >= (2**8) && inst_vnu_control_unit.vnu_main_sys_cnt <= (2**16) && inst_vnu_control_unit.layer_cnt[LAYER_NUM-2]) begin
+			$fwrite(vnu_signExtenOut_to_bs[0], "%b\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_0_unit.dnu_inRotate_bit));
+			$fwrite(vnu_signExtenOut_to_bs[1], "%b\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_1_unit.dnu_inRotate_bit));
+			$fwrite(vnu_signExtenOut_to_bs[2], "%b\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_2_unit.dnu_inRotate_bit));
+			$fwrite(vnu_signExtenOut_to_bs[3], "%b\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_3_unit.dnu_inRotate_bit));
+			$fwrite(vnu_signExtenOut_to_bs[4], "%b\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_4_unit.dnu_inRotate_bit));
+			$fwrite(vnu_signExtenOut_to_bs[5], "%b\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_5_unit.dnu_inRotate_bit));
+			$fwrite(vnu_signExtenOut_to_bs[6], "%b\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_6_unit.dnu_inRotate_bit));
+			$fwrite(vnu_signExtenOut_to_bs[7], "%b\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_7_unit.dnu_inRotate_bit));
+			$fwrite(vnu_signExtenOut_to_bs[8], "%b\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_8_unit.dnu_inRotate_bit));
+			$fwrite(vnu_signExtenOut_to_bs[9], "%b\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_9_unit.dnu_inRotate_bit));
+		end
+	end
+end
+
+reg dnu_signExten_ram_fetch_reg0;
+always @(posedge read_clk) begin if(!decoder_rstn) dnu_signExten_ram_fetch_reg0 <= 0; else dnu_signExten_ram_fetch_reg0 <= dnu_signExten_ram_fetch; end
+always @(posedge read_clk) begin
+	if(decoder_rstn == 1'b1) begin
+		if(dnu_signExten_ram_fetch_reg0 == 1'b1) begin
+			$fwrite(mem_to_vnu_signExten[0], "%b\n", $unsigned(dnu_signExten_sub[0]));
+			$fwrite(mem_to_vnu_signExten[1], "%b\n", $unsigned(dnu_signExten_sub[1]));
+			$fwrite(mem_to_vnu_signExten[2], "%b\n", $unsigned(dnu_signExten_sub[2]));
+			$fwrite(mem_to_vnu_signExten[3], "%b\n", $unsigned(dnu_signExten_sub[3]));
+			$fwrite(mem_to_vnu_signExten[4], "%b\n", $unsigned(dnu_signExten_sub[4]));
+			$fwrite(mem_to_vnu_signExten[5], "%b\n", $unsigned(dnu_signExten_sub[5]));
+			$fwrite(mem_to_vnu_signExten[6], "%b\n", $unsigned(dnu_signExten_sub[6]));
+			$fwrite(mem_to_vnu_signExten[7], "%b\n", $unsigned(dnu_signExten_sub[7]));
+			$fwrite(mem_to_vnu_signExten[8], "%b\n", $unsigned(dnu_signExten_sub[8]));
+			$fwrite(mem_to_vnu_signExten[9], "%b\n", $unsigned(dnu_signExten_sub[9]));
+		end
+	end
+end
+
+always @(posedge write_clk) begin
+	if(decoder_rstn == 1'b1) begin
+		if(ch_ram_init_we == 1'b1) begin
+			// The chennale message starting from index_0 up to index_(Pc-2)
+			for(int bitPos=0; bitPos<CHECK_PARALLELISM-1; bitPos++) begin
+				$fwrite(chMsg_gen[0], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_0_unit.ch_ram_din[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_gen[1], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_1_unit.ch_ram_din[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_gen[2], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_2_unit.ch_ram_din[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_gen[3], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_3_unit.ch_ram_din[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_gen[4], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_4_unit.ch_ram_din[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_gen[5], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_5_unit.ch_ram_din[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_gen[6], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_6_unit.ch_ram_din[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_gen[7], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_7_unit.ch_ram_din[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_gen[8], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_8_unit.ch_ram_din[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_gen[9], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_9_unit.ch_ram_din[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+			end
+			// The channel message of last index, i.e., index_(Pc-1)
+			$fwrite(chMsg_gen[0], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_0_unit.ch_ram_din[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_gen[1], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_1_unit.ch_ram_din[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_gen[2], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_2_unit.ch_ram_din[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_gen[3], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_3_unit.ch_ram_din[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_gen[4], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_4_unit.ch_ram_din[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_gen[5], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_5_unit.ch_ram_din[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_gen[6], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_6_unit.ch_ram_din[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_gen[7], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_7_unit.ch_ram_din[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_gen[8], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_8_unit.ch_ram_din[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_gen[9], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_9_unit.ch_ram_din[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+		end
+	end
+end
+
+always @(posedge read_clk) begin
+	if(decoder_rstn == 1'b1) begin
+		if(ch_bs_en == 1'b1) begin
+			// The chennale message starting from index_0 up to index_(Pc-2)
+			for(int bitPos=0; bitPos<CHECK_PARALLELISM-1; bitPos++) begin
+				//$fwrite(chMsg_to_bs[0], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_0_unit.ch_bs_in[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_to_bs[1], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_1_unit.ch_bs_in[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_to_bs[2], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_2_unit.ch_bs_in[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_to_bs[3], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_3_unit.ch_bs_in[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_to_bs[4], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_4_unit.ch_bs_in[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_to_bs[5], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_5_unit.ch_bs_in[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_to_bs[6], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_6_unit.ch_bs_in[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_to_bs[7], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_7_unit.ch_bs_in[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_to_bs[8], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_8_unit.ch_bs_in[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(chMsg_to_bs[9], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_9_unit.ch_bs_in[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+			end
+			// The channel message of last index, i.e., index_(Pc-1)
+			//$fwrite(chMsg_to_bs[0], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_0_unit.ch_bs_in[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_to_bs[1], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_1_unit.ch_bs_in[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_to_bs[2], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_2_unit.ch_bs_in[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_to_bs[3], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_3_unit.ch_bs_in[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_to_bs[4], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_4_unit.ch_bs_in[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_to_bs[5], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_5_unit.ch_bs_in[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_to_bs[6], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_6_unit.ch_bs_in[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_to_bs[7], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_7_unit.ch_bs_in[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_to_bs[8], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_8_unit.ch_bs_in[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(chMsg_to_bs[9], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_9_unit.ch_bs_in[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+		end
+	end
+end
+
+reg ch_ram_fetch_reg0;
+always @(posedge read_clk) begin if(!decoder_rstn) ch_ram_fetch_reg0 <= 0; else ch_ram_fetch_reg0 <= ch_ram_fetch; end
+always @(posedge read_clk) begin
+	if(decoder_rstn == 1'b1) begin
+		if((inst_vnu_control_unit.state >= 5 && inst_vnu_control_unit.state <= 8) && inst_vnu_control_unit.iter_cnt[2] == 1'b0) begin
+			// The chennale message starting from index_0 up to index_(Pc-2)
+			for(int bitPos=0; bitPos<CHECK_PARALLELISM-1; bitPos++) begin
+				$fwrite(mem_to_chMsg[0], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_0_unit.ch_to_vnu[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(mem_to_chMsg[1], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_1_unit.ch_to_vnu[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(mem_to_chMsg[2], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_2_unit.ch_to_vnu[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(mem_to_chMsg[3], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_3_unit.ch_to_vnu[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(mem_to_chMsg[4], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_4_unit.ch_to_vnu[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(mem_to_chMsg[5], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_5_unit.ch_to_vnu[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(mem_to_chMsg[6], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_6_unit.ch_to_vnu[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(mem_to_chMsg[7], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_7_unit.ch_to_vnu[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(mem_to_chMsg[8], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_8_unit.ch_to_vnu[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+				$fwrite(mem_to_chMsg[9], "%h,", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_9_unit.ch_to_vnu[bitPos*QUAN_SIZE +: QUAN_SIZE]));
+			end
+			// The channel message of last index, i.e., index_(Pc-1)
+			$fwrite(mem_to_chMsg[0], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_0_unit.ch_to_vnu[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(mem_to_chMsg[1], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_1_unit.ch_to_vnu[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(mem_to_chMsg[2], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_2_unit.ch_to_vnu[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(mem_to_chMsg[3], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_3_unit.ch_to_vnu[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(mem_to_chMsg[4], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_4_unit.ch_to_vnu[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(mem_to_chMsg[5], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_5_unit.ch_to_vnu[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(mem_to_chMsg[6], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_6_unit.ch_to_vnu[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(mem_to_chMsg[7], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_7_unit.ch_to_vnu[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(mem_to_chMsg[8], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_8_unit.ch_to_vnu[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+			$fwrite(mem_to_chMsg[9], "%h\n", $unsigned(inst_entire_message_passing_wrapper.inst_msg_pass_submatrix_9_unit.ch_to_vnu[CHECK_PARALLELISM*QUAN_SIZE-1:(CHECK_PARALLELISM-1)*QUAN_SIZE]));
+		end
+	end
+end
 /*-----------------------------------------------------------------------------------------------------------------*/
 // Log Files of VNU.F1.signExtenOut outgoing to BS
+
 integer signExtenOut_fd [CN_DEGREE-1:0];
 initial begin
 	signExtenOut_fd[0] = $fopen("signExtenOut_sub0", "w");
@@ -1543,6 +1872,7 @@ always @(posedge read_clk) begin
 		end
 	end
 end
+
 //		.v2c_outRotate_reg_we (v2c_outRotate_reg_we_propagateIn),
 //		.dnu_inRotate_bs_en   (dnu_inRotate_bs_en_propagateIn),
 //		.dnu_inRotate_pa_en   (dnu_inRotate_pa_en),
@@ -1738,6 +2068,71 @@ generate
 	end
 endgenerate
 /*-----------------------------------------------------------------------------------------------------------------*/
+wire [$clog2(SUBMATRIX_Z*CN_DEGREE)-1:0] err_count;
+wire isErrFrame;
+wire count_done;
+wire busy;
+wire [CHECK_PARALLELISM-1:0] hard_decision_sub [0:CN_DEGREE-1];
+reg errBit_cnt_en;
+errBit_cnt_top #(
+    .VN_NUM             (SUBMATRIX_Z*CN_DEGREE),//7650,
+    .N                  (CHECK_PARALLELISM*CN_DEGREE),//850,
+    .ROW_CHUNK_NUM      (ROW_CHUNK_NUM), //9, // VN_NUM / N
+    .ERR_BIT_BITWIDTH_Z ($clog2(CHECK_PARALLELISM*CN_DEGREE)),
+    .ERR_BIT_BITWIDTH   ($clog2(SUBMATRIX_Z*CN_DEGREE)),
+	.PIPELINE_DEPTH     (5),
+	.SYN_LATENCY (2) // to prolong the assertion of "count_done" singal for two clock cycles, in order to make top module of decoder can catch the assertion state
+					 // Because the clock rate of errBit_cnt_top is double of the decoder top module's clcok rate
+) errBit_cnt_top_u0(
+    .err_count (err_count[$clog2(SUBMATRIX_Z*CN_DEGREE)-1:0]),
+    .isErrFrame (isErrFrame),
+	.count_done (count_done),
+	.busy (busy),
+	
+    .hard_frame ({hard_decision_sub[9], hard_decision_sub[8], hard_decision_sub[7], hard_decision_sub[6], hard_decision_sub[5], hard_decision_sub[4], hard_decision_sub[3], hard_decision_sub[2], hard_decision_sub[1], hard_decision_sub[0]}),
+    .eval_clk (read_clk),
+    .en (errBit_cnt_en),
+    .rstn (errBit_cnt_en)
+);
+assign hard_decision_sub[0] = {hard_decision[84][0],hard_decision[83][0],hard_decision[82][0],hard_decision[81][0],hard_decision[80][0],hard_decision[79][0],hard_decision[78][0],hard_decision[77][0],hard_decision[76][0],hard_decision[75][0],hard_decision[74][0],hard_decision[73][0],hard_decision[72][0],hard_decision[71][0],hard_decision[70][0],hard_decision[69][0],hard_decision[68][0],hard_decision[67][0],hard_decision[66][0],hard_decision[65][0],hard_decision[64][0],hard_decision[63][0],hard_decision[62][0],hard_decision[61][0],hard_decision[60][0],hard_decision[59][0],hard_decision[58][0],hard_decision[57][0],hard_decision[56][0],hard_decision[55][0],hard_decision[54][0],hard_decision[53][0],hard_decision[52][0],hard_decision[51][0],hard_decision[50][0],hard_decision[49][0],hard_decision[48][0],hard_decision[47][0],hard_decision[46][0],hard_decision[45][0],hard_decision[44][0],hard_decision[43][0],hard_decision[42][0],hard_decision[41][0],hard_decision[40][0],hard_decision[39][0],hard_decision[38][0],hard_decision[37][0],hard_decision[36][0],hard_decision[35][0],hard_decision[34][0],hard_decision[33][0],hard_decision[32][0],hard_decision[31][0],hard_decision[30][0],hard_decision[29][0],hard_decision[28][0],hard_decision[27][0],hard_decision[26][0],hard_decision[25][0],hard_decision[24][0],hard_decision[23][0],hard_decision[22][0],hard_decision[21][0],hard_decision[20][0],hard_decision[19][0],hard_decision[18][0],hard_decision[17][0],hard_decision[16][0],hard_decision[15][0],hard_decision[14][0],hard_decision[13][0],hard_decision[12][0],hard_decision[11][0],hard_decision[10][0],hard_decision[9][0],hard_decision[8][0],hard_decision[7][0],hard_decision[6][0],hard_decision[5][0],hard_decision[4][0],hard_decision[3][0],hard_decision[2][0],hard_decision[1][0],hard_decision[1][0]};
+assign hard_decision_sub[1] = {hard_decision[84][1],hard_decision[83][1],hard_decision[82][1],hard_decision[81][1],hard_decision[80][1],hard_decision[79][1],hard_decision[78][1],hard_decision[77][1],hard_decision[76][1],hard_decision[75][1],hard_decision[74][1],hard_decision[73][1],hard_decision[72][1],hard_decision[71][1],hard_decision[70][1],hard_decision[69][1],hard_decision[68][1],hard_decision[67][1],hard_decision[66][1],hard_decision[65][1],hard_decision[64][1],hard_decision[63][1],hard_decision[62][1],hard_decision[61][1],hard_decision[60][1],hard_decision[59][1],hard_decision[58][1],hard_decision[57][1],hard_decision[56][1],hard_decision[55][1],hard_decision[54][1],hard_decision[53][1],hard_decision[52][1],hard_decision[51][1],hard_decision[50][1],hard_decision[49][1],hard_decision[48][1],hard_decision[47][1],hard_decision[46][1],hard_decision[45][1],hard_decision[44][1],hard_decision[43][1],hard_decision[42][1],hard_decision[41][1],hard_decision[40][1],hard_decision[39][1],hard_decision[38][1],hard_decision[37][1],hard_decision[36][1],hard_decision[35][1],hard_decision[34][1],hard_decision[33][1],hard_decision[32][1],hard_decision[31][1],hard_decision[30][1],hard_decision[29][1],hard_decision[28][1],hard_decision[27][1],hard_decision[26][1],hard_decision[25][1],hard_decision[24][1],hard_decision[23][1],hard_decision[22][1],hard_decision[21][1],hard_decision[20][1],hard_decision[19][1],hard_decision[18][1],hard_decision[17][1],hard_decision[16][1],hard_decision[15][1],hard_decision[14][1],hard_decision[13][1],hard_decision[12][1],hard_decision[11][1],hard_decision[10][1],hard_decision[9][1],hard_decision[8][1],hard_decision[7][1],hard_decision[6][1],hard_decision[5][1],hard_decision[4][1],hard_decision[3][1],hard_decision[2][1],hard_decision[1][1],hard_decision[1][0]};
+assign hard_decision_sub[2] = {hard_decision[84][2],hard_decision[83][2],hard_decision[82][2],hard_decision[81][2],hard_decision[80][2],hard_decision[79][2],hard_decision[78][2],hard_decision[77][2],hard_decision[76][2],hard_decision[75][2],hard_decision[74][2],hard_decision[73][2],hard_decision[72][2],hard_decision[71][2],hard_decision[70][2],hard_decision[69][2],hard_decision[68][2],hard_decision[67][2],hard_decision[66][2],hard_decision[65][2],hard_decision[64][2],hard_decision[63][2],hard_decision[62][2],hard_decision[61][2],hard_decision[60][2],hard_decision[59][2],hard_decision[58][2],hard_decision[57][2],hard_decision[56][2],hard_decision[55][2],hard_decision[54][2],hard_decision[53][2],hard_decision[52][2],hard_decision[51][2],hard_decision[50][2],hard_decision[49][2],hard_decision[48][2],hard_decision[47][2],hard_decision[46][2],hard_decision[45][2],hard_decision[44][2],hard_decision[43][2],hard_decision[42][2],hard_decision[41][2],hard_decision[40][2],hard_decision[39][2],hard_decision[38][2],hard_decision[37][2],hard_decision[36][2],hard_decision[35][2],hard_decision[34][2],hard_decision[33][2],hard_decision[32][2],hard_decision[31][2],hard_decision[30][2],hard_decision[29][2],hard_decision[28][2],hard_decision[27][2],hard_decision[26][2],hard_decision[25][2],hard_decision[24][2],hard_decision[23][2],hard_decision[22][2],hard_decision[21][2],hard_decision[20][2],hard_decision[19][2],hard_decision[18][2],hard_decision[17][2],hard_decision[16][2],hard_decision[15][2],hard_decision[14][2],hard_decision[13][2],hard_decision[12][2],hard_decision[11][2],hard_decision[10][2],hard_decision[9][2],hard_decision[8][2],hard_decision[7][2],hard_decision[6][2],hard_decision[5][2],hard_decision[4][2],hard_decision[3][2],hard_decision[2][2],hard_decision[1][2],hard_decision[1][0]};
+assign hard_decision_sub[3] = {hard_decision[84][3],hard_decision[83][3],hard_decision[82][3],hard_decision[81][3],hard_decision[80][3],hard_decision[79][3],hard_decision[78][3],hard_decision[77][3],hard_decision[76][3],hard_decision[75][3],hard_decision[74][3],hard_decision[73][3],hard_decision[72][3],hard_decision[71][3],hard_decision[70][3],hard_decision[69][3],hard_decision[68][3],hard_decision[67][3],hard_decision[66][3],hard_decision[65][3],hard_decision[64][3],hard_decision[63][3],hard_decision[62][3],hard_decision[61][3],hard_decision[60][3],hard_decision[59][3],hard_decision[58][3],hard_decision[57][3],hard_decision[56][3],hard_decision[55][3],hard_decision[54][3],hard_decision[53][3],hard_decision[52][3],hard_decision[51][3],hard_decision[50][3],hard_decision[49][3],hard_decision[48][3],hard_decision[47][3],hard_decision[46][3],hard_decision[45][3],hard_decision[44][3],hard_decision[43][3],hard_decision[42][3],hard_decision[41][3],hard_decision[40][3],hard_decision[39][3],hard_decision[38][3],hard_decision[37][3],hard_decision[36][3],hard_decision[35][3],hard_decision[34][3],hard_decision[33][3],hard_decision[32][3],hard_decision[31][3],hard_decision[30][3],hard_decision[29][3],hard_decision[28][3],hard_decision[27][3],hard_decision[26][3],hard_decision[25][3],hard_decision[24][3],hard_decision[23][3],hard_decision[22][3],hard_decision[21][3],hard_decision[20][3],hard_decision[19][3],hard_decision[18][3],hard_decision[17][3],hard_decision[16][3],hard_decision[15][3],hard_decision[14][3],hard_decision[13][3],hard_decision[12][3],hard_decision[11][3],hard_decision[10][3],hard_decision[9][3],hard_decision[8][3],hard_decision[7][3],hard_decision[6][3],hard_decision[5][3],hard_decision[4][3],hard_decision[3][3],hard_decision[2][3],hard_decision[1][3],hard_decision[1][0]};
+assign hard_decision_sub[4] = {hard_decision[84][4],hard_decision[83][4],hard_decision[82][4],hard_decision[81][4],hard_decision[80][4],hard_decision[79][4],hard_decision[78][4],hard_decision[77][4],hard_decision[76][4],hard_decision[75][4],hard_decision[74][4],hard_decision[73][4],hard_decision[72][4],hard_decision[71][4],hard_decision[70][4],hard_decision[69][4],hard_decision[68][4],hard_decision[67][4],hard_decision[66][4],hard_decision[65][4],hard_decision[64][4],hard_decision[63][4],hard_decision[62][4],hard_decision[61][4],hard_decision[60][4],hard_decision[59][4],hard_decision[58][4],hard_decision[57][4],hard_decision[56][4],hard_decision[55][4],hard_decision[54][4],hard_decision[53][4],hard_decision[52][4],hard_decision[51][4],hard_decision[50][4],hard_decision[49][4],hard_decision[48][4],hard_decision[47][4],hard_decision[46][4],hard_decision[45][4],hard_decision[44][4],hard_decision[43][4],hard_decision[42][4],hard_decision[41][4],hard_decision[40][4],hard_decision[39][4],hard_decision[38][4],hard_decision[37][4],hard_decision[36][4],hard_decision[35][4],hard_decision[34][4],hard_decision[33][4],hard_decision[32][4],hard_decision[31][4],hard_decision[30][4],hard_decision[29][4],hard_decision[28][4],hard_decision[27][4],hard_decision[26][4],hard_decision[25][4],hard_decision[24][4],hard_decision[23][4],hard_decision[22][4],hard_decision[21][4],hard_decision[20][4],hard_decision[19][4],hard_decision[18][4],hard_decision[17][4],hard_decision[16][4],hard_decision[15][4],hard_decision[14][4],hard_decision[13][4],hard_decision[12][4],hard_decision[11][4],hard_decision[10][4],hard_decision[9][4],hard_decision[8][4],hard_decision[7][4],hard_decision[6][4],hard_decision[5][4],hard_decision[4][4],hard_decision[3][4],hard_decision[2][4],hard_decision[1][4],hard_decision[1][0]};
+assign hard_decision_sub[5] = {hard_decision[84][5],hard_decision[83][5],hard_decision[82][5],hard_decision[81][5],hard_decision[80][5],hard_decision[79][5],hard_decision[78][5],hard_decision[77][5],hard_decision[76][5],hard_decision[75][5],hard_decision[74][5],hard_decision[73][5],hard_decision[72][5],hard_decision[71][5],hard_decision[70][5],hard_decision[69][5],hard_decision[68][5],hard_decision[67][5],hard_decision[66][5],hard_decision[65][5],hard_decision[64][5],hard_decision[63][5],hard_decision[62][5],hard_decision[61][5],hard_decision[60][5],hard_decision[59][5],hard_decision[58][5],hard_decision[57][5],hard_decision[56][5],hard_decision[55][5],hard_decision[54][5],hard_decision[53][5],hard_decision[52][5],hard_decision[51][5],hard_decision[50][5],hard_decision[49][5],hard_decision[48][5],hard_decision[47][5],hard_decision[46][5],hard_decision[45][5],hard_decision[44][5],hard_decision[43][5],hard_decision[42][5],hard_decision[41][5],hard_decision[40][5],hard_decision[39][5],hard_decision[38][5],hard_decision[37][5],hard_decision[36][5],hard_decision[35][5],hard_decision[34][5],hard_decision[33][5],hard_decision[32][5],hard_decision[31][5],hard_decision[30][5],hard_decision[29][5],hard_decision[28][5],hard_decision[27][5],hard_decision[26][5],hard_decision[25][5],hard_decision[24][5],hard_decision[23][5],hard_decision[22][5],hard_decision[21][5],hard_decision[20][5],hard_decision[19][5],hard_decision[18][5],hard_decision[17][5],hard_decision[16][5],hard_decision[15][5],hard_decision[14][5],hard_decision[13][5],hard_decision[12][5],hard_decision[11][5],hard_decision[10][5],hard_decision[9][5],hard_decision[8][5],hard_decision[7][5],hard_decision[6][5],hard_decision[5][5],hard_decision[4][5],hard_decision[3][5],hard_decision[2][5],hard_decision[1][5],hard_decision[1][0]};
+assign hard_decision_sub[6] = {hard_decision[84][6],hard_decision[83][6],hard_decision[82][6],hard_decision[81][6],hard_decision[80][6],hard_decision[79][6],hard_decision[78][6],hard_decision[77][6],hard_decision[76][6],hard_decision[75][6],hard_decision[74][6],hard_decision[73][6],hard_decision[72][6],hard_decision[71][6],hard_decision[70][6],hard_decision[69][6],hard_decision[68][6],hard_decision[67][6],hard_decision[66][6],hard_decision[65][6],hard_decision[64][6],hard_decision[63][6],hard_decision[62][6],hard_decision[61][6],hard_decision[60][6],hard_decision[59][6],hard_decision[58][6],hard_decision[57][6],hard_decision[56][6],hard_decision[55][6],hard_decision[54][6],hard_decision[53][6],hard_decision[52][6],hard_decision[51][6],hard_decision[50][6],hard_decision[49][6],hard_decision[48][6],hard_decision[47][6],hard_decision[46][6],hard_decision[45][6],hard_decision[44][6],hard_decision[43][6],hard_decision[42][6],hard_decision[41][6],hard_decision[40][6],hard_decision[39][6],hard_decision[38][6],hard_decision[37][6],hard_decision[36][6],hard_decision[35][6],hard_decision[34][6],hard_decision[33][6],hard_decision[32][6],hard_decision[31][6],hard_decision[30][6],hard_decision[29][6],hard_decision[28][6],hard_decision[27][6],hard_decision[26][6],hard_decision[25][6],hard_decision[24][6],hard_decision[23][6],hard_decision[22][6],hard_decision[21][6],hard_decision[20][6],hard_decision[19][6],hard_decision[18][6],hard_decision[17][6],hard_decision[16][6],hard_decision[15][6],hard_decision[14][6],hard_decision[13][6],hard_decision[12][6],hard_decision[11][6],hard_decision[10][6],hard_decision[9][6],hard_decision[8][6],hard_decision[7][6],hard_decision[6][6],hard_decision[5][6],hard_decision[4][6],hard_decision[3][6],hard_decision[2][6],hard_decision[1][6],hard_decision[1][0]};
+assign hard_decision_sub[7] = {hard_decision[84][7],hard_decision[83][7],hard_decision[82][7],hard_decision[81][7],hard_decision[80][7],hard_decision[79][7],hard_decision[78][7],hard_decision[77][7],hard_decision[76][7],hard_decision[75][7],hard_decision[74][7],hard_decision[73][7],hard_decision[72][7],hard_decision[71][7],hard_decision[70][7],hard_decision[69][7],hard_decision[68][7],hard_decision[67][7],hard_decision[66][7],hard_decision[65][7],hard_decision[64][7],hard_decision[63][7],hard_decision[62][7],hard_decision[61][7],hard_decision[60][7],hard_decision[59][7],hard_decision[58][7],hard_decision[57][7],hard_decision[56][7],hard_decision[55][7],hard_decision[54][7],hard_decision[53][7],hard_decision[52][7],hard_decision[51][7],hard_decision[50][7],hard_decision[49][7],hard_decision[48][7],hard_decision[47][7],hard_decision[46][7],hard_decision[45][7],hard_decision[44][7],hard_decision[43][7],hard_decision[42][7],hard_decision[41][7],hard_decision[40][7],hard_decision[39][7],hard_decision[38][7],hard_decision[37][7],hard_decision[36][7],hard_decision[35][7],hard_decision[34][7],hard_decision[33][7],hard_decision[32][7],hard_decision[31][7],hard_decision[30][7],hard_decision[29][7],hard_decision[28][7],hard_decision[27][7],hard_decision[26][7],hard_decision[25][7],hard_decision[24][7],hard_decision[23][7],hard_decision[22][7],hard_decision[21][7],hard_decision[20][7],hard_decision[19][7],hard_decision[18][7],hard_decision[17][7],hard_decision[16][7],hard_decision[15][7],hard_decision[14][7],hard_decision[13][7],hard_decision[12][7],hard_decision[11][7],hard_decision[10][7],hard_decision[9][7],hard_decision[8][7],hard_decision[7][7],hard_decision[6][7],hard_decision[5][7],hard_decision[4][7],hard_decision[3][7],hard_decision[2][7],hard_decision[1][7],hard_decision[1][0]};
+assign hard_decision_sub[8] = {hard_decision[84][8],hard_decision[83][8],hard_decision[82][8],hard_decision[81][8],hard_decision[80][8],hard_decision[79][8],hard_decision[78][8],hard_decision[77][8],hard_decision[76][8],hard_decision[75][8],hard_decision[74][8],hard_decision[73][8],hard_decision[72][8],hard_decision[71][8],hard_decision[70][8],hard_decision[69][8],hard_decision[68][8],hard_decision[67][8],hard_decision[66][8],hard_decision[65][8],hard_decision[64][8],hard_decision[63][8],hard_decision[62][8],hard_decision[61][8],hard_decision[60][8],hard_decision[59][8],hard_decision[58][8],hard_decision[57][8],hard_decision[56][8],hard_decision[55][8],hard_decision[54][8],hard_decision[53][8],hard_decision[52][8],hard_decision[51][8],hard_decision[50][8],hard_decision[49][8],hard_decision[48][8],hard_decision[47][8],hard_decision[46][8],hard_decision[45][8],hard_decision[44][8],hard_decision[43][8],hard_decision[42][8],hard_decision[41][8],hard_decision[40][8],hard_decision[39][8],hard_decision[38][8],hard_decision[37][8],hard_decision[36][8],hard_decision[35][8],hard_decision[34][8],hard_decision[33][8],hard_decision[32][8],hard_decision[31][8],hard_decision[30][8],hard_decision[29][8],hard_decision[28][8],hard_decision[27][8],hard_decision[26][8],hard_decision[25][8],hard_decision[24][8],hard_decision[23][8],hard_decision[22][8],hard_decision[21][8],hard_decision[20][8],hard_decision[19][8],hard_decision[18][8],hard_decision[17][8],hard_decision[16][8],hard_decision[15][8],hard_decision[14][8],hard_decision[13][8],hard_decision[12][8],hard_decision[11][8],hard_decision[10][8],hard_decision[9][8],hard_decision[8][8],hard_decision[7][8],hard_decision[6][8],hard_decision[5][8],hard_decision[4][8],hard_decision[3][8],hard_decision[2][8],hard_decision[1][8],hard_decision[1][0]};
+assign hard_decision_sub[9] = {hard_decision[84][9],hard_decision[83][9],hard_decision[82][9],hard_decision[81][9],hard_decision[80][9],hard_decision[79][9],hard_decision[78][9],hard_decision[77][9],hard_decision[76][9],hard_decision[75][9],hard_decision[74][9],hard_decision[73][9],hard_decision[72][9],hard_decision[71][9],hard_decision[70][9],hard_decision[69][9],hard_decision[68][9],hard_decision[67][9],hard_decision[66][9],hard_decision[65][9],hard_decision[64][9],hard_decision[63][9],hard_decision[62][9],hard_decision[61][9],hard_decision[60][9],hard_decision[59][9],hard_decision[58][9],hard_decision[57][9],hard_decision[56][9],hard_decision[55][9],hard_decision[54][9],hard_decision[53][9],hard_decision[52][9],hard_decision[51][9],hard_decision[50][9],hard_decision[49][9],hard_decision[48][9],hard_decision[47][9],hard_decision[46][9],hard_decision[45][9],hard_decision[44][9],hard_decision[43][9],hard_decision[42][9],hard_decision[41][9],hard_decision[40][9],hard_decision[39][9],hard_decision[38][9],hard_decision[37][9],hard_decision[36][9],hard_decision[35][9],hard_decision[34][9],hard_decision[33][9],hard_decision[32][9],hard_decision[31][9],hard_decision[30][9],hard_decision[29][9],hard_decision[28][9],hard_decision[27][9],hard_decision[26][9],hard_decision[25][9],hard_decision[24][9],hard_decision[23][9],hard_decision[22][9],hard_decision[21][9],hard_decision[20][9],hard_decision[19][9],hard_decision[18][9],hard_decision[17][9],hard_decision[16][9],hard_decision[15][9],hard_decision[14][9],hard_decision[13][9],hard_decision[12][9],hard_decision[11][9],hard_decision[10][9],hard_decision[9][9],hard_decision[8][9],hard_decision[7][9],hard_decision[6][9],hard_decision[5][9],hard_decision[4][9],hard_decision[3][9],hard_decision[2][9],hard_decision[1][9],hard_decision[1][0]};
+reg [ROW_CHUNK_NUM+4-1:0] errBit_cnt_en_propagate;
+initial errBit_cnt_en_propagate <= 0;
+always @(posedge read_clk) begin
+	if(decoder_rstn == 1'b0)
+		errBit_cnt_en_propagate <= 0;
+	else if(inst_vnu_control_unit.layer_cnt[LAYER_NUM-1] == 1'b1 && inst_vnu_control_unit.vnu_main_sys_cnt[12] == 1'b1)
+		errBit_cnt_en_propagate <= 1;
+	else if(errBit_cnt_en_propagate > 0 && errBit_cnt_en_propagate[ROW_CHUNK_NUM+4-1] == 1'b0)
+		errBit_cnt_en_propagate[ROW_CHUNK_NUM+4-1:0] <= {errBit_cnt_en_propagate[ROW_CHUNK_NUM+4-2:0], 1'b0};
+	else if(errBit_cnt_en_propagate[ROW_CHUNK_NUM+4-1] == 1'b1)
+		errBit_cnt_en_propagate <= 0;
+	else 
+		errBit_cnt_en_propagate <= errBit_cnt_en_propagate;
+end
+always @(posedge read_clk) begin
+	if(decoder_rstn == 1'b0) 
+		errBit_cnt_en <= 1'b0;
+	else if(iter_termination == 1'b1)
+		errBit_cnt_en <= 1'b0;
+	else begin
+		if(inst_vnu_control_unit.state == 10 && inst_vnu_control_unit.layer_cnt[LAYER_NUM-1] == 1'b1)
+			errBit_cnt_en <= 1'b1;
+		else if(errBit_cnt_en_propagate > 1)
+			errBit_cnt_en <= 1'b1;
+		else
+			errBit_cnt_en <= 1'b0;
+	end
+end
+/*-----------------------------------------------------------------------------------------------------------------*/
 // Reset Signal for main decoder module 
 // Note that in the first codeword decoding process, 
 // the reset signal will be kept asserted until the first codeword is generated, i.e., 
@@ -1792,6 +2187,11 @@ generate
 
 			$fclose(v2c_to_bs[bs_in_pattern_id]);
 			$fclose(c2v_to_bs[bs_in_pattern_id]);
+			$fclose(vnu_signExtenOut_to_bs[bs_in_pattern_id]);
+			$fclose(mem_to_vnu_signExten[bs_in_pattern_id]);
+			$fclose(chMsg_gen[bs_in_pattern_id]);
+			$fclose(chMsg_to_bs[bs_in_pattern_id]);
+			$fclose(mem_to_chMsg[bs_in_pattern_id]);
 		end
 	end
 endgenerate
@@ -1802,7 +2202,7 @@ initial hard_decision_cnt <= 0;
 always @(posedge read_clk) begin
 	if(decoder_rstn == 1'b0)
 		hard_decision_cnt <= 0;
-	else if(inst_vnu_control_unit.layer_cnt[LAYER_NUM-1] == 1'b1 && inst_vnu_control_unit.state == 9)
+	else if(inst_vnu_control_unit.layer_cnt[LAYER_NUM-1] == 1'b1 && inst_vnu_control_unit.vnu_main_sys_cnt[12] == 1'b1)
 		hard_decision_cnt <= 1;
 	else if(hard_decision_cnt > 0 && hard_decision_cnt[ROW_CHUNK_NUM-1] == 1'b0)
 		hard_decision_cnt[ROW_CHUNK_NUM-1:0] <= {hard_decision_cnt[ROW_CHUNK_NUM-2:0], 1'b0};
@@ -1811,15 +2211,36 @@ always @(posedge read_clk) begin
 	else 
 		hard_decision_cnt <= hard_decision_cnt;
 end
+
+`ifdef HARD_DECISION_VIEW
 always @(posedge read_clk) begin
 	if(decoder_rstn == 1'b0) 
 		$write("RESET\n");
 	else if(hard_decision_cnt > 0) begin
 		$write("Iter_%d, layer_%d, state_%d -> ", $unsigned(inst_vnu_control_unit.iter_cnt), $unsigned(inst_vnu_control_unit.layer_cnt), $unsigned(inst_vnu_control_unit.state));
-		for(int a=0; a<CHECK_PARALLELISM; a++) $write("%b", $unsigned(hard_decision[a])); 
+		for(int a=0; a<CHECK_PARALLELISM; a++) $write("%b%b%b%b%b%b%b%b%b%b", 
+														$unsigned(hard_decision[a][0]), 
+														$unsigned(hard_decision[a][1]), 
+														$unsigned(hard_decision[a][2]), 
+														$unsigned(hard_decision[a][3]), 
+														$unsigned(hard_decision[a][4]),
+														$unsigned(hard_decision[a][5]),
+														$unsigned(hard_decision[a][6]),
+														$unsigned(hard_decision[a][7]),
+														$unsigned(hard_decision[a][8]),
+														$unsigned(hard_decision[a][9])); 
 		$write("\n");
 	end
 end
+`else
+always @(posedge read_clk) begin
+	if(decoder_rstn == 1'b0) 
+		$write("RESET\n");
+	else if(errBit_cnt_top_u0.busy == 1'b1 && errBit_cnt_top_u0.busy_cnt >= 4) begin
+		$write("Iter_%d, layer_%d, state_%d -> errBit_cnt:%d\n", $unsigned($clog2(inst_vnu_control_unit.iter_cnt)), $unsigned(inst_vnu_control_unit.layer_cnt), $unsigned(inst_vnu_control_unit.state), $unsigned(err_count));
+	end
+end
+`endif
 /*-----------------------------------------------------------------------------------------------------------------*/
 	initial begin
 		// do something

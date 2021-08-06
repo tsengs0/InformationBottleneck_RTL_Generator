@@ -28,6 +28,10 @@ module qsn_top_85b (
 
 	wire [84:0] sw_in_reg[0:3];
 	wire [84:0] sw_out_reg[0:3];
+`ifdef SCHED_4_6
+		reg [83:0] merge_sel_reg0;
+		always @(posedge sys_clk) begin if(!rstn) merge_sel_reg0 <= 0; else merge_sel_reg0 <= merge_sel; end
+`endif
 	genvar i;
 	generate
 		for(i=0;i<4;i=i+1) begin : bs_bitwidth_inst
@@ -43,7 +47,7 @@ module qsn_top_85b (
 			.sel (left_sel[6:0])
 		);
 		// Instantiation of Right Shift Network
-		wire [85:0] right_sw_out;
+		wire [84:0] right_sw_out;
 		qsn_right_85b qsn_right_u0 (
 			.sw_out (right_sw_out[84:0]),
 `ifdef SCHED_4_6
@@ -54,10 +58,6 @@ module qsn_top_85b (
 			.sel (right_sel[6:0])
 		);
 		// Instantiation of Merge Network
-`ifdef SCHED_4_6
-		reg [83:0] merge_sel_reg0;
-		always @(posedge sys_clk) begin if(!rstn) merge_sel_reg0 <= 0; else merge_sel_reg0 <= merge_sel; end
-`endif
 		qsn_merge_85b qsn_merge_u0 (
 			.sw_out (sw_out_reg[i]),
 

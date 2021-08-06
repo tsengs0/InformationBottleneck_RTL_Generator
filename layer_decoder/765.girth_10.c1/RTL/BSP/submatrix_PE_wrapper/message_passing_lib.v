@@ -127,7 +127,35 @@ module entire_message_passing_wrapper #(
 	// Parameters for DNU Sign Extension related Control Signals
 	parameter SIGN_EXTEN_FF_TO_BS = 10, // 10 clock cycles between latch of VNU.F1.SignExtenOut and input of DNU.SignExtenIn.BS
 	parameter PA_TO_DNU_DELAY = 4, // 4 clock cycles between output of PA and input of DNUs 
-/*-------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------*/	
+	parameter shift_factor_1_0 = CHECK_PARALLELISM-24,
+	parameter shift_factor_1_1 = CHECK_PARALLELISM-39,
+	parameter shift_factor_1_2 = CHECK_PARALLELISM-22,	
+	parameter shift_factor_2_0 = CHECK_PARALLELISM-9 ,
+	parameter shift_factor_2_1 = CHECK_PARALLELISM-21,
+	parameter shift_factor_2_2 = CHECK_PARALLELISM-55,
+	parameter shift_factor_3_0 = CHECK_PARALLELISM-38,
+	parameter shift_factor_3_1 = CHECK_PARALLELISM-28,
+	parameter shift_factor_3_2 = CHECK_PARALLELISM-19,	
+	parameter shift_factor_4_0 = CHECK_PARALLELISM-71,
+	parameter shift_factor_4_1 = CHECK_PARALLELISM-22,
+	parameter shift_factor_4_2 = CHECK_PARALLELISM-77,
+	parameter shift_factor_5_0 = CHECK_PARALLELISM-22,
+	parameter shift_factor_5_1 = CHECK_PARALLELISM-83,
+	parameter shift_factor_5_2 = CHECK_PARALLELISM-65,
+	parameter shift_factor_6_0 = CHECK_PARALLELISM-39,
+	parameter shift_factor_6_1 = CHECK_PARALLELISM-8 ,
+	parameter shift_factor_6_2 = CHECK_PARALLELISM-38,
+	parameter shift_factor_7_0 = CHECK_PARALLELISM-20,
+	parameter shift_factor_7_1 = CHECK_PARALLELISM-25,
+	parameter shift_factor_7_2 = CHECK_PARALLELISM-40,
+	parameter shift_factor_8_0 = CHECK_PARALLELISM-51,
+	parameter shift_factor_8_1 = CHECK_PARALLELISM-28,
+	parameter shift_factor_8_2 = CHECK_PARALLELISM-6, 
+	parameter shift_factor_9_0 = CHECK_PARALLELISM-50,
+	parameter shift_factor_9_1 = CHECK_PARALLELISM-20,
+	parameter shift_factor_9_2 = CHECK_PARALLELISM-15,
+
 	parameter START_PAGE_0_0 = 0,
 	parameter START_PAGE_0_1 = 0,
 	parameter START_PAGE_0_2 = 0,
@@ -274,6 +302,7 @@ module entire_message_passing_wrapper #(
 	input wire ch_ram_fetch,
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
+	input wire v2c_outRotate_reg_we_flush,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
 	input wire dnu_signExten_ram_fetch,
@@ -288,6 +317,7 @@ module entire_message_passing_wrapper #(
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+	input wire [LAYER_NUM-1:0] signExten_layer_cnt,
 	input wire c2v_last_row_chunk,
 	input wire v2c_last_row_chunk,
 	input wire [ROW_CHUNK_NUM-1:0] c2v_row_chunk_cnt,
@@ -370,6 +400,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.ch_ram_fetch         (ch_ram_fetch        ),
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
+			.v2c_outRotate_reg_we_flush (v2c_outRotate_reg_we_flush),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
@@ -383,6 +414,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.c2v_mem_we         (c2v_mem_we),
 			.v2c_mem_we         (v2c_mem_we),
 			.v2c_layer_cnt      (v2c_layer_cnt),
+			.signExten_layer_cnt(signExten_layer_cnt), 
 			.c2v_last_row_chunk (c2v_last_row_chunk),
 			.v2c_last_row_chunk (v2c_last_row_chunk),
 			.c2v_row_chunk_cnt  (c2v_row_chunk_cnt),
@@ -406,9 +438,9 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.RAM_DEPTH(RAM_DEPTH),
 			.RAM_ADDR_BITWIDTH(RAM_ADDR_BITWIDTH),
 			.BITWIDTH_SHIFT_FACTOR(BITWIDTH_SHIFT_FACTOR),
-			.shift_factor_0(CHECK_PARALLELISM-24),
-			.shift_factor_1(CHECK_PARALLELISM-39),
-			.shift_factor_2(CHECK_PARALLELISM-63),
+			.shift_factor_0(shift_factor_1_0),
+			.shift_factor_1(shift_factor_1_1),
+			.shift_factor_2(shift_factor_1_2),
 			.RAM_PORTA_RANGE(RAM_PORTA_RANGE),
 			.RAM_PORTB_RANGE(RAM_PORTB_RANGE),
 			.MEM_DEVICE_NUM(MEM_DEVICE_NUM),
@@ -465,6 +497,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.ch_ram_fetch         (ch_ram_fetch        ),
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
+			.v2c_outRotate_reg_we_flush (v2c_outRotate_reg_we_flush),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
@@ -478,6 +511,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.c2v_mem_we         (c2v_mem_we),
 			.v2c_mem_we         (v2c_mem_we),
 			.v2c_layer_cnt      (v2c_layer_cnt),
+			.signExten_layer_cnt(signExten_layer_cnt),
 			.c2v_last_row_chunk (c2v_last_row_chunk),
 			.v2c_last_row_chunk (v2c_last_row_chunk),
 			.c2v_row_chunk_cnt  (c2v_row_chunk_cnt),
@@ -502,9 +536,9 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.RAM_DEPTH(RAM_DEPTH),
 			.RAM_ADDR_BITWIDTH(RAM_ADDR_BITWIDTH),
 			.BITWIDTH_SHIFT_FACTOR(BITWIDTH_SHIFT_FACTOR),
-			.shift_factor_0(CHECK_PARALLELISM-9),
-			.shift_factor_1(CHECK_PARALLELISM-21),
-			.shift_factor_2(CHECK_PARALLELISM-30),
+			.shift_factor_0(shift_factor_2_0),
+			.shift_factor_1(shift_factor_2_1),
+			.shift_factor_2(shift_factor_2_2),
 			.RAM_PORTA_RANGE(RAM_PORTA_RANGE),
 			.RAM_PORTB_RANGE(RAM_PORTB_RANGE),
 			.MEM_DEVICE_NUM(MEM_DEVICE_NUM),
@@ -561,6 +595,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.ch_ram_fetch         (ch_ram_fetch        ),
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
+			.v2c_outRotate_reg_we_flush (v2c_outRotate_reg_we_flush),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
@@ -574,6 +609,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.c2v_mem_we         (c2v_mem_we),
 			.v2c_mem_we         (v2c_mem_we),
 			.v2c_layer_cnt      (v2c_layer_cnt),
+			.signExten_layer_cnt(signExten_layer_cnt),
 			.c2v_last_row_chunk (c2v_last_row_chunk),
 			.v2c_last_row_chunk (v2c_last_row_chunk),
 			.c2v_row_chunk_cnt  (c2v_row_chunk_cnt),
@@ -598,9 +634,9 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.RAM_DEPTH(RAM_DEPTH),
 			.RAM_ADDR_BITWIDTH(RAM_ADDR_BITWIDTH),
 			.BITWIDTH_SHIFT_FACTOR(BITWIDTH_SHIFT_FACTOR),
-			.shift_factor_0(CHECK_PARALLELISM-38),
-			.shift_factor_1(CHECK_PARALLELISM-28),
-			.shift_factor_2(CHECK_PARALLELISM-66),
+			.shift_factor_0(shift_factor_3_0),
+			.shift_factor_1(shift_factor_3_1),
+			.shift_factor_2(shift_factor_3_2),
 			.RAM_PORTA_RANGE(RAM_PORTA_RANGE),
 			.RAM_PORTB_RANGE(RAM_PORTB_RANGE),
 			.MEM_DEVICE_NUM(MEM_DEVICE_NUM),
@@ -657,6 +693,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.ch_ram_fetch         (ch_ram_fetch        ),
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
+			.v2c_outRotate_reg_we_flush (v2c_outRotate_reg_we_flush),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
@@ -670,6 +707,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.c2v_mem_we         (c2v_mem_we),
 			.v2c_mem_we         (v2c_mem_we),
 			.v2c_layer_cnt      (v2c_layer_cnt),
+			.signExten_layer_cnt(signExten_layer_cnt),
 			.c2v_last_row_chunk (c2v_last_row_chunk),
 			.v2c_last_row_chunk (v2c_last_row_chunk),
 			.c2v_row_chunk_cnt  (c2v_row_chunk_cnt),
@@ -694,9 +732,9 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.RAM_DEPTH(RAM_DEPTH),
 			.RAM_ADDR_BITWIDTH(RAM_ADDR_BITWIDTH),
 			.BITWIDTH_SHIFT_FACTOR(BITWIDTH_SHIFT_FACTOR),
-			.shift_factor_0(CHECK_PARALLELISM-71),
-			.shift_factor_1(CHECK_PARALLELISM-63),
-			.shift_factor_2(CHECK_PARALLELISM-8 ),
+			.shift_factor_0(shift_factor_4_0),
+			.shift_factor_1(shift_factor_4_1),
+			.shift_factor_2(shift_factor_4_2),
 			.RAM_PORTA_RANGE(RAM_PORTA_RANGE),
 			.RAM_PORTB_RANGE(RAM_PORTB_RANGE),
 			.MEM_DEVICE_NUM(MEM_DEVICE_NUM),
@@ -753,6 +791,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.ch_ram_fetch         (ch_ram_fetch        ),
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
+			.v2c_outRotate_reg_we_flush (v2c_outRotate_reg_we_flush),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
@@ -766,6 +805,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.c2v_mem_we         (c2v_mem_we),
 			.v2c_mem_we         (v2c_mem_we),
 			.v2c_layer_cnt      (v2c_layer_cnt),
+			.signExten_layer_cnt(signExten_layer_cnt),
 			.c2v_last_row_chunk (c2v_last_row_chunk),
 			.v2c_last_row_chunk (v2c_last_row_chunk),
 			.c2v_row_chunk_cnt  (c2v_row_chunk_cnt),
@@ -790,9 +830,9 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.RAM_DEPTH(RAM_DEPTH),
 			.RAM_ADDR_BITWIDTH(RAM_ADDR_BITWIDTH),
 			.BITWIDTH_SHIFT_FACTOR(BITWIDTH_SHIFT_FACTOR),
-			.shift_factor_0(CHECK_PARALLELISM-22),
-			.shift_factor_1(CHECK_PARALLELISM-2 ),
-			.shift_factor_2(CHECK_PARALLELISM-20),
+			.shift_factor_0(shift_factor_5_0),
+			.shift_factor_1(shift_factor_5_1),
+			.shift_factor_2(shift_factor_5_2),
 			.RAM_PORTA_RANGE(RAM_PORTA_RANGE),
 			.RAM_PORTB_RANGE(RAM_PORTB_RANGE),
 			.MEM_DEVICE_NUM(MEM_DEVICE_NUM),
@@ -849,6 +889,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.ch_ram_fetch         (ch_ram_fetch        ),
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
+			.v2c_outRotate_reg_we_flush (v2c_outRotate_reg_we_flush),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
@@ -862,6 +903,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.c2v_mem_we         (c2v_mem_we),
 			.v2c_mem_we         (v2c_mem_we),
 			.v2c_layer_cnt      (v2c_layer_cnt),
+			.signExten_layer_cnt(signExten_layer_cnt),
 			.c2v_last_row_chunk (c2v_last_row_chunk),
 			.v2c_last_row_chunk (v2c_last_row_chunk),
 			.c2v_row_chunk_cnt  (c2v_row_chunk_cnt),
@@ -886,9 +928,9 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.RAM_DEPTH(RAM_DEPTH),
 			.RAM_ADDR_BITWIDTH(RAM_ADDR_BITWIDTH),
 			.BITWIDTH_SHIFT_FACTOR(BITWIDTH_SHIFT_FACTOR),
-			.shift_factor_0(CHECK_PARALLELISM-39),
-			.shift_factor_1(CHECK_PARALLELISM-8 ),
-			.shift_factor_2(CHECK_PARALLELISM-47),
+			.shift_factor_0(shift_factor_6_0),
+			.shift_factor_1(shift_factor_6_1),
+			.shift_factor_2(shift_factor_6_2),
 			.RAM_PORTA_RANGE(RAM_PORTA_RANGE),
 			.RAM_PORTB_RANGE(RAM_PORTB_RANGE),
 			.MEM_DEVICE_NUM(MEM_DEVICE_NUM),
@@ -945,6 +987,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.ch_ram_fetch         (ch_ram_fetch        ),
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
+			.v2c_outRotate_reg_we_flush (v2c_outRotate_reg_we_flush),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
@@ -958,6 +1001,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.c2v_mem_we         (c2v_mem_we),
 			.v2c_mem_we         (v2c_mem_we),
 			.v2c_layer_cnt      (v2c_layer_cnt),
+			.signExten_layer_cnt(signExten_layer_cnt),
 			.c2v_last_row_chunk (c2v_last_row_chunk),
 			.v2c_last_row_chunk (v2c_last_row_chunk),
 			.c2v_row_chunk_cnt  (c2v_row_chunk_cnt),
@@ -982,9 +1026,9 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.RAM_DEPTH(RAM_DEPTH),
 			.RAM_ADDR_BITWIDTH(RAM_ADDR_BITWIDTH),
 			.BITWIDTH_SHIFT_FACTOR(BITWIDTH_SHIFT_FACTOR),
-			.shift_factor_0(CHECK_PARALLELISM-20),
-			.shift_factor_1(CHECK_PARALLELISM-25),
-			.shift_factor_2(CHECK_PARALLELISM-45),
+			.shift_factor_0(shift_factor_7_0),
+			.shift_factor_1(shift_factor_7_1),
+			.shift_factor_2(shift_factor_7_2),
 			.RAM_PORTA_RANGE(RAM_PORTA_RANGE),
 			.RAM_PORTB_RANGE(RAM_PORTB_RANGE),
 			.MEM_DEVICE_NUM(MEM_DEVICE_NUM),
@@ -1041,6 +1085,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.ch_ram_fetch         (ch_ram_fetch        ),
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
+			.v2c_outRotate_reg_we_flush (v2c_outRotate_reg_we_flush),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
@@ -1054,6 +1099,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.c2v_mem_we         (c2v_mem_we),
 			.v2c_mem_we         (v2c_mem_we),
 			.v2c_layer_cnt      (v2c_layer_cnt),
+			.signExten_layer_cnt(signExten_layer_cnt),
 			.c2v_last_row_chunk (c2v_last_row_chunk),
 			.v2c_last_row_chunk (v2c_last_row_chunk),
 			.c2v_row_chunk_cnt  (c2v_row_chunk_cnt),
@@ -1078,9 +1124,9 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.RAM_DEPTH(RAM_DEPTH),
 			.RAM_ADDR_BITWIDTH(RAM_ADDR_BITWIDTH),
 			.BITWIDTH_SHIFT_FACTOR(BITWIDTH_SHIFT_FACTOR),
-			.shift_factor_0(CHECK_PARALLELISM-51),
-			.shift_factor_1(CHECK_PARALLELISM-28),
-			.shift_factor_2(CHECK_PARALLELISM-79),
+			.shift_factor_0(shift_factor_8_0),
+			.shift_factor_1(shift_factor_8_1),
+			.shift_factor_2(shift_factor_8_2),
 			.RAM_PORTA_RANGE(RAM_PORTA_RANGE),
 			.RAM_PORTB_RANGE(RAM_PORTB_RANGE),
 			.MEM_DEVICE_NUM(MEM_DEVICE_NUM),
@@ -1137,6 +1183,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.ch_ram_fetch         (ch_ram_fetch        ),
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
+			.v2c_outRotate_reg_we_flush (v2c_outRotate_reg_we_flush),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
@@ -1150,6 +1197,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.c2v_mem_we         (c2v_mem_we),
 			.v2c_mem_we         (v2c_mem_we),
 			.v2c_layer_cnt      (v2c_layer_cnt),
+			.signExten_layer_cnt(signExten_layer_cnt),
 			.c2v_last_row_chunk (c2v_last_row_chunk),
 			.v2c_last_row_chunk (v2c_last_row_chunk),
 			.c2v_row_chunk_cnt  (c2v_row_chunk_cnt),
@@ -1174,9 +1222,9 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.RAM_DEPTH(RAM_DEPTH),
 			.RAM_ADDR_BITWIDTH(RAM_ADDR_BITWIDTH),
 			.BITWIDTH_SHIFT_FACTOR(BITWIDTH_SHIFT_FACTOR),
-			.shift_factor_0(CHECK_PARALLELISM-50),
-			.shift_factor_1(CHECK_PARALLELISM-20),
-			.shift_factor_2(CHECK_PARALLELISM-70),
+			.shift_factor_0(shift_factor_9_0),
+			.shift_factor_1(shift_factor_9_1),
+			.shift_factor_2(shift_factor_9_2),
 			.RAM_PORTA_RANGE(RAM_PORTA_RANGE),
 			.RAM_PORTB_RANGE(RAM_PORTB_RANGE),
 			.MEM_DEVICE_NUM(MEM_DEVICE_NUM),
@@ -1233,6 +1281,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.ch_ram_fetch         (ch_ram_fetch        ),
 			.layer_finish	       (layer_finish        ),
 			.v2c_outRotate_reg_we (v2c_outRotate_reg_we),
+			.v2c_outRotate_reg_we_flush (v2c_outRotate_reg_we_flush),
 			.dnu_inRotate_bs_en   (dnu_inRotate_bs_en  ),
 			.dnu_inRotate_wb      (dnu_inRotate_wb     ),
 			.dnu_signExten_ram_fetch  (dnu_signExten_ram_fetch ),
@@ -1246,6 +1295,7 @@ wire [CH_DATA_WIDTH-1:0] ch_to_bs_sub [0:CHECK_PARALLELISM-1];
 			.c2v_mem_we         (c2v_mem_we),
 			.v2c_mem_we         (v2c_mem_we),
 			.v2c_layer_cnt      (v2c_layer_cnt),
+			.signExten_layer_cnt(signExten_layer_cnt),
 			.c2v_last_row_chunk (c2v_last_row_chunk),
 			.v2c_last_row_chunk (v2c_last_row_chunk),
 			.c2v_row_chunk_cnt  (c2v_row_chunk_cnt),
@@ -1334,6 +1384,7 @@ module msg_pass_submatrix_0_unit #(
 	input wire ch_ram_fetch,
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
+	input wire v2c_outRotate_reg_we_flush,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
 	input wire dnu_signExten_ram_fetch,
@@ -1346,6 +1397,7 @@ module msg_pass_submatrix_0_unit #(
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+	input wire [LAYER_NUM-1:0] signExten_layer_cnt,
 	input wire c2v_last_row_chunk,
 	input wire v2c_last_row_chunk,
 	input wire [ROW_CHUNK_NUM-1:0] c2v_row_chunk_cnt,
@@ -1426,7 +1478,7 @@ zero_shuffle_top_85b #(
 		.sys_clk     (read_clk),
 		.rstn		 (rstn),
 	
-		.sw_in1_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
+		.sw_in1_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-1]),
 
 		.sw_in_bit0_src (vnu_bs_bit0_src),	
 	`endif
@@ -1435,13 +1487,13 @@ zero_shuffle_top_85b #(
 		.sw_in_bit2  (vnu_bs_in_bit[2]),
 		.sw_in_bit3  (vnu_bs_in_bit[3])
 	);
-	always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+	always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[0] <= 0; end
 	genvar signExten_ff_id;
 	generate
 		for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
-			always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+			always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
 		end
-	endgenerate
+	endgenerate	
 `else
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
 	zero_shuffle_top_85b #(
@@ -1487,6 +1539,7 @@ zero_shuffle_top_85b #(
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	wire [LAYER_NUM-1:0] vnu_layer_cnt_sync;
 	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_0 #(
 			.QUAN_SIZE(QUAN_SIZE),
@@ -1847,12 +1900,13 @@ zero_shuffle_top_85b #(
 			.cnu_sync_addr    (cnu_mem_page_sync_addr),
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+			.vnu_layer_status (vnu_layer_cnt_sync[LAYER_NUM-1:0]), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
 		);
+		assign vnu_layer_cnt_sync[LAYER_NUM-1:0] = (signExten_layer_cnt[LAYER_NUM-2] == 1'b1) ? signExten_layer_cnt[LAYER_NUM-1:0] : v2c_layer_cnt[LAYER_NUM-1:0];
 		assign cnu_mem_page_sync_addr = (v2c_mem_fetch == 1'b1) ? v2c_mem_page_rd_addr : 
 										(c2v_mem_we == 1'b1) ? c2v_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
 
@@ -2354,7 +2408,7 @@ wire ch_ram_we; assign ch_ram_we = ch_ram_init_we || ch_ram_wb;
 					submatrix_signExten_ram_wr_addr <= 0;
 				else if(dnu_inRotate_wb == 1'b1) begin
 					if(submatrix_signExten_ram_wr_addr == ROW_CHUNK_NUM-1)
-						submatrix_signExten_ram_wr_addr <= ROW_CHUNK_NUM; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
+						submatrix_signExten_ram_wr_addr <= 0; // reset to page_addr_0 in advance for sake of next iteration
 					else
 						submatrix_signExten_ram_wr_addr <= submatrix_signExten_ram_wr_addr+1;
 				end
@@ -2393,7 +2447,7 @@ module msg_pass_submatrix_1_unit #(
 	parameter BITWIDTH_SHIFT_FACTOR = $clog2(CHECK_PARALLELISM-1),
 	parameter shift_factor_0 = CHECK_PARALLELISM-24,
 	parameter shift_factor_1 = CHECK_PARALLELISM-39,
-	parameter shift_factor_2 = CHECK_PARALLELISM-63,
+	parameter shift_factor_2 = 63,
 
 `ifdef SCHED_4_6
 	// Parameters of extrinsic RAMs
@@ -2456,6 +2510,7 @@ module msg_pass_submatrix_1_unit #(
 	input wire ch_ram_fetch,
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
+	input wire v2c_outRotate_reg_we_flush,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
 	input wire dnu_signExten_ram_fetch,
@@ -2470,6 +2525,7 @@ module msg_pass_submatrix_1_unit #(
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+	input wire [LAYER_NUM-1:0] signExten_layer_cnt,
 	input wire c2v_last_row_chunk,
 	input wire v2c_last_row_chunk,
 	input wire [ROW_CHUNK_NUM-1:0] c2v_row_chunk_cnt,
@@ -2572,7 +2628,7 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-1]),
 
 	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
 	.sw_in_bit0_src (vnu_bs_bit0_src),
@@ -2582,11 +2638,11 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 	
-always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[0] <= 0; end
 genvar signExten_ff_id;
 generate
 	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
-		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
 	end
 endgenerate
 /*----------------------------------------------*/		
@@ -2597,6 +2653,7 @@ endgenerate
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	wire [LAYER_NUM-1:0] vnu_layer_cnt_sync;
 	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_1 #(
 			.QUAN_SIZE(QUAN_SIZE),
@@ -2956,12 +3013,13 @@ endgenerate
 			.cnu_sync_addr    (cnu_mem_page_sync_addr),
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+			.vnu_layer_status (vnu_layer_cnt_sync[LAYER_NUM-1:0]), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
 		);
+		assign vnu_layer_cnt_sync[LAYER_NUM-1:0] = (signExten_layer_cnt[LAYER_NUM-2] == 1'b1) ? signExten_layer_cnt[LAYER_NUM-1:0] : v2c_layer_cnt[LAYER_NUM-1:0];
 		assign cnu_mem_page_sync_addr = (v2c_mem_fetch == 1'b1) ? v2c_mem_page_rd_addr : 
 										(c2v_mem_we == 1'b1) ? c2v_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
 
@@ -3595,7 +3653,7 @@ module msg_pass_submatrix_2_unit #(
 	parameter BITWIDTH_SHIFT_FACTOR = $clog2(CHECK_PARALLELISM-1),
 	parameter shift_factor_0 = CHECK_PARALLELISM-9,
 	parameter shift_factor_1 = CHECK_PARALLELISM-21,
-	parameter shift_factor_2 = CHECK_PARALLELISM-30,
+	parameter shift_factor_2 = 30,
 
 `ifdef SCHED_4_6
 	// Parameters of extrinsic RAMs
@@ -3659,6 +3717,7 @@ module msg_pass_submatrix_2_unit #(
 	input wire ch_ram_fetch,
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
+	input wire v2c_outRotate_reg_we_flush,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
 	input wire dnu_signExten_ram_fetch,
@@ -3673,6 +3732,7 @@ module msg_pass_submatrix_2_unit #(
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+	input wire [LAYER_NUM-1:0] signExten_layer_cnt,
 	input wire c2v_last_row_chunk,
 	input wire v2c_last_row_chunk,
 	input wire [ROW_CHUNK_NUM-1:0] c2v_row_chunk_cnt,
@@ -3775,7 +3835,7 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-1]),
 
 	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
 	.sw_in_bit0_src (vnu_bs_bit0_src),
@@ -3785,14 +3845,14 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 	
-always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[0] <= 0; end
 genvar signExten_ff_id;
 generate
 	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
-		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
 	end
 endgenerate
-/*----------------------------------------------*/
+/*----------------------------------------------*/		
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -3800,6 +3860,7 @@ endgenerate
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	wire [LAYER_NUM-1:0] vnu_layer_cnt_sync;
 	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_2 #(
 			.QUAN_SIZE(QUAN_SIZE),
@@ -4159,12 +4220,13 @@ endgenerate
 			.cnu_sync_addr    (cnu_mem_page_sync_addr),
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+			.vnu_layer_status (vnu_layer_cnt_sync[LAYER_NUM-1:0]), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
 		);
+		assign vnu_layer_cnt_sync[LAYER_NUM-1:0] = (signExten_layer_cnt[LAYER_NUM-2] == 1'b1) ? signExten_layer_cnt[LAYER_NUM-1:0] : v2c_layer_cnt[LAYER_NUM-1:0];
 		assign cnu_mem_page_sync_addr = (v2c_mem_fetch == 1'b1) ? v2c_mem_page_rd_addr : 
 										(c2v_mem_we == 1'b1) ? c2v_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
 
@@ -4799,7 +4861,7 @@ module msg_pass_submatrix_3_unit #(
 	parameter BITWIDTH_SHIFT_FACTOR = $clog2(CHECK_PARALLELISM-1),
 	parameter shift_factor_0 = CHECK_PARALLELISM-38,
 	parameter shift_factor_1 = CHECK_PARALLELISM-28,
-	parameter shift_factor_2 = CHECK_PARALLELISM-66,
+	parameter shift_factor_2 = 66,
 
 `ifdef SCHED_4_6
 	// Parameters of extrinsic RAMs
@@ -4863,6 +4925,7 @@ module msg_pass_submatrix_3_unit #(
 	input wire ch_ram_fetch,
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
+	input wire v2c_outRotate_reg_we_flush,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
 	input wire dnu_signExten_ram_fetch,
@@ -4877,6 +4940,7 @@ module msg_pass_submatrix_3_unit #(
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+	input wire [LAYER_NUM-1:0] signExten_layer_cnt,
 	input wire c2v_last_row_chunk,
 	input wire v2c_last_row_chunk,
 	input wire [ROW_CHUNK_NUM-1:0] c2v_row_chunk_cnt,
@@ -4979,7 +5043,7 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-1]),
 
 	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
 	.sw_in_bit0_src (vnu_bs_bit0_src),
@@ -4989,14 +5053,14 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 	
-always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[0] <= 0; end
 genvar signExten_ff_id;
 generate
 	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
-		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
 	end
 endgenerate
-/*----------------------------------------------*/
+/*----------------------------------------------*/		
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -5004,6 +5068,7 @@ endgenerate
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	wire [LAYER_NUM-1:0] vnu_layer_cnt_sync;
 	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_3 #(
 			.QUAN_SIZE(QUAN_SIZE),
@@ -5364,12 +5429,13 @@ endgenerate
 			.cnu_sync_addr    (cnu_mem_page_sync_addr),
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+			.vnu_layer_status (vnu_layer_cnt_sync[LAYER_NUM-1:0]), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
 		);
+		assign vnu_layer_cnt_sync[LAYER_NUM-1:0] = (signExten_layer_cnt[LAYER_NUM-2] == 1'b1) ? signExten_layer_cnt[LAYER_NUM-1:0] : v2c_layer_cnt[LAYER_NUM-1:0];
 		assign cnu_mem_page_sync_addr = (v2c_mem_fetch == 1'b1) ? v2c_mem_page_rd_addr : 
 										(c2v_mem_we == 1'b1) ? c2v_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
 
@@ -6004,7 +6070,7 @@ module msg_pass_submatrix_4_unit #(
 	parameter BITWIDTH_SHIFT_FACTOR = $clog2(CHECK_PARALLELISM-1),
 	parameter shift_factor_0 = CHECK_PARALLELISM-71,
 	parameter shift_factor_1 = CHECK_PARALLELISM-63,
-	parameter shift_factor_2 = CHECK_PARALLELISM-8,
+	parameter shift_factor_2 = 8,
 
 `ifdef SCHED_4_6
 	// Parameters of extrinsic RAMs
@@ -6067,6 +6133,7 @@ module msg_pass_submatrix_4_unit #(
 	input wire ch_ram_fetch,
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
+	input wire v2c_outRotate_reg_we_flush,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
 	input wire dnu_signExten_ram_fetch,
@@ -6081,6 +6148,7 @@ module msg_pass_submatrix_4_unit #(
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+	input wire [LAYER_NUM-1:0] signExten_layer_cnt,
 	input wire c2v_last_row_chunk,
 	input wire v2c_last_row_chunk,
 	input wire [ROW_CHUNK_NUM-1:0] c2v_row_chunk_cnt,
@@ -6184,7 +6252,7 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-1]),
 
 	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
 	.sw_in_bit0_src (vnu_bs_bit0_src),
@@ -6194,14 +6262,14 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 	
-always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[0] <= 0; end
 genvar signExten_ff_id;
 generate
 	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
-		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
 	end
 endgenerate
-/*----------------------------------------------*/		
+/*----------------------------------------------*/				
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -6209,6 +6277,7 @@ endgenerate
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	wire [LAYER_NUM-1:0] vnu_layer_cnt_sync;
 	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_4 #(
 			.QUAN_SIZE(QUAN_SIZE),
@@ -6568,12 +6637,13 @@ endgenerate
 			.cnu_sync_addr    (cnu_mem_page_sync_addr),
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+			.vnu_layer_status (vnu_layer_cnt_sync[LAYER_NUM-1:0]), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
 		);
+		assign vnu_layer_cnt_sync[LAYER_NUM-1:0] = (signExten_layer_cnt[LAYER_NUM-2] == 1'b1) ? signExten_layer_cnt[LAYER_NUM-1:0] : v2c_layer_cnt[LAYER_NUM-1:0];
 		assign cnu_mem_page_sync_addr = (v2c_mem_fetch == 1'b1) ? v2c_mem_page_rd_addr : 
 										(c2v_mem_we == 1'b1) ? c2v_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
 
@@ -7208,7 +7278,7 @@ module msg_pass_submatrix_5_unit #(
 	parameter BITWIDTH_SHIFT_FACTOR = $clog2(CHECK_PARALLELISM-1),
 	parameter shift_factor_0 = CHECK_PARALLELISM-22,
 	parameter shift_factor_1 = CHECK_PARALLELISM-2,
-	parameter shift_factor_2 = CHECK_PARALLELISM-20 ,
+	parameter shift_factor_2 = 20 ,
 
 `ifdef SCHED_4_6
 	// Parameters of extrinsic RAMs
@@ -7272,6 +7342,7 @@ module msg_pass_submatrix_5_unit #(
 	input wire ch_ram_fetch,
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
+	input wire v2c_outRotate_reg_we_flush,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
 	input wire dnu_signExten_ram_fetch,
@@ -7286,6 +7357,7 @@ module msg_pass_submatrix_5_unit #(
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+	input wire [LAYER_NUM-1:0] signExten_layer_cnt,
 	input wire c2v_last_row_chunk,
 	input wire v2c_last_row_chunk,
 	input wire [ROW_CHUNK_NUM-1:0] c2v_row_chunk_cnt,
@@ -7388,7 +7460,7 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-1]),
 
 	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
 	.sw_in_bit0_src (vnu_bs_bit0_src),
@@ -7398,14 +7470,14 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 	
-always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[0] <= 0; end
 genvar signExten_ff_id;
 generate
 	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
-		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
 	end
 endgenerate
-/*----------------------------------------------*/		
+/*----------------------------------------------*/				
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -7413,6 +7485,7 @@ endgenerate
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	wire [LAYER_NUM-1:0] vnu_layer_cnt_sync;
 	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_5 #(
 			.QUAN_SIZE(QUAN_SIZE),
@@ -7772,12 +7845,13 @@ endgenerate
 			.cnu_sync_addr    (cnu_mem_page_sync_addr),
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+			.vnu_layer_status (vnu_layer_cnt_sync[LAYER_NUM-1:0]), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
 		);
+		assign vnu_layer_cnt_sync[LAYER_NUM-1:0] = (signExten_layer_cnt[LAYER_NUM-2] == 1'b1) ? signExten_layer_cnt[LAYER_NUM-1:0] : v2c_layer_cnt[LAYER_NUM-1:0];
 		assign cnu_mem_page_sync_addr = (v2c_mem_fetch == 1'b1) ? v2c_mem_page_rd_addr : 
 										(c2v_mem_we == 1'b1) ? c2v_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
 
@@ -8412,7 +8486,7 @@ module msg_pass_submatrix_6_unit #(
 	parameter BITWIDTH_SHIFT_FACTOR = $clog2(CHECK_PARALLELISM-1),
 	parameter shift_factor_0 = CHECK_PARALLELISM-39,
 	parameter shift_factor_1 = CHECK_PARALLELISM-8 ,
-	parameter shift_factor_2 = CHECK_PARALLELISM-47,
+	parameter shift_factor_2 = 47,
 
 `ifdef SCHED_4_6
 	// Parameters of extrinsic RAMs
@@ -8476,6 +8550,7 @@ module msg_pass_submatrix_6_unit #(
 	input wire ch_ram_fetch,
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
+	input wire v2c_outRotate_reg_we_flush,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
 	input wire dnu_signExten_ram_fetch,
@@ -8490,6 +8565,7 @@ module msg_pass_submatrix_6_unit #(
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+	input wire [LAYER_NUM-1:0] signExten_layer_cnt,
 	input wire c2v_last_row_chunk,
 	input wire v2c_last_row_chunk,
 	input wire [ROW_CHUNK_NUM-1:0] c2v_row_chunk_cnt,
@@ -8592,7 +8668,7 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-1]),
 
 	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
 	.sw_in_bit0_src (vnu_bs_bit0_src),
@@ -8602,14 +8678,14 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 	
-always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[0] <= 0; end
 genvar signExten_ff_id;
 generate
 	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
-		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
 	end
 endgenerate
-/*----------------------------------------------*/		
+/*----------------------------------------------*/				
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -8617,6 +8693,7 @@ endgenerate
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	wire [LAYER_NUM-1:0] vnu_layer_cnt_sync;
 	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_6 #(
 			.QUAN_SIZE(QUAN_SIZE),
@@ -8976,12 +9053,13 @@ endgenerate
 			.cnu_sync_addr    (cnu_mem_page_sync_addr),
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+			.vnu_layer_status (vnu_layer_cnt_sync[LAYER_NUM-1:0]), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
 		);
+		assign vnu_layer_cnt_sync[LAYER_NUM-1:0] = (signExten_layer_cnt[LAYER_NUM-2] == 1'b1) ? signExten_layer_cnt[LAYER_NUM-1:0] : v2c_layer_cnt[LAYER_NUM-1:0];
 		assign cnu_mem_page_sync_addr = (v2c_mem_fetch == 1'b1) ? v2c_mem_page_rd_addr : 
 										(c2v_mem_we == 1'b1) ? c2v_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
 
@@ -9616,7 +9694,7 @@ module msg_pass_submatrix_7_unit #(
 	parameter BITWIDTH_SHIFT_FACTOR = $clog2(CHECK_PARALLELISM-1),
 	parameter shift_factor_0 = CHECK_PARALLELISM-20,
 	parameter shift_factor_1 = CHECK_PARALLELISM-25,
-	parameter shift_factor_2 = CHECK_PARALLELISM-45,
+	parameter shift_factor_2 = 45,
 
 `ifdef SCHED_4_6
 	// Parameters of extrinsic RAMs
@@ -9680,6 +9758,7 @@ module msg_pass_submatrix_7_unit #(
 	input wire ch_ram_fetch,
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
+	input wire v2c_outRotate_reg_we_flush,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
 	input wire dnu_signExten_ram_fetch,
@@ -9694,6 +9773,7 @@ module msg_pass_submatrix_7_unit #(
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+	input wire [LAYER_NUM-1:0] signExten_layer_cnt,
 	input wire c2v_last_row_chunk,
 	input wire v2c_last_row_chunk,
 	input wire [ROW_CHUNK_NUM-1:0] c2v_row_chunk_cnt,
@@ -9796,7 +9876,7 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-1]),
 
 	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
 	.sw_in_bit0_src (vnu_bs_bit0_src),
@@ -9806,14 +9886,14 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 	
-always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[0] <= 0; end
 genvar signExten_ff_id;
 generate
 	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
-		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
 	end
 endgenerate
-/*----------------------------------------------*/		
+/*----------------------------------------------*/				
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -9821,6 +9901,7 @@ endgenerate
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	wire [LAYER_NUM-1:0] vnu_layer_cnt_sync;
 	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_7 #(
 			.QUAN_SIZE(QUAN_SIZE),
@@ -10180,12 +10261,13 @@ endgenerate
 			.cnu_sync_addr    (cnu_mem_page_sync_addr),
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+			.vnu_layer_status (vnu_layer_cnt_sync[LAYER_NUM-1:0]), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
 		);
+		assign vnu_layer_cnt_sync[LAYER_NUM-1:0] = (signExten_layer_cnt[LAYER_NUM-2] == 1'b1) ? signExten_layer_cnt[LAYER_NUM-1:0] : v2c_layer_cnt[LAYER_NUM-1:0];
 		assign cnu_mem_page_sync_addr = (v2c_mem_fetch == 1'b1) ? v2c_mem_page_rd_addr : 
 										(c2v_mem_we == 1'b1) ? c2v_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
 
@@ -10820,7 +10902,7 @@ module msg_pass_submatrix_8_unit #(
 	parameter BITWIDTH_SHIFT_FACTOR = $clog2(CHECK_PARALLELISM-1),
 	parameter shift_factor_0 = CHECK_PARALLELISM-51,
 	parameter shift_factor_1 = CHECK_PARALLELISM-28,
-	parameter shift_factor_2 = CHECK_PARALLELISM-79,
+	parameter shift_factor_2 = 79,
 
 `ifdef SCHED_4_6
 	// Parameters of extrinsic RAMs
@@ -10883,6 +10965,7 @@ module msg_pass_submatrix_8_unit #(
 	input wire ch_ram_fetch,
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
+	input wire v2c_outRotate_reg_we_flush,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
 	input wire dnu_signExten_ram_fetch,
@@ -10897,6 +10980,7 @@ module msg_pass_submatrix_8_unit #(
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+	input wire [LAYER_NUM-1:0] signExten_layer_cnt,
 	input wire c2v_last_row_chunk,
 	input wire v2c_last_row_chunk,
 	input wire [ROW_CHUNK_NUM-1:0] c2v_row_chunk_cnt,
@@ -10999,7 +11083,7 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-1]),
 
 	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
 	.sw_in_bit0_src (vnu_bs_bit0_src),
@@ -11009,14 +11093,14 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 	
-always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[0] <= 0; end
 genvar signExten_ff_id;
 generate
 	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
-		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
 	end
 endgenerate
-/*----------------------------------------------*/		
+/*----------------------------------------------*/				
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -11024,6 +11108,7 @@ endgenerate
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	wire [LAYER_NUM-1:0] vnu_layer_cnt_sync;
 	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_8 #(
 			.QUAN_SIZE(QUAN_SIZE),
@@ -11383,12 +11468,13 @@ endgenerate
 			.cnu_sync_addr    (cnu_mem_page_sync_addr),
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+			.vnu_layer_status (vnu_layer_cnt_sync[LAYER_NUM-1:0]), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
 		);
+		assign vnu_layer_cnt_sync[LAYER_NUM-1:0] = (signExten_layer_cnt[LAYER_NUM-2] == 1'b1) ? signExten_layer_cnt[LAYER_NUM-1:0] : v2c_layer_cnt[LAYER_NUM-1:0];
 		assign cnu_mem_page_sync_addr = (v2c_mem_fetch == 1'b1) ? v2c_mem_page_rd_addr : 
 										(c2v_mem_we == 1'b1) ? c2v_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
 
@@ -12023,7 +12109,7 @@ module msg_pass_submatrix_9_unit #(
 	parameter BITWIDTH_SHIFT_FACTOR = $clog2(CHECK_PARALLELISM-1),
 	parameter shift_factor_0 = CHECK_PARALLELISM-50,
 	parameter shift_factor_1 = CHECK_PARALLELISM-20,
-	parameter shift_factor_2 = CHECK_PARALLELISM-70,
+	parameter shift_factor_2 = 70,
 
 `ifdef SCHED_4_6
 	// Parameters of extrinsic RAMs
@@ -12087,6 +12173,7 @@ module msg_pass_submatrix_9_unit #(
 	input wire ch_ram_fetch,
 	input wire layer_finish,
 	input wire v2c_outRotate_reg_we,
+	input wire v2c_outRotate_reg_we_flush,
 	input wire dnu_inRotate_bs_en,
 	input wire dnu_inRotate_wb,
 	input wire dnu_signExten_ram_fetch,
@@ -12101,6 +12188,7 @@ module msg_pass_submatrix_9_unit #(
 	input wire c2v_mem_we,
 	input wire v2c_mem_we,
 	input wire [LAYER_NUM-1:0] v2c_layer_cnt, // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+	input wire [LAYER_NUM-1:0] signExten_layer_cnt,
 	input wire c2v_last_row_chunk,
 	input wire v2c_last_row_chunk,
 	input wire [ROW_CHUNK_NUM-1:0] c2v_row_chunk_cnt,
@@ -12203,7 +12291,7 @@ shared_qsn_top_85b #(
 	.sw_in1_bit2 (ch_bs_in_bit[2]),
 	.sw_in1_bit3 (ch_bs_in_bit[3]),
 
-	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-2]),
+	.sw_in2_bit0 (vnu_signExtenOut_reg[SIGN_EXTEN_FF_TO_BS-1]),
 
 	.shift_factor (vnu_shift_factorIn), // offset shift factor of submatrix
 	.sw_in_bit0_src (vnu_bs_bit0_src),
@@ -12213,14 +12301,14 @@ assign vnu_shift_factorIn = (vnu_bs_bit0_src[0] == 1'b1) ? v2c_shift_factor_cur_
 							(vnu_bs_bit0_src[1] == 1'b1) ? ch_ramRD_shift_factor_cur_0 :
 							(vnu_bs_bit0_src[2] == 1'b1) ? dnu_inRotate_shift_factor : v2c_shift_factor_cur_0;
 
-always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; end
+always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[0] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[0] <= dnu_inRotate_bit[CHECK_PARALLELISM-1:0]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[0] <= 0; end
 genvar signExten_ff_id;
 generate
 	for(signExten_ff_id=1; signExten_ff_id<SIGN_EXTEN_FF_TO_BS; signExten_ff_id=signExten_ff_id+1) begin : sign_exten_ff_inst
-		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
+		always @(posedge read_clk) begin if(!rstn) vnu_signExtenOut_reg[signExten_ff_id] <= 0; else if(v2c_outRotate_reg_we) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; else if(v2c_outRotate_reg_we_flush) vnu_signExtenOut_reg[signExten_ff_id] <= vnu_signExtenOut_reg[signExten_ff_id-1]; end
 	end
 endgenerate
-/*----------------------------------------------*/
+/*----------------------------------------------*/		
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] v2c_mem_page_addr; // page-write addresses
 	reg [ADDR_WIDTH-1:0] c2v_mem_page_rd_addr; // page-read addresses
@@ -12228,6 +12316,7 @@ endgenerate
 	wire [ADDR_WIDTH-1:0] cnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [ADDR_WIDTH-1:0] vnu_mem_page_sync_addr; // synchornous page-access addresses
 	wire [CHECK_PARALLELISM-1:0] dnu_signExten_wire;
+	wire [LAYER_NUM-1:0] vnu_layer_cnt_sync;
 	//reg [CHECK_PARALLELISM-1:0] dnu_signExten_reg [0:PA_TO_DNU_DELAY-1];
 	mem_subsystem_top_submatrix_9 #(
 			.QUAN_SIZE(QUAN_SIZE),
@@ -12587,12 +12676,13 @@ endgenerate
 			.cnu_sync_addr    (cnu_mem_page_sync_addr),
 			.vnu_sync_addr    (vnu_mem_page_sync_addr),
 			.cnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
-			.vnu_layer_status (v2c_layer_cnt), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
+			.vnu_layer_status (vnu_layer_cnt_sync[LAYER_NUM-1:0]), // layer counter is synchronised with state of VNU FSM, the c2v_layer_cnt is thereby not needed
 			.last_row_chunk   ({v2c_last_row_chunk, c2v_last_row_chunk}),
 			.we               ({v2c_mem_we, c2v_mem_we}),
 			.sys_clk          (read_clk),
 			.rstn             (rstn)
 		);
+		assign vnu_layer_cnt_sync[LAYER_NUM-1:0] = (signExten_layer_cnt[LAYER_NUM-2] == 1'b1) ? signExten_layer_cnt[LAYER_NUM-1:0] : v2c_layer_cnt[LAYER_NUM-1:0];
 		assign cnu_mem_page_sync_addr = (v2c_mem_fetch == 1'b1) ? v2c_mem_page_rd_addr : 
 										(c2v_mem_we == 1'b1) ? c2v_mem_page_addr : DEPTH; // writing down the dummy data onto unused memory page so as to handle exception due to assertion of "Write-Enable" at wrong timing.
 

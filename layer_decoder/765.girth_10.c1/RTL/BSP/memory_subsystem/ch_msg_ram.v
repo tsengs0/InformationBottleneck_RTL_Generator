@@ -8,7 +8,7 @@ module ch_msg_ram #(
 	parameter DATA_WIDTH = CHECK_PARALLELISM*QUAN_SIZE,
 	parameter ADDR_WIDTH = $clog2(DEPTH),
 	parameter VNU_FETCH_LATENCY = 5,
-	parameter CNU_FETCH_LATENCY = 4
+	parameter CNU_FETCH_LATENCY = 16
 ) (
 	output wire [QUAN_SIZE-1:0] dout_0 ,
 	output wire [QUAN_SIZE-1:0] dout_1 ,
@@ -293,7 +293,7 @@ always @(*) begin
 	do_a <= ram_block[read_addr];
 end
 
-reg [DATA_WIDTH-1:0] dout_pipe [0:VNU_FETCH_LATENCY-1];
+reg [DATA_WIDTH-1:0] dout_pipe [0:CNU_FETCH_LATENCY-1];
 always @(posedge read_clk) begin
 	if(rstn == 1'b0) dout_pipe[0] <= 0;
 	else dout_pipe[0] <= do_a;
@@ -301,7 +301,7 @@ end
 
 genvar i;
 generate
-	for(i=1;i<VNU_FETCH_LATENCY;i=i+1) begin : dout_pipeline_inst
+	for(i=1;i<CNU_FETCH_LATENCY;i=i+1) begin : dout_pipeline_inst
 		always @(posedge read_clk) begin
 			if(rstn == 1'b0) dout_pipe[i] <= 0;
 			else dout_pipe[i] <= dout_pipe[i-1];

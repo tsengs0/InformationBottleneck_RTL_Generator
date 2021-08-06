@@ -367,7 +367,7 @@ module qsn_left_85b (
 	wire [82:0] mux_stage_1;
 	reg sel_1_reg0;
 	always @(posedge sys_clk) begin if(!rstn) sel_1_reg0 <= 0; else sel_1_reg0 <= sel[1]; end
-	assign mux_stage_1[0 ] = (sel[1] == 1'b1) ? mux_stage_2[2] : mux_stage_2[0];
+	assign mux_stage_1[0 ] = (sel_1_reg0 == 1'b1) ? mux_stage_2[2] : mux_stage_2[0];
 	assign mux_stage_1[1 ] = (sel_1_reg0 == 1'b1) ? mux_stage_2[3] : mux_stage_2[1];
 	assign mux_stage_1[2 ] = (sel_1_reg0 == 1'b1) ? mux_stage_2[4] : mux_stage_2[2];
 	assign mux_stage_1[3 ] = (sel_1_reg0 == 1'b1) ? mux_stage_2[5] : mux_stage_2[3];

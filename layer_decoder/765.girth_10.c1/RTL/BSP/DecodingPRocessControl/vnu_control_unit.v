@@ -644,7 +644,7 @@ assign ch_bs_en = (
 				  	// therefore, there is no need for permutaiton at last layer which is unlike the v2c message passing
 				  ) ? 1'b1 : 1'b0;
 */
-assign ch_bs_en = (state == CH_BUBBLE && ch_bubble_pipeline_level[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b0) ? 1'b1 : 1'b0;
+assign ch_bs_en = (state == CH_BUBBLE && ch_bubble_pipeline_level[0] == 1'b1 && layer_cnt[LAYER_NUM-1] == 1'b0 && iter_cnt[0] == 1'b1) ? 1'b1 : 1'b0;
 
 /*
 wire [7:0] ch_pa_en_phase_0; assign ch_pa_en_phase_0[7:0] = vnu_main_sys_cnt[7:0];

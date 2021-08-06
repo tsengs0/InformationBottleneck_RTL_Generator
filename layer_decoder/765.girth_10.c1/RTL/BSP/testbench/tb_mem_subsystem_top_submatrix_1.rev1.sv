@@ -97,7 +97,7 @@ module tb_mem_subsystem_top_submatrix_1_rev1 #(
 	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_BS_WB 		   = 7,
 	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_PAGE_ALIGN 	   = 8,
 	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_MEM_WB 		   = 9,
-	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_IDLE  		   = 10,---------------*/
+	parameter [$clog2(CTRL_FSM_STATE_NUM)-1:0] VNU_IDLE  		   = 10,
 	// Parameters related to BS, PA and MEM
 	parameter RAM_DEPTH = 1024,
 	parameter RAM_ADDR_BITWIDTH = $clog2(RAM_DEPTH),

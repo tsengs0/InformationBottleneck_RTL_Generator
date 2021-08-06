@@ -207,16 +207,16 @@ cnu_10 #(
 			always @(posedge read_clk) begin if(!rstn) c2v9_pipe[dc_id] <= 0; else c2v9_pipe[dc_id] <= c2v9_pipe[dc_id-1]; end
 		end
 	endgenerate
-	assign c2v_reg[0] = c2v0_pipe[C2V_TO_DNU_LATENCY-1];
-	assign c2v_reg[1] = c2v1_pipe[C2V_TO_DNU_LATENCY-1];
-	assign c2v_reg[2] = c2v2_pipe[C2V_TO_DNU_LATENCY-1];
-	assign c2v_reg[3] = c2v3_pipe[C2V_TO_DNU_LATENCY-1];
-	assign c2v_reg[4] = c2v4_pipe[C2V_TO_DNU_LATENCY-1];
-	assign c2v_reg[5] = c2v5_pipe[C2V_TO_DNU_LATENCY-1];
-	assign c2v_reg[6] = c2v6_pipe[C2V_TO_DNU_LATENCY-1];
-	assign c2v_reg[7] = c2v7_pipe[C2V_TO_DNU_LATENCY-1];
-	assign c2v_reg[8] = c2v8_pipe[C2V_TO_DNU_LATENCY-1];
-	assign c2v_reg[9] = c2v9_pipe[C2V_TO_DNU_LATENCY-1];
+	assign c2v_reg[0] = c2v0_pipe[C2V_TO_DNU_LATENCY-2];
+	assign c2v_reg[1] = c2v1_pipe[C2V_TO_DNU_LATENCY-2];
+	assign c2v_reg[2] = c2v2_pipe[C2V_TO_DNU_LATENCY-2];
+	assign c2v_reg[3] = c2v3_pipe[C2V_TO_DNU_LATENCY-2];
+	assign c2v_reg[4] = c2v4_pipe[C2V_TO_DNU_LATENCY-2];
+	assign c2v_reg[5] = c2v5_pipe[C2V_TO_DNU_LATENCY-2];
+	assign c2v_reg[6] = c2v6_pipe[C2V_TO_DNU_LATENCY-2];
+	assign c2v_reg[7] = c2v7_pipe[C2V_TO_DNU_LATENCY-2];
+	assign c2v_reg[8] = c2v8_pipe[C2V_TO_DNU_LATENCY-2];
+	assign c2v_reg[9] = c2v9_pipe[C2V_TO_DNU_LATENCY-2];
 `else
 	genvar dc_id;
 	generate
@@ -395,16 +395,16 @@ generate
 	end
 endgenerate
 
-assign cnu0_c2v[QUAN_SIZE-1:0] = c2v_reg[0];
-assign cnu1_c2v[QUAN_SIZE-1:0] = c2v_reg[1];
-assign cnu2_c2v[QUAN_SIZE-1:0] = c2v_reg[2];
-assign cnu3_c2v[QUAN_SIZE-1:0] = c2v_reg[3];
-assign cnu4_c2v[QUAN_SIZE-1:0] = c2v_reg[4];
-assign cnu5_c2v[QUAN_SIZE-1:0] = c2v_reg[5];
-assign cnu6_c2v[QUAN_SIZE-1:0] = c2v_reg[6];
-assign cnu7_c2v[QUAN_SIZE-1:0] = c2v_reg[7];
-assign cnu8_c2v[QUAN_SIZE-1:0] = c2v_reg[8];
-assign cnu9_c2v[QUAN_SIZE-1:0] = c2v_reg[9];
+assign cnu0_c2v[QUAN_SIZE-1:0] = c2v0_pipe[0]; //c2v_reg[0];
+assign cnu1_c2v[QUAN_SIZE-1:0] = c2v1_pipe[0]; //c2v_reg[1];
+assign cnu2_c2v[QUAN_SIZE-1:0] = c2v2_pipe[0]; //c2v_reg[2];
+assign cnu3_c2v[QUAN_SIZE-1:0] = c2v3_pipe[0]; //c2v_reg[3];
+assign cnu4_c2v[QUAN_SIZE-1:0] = c2v4_pipe[0]; //c2v_reg[4];
+assign cnu5_c2v[QUAN_SIZE-1:0] = c2v5_pipe[0]; //c2v_reg[5];
+assign cnu6_c2v[QUAN_SIZE-1:0] = c2v6_pipe[0]; //c2v_reg[6];
+assign cnu7_c2v[QUAN_SIZE-1:0] = c2v7_pipe[0]; //c2v_reg[7];
+assign cnu8_c2v[QUAN_SIZE-1:0] = c2v8_pipe[0]; //c2v_reg[8];
+assign cnu9_c2v[QUAN_SIZE-1:0] = c2v9_pipe[0]; //c2v_reg[9];
 `else
 assign cnu_Din[0] = (v2c_src == 1'b1) ? vnu0_ch_msgIn[QUAN_SIZE-1:0] : cnuIn_v2c0[QUAN_SIZE-1:0];
 assign cnu_Din[1] = (v2c_src == 1'b1) ? vnu1_ch_msgIn[QUAN_SIZE-1:0] : cnuIn_v2c1[QUAN_SIZE-1:0];

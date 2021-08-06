@@ -369,6 +369,7 @@ genvar i;
 generate
 	for(i=0;i<MEM_DEVICE_NUM;i=i+1) begin : mem_device_inst
 		ram_unit #(
+			.QUAN_SIZE (QUAN_SIZE), // 4
 			.DEPTH (DEPTH), //1024
 			.DATA_WIDTH (DATA_WIDTH), //36
 			.ADDR_WIDTH  (ADDR_WIDTH )  //$clog2(DEPTH)
@@ -429,6 +430,7 @@ generate
 endgenerate
 
 ram_unit_frag #(
+	.QUAN_SIZE (QUAN_SIZE), // 4
 	.DEPTH (DEPTH), //1024
 	.DATA_WIDTH (FRAG_DATA_WIDTH), //16
 	.ADDR_WIDTH  (ADDR_WIDTH )  //$clog2(DEPTH)
@@ -792,6 +794,7 @@ assign din_reg_1[84] = second_din_84[QUAN_SIZE-1:0];
 endmodule
 
 module ram_unit #(
+	parameter QUAN_SIZE = 4,
 	parameter DEPTH = 1024,
 	parameter DATA_WIDTH = 36,
 	parameter ADDR_WIDTH = $clog2(DEPTH)
@@ -813,11 +816,12 @@ module ram_unit #(
 );
 `ifdef HDL_INFER
 // Core Memory
+localparam PAGE_MSG_NUM = DATA_WIDTH / QUAN_SIZE;
  reg [DATA_WIDTH-1:0] ram_block [0:DEPTH-1];
  genvar i;
  generate
  	for(i=0;i<DEPTH;i=i+1) begin : ram_block_zeroInit_inst
- 		initial ram_block[i] <= 0;
+ 		initial ram_block[i] <= {PAGE_MSG_NUM{1'b0, {(QUAN_SIZE-1){1'b1}}}};
  	end
  endgenerate
 
@@ -872,6 +876,7 @@ mem_subsys_wrapper ram_unit_u0 (
 endmodule
 
 module ram_unit_frag #(
+	parameter QUAN_SIZE = 4,
 	parameter DEPTH = 1024,
 	parameter DATA_WIDTH = 16,
 	parameter ADDR_WIDTH = $clog2(DEPTH)
@@ -894,11 +899,12 @@ module ram_unit_frag #(
 
 `ifdef HDL_INFER
 // Core Memory
+localparam PAGE_MSG_NUM = DATA_WIDTH / QUAN_SIZE;
  reg [DATA_WIDTH-1:0] ram_block [0:DEPTH-1];
  genvar i;
  generate
  	for(i=0;i<DEPTH;i=i+1) begin : ram_block_zeroInit_inst
- 		initial ram_block[i] <= 0;
+ 		initial ram_block[i] <= {PAGE_MSG_NUM{1'b0, {(QUAN_SIZE-1){1'b1}}}};
  	end
  endgenerate
  

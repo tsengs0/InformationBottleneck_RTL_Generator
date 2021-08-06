@@ -39,16 +39,24 @@ module sym_dn_lut_out (
 `elsif SYM_NO_IO_CONV
 	// Input port of Read Port A to D
 	wire [3:0] y0_mux_A, y1_mux_A;
-	assign y0_mux_A[2:0] = y0_in_A[2:0];
-	xor transpose_y03A(y0_mux_A[3], transpose_en_inA, y0_in_A[3]^transpose_en_inA);
-	xor sign_y1_A(y1_mux_A[3], y0_mux_A[3], y1_in_A[3]);
+	wire dnu_sel_A;
+	//assign y0_mux_A[3] = y0_in_A[3]^transpose_en_inA;
+	assign y0_mux_A[2:0] = {~y0_in_A[2], ~y0_in_A[1], ~y0_in_A[0]};
+	assign dnu_sel_A = y0_in_A[3];
+	assign y1_mux_A[3] = dnu_sel_A^y1_in_A[3];
 	assign y1_mux_A[2:0] = y1_in_A[2:0];
 
 	wire [3:0] y0_mux_B, y1_mux_B;
-	assign y0_mux_B[2:0] = y0_in_B[2:0];
-	xor transpose_y03B(y0_mux_B[3], transpose_en_inB, y0_in_B[3]^transpose_en_inB);
-	xor sign_y1_B(y1_mux_B[3], y0_mux_B[3], y1_in_B[3]);
-	assign y1_mux_B[2:0] = y1_in_B[2:0];	
+	wire dnu_sel_B;
+	//assign y0_mux_B[3] = y0_in_B[3]^transpose_en_inB;
+	assign y0_mux_B[2:0] = {~y0_in_B[2], ~y0_in_B[1], ~y0_in_B[0]};
+	assign dnu_sel_B = y0_in_B[3];
+	assign y1_mux_B[3] = dnu_sel_B^y1_in_B[3];
+	assign y1_mux_B[2:0] = y1_in_B[2:0];
+
+	wire msb_A, msb_B;
+	assign msb_A = dnu_sel_A;
+	assign msb_B = dnu_sel_B;
 `else
 	// Input port of Read Port A to D
 	wire [3:0] y0_mux_A, y1_mux_A;
@@ -65,10 +73,7 @@ module sym_dn_lut_out (
 	xor transpose_y03B(y0_mux_B[3], transpose_en_inB, y0_in_B[3]);
 	assign y1_mux_B[3:0] = (y0_mux_B[3] == 1'b1) ? ~y1_in_B[3:0] : y1_in_B[3:0];
 `endif
-	wire msb_A, msb_B;
-	assign msb_A = y0_mux_A[3];
-	assign msb_B = y0_mux_B[3];
-////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////B//////////////////////////////////////////////////////////////////
 	// Pipeline Stage 0
 	reg [2:0] y0_pipe0_A, y0_pipe0_B;
 	reg [3:0] y1_pipe0_A, y1_pipe0_B;

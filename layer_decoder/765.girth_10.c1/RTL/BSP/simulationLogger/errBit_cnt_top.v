@@ -103,7 +103,7 @@ localparam [9:0] block_length = N;
     errBit_cnt_128b #(.ERR_WIDTH(128), .COUNT_WIDTH(8)) bit_cnt_u3 (.A(hard_subFrame3_pipe0[127:0]), .err_count(bit_cnt3[7:0]));
     errBit_cnt_128b #(.ERR_WIDTH(128), .COUNT_WIDTH(8)) bit_cnt_u4 (.A(hard_subFrame4_pipe0[127:0]), .err_count(bit_cnt4[7:0]));
     errBit_cnt_128b #(.ERR_WIDTH(128), .COUNT_WIDTH(8)) bit_cnt_u5 (.A(hard_subFrame5_pipe0[127:0]), .err_count(bit_cnt5[7:0]));
-    errBit_cnt_96b  #(.ERR_WIDTH( 96), .COUNT_WIDTH(7)) bit_cnt_u6 (.A({{14{1'b1}}, hard_subFrame6_pipe0[ 81:0]}), .err_count(bit_cnt6[6:0]));
+    errBit_cnt_96b  #(.ERR_WIDTH( 96), .COUNT_WIDTH(7)) bit_cnt_u6 (.A({{14{1'b0}}, hard_subFrame6_pipe0[ 81:0]}), .err_count(bit_cnt6[6:0]));
 
     reg [7:0] bit_cnt0_pipe1;
     reg [7:0] bit_cnt1_pipe1;
@@ -154,7 +154,7 @@ localparam [9:0] block_length = N;
 // Pipeline Stage 2: to summate all error bit counts
     localparam ENTIRE_LATENCY = PIPELINE_DEPTH+(ROW_CHUNK_NUM-1);
     localparam ENTIRE_BITWIDTH = $clog2(ENTIRE_LATENCY);
-    localparam SUM_TREE_LATENCY = 2; // 2 clock cycles delay to get responded by sum tree
+    localparam SUM_TREE_LATENCY = 3; // 3 clock cycles delay to get responded by sum tree
 	reg [ENTIRE_BITWIDTH-1:0] busy_cnt;
 	reg en_latch;
 	wire [9:0] sum_out;
@@ -195,7 +195,7 @@ localparam [9:0] block_length = N;
     always @(posedge eval_clk, negedge rstn) begin
         if(rstn == 1'b0) 
             err_count <= 0;
-        else if(en_latch == 1'b1 && busy_cnt >= NORMALISE_LATENCY-1 && busy_cnt < ENTIRE_LATENCY-2)
+        else if(en_latch == 1'b1 && busy_cnt >= NORMALISE_LATENCY-1 && busy_cnt < ENTIRE_LATENCY-1)
             err_count <= err_count + submatrix_err_count;
     end
 
@@ -203,14 +203,16 @@ localparam [9:0] block_length = N;
     always @(posedge eval_clk, negedge rstn) begin
         if(rstn == 1'b0) 
             isErrFrame <= 0;
-        else if(en_latch == 1'b1 && busy_cnt >= NORMALISE_LATENCY-1 && busy_cnt < ENTIRE_LATENCY-2)
+        else if(en_latch == 1'b1 && busy_cnt >= NORMALISE_LATENCY-1 && busy_cnt < ENTIRE_LATENCY-1)
             isErrFrame <= (|err_count) && (|submatrix_err_count);
+        else
+            isErrFrame <= 1'b0;
     end
 
 	initial busy_cnt <= 0;
 	always @(posedge eval_clk, negedge rstn) begin
 		if(rstn == 1'b0) en_latch <= 1'b0;
-		else if(busy_cnt == ENTIRE_LATENCY-2) en_latch <= 1'b0;
+		else if(busy_cnt == ENTIRE_LATENCY-1) en_latch <= 1'b0;
 		else if(en == 1'b1) en_latch <= 1'b1;
         else en_latch <= 1'b0;
 	end
@@ -218,7 +220,7 @@ localparam [9:0] block_length = N;
 	always @(posedge eval_clk, negedge rstn) begin
 		if(rstn == 1'b0) busy_cnt <= 0;
 		else if(en_latch == 1'b1) begin
-			if(busy_cnt == ENTIRE_LATENCY-2) 
+			if(busy_cnt == ENTIRE_LATENCY-1) 
 				busy_cnt <= 0;
 			else
 				busy_cnt <= busy_cnt+1;
@@ -229,7 +231,7 @@ localparam [9:0] block_length = N;
 	always @(posedge eval_clk, negedge rstn) begin
 		if(rstn == 1'b0) busy <= 1'b0;
 		else if(en_latch == 1'b1) begin
-			if(busy_cnt == ENTIRE_LATENCY-2) busy <= 1'b0;
+			if(busy_cnt == ENTIRE_LATENCY-1) busy <= 1'b0;
 			else busy <= 1'b1;
 		end
 		else busy <= 1'b0;
@@ -238,7 +240,7 @@ localparam [9:0] block_length = N;
 	reg count_done_reg; initial count_done_reg <= 0;
 	always @(posedge eval_clk, negedge rstn) begin
 		if(rstn == 1'b0) count_done_reg <= 1'b0;
-		else if(en_latch && busy_cnt == ENTIRE_LATENCY-2) count_done_reg <= 1'b1;
+		else if(en_latch && busy_cnt == ENTIRE_LATENCY-1) count_done_reg <= 1'b1;
 		else count_done_reg <= 1'b0;
 	end
 	reg [SYN_LATENCY-1:0] count_done_sync; initial count_done_sync <= 0;
