@@ -54,7 +54,16 @@ assign Q_signs[8] = common_reduction_parity^var_to_ch_8[QUAN_SIZE-1];
 assign Q_signs[9] = common_reduction_parity^var_to_ch_9[QUAN_SIZE-1];
 
 `ifdef SYM_NO_IO_CONV
-
+assign Q_mag[0] = var_to_ch_0[MAG_SIZE-1:0];
+assign Q_mag[1] = var_to_ch_1[MAG_SIZE-1:0];
+assign Q_mag[2] = var_to_ch_2[MAG_SIZE-1:0];
+assign Q_mag[3] = var_to_ch_3[MAG_SIZE-1:0];
+assign Q_mag[4] = var_to_ch_4[MAG_SIZE-1:0];
+assign Q_mag[5] = var_to_ch_5[MAG_SIZE-1:0];
+assign Q_mag[6] = var_to_ch_6[MAG_SIZE-1:0];
+assign Q_mag[7] = var_to_ch_7[MAG_SIZE-1:0];
+assign Q_mag[8] = var_to_ch_8[MAG_SIZE-1:0];
+assign Q_mag[9] = var_to_ch_9[MAG_SIZE-1:0];
 `else
 // vector of magnitude of all var-to-ch messages
 assign Q_mag[0] = (var_to_ch_0[QUAN_SIZE-1] == 1'b0) ? ~var_to_ch_0[MAG_SIZE-1:0] : var_to_ch_0[MAG_SIZE-1:0];
@@ -70,6 +79,7 @@ assign Q_mag[9] = (var_to_ch_9[QUAN_SIZE-1] == 1'b0) ? ~var_to_ch_9[MAG_SIZE-1:0
 `endif
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Pipeline Stage 0
+reg [CN_DEGREE-1:0] Q_signs_reg0;
 wire [MIN_INDEX_BITWIDTH-1:0] min_index [0:1];
 reg [MAG_SIZE-1:0] de_msg_pipe0 [0:CN_DEGREE-1];
 // Instatiation of messsage magnitude pipeline registers
@@ -81,6 +91,8 @@ generate
 			if(rstn == 1'b0) de_msg_pipe0[de_i] <= {MAG_SIZE{1'bx}};
 			else de_msg_pipe0[de_i] <= Q_mag[de_i];
 		end
+
+		always @(posedge sys_clk) begin if(!rstn) Q_signs_reg0[de_i] <= 0; else Q_signs_reg0[de_i] <= Q_signs[de_i]; end
 	end
 endgenerate
 
@@ -111,6 +123,7 @@ opt_cnu_min_6 #(
 );
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Pipeline Stage 1
+reg [CN_DEGREE-1:0] Q_signs_reg1;
 reg [MAG_SIZE-1:0] de_msg_pipe1 [0:CN_DEGREE-1];
 generate
 	for(de_i=0;de_i<CN_DEGREE;de_i=de_i+1) begin : de_msg_pipe1_inst
@@ -118,6 +131,8 @@ generate
 			if(rstn == 1'b0) de_msg_pipe1[de_i] <= {MAG_SIZE{1'bx}};
 			else de_msg_pipe1[de_i] <= de_msg_pipe0[de_i];
 		end
+
+		always @(posedge sys_clk) begin if(!rstn) Q_signs_reg1[de_i] <= 0; else Q_signs_reg1[de_i] <= Q_signs_reg0[de_i]; end
 	end
 endgenerate
 
@@ -131,13 +146,13 @@ end
 reg [MAG_SIZE-1:0] m1_base; initial m1_base <= 0;
 always @(posedge sys_clk) begin
 	if(rstn == 1'b0) m1_base <= 0;
-	else m1_base[MAG_SIZE-1:0] <= de_msg_pipe1[ min_index[0] ];
+	else m1_base[MAG_SIZE-1:0] <= de_msg_pipe0[ min_index[0] ];
 end
 // Second minimum magnitude
 reg [MAG_SIZE-1:0] m2_base; initial m2_base <= 0;
 always @(posedge sys_clk) begin
 	if(rstn == 1'b0) m2_base <= 0;
-	else m2_base[MAG_SIZE-1:0] <= de_msg_pipe1[ min_index[1] ];
+	else m2_base[MAG_SIZE-1:0] <= de_msg_pipe0[ min_index[1] ];
 end
 
 wire [MAG_SIZE-1:0] m1;
@@ -173,124 +188,124 @@ always @(posedge sys_clk) begin
 	else begin
 		case(min1_index_pipe1[MIN_INDEX_BITWIDTH-1:0])
 			4'b0000: begin
-				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs[0], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs[0])}; `endif
-				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[1])}; `endif
-				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[2])}; `endif
-				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[3])}; `endif
-				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[4])}; `endif
-				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[5])}; `endif
-				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[6])}; `endif
-				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[7])}; `endif
-				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[8])}; `endif
-				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[9])}; `endif
+				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs_reg1[0], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs_reg1[0])}; `endif
+				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs_reg1[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[1])}; `endif
+				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs_reg1[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[2])}; `endif
+				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs_reg1[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[3])}; `endif
+				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs_reg1[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[4])}; `endif
+				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs_reg1[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[5])}; `endif
+				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs_reg1[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[6])}; `endif
+				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs_reg1[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[7])}; `endif
+				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs_reg1[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[8])}; `endif
+				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs_reg1[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[9])}; `endif
 			end
 			4'b0001: begin
-				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[0])}; `endif
-				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs[1], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs[1])}; `endif
-				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[2])}; `endif
-				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[3])}; `endif
-				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[4])}; `endif
-				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[5])}; `endif
-				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[6])}; `endif
-				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[7])}; `endif
-				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[8])}; `endif
-				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[9])}; `endif
+				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs_reg1[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[0])}; `endif
+				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs_reg1[1], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs_reg1[1])}; `endif
+				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs_reg1[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[2])}; `endif
+				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs_reg1[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[3])}; `endif
+				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs_reg1[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[4])}; `endif
+				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs_reg1[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[5])}; `endif
+				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs_reg1[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[6])}; `endif
+				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs_reg1[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[7])}; `endif
+				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs_reg1[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[8])}; `endif
+				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs_reg1[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[9])}; `endif
 			end
 			4'b0010: begin
-				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[0])}; `endif
-				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[1])}; `endif
-				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs[2], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs[2])}; `endif
-				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[3])}; `endif
-				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[4])}; `endif
-				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[5])}; `endif
-				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[6])}; `endif
-				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[7])}; `endif
-				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[8])}; `endif
-				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[9])}; `endif
+				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs_reg1[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[0])}; `endif
+				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs_reg1[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[1])}; `endif
+				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs_reg1[2], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs_reg1[2])}; `endif
+				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs_reg1[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[3])}; `endif
+				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs_reg1[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[4])}; `endif
+				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs_reg1[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[5])}; `endif
+				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs_reg1[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[6])}; `endif
+				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs_reg1[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[7])}; `endif
+				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs_reg1[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[8])}; `endif
+				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs_reg1[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[9])}; `endif
 			end
 			4'b0011: begin
-				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[0])}; `endif
-				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[1])}; `endif
-				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[2])}; `endif
-				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs[3], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs[3])}; `endif
-				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[4])}; `endif
-				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[5])}; `endif
-				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[6])}; `endif
-				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[7])}; `endif
-				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[8])}; `endif
-				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[9])}; `endif
+				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs_reg1[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[0])}; `endif
+				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs_reg1[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[1])}; `endif
+				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs_reg1[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[2])}; `endif
+				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs_reg1[3], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs_reg1[3])}; `endif
+				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs_reg1[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[4])}; `endif
+				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs_reg1[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[5])}; `endif
+				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs_reg1[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[6])}; `endif
+				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs_reg1[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[7])}; `endif
+				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs_reg1[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[8])}; `endif
+				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs_reg1[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[9])}; `endif
 			end
 			4'b0100: begin
-				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[0])}; `endif
-				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[1])}; `endif
-				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[2])}; `endif
-				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[3])}; `endif
-				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs[4], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs[4])}; `endif
-				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[5])}; `endif
-				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[6])}; `endif
-				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[7])}; `endif
-				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[8])}; `endif
-				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[9])}; `endif
+				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs_reg1[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[0])}; `endif
+				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs_reg1[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[1])}; `endif
+				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs_reg1[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[2])}; `endif
+				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs_reg1[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[3])}; `endif
+				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs_reg1[4], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs_reg1[4])}; `endif
+				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs_reg1[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[5])}; `endif
+				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs_reg1[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[6])}; `endif
+				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs_reg1[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[7])}; `endif
+				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs_reg1[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[8])}; `endif
+				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs_reg1[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[9])}; `endif
 			end
 			4'b0101: begin
-				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[0])}; `endif
-				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[1])}; `endif
-				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[2])}; `endif
-				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[3])}; `endif
-				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[4])}; `endif
-				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs[5], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs[5])}; `endif
-				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[6])}; `endif
-				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[7])}; `endif
-				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[8])}; `endif
-				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[9])}; `endif
+				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs_reg1[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[0])}; `endif
+				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs_reg1[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[1])}; `endif
+				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs_reg1[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[2])}; `endif
+				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs_reg1[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[3])}; `endif
+				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs_reg1[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[4])}; `endif
+				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs_reg1[5], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs_reg1[5])}; `endif
+				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs_reg1[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[6])}; `endif
+				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs_reg1[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[7])}; `endif
+				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs_reg1[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[8])}; `endif
+				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs_reg1[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[9])}; `endif
 			end
 			4'b0110: begin
-				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[0])}; `endif
-				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[1])}; `endif
-				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[2])}; `endif
-				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[3])}; `endif
-				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[4])}; `endif
-				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[5])}; `endif
-				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs[6], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs[6])}; `endif
-				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[7])}; `endif
-				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[8])}; `endif
-				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[9])}; `endif
+				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs_reg1[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[0])}; `endif
+				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs_reg1[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[1])}; `endif
+				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs_reg1[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[2])}; `endif
+				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs_reg1[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[3])}; `endif
+				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs_reg1[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[4])}; `endif
+				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs_reg1[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[5])}; `endif
+				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs_reg1[6], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs_reg1[6])}; `endif
+				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs_reg1[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[7])}; `endif
+				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs_reg1[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[8])}; `endif
+				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs_reg1[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[9])}; `endif
 			end
 			4'b0111: begin
-				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[0])}; `endif
-				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[1])}; `endif
-				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[2])}; `endif
-				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[3])}; `endif
-				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[4])}; `endif
-				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[5])}; `endif
-				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[6])}; `endif
-				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs[7], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs[7])}; `endif
-				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[8])}; `endif
-				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[9])}; `endif
+				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs_reg1[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[0])}; `endif
+				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs_reg1[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[1])}; `endif
+				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs_reg1[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[2])}; `endif
+				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs_reg1[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[3])}; `endif
+				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs_reg1[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[4])}; `endif
+				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs_reg1[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[5])}; `endif
+				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs_reg1[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[6])}; `endif
+				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs_reg1[7], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs_reg1[7])}; `endif
+				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs_reg1[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[8])}; `endif
+				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs_reg1[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[9])}; `endif
 			end
 			4'b1000: begin
-				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[0])}; `endif
-				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[1])}; `endif
-				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[2])}; `endif
-				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[3])}; `endif
-				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[4])}; `endif
-				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[5])}; `endif
-				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[6])}; `endif
-				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[7])}; `endif
-				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs[8], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs[8])}; `endif
-				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[9])}; `endif
+				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs_reg1[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[0])}; `endif
+				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs_reg1[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[1])}; `endif
+				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs_reg1[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[2])}; `endif
+				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs_reg1[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[3])}; `endif
+				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs_reg1[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[4])}; `endif
+				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs_reg1[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[5])}; `endif
+				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs_reg1[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[6])}; `endif
+				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs_reg1[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[7])}; `endif
+				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs_reg1[8], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs_reg1[8])}; `endif
+				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs_reg1[9], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[9])}; `endif
 			end
 			4'b1001: begin
-				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[0])}; `endif
-				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[1])}; `endif
-				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[2])}; `endif
-				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[3])}; `endif
-				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[4])}; `endif
-				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[5])}; `endif
-				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[6])}; `endif
-				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[7])}; `endif
-				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs[8])}; `endif
-				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs[9], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs[9])}; `endif
+				ch_to_var_0[QUAN_SIZE-1:0] <= {Q_signs_reg1[0], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[0])}; `endif
+				ch_to_var_1[QUAN_SIZE-1:0] <= {Q_signs_reg1[1], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[1])}; `endif
+				ch_to_var_2[QUAN_SIZE-1:0] <= {Q_signs_reg1[2], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[2])}; `endif
+				ch_to_var_3[QUAN_SIZE-1:0] <= {Q_signs_reg1[3], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[3])}; `endif
+				ch_to_var_4[QUAN_SIZE-1:0] <= {Q_signs_reg1[4], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[4])}; `endif
+				ch_to_var_5[QUAN_SIZE-1:0] <= {Q_signs_reg1[5], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[5])}; `endif
+				ch_to_var_6[QUAN_SIZE-1:0] <= {Q_signs_reg1[6], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[6])}; `endif
+				ch_to_var_7[QUAN_SIZE-1:0] <= {Q_signs_reg1[7], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[7])}; `endif
+				ch_to_var_8[QUAN_SIZE-1:0] <= {Q_signs_reg1[8], `ifdef SYM_NO_IO_CONV m1[MAG_SIZE-1:0]}; `else (m1[MAG_SIZE-1:0])^(~Q_signs_reg1[8])}; `endif
+				ch_to_var_9[QUAN_SIZE-1:0] <= {Q_signs_reg1[9], `ifdef SYM_NO_IO_CONV m2[MAG_SIZE-1:0]}; `else (m2[MAG_SIZE-1:0])^(~Q_signs_reg1[9])}; `endif
 			end
 			default: begin
 				ch_to_var_0[QUAN_SIZE-1:0] <= {QUAN_SIZE{1'bx}};		
