@@ -5,12 +5,14 @@ import numpy as np
 import math
 import json
 import random
+import ib_lut_bd_compression as bdi
 
 q = 4  # 4-bit quantisation
 VN_DEGREE = 3+1
 M = VN_DEGREE-2
 cardinality = pow(2, q) # by exploiting the symmetry of CNU, 3-Gbit input is enough
 Iter_max = 10
+layer_num = VN_DEGREE-1
 IB_ROM_MAX_ITER = 10
 
 # Parameters for IB-CNU RAMs accesses
@@ -35,7 +37,6 @@ if db_iter_num != Iter_max:
     print('The maximum iteration is %d but only %d iterations\' datasets are contained inside the JSON file' % (Iter_max, db_iter_num))
     exit()
 ###########################################################################################################################################
-
 # Get pointer of target LUT
 def ptr(m):
     offset = (cardinality**2)*m
@@ -165,28 +166,30 @@ def lutram_addr_decode(y0, y1):
     return page_addr, bank_addr
 
 def VNU_LUT_construct():
-    ib_lut = np.zeros((M+1, int(int(cardinality**2)/4), 2), dtype=np.int32)
+    # ib_lut[Dc-2][IterNum][LayerNum][Page_Depth][BankNum][]
+    ib_lut = np.zeros((M+1, Iter_max, layer_num, int(int(cardinality**2)/4), 2), dtype=np.int32)
     decomp_num = VN_DEGREE-1
 
     for m in range(M+1):
-
         line = 0
         cnt = 0
         offset = ptr(m)
-        for iter in range(1):
-            for y0 in range(int(cardinality / 2)):  # only half symmetry
-                for y1 in range(int(cardinality)):
-                    if m == 0:
-                        t = int(layer_no_absIn_f0_lut_out(iter=iter, y0=y0, y1=y1, offset=offset))  # only F0 is based on special IB-LUT
-                    elif m < (M - 1) and i > 0:
-                        t = int(layer_no_absIn_lut_out(iter=iter, y0=y0, y1=y1, offset=offset, mag_ctrl=1))
-                    elif m == (M - 1):  # to output the variable-to-check message
-                        t = int(layer_no_absIn_lut_out(iter=iter, y0=y0, y1=y1, offset=offset, mag_ctrl=0))
-                    elif m == (decomp_num - 1):
-                        t = int(layer_app_no_absIn_lut_out(iter=iter, y0=y0, y1=y1, offset=offset))
+        for iter in range(Iter_max):
+            for layer_id in range(layer_num):
+                iter_layer = (iter*layer_num)+layer_id
+                for y0 in range(int(cardinality / 2)):  # only half symmetry
+                    for y1 in range(int(cardinality)):
+                        if m == 0:
+                            t = int(layer_no_absIn_f0_lut_out(iter=iter_layer, y0=y0, y1=y1, offset=offset))  # only F0 is based on special IB-LUT
+                        elif m < (M - 1) and i > 0:
+                            t = int(layer_no_absIn_lut_out(iter=iter_layer, y0=y0, y1=y1, offset=offset, mag_ctrl=1))
+                        elif m == (M - 1):  # to output the variable-to-check message
+                            t = int(layer_no_absIn_lut_out(iter=iter_layer, y0=y0, y1=y1, offset=offset, mag_ctrl=0))
+                        elif m == (decomp_num - 1):
+                            t = int(layer_app_no_absIn_lut_out(iter=iter_layer, y0=y0, y1=y1, offset=offset))
 
-                    page_addr, bank_addr = lutram_addr_decode(y0, y1)
-                    ib_lut[m][page_addr][bank_addr] = t
+                        page_addr, bank_addr = lutram_addr_decode(y0, y1)
+                        ib_lut[m][iter][layer_id][page_addr][bank_addr] = t
 
     return ib_lut
 
@@ -213,7 +216,8 @@ def sign_bit(signed_val):
 def mag_bits(signed_val):
     return (signed_val & ~(1 << (q-1)))
 
-def ib_flood_sym_vnu(msg_in):
+def ib_flood_sym_vnu(iter_id, layer_id, msg_in):
+    iter_layer_id = (iter_id*layer_num)+layer_id
     sign_ch = msg_in[0] >> (q-1)
 
     decomp_num = VN_DEGREE-1
@@ -225,14 +229,14 @@ def ib_flood_sym_vnu(msg_in):
             y0=mag_inv(msg_in[0], 1)
             y0=mag_bits(y0)
             y1=sign_mag_inv(msg_in[1], sign_ch, 1)
-            t[i] = lut_out(iter=0, y0=y0, y1=y1, offset=offset)
+            t[i] = lut_out(iter=iter_layer_id, y0=y0, y1=y1, offset=offset)
             rotate_en = sign_ch
         elif i < (decomp_num-1):
             y0=mag_inv(t[i-1], 1)
             y0=mag_bits(y0)
             sel = rotate_en^sign_bit(t[i-1])
             y1=sign_mag_inv(msg_in[i+1], sel, 1)
-            t[i] = lut_out(iter=0, y0=y0, y1=y1, offset=offset)
+            t[i] = lut_out(iter=iter_layer_id, y0=y0, y1=y1, offset=offset)
             rotate_en = sel
         elif i == (decomp_num-1):
             y0=mag_inv(t[i-1], 1)
@@ -240,7 +244,7 @@ def ib_flood_sym_vnu(msg_in):
 
             sel = rotate_en^sign_bit(t[i-1])
             y1=sign_mag_inv(msg_in[i+1], sel, 1)
-            t[i] = lut_out(iter=0, y0=y0, y1=y1, offset=offset)
+            t[i] = lut_out(iter=iter_layer_id, y0=y0, y1=y1, offset=offset)
             t[i] = sign_mag_inv(t[i], sel, 1)
             #t[i] = sign_bit(t[i])^sel
 
@@ -338,7 +342,8 @@ def ib_layer_eliminated_sym_vnu(msg_in):
 
     return t
 
-def ib_layer_no_absIn_sym_vnu(msg_in):
+def ib_layer_no_absIn_sym_vnu(iter_id, layer_id, msg_in):
+    iter_layer_id = (iter_id*layer_num)+layer_id
     sign_ch = msg_in[0] >> (q-1)
     x_offset=int(cardinality/2)
 
@@ -354,7 +359,7 @@ def ib_layer_no_absIn_sym_vnu(msg_in):
             in_src_1 = mag_bits(msg_in[1])
             y1_sign = sign_bit(in_src_1)^sign_bit(msg_in[0])
             y1 = mag_bits(in_src_1) + (y1_sign << (q-1))
-            t[i] = layer_no_absIn_f0_lut_out(iter=0, y0=y0, y1=y1, offset=offset) # only F0 is based on special IB-LUT
+            t[i] = layer_no_absIn_f0_lut_out(iter=iter_layer_id, y0=y0, y1=y1, offset=offset) # only F0 is based on special IB-LUT
             rotate_en = sign_ch
         elif i < (decomp_num-2):
             y0=mag_bits(t[i-1])
@@ -363,7 +368,7 @@ def ib_layer_no_absIn_sym_vnu(msg_in):
             in_src_1 = mag_bits(msg_in[i+1])
             y1_sign = sel^sign_bit(in_src_1)
             y1 = mag_bits(in_src_1) + (y1_sign << (q-1))
-            t[i] = layer_no_absIn_lut_out(iter=0, y0=y0, y1=y1, offset=offset, mag_ctrl=1)
+            t[i] = layer_no_absIn_lut_out(iter=iter_layer_id, y0=y0, y1=y1, offset=offset, mag_ctrl=1)
             rotate_en = sel
         elif i == (decomp_num - 2): # to output the variable-to-check message
             y0 = mag_bits(t[i - 1])
@@ -373,7 +378,7 @@ def ib_layer_no_absIn_sym_vnu(msg_in):
             y1_sign = sel^sign_bit(in_src_1)
             y1 = mag_bits(in_src_1) + (y1_sign << (q-1))
 
-            t[i] = layer_no_absIn_lut_out(iter=0, y0=y0, y1=y1, offset=offset, mag_ctrl=0)
+            t[i] = layer_no_absIn_lut_out(iter=iter_layer_id, y0=y0, y1=y1, offset=offset, mag_ctrl=0)
             v2c_sign = sign_bit(t[i])^sel
             t[i] = mag_bits(t[i]) + (v2c_sign << (q-1)) # v2c
             rotate_en = sel
@@ -387,7 +392,7 @@ def ib_layer_no_absIn_sym_vnu(msg_in):
             in_src_1 = msg_in[i+1]
             y1_sign = sel^sign_bit(in_src_1)
             y1 = mag_bits(in_src_1) + (y1_sign << (q-1))
-            t[i] = layer_app_no_absIn_lut_out(iter=0, y0=y0, y1=y1, offset=offset)
+            t[i] = layer_app_no_absIn_lut_out(iter=iter_layer_id, y0=y0, y1=y1, offset=offset)
 
             t[i] = sign_mag_inv(signed_val=t[i], sel=sel, ctrl=1)
             #t[i] = sign_bit(t[i])^sel
@@ -398,7 +403,7 @@ def ib_layer_no_absIn_sym_vnu(msg_in):
 
     return t
 
-def ib_layer_no_absIn_sym_lutram(msg_in):
+def ib_layer_no_absIn_sym_lutram(iter_id, layer_id, msg_in):
     ib_lut = VNU_LUT_construct()
     # -------------------------------------------------------------------------------------------------------------
     sign_ch = msg_in[0] >> (q-1)
@@ -418,7 +423,7 @@ def ib_layer_no_absIn_sym_lutram(msg_in):
             y1 = mag_bits(in_src_1) + (y1_sign << (q-1))
 
             pa, ba = lutram_addr_decode(y0, y1)
-            t[i] = ib_lut[0][pa][ba]
+            t[i] = ib_lut[0][iter_id][layer_id][pa][ba]
 
             rotate_en = sign_ch
         elif i < (decomp_num-2):
@@ -430,7 +435,7 @@ def ib_layer_no_absIn_sym_lutram(msg_in):
             y1 = mag_bits(in_src_1) + (y1_sign << (q-1))
 
             pa, ba = lutram_addr_decode(y0, y1)
-            t[i] = ib_lut[1][pa][ba]
+            t[i] = ib_lut[1][iter_id][layer_id][pa][ba]
 
             rotate_en = sel
         elif i == (decomp_num - 2): # to output the variable-to-check message
@@ -442,7 +447,7 @@ def ib_layer_no_absIn_sym_lutram(msg_in):
             y1 = mag_bits(in_src_1) + (y1_sign << (q-1))
 
             pa, ba = lutram_addr_decode(y0, y1)
-            t[i] = ib_lut[1][pa][ba]
+            t[i] = ib_lut[1][iter_id][layer_id][pa][ba]
 
             v2c_sign = sign_bit(t[i])^sel
             t[i] = mag_bits(t[i]) + (v2c_sign << (q-1)) # v2c
@@ -459,7 +464,7 @@ def ib_layer_no_absIn_sym_lutram(msg_in):
             y1 = mag_bits(in_src_1) + (y1_sign << (q-1))
 
             pa, ba = lutram_addr_decode(y0, y1)
-            t[i] = ib_lut[2][pa][ba]
+            t[i] = ib_lut[2][iter_id][layer_id][pa][ba]
 
             t[i] = sign_mag_inv(signed_val=t[i], sel=sel, ctrl=1)
             #t[i] = sign_bit(t[i])^sel
@@ -471,6 +476,7 @@ def ib_layer_no_absIn_sym_lutram(msg_in):
     return t
 
 # -------------------------------------------------------------------------------------------------------------
+## Predicated
 def noAbIn_sim_compare_noAbIn_lutRam():
     ib_lut = VNU_LUT_construct()
     ch = [14, 15, 14, 13, 14, 12, 14, 14, 13]
@@ -519,6 +525,7 @@ def noAbIn_sim_compare_noAbIn_lutRam():
         t = sign_bit(t) ^ sel
         # print(t)
 
+## Predicated
 def comprehensive_verification():
     for i in range(10):
         msg_in = [random.randint(0, 15), random.randint(0, 15), random.randint(0, 15), random.randint(0, 15)]
@@ -609,37 +616,48 @@ def main():
 if __name__ == "__main__":
     #main()
 
+    ib_lut = VNU_LUT_construct()
+    # =================================================================================================================
+    # Verification of removal of Sign-Extension logics
+    # =================================================================================================================
     #noAbIn_sim_compare_noAbIn_lutRam()
     #comprehensive_verification()
-    for ch_msg in range(0,16):
-        for c2v_0 in range(0, 16):
-            for c2v_1 in range(0, 16):
-                for c2v_2 in range(0, 16):
-                    msg_in = [ch_msg, c2v_0, c2v_1, c2v_2]
-                    flood_temp = ib_flood_sym_vnu(msg_in=msg_in)
-                    flood_v2c = mag_inv(signed_val=flood_temp[1], ctrl=0) # comparison based on magnitude (or absolute value) instead of signed integer
-                    flood_hard = flood_temp[2]
+    for iter_id in range(Iter_max):
+        for layer_id in range(layer_num):
+            for ch_msg in range(0, 16):
+                for c2v_0 in range(0, 16):
+                    for c2v_1 in range(0, 16):
+                        for c2v_2 in range(0, 16):
+                            msg_in = [ch_msg, c2v_0, c2v_1, c2v_2]
+                            flood_temp = ib_flood_sym_vnu(iter_id=iter_id, layer_id=layer_id, msg_in=msg_in)
+                            flood_v2c = mag_inv(signed_val=flood_temp[1], ctrl=0)  # comparison based on magnitude (to transform into absolute value) instead of signed integer
+                            flood_hard = flood_temp[2]
 
-                    msg_in_no_absIn = ib_no_absIn_quan(signed_val_vec=msg_in, vec_num=len(msg_in))
-                    layer_no_absIn_lutram = ib_layer_no_absIn_sym_lutram(msg_in=msg_in_no_absIn)
-                    layer_no_absIn_temp = ib_layer_no_absIn_sym_vnu(msg_in=msg_in_no_absIn)
+                            msg_in_no_absIn = ib_no_absIn_quan(signed_val_vec=msg_in, vec_num=len(msg_in))
+                            layer_no_absIn_lutram = ib_layer_no_absIn_sym_lutram(iter_id=iter_id, layer_id=layer_id, msg_in=msg_in_no_absIn)
+                            layer_no_absIn_temp = ib_layer_no_absIn_sym_vnu(iter_id=iter_id, layer_id=layer_id, msg_in=msg_in_no_absIn)
 
-                    layer_no_absIn_lutram_v2c = layer_no_absIn_lutram[1]
-                    layer_no_absIn_lutram_hard = layer_no_absIn_lutram[2]
-                    layer_no_absIn_v2c = layer_no_absIn_temp[1]
-                    layer_no_absIn_hard = layer_no_absIn_temp[2]
+                            layer_no_absIn_lutram_v2c = layer_no_absIn_lutram[1]
+                            layer_no_absIn_lutram_hard = layer_no_absIn_lutram[2]
+                            layer_no_absIn_v2c = layer_no_absIn_temp[1]
+                            layer_no_absIn_hard = layer_no_absIn_temp[2]
 
-                    if flood_v2c != layer_no_absIn_lutram_v2c:
-                        print(format(c2v_2, '04b'), format(c2v_1, '04b'), format(c2v_0, '04b'), format(ch_msg, '04b'), '\t->\t%d and %d' % (flood_v2c, layer_no_absIn_lutram_v2c) )
+                            if flood_v2c != layer_no_absIn_lutram_v2c:
+                            	print('Iter_%d, Layer_%d (w.r.t. lutram) =>' % (iter_id, layer_id), format(c2v_2, '04b'), format(c2v_1, '04b'), format(c2v_0, '04b'), format(ch_msg, '04b'), '\t->\t%d and %d' % (flood_v2c, layer_no_absIn_lutram_v2c))
 
-                    if flood_v2c != layer_no_absIn_v2c:
-                        print(format(c2v_2, '04b'), format(c2v_1, '04b'), format(c2v_0, '04b'), format(ch_msg, '04b'), '\t->\t%d and %d' % (flood_v2c, layer_no_absIn_v2c) )
+                            if flood_v2c != layer_no_absIn_v2c:
+                                print('Iter_%d, Layer_%d (w.r.t. sim) => ' % (iter_id, layer_id), format(c2v_2, '04b'), format(c2v_1, '04b'), format(c2v_0, '04b'), format(ch_msg, '04b'), '\t->\t%d and %d' % (flood_v2c, layer_no_absIn_v2c))
 
-                    if flood_hard != layer_no_absIn_lutram_hard:
-                        print('(Hard-Decision)\t', format(c2v_2, '04b'), format(c2v_1, '04b'), format(c2v_0, '04b'), format(ch_msg, '04b'), '\t->\t%d and %d' % (flood_hard, layer_no_absIn_lutram_hard))
+                            if flood_hard != layer_no_absIn_lutram_hard:
+                                print('Iter_%d, Layer_%d => (Hard-Decision)\t' % (iter_id, layer_id), format(c2v_2, '04b'), format(c2v_1, '04b'), format(c2v_0, '04b'), format(ch_msg, '04b'), '\t->\t%d and %d' % (flood_hard, layer_no_absIn_lutram_hard))
 
-                    if flood_hard != layer_no_absIn_hard:
-                        print('(Hard-Decision)\t', format(c2v_2, '04b'), format(c2v_1, '04b'), format(c2v_0, '04b'), format(ch_msg, '04b'), '\t->\t%d and %d' % (flood_hard, layer_no_absIn_hard))
+                            if flood_hard != layer_no_absIn_hard:
+                                print('Iter_%d, Layer_%d => (Hard-Decision)\t' % (iter_id, layer_id), format(c2v_2, '04b'), format(c2v_1, '04b'), format(c2v_0, '04b'), format(ch_msg, '04b'), '\t->\t%d and %d' % (flood_hard, layer_no_absIn_hard))
 
+    # =================================================================================================================
+    # Base-Delta Compression and Decompression
+    # =================================================================================================================
+    #ib_lut = VNU_LUT_construct()
+    #bdi.bdi_eval(decompose_num=M+1, ib_lut=ib_lut, Iter_max=Iter_max, layer_num=layer_num, quant_bits=q, interleave_bank_num=interleave_bank_num)
 #        delta5 = np.zeros((8, 16), dtype=np.int32)
 # bash -> ./ls > $(date "+%Y.%m.%d-%H.%M.%S").ver
