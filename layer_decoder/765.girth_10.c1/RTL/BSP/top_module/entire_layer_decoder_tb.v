@@ -388,6 +388,7 @@ module entire_layer_decoder_tb #(
 	input wire [SUBMATRIX_Z*QUAN_SIZE-1:0] coded_block_sub8,
 	input wire [SUBMATRIX_Z*QUAN_SIZE-1:0] coded_block_sub9,
 	
+	input wire last_rowChunk_count_done,
 	input wire zero_err_symbol,
 
 	input wire block_cnt_full,
@@ -1352,15 +1353,15 @@ assign iter_cnt[$clog2(MAX_ITER)-1:0] = (vnu_fsm_iter_cnt[0] == 1'b1) ? 0 :
 /*--------------------------------------------------------------------------------------------*/
 // Syndrome Calculation or all-zero detection
 `ifdef ALL_ZERO_CODEWORD
-always @(posedge read_clk, negedge decoder_rstn, negedge sys_rstn) begin
+always @(posedge read_clk, negedge sys_rstn) begin
 	if(decoder_rstn == 1'b0) 
 		iter_termination <= 0;
 	else if(sys_rstn == 1'b0)
 		iter_termination <= 0;
-	else if(hard_decision_done_reg == 1'b1) begin//else if(sys_fsm_state[0] == P2P_V_OUT) begin
+	else if(last_rowChunk_count_done == 1'b1) begin//else if(sys_fsm_state[0] == P2P_V_OUT) begin
 		if(zero_err_symbol == 1'b1) 
 			iter_termination <= 1'b1;
-		else if(iter_cnt == MAX_ITER) 
+		else if(iter_cnt == 0/*since the the MAX_ITER is always reset before the assertion/de-assertion of decode_fail*/) 
 			iter_termination <= 1'b1;
 	end
 	else if(iter_termination == 1'b1) 
@@ -1374,7 +1375,7 @@ initial decode_fail <= 1'b0;
 always @(posedge read_clk) begin
 	if(decoder_rstn == 1'b0) 
 		decode_fail <= 1'b0;
-	else if(hard_decision_done_reg == 1'b1 && zero_err_symbol == 1'b0 && iter_cnt == MAX_ITER) 
+	else if(last_rowChunk_count_done == 1'b1 && zero_err_symbol == 1'b0 && iter_cnt == 0/*since the the MAX_ITER is always reset before the assertion/de-assertion of decode_fail*/) 
 		decode_fail <= 1'b1;
 	else 
 		decode_fail <= 0;

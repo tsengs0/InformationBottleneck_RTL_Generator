@@ -66,6 +66,9 @@ generate
 	        .RAND_SEED_0 (rand_seedIn_0[(64*(i+1+4))-1:64*(i+4)]),
 	        .RAND_SEED_1 (rand_seedIn_1[(64*(i+1+4))-1:64*(i+4)]),
 	        .RAND_SEED_2 (rand_seedIn_2[(64*(i+1+4))-1:64*(i+4)]),
+	        //.RAND_SEED_0 (rand_seedIn_0[(64*(i+1))-1:64*(i)]),
+	        //.RAND_SEED_1 (rand_seedIn_1[(64*(i+1+2))-1:64*(i+2)]),
+	        //.RAND_SEED_2 (rand_seedIn_2[(64*(i+1+7))-1:64*(i+7)]),
 			.PIPELINE_DELAY (24)
 	    ) subblock_gen_u (
 			.sub_block (codeword_segment[i]),

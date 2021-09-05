@@ -1,7 +1,7 @@
 //`define SIM
 //`define V2C_C2V_PROBE
 `define DECODER_4bit
-`define BOX_MULLER_AWGN
+//`define BOX_MULLER_AWGN
 //`define DECODER_3bit
 //`define RC_204_102
 `define QC_RC_7650
@@ -290,9 +290,9 @@
 	//`define CODE_RATE_070
 	`define NG_NUM 10  // 10 codeword segments
 	`define NG_SIZE (`SUBMATRIX_Z*`CN_DEGREE)/`NG_NUM // the number of codebits in each codeword segment
-	`define ERR_FRAME_HALT 100
+	`define ERR_FRAME_HALT 300
 	`define SNR_SET_NUM 61 // from SNR_0.1 (dB) to SNR_6.0 (dB)
-	`define START_SNR 45
+	`define START_SNR 52 // 2.5dB is actually 4.5dB
 	`define ALL_ZERO_CODEWORD // only evaluating all-zero codewords
 
 
@@ -434,7 +434,7 @@
 	`define SIGN_EXTEN_FF_TO_BS 10 // 10 clock cycles between latch of VNU.F1.SignExtenOut and input of DNU.SignExtenIn.BS
 	/*obsolete*/ `define PA_TO_DNU_DELAY 4 // 4 clock cycles between output of PA and input of DNUs 
 	`define V2C_TO_DNU_LATENCY 9
-	`define C2V_TO_DNU_LATENCY 7
+	`define C2V_TO_DNU_LATENCY 6
 	`define SIGN_EXTEN_LAYER_CNT_EXTEN 10
 /*-------------------------------------------------------------------------------------*/
 	`define shift_factor_1_0 `CHECK_PARALLELISM-24

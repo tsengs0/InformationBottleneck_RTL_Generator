@@ -282,6 +282,18 @@ module ib_layer_decoder_ber_eval # (
 		.NG_SIZE (`NG_SIZE), // the number of codebits in each codeword segment, e.g., 765
 		.QUAN_SIZE (`QUAN_SIZE)// 4-bit quantisation for each channel message
 	) block_gen_u0(
+		/*
+		.coded_block_0 (coded_block_sub[9]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_1 (coded_block_sub[8]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_2 (coded_block_sub[2]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_3 (coded_block_sub[3]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_4 (coded_block_sub[0]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_5 (coded_block_sub[5]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_6 (coded_block_sub[1]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_7 (coded_block_sub[7]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_8 (coded_block_sub[4]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		.coded_block_9 (coded_block_sub[6]), // each segment consists of Z*q bits, e.g., 765*4-bit
+		*/
 		.coded_block_0 (coded_block_sub[0]), // each segment consists of Z*q bits, e.g., 765*4-bit
 		.coded_block_1 (coded_block_sub[1]), // each segment consists of Z*q bits, e.g., 765*4-bit
 		.coded_block_2 (coded_block_sub[2]), // each segment consists of Z*q bits, e.g., 765*4-bit
@@ -326,6 +338,7 @@ end
 wire [$clog2(`CTRL_FSM_STATE_NUM)-1:0] vnu_ctrl_state;
 wire [`LAYER_NUM-1:0] v2c_layer_cnt;
 wire [`VNU_MAIN_PIPELINE_LEVEL-1:0] vnu_main_sys_cnt;
+wire last_rowChunk_count_done;
 entire_layer_decoder_tb #(
 	.QUAN_SIZE(`QUAN_SIZE),
 	.LAYER_NUM(`LAYER_NUM),
@@ -672,6 +685,7 @@ entire_layer_decoder_tb #(
 	.coded_block_sub7   (coded_block_sub[7]),
 	.coded_block_sub8   (coded_block_sub[8]),
 	.coded_block_sub9   (coded_block_sub[9]),
+	.last_rowChunk_count_done (last_rowChunk_count_done),
 	.zero_err_symbol    (zero_err_symbol),
 	.block_cnt_full     (block_cnt_full),
 	.read_clk           (read_clk),
@@ -700,6 +714,7 @@ errBit_cnt_top #(
 					 // Because the clock rate of errBit_cnt_top is double of the decoder top module's clcok rate
 ) errBit_cnt_top_u0(
     .err_count (err_count[$clog2(`SUBMATRIX_Z*`CN_DEGREE)-1:0]),
+    .last_rowChunk_count_done (last_rowChunk_count_done),
     .isErrFrame (isErrFrame),
 	.count_done (count_done),
 	.busy (busy),
@@ -709,7 +724,7 @@ errBit_cnt_top #(
     .en (errBit_cnt_en),
     .rstn (errBit_cnt_en)
 );
-assign zero_err_symbol = isErrFrame;//(err_count[$clog2(`SUBMATRIX_Z*`CN_DEGREE)-1:0] == 0) ? 1'b1 : 1'b0;
+assign zero_err_symbol = ~isErrFrame;//(err_count[$clog2(`SUBMATRIX_Z*`CN_DEGREE)-1:0] == 0) ? 1'b1 : 1'b0;
 reg [`ROW_CHUNK_NUM+4-1:0] errBit_cnt_en_propagate;
 initial errBit_cnt_en_propagate <= 0;
 always @(posedge read_clk) begin
@@ -750,7 +765,7 @@ end
 	reg decode_fail_reg;
 	reg [SNR_PACKET_SIZE-1:0] snr_packet_reg;
     // To evaluate the number of bit error over current block
-	wire syndrome_busy, count_done;
+	wire syndrome_busy;
 /*---------------------------------------------------------------------------------------------*/
 // In the following experimental result summaries, all the findings is transferred once every "experimental run"
 // Definition of "Experimental Run": 
@@ -774,7 +789,7 @@ end
 		if(sys_rstn == 1'b0) block_cnt[`FRAME_COUNT_SIZE-1:0] <= 0;
 		//else if(decode_termination == 1'b1) begin
 		else if(snr_next_reg[7] == 1'b1) block_cnt[`FRAME_COUNT_SIZE-1:0] <= 0;
-		else if(count_done_reg == 1'b1) begin
+		else if(count_done_reg == 1'b1 && decode_termination == 1'b1) begin
 		  if(block_cnt[`FRAME_COUNT_SIZE-1:0] == 0) block_cnt[`FRAME_COUNT_SIZE-1:0] <= 2;
 		  else if(block_cnt[`FRAME_COUNT_SIZE-1:0] == PACKAGE_FRAME_NUM-1) block_cnt[`FRAME_COUNT_SIZE-1:0] <= 0;
 		  else if(errFrame_cnt[ERR_FRAME_PACKET_SIZE-1:0] == ERR_FRAME_HALT-1) block_cnt[`FRAME_COUNT_SIZE-1:0] <= 0; // Finish current SNR simulation, reset it thereby
@@ -829,12 +844,15 @@ end
 		else snr_packet_reg <= snr_packet_reg;
 	end
 
+
+	reg [$clog2(`SUBMATRIX_Z*`CN_DEGREE+1)-1:0] err_count_reg0; initial err_count_reg0 <= 0;
+	always @(posedge read_clk) begin if(!sys_rstn) err_count_reg0 <= 0; else err_count_reg0 <= err_count; end
 	// Accumulating error bits over all evaluated blocks
 	initial err_cnt_acc[ERR_CNT_PACKET_SIZE-1:0] <= 0;
 	always @(posedge read_clk, negedge sys_rstn) begin
 		if(sys_rstn == 1'b0) err_cnt_acc[ERR_CNT_PACKET_SIZE-1:0] <= 0;
-		else if(errFrame_cnt == 0) err_cnt_acc[ERR_CNT_PACKET_SIZE-1:0] <= 0;
-		else if(decode_fail_reg == 1'b1) err_cnt_acc[ERR_CNT_PACKET_SIZE-1:0] <= err_cnt_acc + err_count;
+		else if(snr_next_reg[7] == 1'b1) err_cnt_acc[ERR_CNT_PACKET_SIZE-1:0] <= 0;
+		else if(count_done_reg == 1'b1 && decode_termination == 1'b1) err_cnt_acc[ERR_CNT_PACKET_SIZE-1:0] <= err_cnt_acc + err_count_reg0;
 		else err_cnt_acc[ERR_CNT_PACKET_SIZE-1:0] <= err_cnt_acc;
 		/*
 		else if(count_done_reg == 1'b1) begin
@@ -848,16 +866,16 @@ end
 	
 	// Accumulating the number of actual decoding iterations over all evaluated blocks
 	initial iter_cnt_acc <= 0;
+	wire [ITER_ADDR_BW-1:0] decode_iter_cnt_operand;
+	assign decode_iter_cnt_operand = (decode_iter_cnt == 0) ? `MAX_ITER : decode_iter_cnt; /*since the the MAX_ITER is always reset before the assertion/de-assertion of decode_fail*/
 	always @(posedge read_clk, negedge sys_rstn) begin
 		if(sys_rstn == 1'b0) 
 			iter_cnt_acc[ITER_CNT_PACKET_SIZE-1:0] <= 0;
 		else if(decode_termination == 1'b1) begin
-			if(block_cnt[`FRAME_COUNT_SIZE-1:0] == 0) 
-				iter_cnt_acc[ITER_CNT_PACKET_SIZE-1:0] <= decode_iter_cnt[ITER_ADDR_BW-1:0];
-			//else if(block_cnt[`FRAME_COUNT_SIZE-1:0] == PACKAGE_FRAME_NUM-1) 
-			//	iter_cnt_acc[ITER_CNT_PACKET_SIZE-1:0] <= iter_cnt_acc[ITER_CNT_PACKET_SIZE-1:0]+decode_iter_cnt[ITER_ADDR_BW-1:0];
-			else 
-				iter_cnt_acc[ITER_CNT_PACKET_SIZE-1:0] <= iter_cnt_acc[ITER_CNT_PACKET_SIZE-1:0]+decode_iter_cnt[ITER_ADDR_BW-1:0];
+			if(block_cnt[`FRAME_COUNT_SIZE-1:0] == 0)
+				iter_cnt_acc[ITER_CNT_PACKET_SIZE-1:0] <= decode_iter_cnt_operand[ITER_ADDR_BW-1:0];
+			else
+				iter_cnt_acc[ITER_CNT_PACKET_SIZE-1:0] <= iter_cnt_acc[ITER_CNT_PACKET_SIZE-1:0]+decode_iter_cnt_operand[ITER_ADDR_BW-1:0];
 		end
 	end
 /*---------------------------------------------------------------------------------------------*/

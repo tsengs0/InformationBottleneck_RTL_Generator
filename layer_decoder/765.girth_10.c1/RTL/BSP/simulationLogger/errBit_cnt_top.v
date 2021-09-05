@@ -31,6 +31,7 @@ module errBit_cnt_top #(
 )(
     output reg [ERR_BIT_BITWIDTH-1:0] err_count,
     output reg isErrFrame,
+    output reg last_rowChunk_count_done,
 	output wire count_done,
 	output reg busy,
 	
@@ -204,7 +205,7 @@ localparam [9:0] block_length = N;
         if(rstn == 1'b0) 
             isErrFrame <= 0;
         else if(en_latch == 1'b1 && busy_cnt >= NORMALISE_LATENCY-1 && busy_cnt < ENTIRE_LATENCY-1)
-            isErrFrame <= (|err_count) && (|submatrix_err_count);
+            isErrFrame <= (|err_count) || (|submatrix_err_count);
         else
             isErrFrame <= 1'b0;
     end
@@ -236,7 +237,7 @@ localparam [9:0] block_length = N;
 		end
 		else busy <= 1'b0;
 	end
-	
+/*	
 	reg count_done_reg; initial count_done_reg <= 0;
 	always @(posedge eval_clk, negedge rstn) begin
 		if(rstn == 1'b0) count_done_reg <= 1'b0;
@@ -249,4 +250,15 @@ localparam [9:0] block_length = N;
 		else count_done_sync[SYN_LATENCY-1:0] <= {count_done_sync[0], count_done_reg};
 	end
 	assign count_done = |count_done_sync[SYN_LATENCY-1:0];
+*/
+    assign count_done = last_rowChunk_count_done;
+
+    always @(posedge eval_clk, negedge rstn) begin
+        if(rstn == 1'b0) 
+            last_rowChunk_count_done <= 0;
+        else if(en_latch == 1'b1 && busy_cnt == ENTIRE_LATENCY-2)
+            last_rowChunk_count_done <= 1'b1;
+        else
+            last_rowChunk_count_done <= 1'b0;
+    end
 endmodule
