@@ -58,7 +58,8 @@ module vnu_control_unit_sched_4_6_2 #(
 	parameter [$clog2(FSM_STATE_NUM)-1:0] BS_WB 		  = 7,
 	parameter [$clog2(FSM_STATE_NUM)-1:0] PAGE_ALIGN 	  = 8,
 	parameter [$clog2(FSM_STATE_NUM)-1:0] MEM_WB 		  = 9,
-	parameter [$clog2(FSM_STATE_NUM)-1:0] IDLE  		  = 10
+	parameter [$clog2(FSM_STATE_NUM)-1:0] IDLE  		  = 10,
+	parameter VNU_MAIN_PIPELINE_LEVEL = VNU_PIPELINE_LEVEL+PERMUTATION_LEVEL+PAGE_ALIGN_LEVEL+PAGE_MEM_WB_LEVEL+ROW_CHUNK_NUM-1
 ) (
 	// output port for IB-ROM update
 	output wire [`IB_VNU_DECOMP_funNum-1:0] vnu_wr,
@@ -627,7 +628,6 @@ assign 	vnu_update_pend = (  /*state == VNU_IB_RAM_PEND &&*/
 /*-------------------------------------------------------------------------------------------------------------------*/
 // Write-Back trace of channel buffer
 `ifdef SCHED_4_6
-localparam VNU_MAIN_PIPELINE_LEVEL = VNU_PIPELINE_LEVEL+PERMUTATION_LEVEL+PAGE_ALIGN_LEVEL+PAGE_MEM_WB_LEVEL+ROW_CHUNK_NUM-1;
 reg [ROW_CHUNK_NUM-1:0] v2c_bs_pipeline_level; // to monitor the completion of v2c_bs_en and the remaining workload of ch_bs_en can continue
 always @(posedge read_clk) begin
 	if(rstn == 1'b0) v2c_bs_pipeline_level <= 1;
