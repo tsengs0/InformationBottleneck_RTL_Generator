@@ -1,5 +1,14 @@
 //`default_nettype none
 `include "revision_def.vh"
+/*
+	Technology: GSCL-45nm (FreePDK 45nm)
+	Number of wires: 787
+	Number of wire bits: 1001
+	Number of cells: 949
+		MUX2x1  : 105
+		DFFPOSX1: 100
+*/
+
 `define BASE_MIN
 module cnu_10 #(
 	parameter CN_DEGREE = 10,
@@ -65,7 +74,7 @@ assign Q_mag[7] = var_to_ch_7[MAG_SIZE-1:0];
 assign Q_mag[8] = var_to_ch_8[MAG_SIZE-1:0];
 assign Q_mag[9] = var_to_ch_9[MAG_SIZE-1:0];
 `else
-// vector of magnitude of all var-to-ch messages
+// Sign-Magnitude conversion of all var-to-ch messages
 assign Q_mag[0] = (var_to_ch_0[QUAN_SIZE-1] == 1'b0) ? ~var_to_ch_0[MAG_SIZE-1:0] : var_to_ch_0[MAG_SIZE-1:0];
 assign Q_mag[1] = (var_to_ch_1[QUAN_SIZE-1] == 1'b0) ? ~var_to_ch_1[MAG_SIZE-1:0] : var_to_ch_1[MAG_SIZE-1:0];
 assign Q_mag[2] = (var_to_ch_2[QUAN_SIZE-1] == 1'b0) ? ~var_to_ch_2[MAG_SIZE-1:0] : var_to_ch_2[MAG_SIZE-1:0];
