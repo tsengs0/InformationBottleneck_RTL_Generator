@@ -38,14 +38,13 @@ assign Q_mag[1] = (var_to_ch_1[QUAN_SIZE-1] == 1'b0) ? ~var_to_ch_1[MAG_SIZE-1:0
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Pipeline Stage 0
 reg common_reduction_parity_reg0; initial common_reduction_parity_reg0 <= 1'b0;
-reg [ROW_SPLIT_FACTOR-2:0] y_v0_sign_reg;
-reg [ROW_SPLIT_FACTOR-2:0] y_v1_sign_reg;
-always @(posedge sys_clk) begin if(!rstn) common_reduction_parity_reg0 <= 1'b0; else common_reduction_parity_reg0 <= common_reduction_parity^common_reduction_parity_reg0; end
+reg [ROW_SPLIT_FACTOR-1:0] y_v0_sign_reg;
+reg [ROW_SPLIT_FACTOR-1:0] y_v1_sign_reg;
 always @(posedge sys_clk) begin if(!rstn) y_v0_sign_reg[0] <= 1'b0; else y_v0_sign_reg[0] <= var_to_ch_0[QUAN_SIZE-1]; end
 always @(posedge sys_clk) begin if(!rstn) y_v1_sign_reg[0] <= 1'b0; else y_v1_sign_reg[0] <= var_to_ch_1[QUAN_SIZE-1]; end
 genvar sign_propagate_id;
 generate
-	for(sign_propagate_id=1;sign_propagate_id<ROW_SPLIT_FACTOR-1;sign_propagate_id=sign_propagate_id+1) begin : y0_y1_sign_propagation
+	for(sign_propagate_id=1;sign_propagate_id<ROW_SPLIT_FACTOR;sign_propagate_id=sign_propagate_id+1) begin : y0_y1_sign_propagation
 		always @(posedge sys_clk) begin if(!rstn) y_v0_sign_reg[sign_propagate_id] <= 1'b0; else y_v0_sign_reg[sign_propagate_id] <= y_v0_sign_reg[sign_propagate_id-1]; end
 		always @(posedge sys_clk) begin if(!rstn) y_v1_sign_reg[sign_propagate_id] <= 1'b0; else y_v1_sign_reg[sign_propagate_id] <= y_v1_sign_reg[sign_propagate_id-1]; end
 	end
@@ -160,6 +159,11 @@ generate
 		assign mag_1_sel[propagate_id] = (pipeline_level_in[propagate_id] == 1'b1) ? is_minimum_pointers_out[1][propagate_id] : 0;
 	end
 endgenerate
+always @(posedge sys_clk) begin if(!rstn) common_reduction_parity_reg0 <= 1'b0; else if(pipeline_level_in[ROW_SPLIT_FACTOR-1] == 1'b1) common_reduction_parity_reg0 <= 1'b0; else common_reduction_parity_reg0 <= common_reduction_parity^common_reduction_parity_reg0; end
+reg common_reduction_parity_out_reg0; initial common_reduction_parity_out_reg0 <= 1'b0;
+wire common_reduction_parity_out;
+always @(posedge sys_clk) begin if(!rstn) common_reduction_parity_out_reg0 <= 1'b0; else if(pipeline_level_in[0] == 1'b1) common_reduction_parity_out_reg0 <= common_reduction_parity_reg0; end
+assign common_reduction_parity_out = (pipeline_level_in[0] & common_reduction_parity_reg0) | (~pipeline_level_in[0] & common_reduction_parity_out_reg0);
 ///////////////////////////////////////////////////////////////////////////////////
 // Assigning magnitudes of outgoing (extrinsic) msssages - datapath portion 1
 ///////////////////////////////////////////////////////////////////////////////////
@@ -178,6 +182,6 @@ assign min_0_mag[1] = (mag_1_sel_final == 1'b0) ? feedback_Q_mag_out[0] : 0;
 assign min_1_mag[1] = (mag_1_sel_final == 1'b1) ? feedback_Q_mag_out[1] : 0;
 assign ch_to_var_1[MAG_SIZE-1:0] = min_0_mag[1]^min_1_mag[1];
 
-assign ch_to_var_0[QUAN_SIZE-1] = y_v0_sign_reg[ROW_SPLIT_FACTOR-2]^common_reduction_parity_reg0;
-assign ch_to_var_1[QUAN_SIZE-1] = y_v1_sign_reg[ROW_SPLIT_FACTOR-2]^common_reduction_parity_reg0;
+assign ch_to_var_0[QUAN_SIZE-1] = y_v0_sign_reg[ROW_SPLIT_FACTOR-1]^common_reduction_parity_out;
+assign ch_to_var_1[QUAN_SIZE-1] = y_v1_sign_reg[ROW_SPLIT_FACTOR-1]^common_reduction_parity_out;
 endmodule
