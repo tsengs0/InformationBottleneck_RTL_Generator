@@ -1,0 +1,106 @@
+[
+	{
+		"BASE_SET": "A-2-only cmd",
+		"CIRCULAR_ALIGN_CASE":
+		[
+			"(layer_status[0] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[0] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : 2'b00",
+			"(layer_status[1] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[0] == 1'b1) ? 2'b01 : 2'b00",
+			"((layer_status[0] == 1'b1 || layer_status[1] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[0] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : 2'b00",
+			"(layer_status[2] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[0] == 1'b1) ? 2'b01 : 2'b00",
+			"((layer_status[0] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[0] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : 2'b00",
+			"((layer_status[1] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[0] == 1'b1) ? 2'b01 : 2'b00",
+			"(first_row_chunk == 1'b1) ? 2'b10 : (layer_status[0] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : 2'b00"
+		]
+	},
+	{
+		"BASE_SET": "B-2-only cmd",
+		"CIRCULAR_ALIGN_CASE":
+		[
+			"(layer_status[0] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[1] == 1'b1) ? 2'b01 : 2'b00",
+			"(layer_status[1] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[1] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : 2'b00",
+			"((layer_status[0] == 1'b1 || layer_status[1] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[1] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : 2'b00",
+			"(layer_status[2] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[1] == 1'b1) ? 2'b01 : 2'b00",
+			"((layer_status[0] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[1] == 1'b1) ? 2'b01 : 2'b00",
+			"((layer_status[1] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[1] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : 2'b00",
+			"(first_row_chunk == 1'b1) ? 2'b10 : (layer_status[1] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : 2'b00"
+		]
+	},
+	{
+		"BASE_SET": "A&B-2-only cmd",
+		"CIRCULAR_ALIGN_CASE":
+		[
+			"(layer_status[0] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[0] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : (layer_status[1] == 1'b1) ? 2'b01 : 2'b00",
+			"(layer_status[1] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[1] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : (layer_status[0] == 1'b1) ? 2'b01 : 2'b00",
+			"((layer_status[0] == 1'b1 || layer_status[1] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : ((layer_status[0] == 1'b1 || layer_status[1] == 1'b1) && first_row_chunk == 1'b0) ? 2'b01 : 2'b00",
+			"(layer_status[2] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[0] == 1'b1 || layer_status[1] == 1'b1) ? 2'b01 : 2'b00",
+			"((layer_status[0] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[0] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : (layer_status[1] == 1'b1) ? 2'b01 : 2'b00",
+			"((layer_status[1] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[1] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : (layer_status[0] == 1'b1) ? 2'b01 : 2'b00",
+			"(first_row_chunk == 1'b1) ? 2'b10 : ((layer_status[0] == 1'b1 || layer_status[1] == 1'b1) && first_row_chunk == 1'b0) ? 2'b01 : 2'b00"
+		]
+	},
+	{
+		"BASE_SET": "C-2-only cmd",
+		"CIRCULAR_ALIGN_CASE":
+		[
+			"(layer_status[0] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[2] == 1'b1) ? 2'b01 : 2'b00",
+			"(layer_status[1] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[2] == 1'b1) ? 2'b01 : 2'b00",
+			"((layer_status[0] == 1'b1 || layer_status[1] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[2] == 1'b1) ? 2'b01 : 2'b00",
+			"(layer_status[2] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[2] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : 2'b00",
+			"((layer_status[0] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[2] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : 2'b00",
+			"((layer_status[1] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[2] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : 2'b00",
+			"(first_row_chunk == 1'b1) ? 2'b10 : (layer_status[2] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : 2'b00"
+		]
+	},
+	{
+		"BASE_SET": "A&C-2-only cmd",
+		"CIRCULAR_ALIGN_CASE":
+		[
+			"(layer_status[0] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[0] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : (layer_status[2] == 1'b1) ? 2'b01 : 2'b00",
+			"(layer_status[1] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[0] == 1'b1 || layer_status[2] == 1'b1) ? 2'b01 : 2'b00",
+			"((layer_status[0] == 1'b1 || layer_status[1] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[0] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : (layer_status[2] == 1'b1) ? 2'b01 : 2'b00",
+			"(layer_status[2] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[2] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : (layer_status[0] == 1'b1) ? 2'b01 : 2'b00",
+			"((layer_status[0] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : ((layer_status[0] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b0) ? 2'b01 : 2'b00",
+			"((layer_status[1] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[2] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : (layer_status[0] == 1'b1) ? 2'b01 : 2'b00",
+			"(first_row_chunk == 1'b1) ? 2'b10 : ((layer_status[0] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b0) ? 2'b01 : 2'b00"
+		]
+	},
+	{
+		"BASE_SET": "B&C-2-only cmd",
+		"CIRCULAR_ALIGN_CASE":
+		[
+			"(layer_status[0] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[1] == 1'b1 || layer_status[2] == 1'b1) ? 2'b01 : 2'b00",
+			"(layer_status[1] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[1] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : (layer_status[2] == 1'b1) ? 2'b01 : 2'b00",
+			"((layer_status[0] == 1'b1 || layer_status[1] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[1] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : (layer_status[2] == 1'b1) ? 2'b01 : 2'b00",
+			"(layer_status[2] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[2] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : (layer_status[1] == 1'b1) ? 2'b01 : 2'b00",
+			"((layer_status[0] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : (layer_status[2] == 1'b1 && first_row_chunk == 1'b0) ? 2'b01 : (layer_status[1] == 1'b1) ? 2'b01 : 2'b00",
+			"((layer_status[1] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : ((layer_status[1] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b0) ? 2'b01 : 2'b00",
+			"(first_row_chunk == 1'b1) ? 2'b10 : ((layer_status[1] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b0) ? 2'b01 : 2'b00"
+		]
+	},
+	{
+		"BASE_SET": "All-2-delay cmd",
+		"CIRCULAR_ALIGN_CASE":
+		[
+			"(layer_status[0] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : 2'b01",
+			"(layer_status[1] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : 2'b01",
+			"((layer_status[0] == 1'b1 || layer_status[1] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : 2'b01",
+			"(layer_status[2] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : 2'b01",
+			"((layer_status[0] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : 2'b01",
+			"((layer_status[1] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : 2'b01",
+			"(first_row_chunk == 1'b1) ? 2'b10 : 2'b01"
+		]
+	},
+	{
+		"BASE_SET": "All-1-delay cmd",
+		"CIRCULAR_ALIGN_CASE":
+		[
+			"(layer_status[0] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : 2'b00",
+			"(layer_status[1] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : 2'b00",
+			"((layer_status[0] == 1'b1 || layer_status[1] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : 2'b00",
+			"(layer_status[2] == 1'b1 && first_row_chunk == 1'b1) ? 2'b10 : 2'b00",
+			"((layer_status[0] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : 2'b00",
+			"((layer_status[1] == 1'b1 || layer_status[2] == 1'b1) && first_row_chunk == 1'b1) ? 2'b10 : 2'b00",
+			"(first_row_chunk == 1'b1) ? 2'b10 : 2'b00"
+		]
+	}
+]

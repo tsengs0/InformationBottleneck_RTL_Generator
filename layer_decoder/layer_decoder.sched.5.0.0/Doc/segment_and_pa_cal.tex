@@ -1,0 +1,10 @@
+In the current layer i of jth submatrix column, the column process starts from index $s(i, j)$ where $i \in {0, |L|-1}$ and $j \in {0, 1, ..., d_{c}-1}$. The set of $z$ partial variable nodes are broken up into $z \over P_{c}$ segments, $P_{c}$ nodes for each, and the assignement of nodes to specific segments is determined in calculation that:
+\begin{align}
+	segment(h^{t}_{i,j}) = \lfloor {{( z - s(i, j) + t ) \mod z}  \over Pc} \rfloor
+\end{align}
+
+\begin{align}
+	segment(h^{t}_{i,j}) = \lfloor {{( z - s(i, j) + t ) \mod z}  \over Pc} \rfloor 
+	\\
+	Position(h^{t}_{i,j}) =({( z - s(i, j) + t ) \mod z})  \mod Pc
+\end{align}
