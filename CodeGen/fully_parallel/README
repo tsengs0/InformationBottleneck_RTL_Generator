@@ -1,2 +1,0 @@
-In some PCM file, the delimiter between Ei an Ei+1, where i in {0, dv-1}, is '\t'. And others are ' '.
-Similarly there is such difference in Mi. 
