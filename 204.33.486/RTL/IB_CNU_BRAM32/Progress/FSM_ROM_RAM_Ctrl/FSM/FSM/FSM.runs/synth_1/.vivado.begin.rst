@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado" Owner="s1610105" Host="tlab21.jaist.ac.jp" Pid="24940">
-    </Process>
-</ProcessHandle>

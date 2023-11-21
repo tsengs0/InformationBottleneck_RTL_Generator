@@ -1,4 +1,0 @@
-Running: xsim.dir/cnu6_ram_write_tb_behav/xsimk -simmode gui -wdb cnu6_ram_write_tb_behav.wdb -simrunnum 0 -socket 36957
-Design successfully loaded
-Design Loading Memory Usage: 41988 KB (Peak: 41988 KB)
-Design Loading CPU Usage: 0 ms
