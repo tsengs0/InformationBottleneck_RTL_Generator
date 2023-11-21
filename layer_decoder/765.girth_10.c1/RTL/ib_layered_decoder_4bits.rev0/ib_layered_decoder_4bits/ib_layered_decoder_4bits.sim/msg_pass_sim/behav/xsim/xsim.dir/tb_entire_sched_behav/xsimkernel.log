@@ -1,7 +1,0 @@
-Running: xsim.dir/tb_entire_sched_behav/xsimk -simmode gui -wdb tb_entire_sched_behav.wdb -simrunnum 0 -socket 40481
-Design successfully loaded
-Design Loading Memory Usage: 43640 KB (Peak: 43640 KB)
-Design Loading CPU Usage: 20 ms
-Simulation completed
-Simulation Memory Usage: 119056 KB (Peak: 176764 KB)
-Simulation CPU Usage: 80 ms

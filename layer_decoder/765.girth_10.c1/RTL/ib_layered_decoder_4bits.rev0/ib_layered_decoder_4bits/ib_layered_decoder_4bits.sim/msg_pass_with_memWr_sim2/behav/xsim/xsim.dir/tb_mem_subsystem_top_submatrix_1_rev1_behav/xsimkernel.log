@@ -1,4 +1,0 @@
-Running: xsim.dir/tb_mem_subsystem_top_submatrix_1_rev1_behav/xsimk -simmode gui -wdb tb_mem_subsystem_top_submatrix_1_rev1_behav.wdb -simrunnum 0 -socket 37589
-Design successfully loaded
-Design Loading Memory Usage: 48412 KB (Peak: 48412 KB)
-Design Loading CPU Usage: 80 ms

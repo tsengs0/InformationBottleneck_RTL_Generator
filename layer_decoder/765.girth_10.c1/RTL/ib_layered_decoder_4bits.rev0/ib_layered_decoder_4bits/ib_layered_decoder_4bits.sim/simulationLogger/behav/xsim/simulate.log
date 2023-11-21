@@ -1,3 +1,0 @@
-Vivado Simulator 2019.2
-Time resolution is 1 ps
-$finish called at time : 325 ns : File "/home/s1820419/LDPC_MinorResearch/GeneratedDecoders/layer_decoder/765.girth_10.c1/RTL/BSP/testbench/tb_errBit_cnt_top.sv" Line 81
