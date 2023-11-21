@@ -1,0 +1,121 @@
+./main 1 3
+
+----------------------------------
+@ T0
+INIT
+IDLE (HW_0) --> COL_ADDR_ARRIVAL (HW_0)
+
+----------------------------------
+@ T1
+INIT
+COL_ADDR_ARRIVAL (HW_0) --> READ_COL_ADDR (HW_0)
+IDLE (HW_1) --> IDLE (HW_1)
+
+----------------------------------
+@ T2
+INIT
+READ_COL_ADDR (HW_0) --> SHIFT_GEN (HW_0)
+IDLE (HW_1) --> COL_ADDR_ARRIVAL (HW_1)
+IDLE (HW_2) --> IDLE (HW_2)
+
+----------------------------------
+@ T3
+SHIFT_GEN (HW_0) --> SHIFT_OUT (HW_0)
+COL_ADDR_ARRIVAL (HW_1) --> READ_COL_ADDR (HW_1)
+IDLE (HW_2) --> IDLE (HW_2)
+
+----------------------------------
+@ T4
+SHIFT_OUT (HW_0) --> IDLE (HW_0)
+READ_COL_ADDR (HW_1) --> SHIFT_GEN (HW_1)
+IDLE (HW_2) --> COL_ADDR_ARRIVAL (HW_2)
+
+----------------------------------
+@ T5
+IDLE (HW_0) --> IDLE (HW_0)
+SHIFT_GEN (HW_1) --> SHIFT_OUT (HW_1)
+COL_ADDR_ARRIVAL (HW_2) --> READ_COL_ADDR (HW_2)
+
+----------------------------------
+@ T6
+IDLE (HW_0) --> IDLE (HW_0)
+SHIFT_OUT (HW_1) --> IDLE (HW_1)
+READ_COL_ADDR (HW_2) --> SHIFT_GEN (HW_2)
+
+----------------------------------
+@ T7
+IDLE (HW_0) --> COL_ADDR_ARRIVAL (HW_0)
+IDLE (HW_1) --> IDLE (HW_1)
+SHIFT_GEN (HW_2) --> SHIFT_OUT (HW_2)
+
+----------------------------------
+@ T8
+COL_ADDR_ARRIVAL (HW_0) --> READ_COL_ADDR (HW_0)
+IDLE (HW_1) --> IDLE (HW_1)
+SHIFT_OUT (HW_2) --> IDLE (HW_2)
+
+----------------------------------
+@ T9
+READ_COL_ADDR (HW_0) --> SHIFT_GEN (HW_0)
+IDLE (HW_1) --> COL_ADDR_ARRIVAL (HW_1)
+IDLE (HW_2) --> IDLE (HW_2)
+
+----------------------------------
+@ T10
+SHIFT_GEN (HW_0) --> SHIFT_OUT (HW_0)
+COL_ADDR_ARRIVAL (HW_1) --> READ_COL_ADDR (HW_1)
+IDLE (HW_2) --> IDLE (HW_2)
+
+----------------------------------
+@ T11
+SHIFT_OUT (HW_0) --> IDLE (HW_0)
+READ_COL_ADDR (HW_1) --> SHIFT_GEN (HW_1)
+IDLE (HW_2) --> COL_ADDR_ARRIVAL (HW_2)
+
+----------------------------------
+@ T12
+IDLE (HW_0) --> IDLE (HW_0)
+SHIFT_GEN (HW_1) --> SHIFT_OUT (HW_1)
+COL_ADDR_ARRIVAL (HW_2) --> READ_COL_ADDR (HW_2)
+
+----------------------------------
+@ T13
+IDLE (HW_0) --> IDLE (HW_0)
+SHIFT_OUT (HW_1) --> IDLE (HW_1)
+READ_COL_ADDR (HW_2) --> SHIFT_GEN (HW_2)
+
+----------------------------------
+@ T14
+IDLE (HW_0) --> COL_ADDR_ARRIVAL (HW_0)
+IDLE (HW_1) --> IDLE (HW_1)
+SHIFT_GEN (HW_2) --> SHIFT_OUT (HW_2)
+
+----------------------------------
+@ T15
+COL_ADDR_ARRIVAL (HW_0) --> READ_COL_ADDR (HW_0)
+IDLE (HW_1) --> IDLE (HW_1)
+SHIFT_OUT (HW_2) --> IDLE (HW_2)
+
+----------------------------------
+@ T16
+READ_COL_ADDR (HW_0) --> SHIFT_GEN (HW_0)
+IDLE (HW_1) --> COL_ADDR_ARRIVAL (HW_1)
+IDLE (HW_2) --> IDLE (HW_2)
+
+----------------------------------
+@ T17
+SHIFT_GEN (HW_0) --> SHIFT_OUT (HW_0)
+COL_ADDR_ARRIVAL (HW_1) --> READ_COL_ADDR (HW_1)
+IDLE (HW_2) --> IDLE (HW_2)
+
+----------------------------------
+@ T18
+SHIFT_OUT (HW_0) --> IDLE (HW_0)
+READ_COL_ADDR (HW_1) --> SHIFT_GEN (HW_1)
+IDLE (HW_2) --> COL_ADDR_ARRIVAL (HW_2)
+
+----------------------------------
+@ T19
+IDLE (HW_0) --> IDLE (HW_0)
+SHIFT_GEN (HW_1) --> SHIFT_OUT (HW_1)
+COL_ADDR_ARRIVAL (HW_2) --> READ_COL_ADDR (HW_2)
