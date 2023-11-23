@@ -77,17 +77,18 @@ shift_control_unit::shift_control_unit(
     fsm_state_header[SHIFT_GEN] = "SHIFT_GEN";
     fsm_state_header[SHIFT_OUT] = "SHIFT_OUT";
 }
-
-void shift_control_unit::fsm_update(
+//==============================================================
+// Attempt of FSM update for the given request
+// Note that the updated FSM state of the request will not be 
+// committed in this function. Instead, any update ought to be
+// judged by a subsequent resource arbiter in order to finally 
+// committed the FSM states for all contended resource requests
+//==============================================================
+shiftCtrl_state shift_control_unit::fsm_update(
     bool is_active, 
-    shiftCtrl_state &fsm_state, 
-    unsigned short resourceID
+    shiftCtrl_state fsm_state, 
+    unsigned short rqstID
 ) {
-#ifdef SHIFT_DEBUG_MODE
-    FSM_HEAD_PRINT(fsm_state, resourceID)
-    std::cout << " --> ";
-#endif // SHIFT_DEBUG_MODE
-
     switch(fsm_state) {
         case IDLE:
             fsm_state = (is_active == true) ? COL_ADDR_ARRIVAL : IDLE;
@@ -110,10 +111,7 @@ void shift_control_unit::fsm_update(
             break;
     }
 
-#ifdef SHIFT_DEBUG_MODE
-    FSM_HEAD_PRINT(fsm_state, resourceID)
-    std::cout << std::endl;
-#endif // SHIFT_DEBUG_MODE
+    return fsm_state;
 }
 
 void shift_control_unit::fsm_process(unsigned short fsm_state)

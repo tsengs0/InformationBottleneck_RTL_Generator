@@ -37,6 +37,7 @@ enum {
 //==============================================================
 //
 //==============================================================
+#define FSM_STATE_NUM 5
 typedef enum FSM_STATE {
     IDLE = 0,
     COL_ADDR_ARRIVAL = 1,
@@ -100,7 +101,7 @@ class shift_control_unit {
 
     public:
         shift_control_unit(unsigned short *colBankID_gp2_config);
-        void fsm_update(bool is_active, shiftCtrl_state &fsm_state, unsigned short resourceID);
+        shiftCtrl_state fsm_update(bool is_active, shiftCtrl_state fsm_state, unsigned short resourceID);
         void col_addr_receive(unsigned short *col_addr_in);
         void col_addr_read();
         void shift_gen();
