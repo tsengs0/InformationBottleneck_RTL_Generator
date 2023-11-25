@@ -1,6 +1,6 @@
 #include "../inc/ca_sched.hpp"
 
-extern unsigned short *colBankID_gp2;
+extern COL_ADDR *colBankID_gp2;
 
 shiftCtrlUnit_wrapper::shiftCtrlUnit_wrapper()
 {

@@ -41,6 +41,37 @@ void cycle_sched::main_loop()
     std::memset(fsm_state_uncommit, IDLE, sizeof(fsm_state_uncommit));
     std::memset(fsm_state_prev1, IDLE, sizeof(fsm_state_prev1));
 
+#ifdef UNIT_TEST_MODE
+    bool is_2nd_shiftOut;
+    shiftCtrl_sim_wrapper->shiftCtrl->msgBuffer_read();
+    for(i=0; i<SHARE_GP_NUM; i++) 
+        std::cout << "Col_addr: " <<  shiftCtrl_sim_wrapper->shiftCtrl->shiftCtrl_pipeline_reg.col_addr_ff[i] << std::endl;
+    
+    shiftCtrl_sim_wrapper->shiftCtrl->rqst_flag_gen(shiftCtrl_sim_wrapper->shiftCtrl->shiftCtrl_pipeline_reg.col_addr_ff);
+    std::cout << "Rqst flag: " 
+              << std::bitset<SHARE_GP_NUM>(shiftCtrl_sim_wrapper->shiftCtrl->regFile_IF.raddr_i) << std::endl;
+    
+    shiftCtrl_sim_wrapper->shiftCtrl->regfile_read();
+    shiftCtrl_sim_wrapper->shiftCtrl->shift_gen();
+    std::cout << "Shift: " << shiftCtrl_sim_wrapper->shiftCtrl->shiftCtrl_pipeline_reg.regfile_page_ff.l1pa_shift << std::endl
+              << "Delta (intermediate FFs): " << shiftCtrl_sim_wrapper->shiftCtrl->shiftCtrl_pipeline_reg.shiftDelta_interFF << std::endl
+              << "Delta (final): " << shiftCtrl_sim_wrapper->shiftCtrl->shiftCtrl_pipeline_reg.regfile_page_ff.l1pa_delta << std::endl
+              << "isGtr (intermediate FF): " << shiftCtrl_sim_wrapper->shiftCtrl->shiftCtrl_pipeline_reg.regfile_page_ff.isGtr << std::endl;
+    is_2nd_shiftOut = false;
+    shiftCtrl_sim_wrapper->shiftCtrl->shift_out(is_2nd_shiftOut);
+
+    shiftCtrl_sim_wrapper->shiftCtrl->shift_gen();
+//    std::cout << "\n1cc later -> Shift: " << shiftCtrl_sim_wrapper->shiftCtrl->shiftCtrl_pipeline_reg.regfile_page_ff.l1pa_shift << std::endl
+//              << "1cc later -> Delta (intermediate FFs): " << shiftCtrl_sim_wrapper->shiftCtrl->shiftCtrl_pipeline_reg.shift_delta_ff << std::endl
+//              << "1cc later -> Delta (final): " << shiftCtrl_sim_wrapper->shiftCtrl->shiftCtrl_pipeline_reg.regfile_page_ff.l1pa_delta << std::endl
+//              << "1cc later -> isGtr: " << shiftCtrl_sim_wrapper->shiftCtrl->shiftCtrl_pipeline_reg.regfile_page_ff.isGtr << std::endl;
+    is_2nd_shiftOut = true;
+    shiftCtrl_sim_wrapper->shiftCtrl->shift_out(is_2nd_shiftOut);
+
+    shiftCtrl_sim_wrapper->shiftCtrl->shiftOut_log_read();
+    exit(0);
+#endif // UNIT_TEST_MODE
+
     while(isLoop_halt == false) {
 #ifdef SCHED_DEBUG_MODE
         SYSTICK_PRINT
@@ -115,7 +146,7 @@ void cycle_sched::main_loop()
 #ifdef WORST_SOL_DEBUG_MODE
         shiftCtrl_sim_wrapper->worst_sol.display_read_ptr();
 #endif // WORST_SOL_DEBUG_MODE
-
+        //fsm_process
         //---------------------------------------------------------------
         // Step ) Incrementing clock cycle and controlling the loop
         //---------------------------------------------------------------

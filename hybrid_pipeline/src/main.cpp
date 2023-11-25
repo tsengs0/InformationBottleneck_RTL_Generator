@@ -4,7 +4,7 @@
 #include "../inc/shift_ctrl.hpp"
 #include "../inc/ca_sched.hpp"
 
-extern unsigned short *colBankID_gp2;
+extern COL_ADDR *colBankID_gp2;
 
 int main(int argc, char **argv)
 {
