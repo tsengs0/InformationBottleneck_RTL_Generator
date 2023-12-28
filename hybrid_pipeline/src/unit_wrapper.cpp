@@ -12,5 +12,5 @@ shiftCtrlUnit_wrapper::shiftCtrlUnit_wrapper()
     std::memset(rqst_fsm, IDLE, sizeof(rqst_fsm));
 
     // Requestor IDs start from 0, 1, ...
-    for(int i=0; i<PIPELINE_STAGE_NUM; i++) rqst_id[i] = i;
+    for(int i=0; i<RQST_NUM; i++) rqst_id[i] = i;
 }

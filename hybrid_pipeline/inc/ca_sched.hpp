@@ -42,8 +42,8 @@ class shiftCtrlUnit_wrapper {
         msgBuffer_requestor *msgBuffer_rqst;
         worst_case_solution worst_sol;
 
-        shiftCtrl_state rqst_fsm[PIPELINE_STAGE_NUM];
-        unsigned short rqst_id[PIPELINE_STAGE_NUM];
+        shiftCtrl_state rqst_fsm[RQST_NUM];
+        unsigned short rqst_id[RQST_NUM];
          
         shiftCtrlUnit_wrapper();
 };
@@ -67,7 +67,12 @@ class cycle_sched {
             CYCLE_UNIT preloadCycle_config
         );
 
-        void main_loop(); // Infinite loop simulating cycle-based envrionment
-};
+        // To collect the values of read pointers for the W^{s} message-pass buffer, and store in the local array, msgBuffer_raddr_vec
+        void msgBuffer_init(char *MSGPASS_BUFFER_INIT_FILENAME);
+        void msgBuffer_display();
 
+        void main_loop(); // Infinite loop simulating cycle-based envrionment
+
+        void unit_test(MSGPASS_BUFFER_RADDR raddr_id);
+};
 #endif // __CA_SCHED__H

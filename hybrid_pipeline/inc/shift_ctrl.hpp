@@ -13,6 +13,7 @@
 #include <sstream>
 #include <bitset>
 #include <ctime>
+#include <cmath>
 
 #include "../inc/common.hpp"
 
@@ -24,9 +25,9 @@
         case READ_COL_ADDR: std::cout << "READ_COL_ADDR (HW_" << RESOURCE_ID << ")"; break; \
         case SHIFT_GEN: std::cout << "SHIFT_GEN (HW_" << RESOURCE_ID << ")"; break; \
         case SHIFT_OUT: std::cout << "SHIFT_OUT (HW_" << RESOURCE_ID << ")"; break; \
+        case SHIFT_OUT_DELTA: std::cout << "SHIFT_OUT_DELTA (HW_" << RESOURCE_ID << ")"; break; \
         default: break; \
     }
-
 //==============================================================
 // Text identifier of L1PA configuration read file
 //==============================================================
@@ -45,7 +46,8 @@ typedef enum FSM_STATE {
     COL_ADDR_ARRIVAL = 1,
     READ_COL_ADDR = 2,
     SHIFT_GEN = 3,
-    SHIFT_OUT = 4
+    SHIFT_OUT = 4,
+    SHIFT_OUT_DELTA = 5
 } shiftCtrl_state;
 //==============================================================
 //
@@ -61,14 +63,6 @@ typedef struct skid_buffer {
     // N-depth buffer
     unsigned short *col_addr;
 } skid_buffer_t;
-//==============================================================
-// Message-pase buffer
-//==============================================================
-typedef unsigned int MSGPASS_BUFFER_RADDR;
-typedef unsigned short COL_ADDR;
-typedef struct msgPass_buffer_page {
-    COL_ADDR shiftCtrl_colAddr_buf2shift[SHARE_GP_NUM]; // tentative
-} msgPass_buffer_page_t;
 //==============================================================
 // L1PA shift-control register file
 //==============================================================
@@ -109,7 +103,7 @@ typedef struct pipeline_reg {
     // Pipeline stage 1
     shiftCtrl_regfile_page regfile_page_ff;
     SHIFT_DELTA_SIG shiftDelta_interFF;
-    // Pipeline stage 2
+    // Pipeline stage 2 (unsed in this simulation yet, 28/12/2023)
     SHIFT_SIG l1pa_shift_ff;
 } pipeline_reg_t;
 //==============================================================
@@ -117,35 +111,36 @@ typedef struct pipeline_reg {
 //==============================================================
 class shift_control_unit {
     private:
-        // Input of this simulator
-        MSGPASS_BUFFER_RADDR msgBuffer_raddr_vec[SHARE_GP_NUM];
-
-        std::string fsm_state_header[5];
+        std::string fsm_state_header[6];
         COL_ADDR *colBankID_gp2;
         COL_ADDR col_addr[SHARE_GP_NUM]; // The lates address to be input to address-mapping unit
         std::vector<shiftCtrl_regfile_page> shiftCtrl_regfile;
         RQST_FLAG rqst_gp2;
 
-        // Output of shift control unit (after the last pipeline stage)
-        SHIFT_SIG l1pa_shift_out;
-        bool isGtr_out;
-
         // For exporting the log file
         std::vector<shiftCtrlUnit_outputData_t> shiftCtrlUnit_logData;
 
     public:
+        // Output of shift control unit (after the last pipeline stage)
+        SHIFT_SIG l1pa_shift_out;
+        bool isGtr_out;
+
         pipeline_reg_t shiftCtrl_pipeline_reg; // Pipeline resource
         regFile_IF_t regFile_IF; // I/F of shift ctrl. register file (internal LUT)
 
         shift_control_unit(COL_ADDR *colBankID_gp2_config);
-        shiftCtrl_state fsm_update(bool is_active, shiftCtrl_state fsm_state, unsigned short resourceID);
+        shiftCtrl_state fsm_update(
+            bool is_active,
+            shiftCtrl_state fsm_state,
+            unsigned short rqstID
+        );
         void msgBuffer_raddr_in(MSGPASS_BUFFER_RADDR *raddr_vec_in);
         void msgBuffer_read();
         void rqst_flag_gen(COL_ADDR *col_addr_in);
         bool regfile_read();
-        void shift_gen();
-        short shift_out(bool is_2nd_shiftOut);
-        void fsm_process(shiftCtrl_state fsm_state, bool is_2nd_shiftOut);
+        bool shift_gen(unsigned short rqstID, bool is_2nd_shiftGen);
+        short shift_out(unsigned short rqstID);
+        void fsm_process(shiftCtrl_state fsm_state, unsigned short rqstID);
 
         // For exporting the log file
         void shiftOut_export();
@@ -153,5 +148,8 @@ class shift_control_unit {
 
         // For debugging
         void show_regfile();
+
+        // For runtime debugging
+        void FSM_PROCESS_TRACE(shiftCtrl_state fsm_state);
 };
 #endif // __SHIFT_CTRL_H

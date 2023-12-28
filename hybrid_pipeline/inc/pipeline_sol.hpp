@@ -12,6 +12,8 @@ class worst_case_solution {
         unsigned short msgBuffer_read_ptr;
 
     public:
+        unsigned short rqst_arrival_cnt;
+        
         worst_case_solution();
         void update_read_pointer();
         void display_read_ptr();
