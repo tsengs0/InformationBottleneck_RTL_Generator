@@ -6,6 +6,7 @@ extern msgPass_buffer_t layered_msgPass_buffer[DEC_LAYER_NUM];
 extern unsigned int msgPass_buf_raddr_iter;
 extern bool is_2nd_shiftOut[RQST_NUM];
 extern unsigned short allcSeq_cnt[RQST_NUM];
+extern int msgBuffer_read_ptr;
 
 sys_tick::sys_tick(FREQ_UNIT freq_in, CYCLE_UNIT preload_cycle_in)
 {
@@ -129,6 +130,7 @@ void cycle_sched::main_loop()
 {
     int i;
     bool is_rqst_active[RQST_NUM];
+    bool isIncrement_readPtr;
     // To indicate that the 2nd allocation sequence has been completed
     static shiftCtrl_state fsm_state_uncommit[RQST_NUM]; // Temporary FSM states of all active requests 
                                                          // before resource arbitration
@@ -140,6 +142,7 @@ void cycle_sched::main_loop()
     std::memset(allcSeq_cnt, (unsigned short) 0, sizeof(allcSeq_cnt));
     dec_cur_layer = 0;
     msgPass_buf_raddr_iter = 0;
+    isIncrement_readPtr = true;
 
 #ifdef UNIT_TEST_MODE
     for(MSGPASS_BUFFER_RADDR raddr_id=0; raddr_id<MSGPASS_BUFFER_PERM_C2V_PAGE_NUM; raddr_id++)
@@ -157,7 +160,7 @@ void cycle_sched::main_loop()
         //---------------------------------------------------------------
         // Handling the first PIPELINE_STAGE_NUM clock cycles after reset sequence
         for(i=0; i<RQST_NUM; i++) {
-            is_rqst_active[i] = shiftCtrl_sim_wrapper->worst_sol.design_rule_check(
+            isIncrement_readPtr = shiftCtrl_sim_wrapper->worst_sol.design_rule_check(
                 shiftCtrl_sim_wrapper->rqst_id[i],
                 shiftCtrl_sim_wrapper->rqst_fsm,
                 fsm_state_prev1

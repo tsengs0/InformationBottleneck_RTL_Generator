@@ -1,6 +1,6 @@
 CXX = g++
 
-CXXFLAGS= -O0 -std=c++11 -lm -Wall -pedantic -g
+CXXFLAGS= -O0 -std=c++11 -Wall -pedantic -g
 
 EXE_NAME=main
 # STATIC_LIB_NAME := libdramsim.a

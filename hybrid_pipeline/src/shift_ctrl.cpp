@@ -7,6 +7,7 @@ extern msgPass_buffer_t layered_msgPass_buffer[DEC_LAYER_NUM];
 extern float msgPass_buf_raddr_iter;
 extern bool is_2nd_shiftOut[RQST_NUM];
 extern unsigned short allcSeq_cnt[RQST_NUM];
+extern int msgBuffer_read_ptr;
 
 // Global variables to model the decoder behaviour
 extern unsigned short dec_cur_layer;
@@ -162,8 +163,7 @@ void shift_control_unit::fsm_process(
     static MSGPASS_BUFFER_RADDR msgPass_buf_raddr_vec[SHARE_GP_NUM]; // Used in the state "COL_ADDR_ARRIVAL"
     switch(fsm_state) {
         case COL_ADDR_ARRIVAL:
-            for(i=0; i<SHARE_GP_NUM; i++) msgPass_buf_raddr_vec[i] = (MSGPASS_BUFFER_RADDR) msgPass_buf_raddr_iter;
-            msgPass_buf_raddr_iter += 1;
+            for(i=0; i<SHARE_GP_NUM; i++) msgPass_buf_raddr_vec[i] = (MSGPASS_BUFFER_RADDR) msgBuffer_read_ptr;;
             msgBuffer_raddr_in(msgPass_buf_raddr_vec);
             msgBuffer_read();
             break;
@@ -172,6 +172,7 @@ void shift_control_unit::fsm_process(
             if(regfile_read() == false) exit(1);
             break;
         case SHIFT_GEN:
+            
             shift_gen(rqstID);
             break;
         case SHIFT_OUT:
@@ -179,6 +180,8 @@ void shift_control_unit::fsm_process(
             break;
         case SHIFT_OUT_DELTA:
             shift_out(rqstID);
+            std::cout << "|--------------> shiftDelta_interFF is periodically reset in the SHFIT_GEN state" << std::endl;
+            shiftCtrl_pipeline_reg.shiftDelta_interFF = 0;
             break;
         default:
             // IDLE
@@ -266,7 +269,7 @@ bool shift_control_unit::regfile_read()
     }
 }
 
-bool shift_control_unit::shift_gen(unsigned short rqstID, bool is_2nd_shiftGen)
+bool shift_control_unit::shift_gen(unsigned short rqstID)
 {
     // To load the output of register file onto pipeline registers
     shiftCtrl_pipeline_reg.regfile_page_ff.isGtr = regFile_IF.page_out.isGtr;
@@ -275,8 +278,6 @@ bool shift_control_unit::shift_gen(unsigned short rqstID, bool is_2nd_shiftGen)
                                                                                                    // loaded by the intermediate FF instead of regFile.delta
     // To load the delta value from the output of register file (regFile.delta) onto the intermediate FFs
     shiftCtrl_pipeline_reg.shiftDelta_interFF = regFile_IF.page_out.l1pa_delta;
-
-    std::cout << "RqstID_" << rqstID << ", Delta.interFF: " << shiftCtrl_pipeline_reg.shiftDelta_interFF << std::endl;
 }
 
 short shift_control_unit::shift_out(unsigned short rqstID)
@@ -314,16 +315,17 @@ void shift_control_unit::FSM_PROCESS_TRACE(shiftCtrl_state fsm_state)
    switch(fsm_state) {
         case COL_ADDR_ARRIVAL:
             for(i=0; i<SHARE_GP_NUM; i++) 
-                std::cout << "Col_addr: " 
+                std::cout << "|--------------> Col_addr (for requestor_" 
+                          << i << "): " 
                           <<  shiftCtrl_pipeline_reg.col_addr_ff[i] 
                           << std::endl;
                 std::cout << std::endl;
             break;
         case READ_COL_ADDR:
-            std::cout << "Column addr: ";
+            std::cout << "|--------------> Column addr: ";
             for(i=0; i<SHARE_GP_NUM; i++) std::cout << shiftCtrl_pipeline_reg.col_addr_ff[i] << ",";
             std::cout << std::endl;
-            std::cout << "Rqst flag: " 
+            std::cout << "|--------------> Rqst flag: " 
                       << std::bitset<SHARE_GP_NUM>(regFile_IF.raddr_i)
                       << std::endl << std::endl;;
             break;

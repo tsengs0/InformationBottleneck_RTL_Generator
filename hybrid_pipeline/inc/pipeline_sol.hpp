@@ -9,7 +9,6 @@
 //==============================================================
 class worst_case_solution {
     private:
-        unsigned short msgBuffer_read_ptr;
 
     public:
         unsigned short rqst_arrival_cnt;

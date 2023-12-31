@@ -1,10 +1,10 @@
 #include "../inc/pipeline_sol.hpp"
 
-extern float msgPass_buf_raddr_iter;
+extern int msgBuffer_read_ptr;
 
 worst_case_solution::worst_case_solution()
 {
-    msgBuffer_read_ptr = 0;
+    msgBuffer_read_ptr = -1; // Read pointer must be started from "0"
     rqst_arrival_cnt = 0;
 }
 
@@ -15,7 +15,7 @@ void worst_case_solution::update_read_pointer()
 
 void worst_case_solution::display_read_ptr()
 {
-    std::cout << "#Read pointer of message-pass buffer: " << msgBuffer_read_ptr << std::endl;
+    std::cout << "|-----> #Read pointer of message-pass buffer: " << msgBuffer_read_ptr << std::endl;
 }
 
 #ifdef WORST_SOL_0
@@ -107,7 +107,7 @@ bool worst_case_solution::design_rule_check(
     std::cout << std::endl << "RqstID: " << rqst_id << std::endl;
 #endif // WORST_SOL_DEBUG_MODE
 
-    // Rule 1: to check if any request was at "COL_ADDR_ARRIVAL" state one clock cycle before
+    // Rule 1: to check if any request was at "COL_ADDR_ARRIVAL" state within the previous clock cycle
     for(i=0; i<PIPELINE_STAGE_NUM; i++) {
         if(i != rqst_id) {
 #ifdef WORST_SOL_DEBUG_MODE
