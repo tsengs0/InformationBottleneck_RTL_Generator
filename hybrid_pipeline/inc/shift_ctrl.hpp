@@ -138,8 +138,8 @@ class shift_control_unit {
         void msgBuffer_read();
         void rqst_flag_gen(COL_ADDR *col_addr_in);
         bool regfile_read();
-        bool shift_gen(unsigned short rqstID);
-        short shift_out(unsigned short rqstID);
+        void shift_gen(unsigned short rqstID);
+        void shift_out(unsigned short rqstID);
         void fsm_process(shiftCtrl_state fsm_state, unsigned short rqstID);
 
         // For exporting the log file

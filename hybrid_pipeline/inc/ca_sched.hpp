@@ -3,6 +3,7 @@
 #define __CA_SCHED__H
 
 #include <iostream>
+#include <cstring>
 #include "../inc/shift_ctrl.hpp"
 #include "../inc/pipeline_sol.hpp"
 #include "../inc/access_request.hpp"

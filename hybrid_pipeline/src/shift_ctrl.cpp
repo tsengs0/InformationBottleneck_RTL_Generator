@@ -244,8 +244,8 @@ void shift_control_unit::show_regfile()
     std::cout << "=========================================================" << std::endl
               << "W^{s}: " << SHARE_GP_NUM << std::endl;
     std::cout << "regfile.size: " << shiftCtrl_regfile.size() << std::endl;
-    for(int i=0; i<shiftCtrl_regfile.size(); i++) {
-            printf("Addr: 0x%02X\t", i);
+    for(long unsigned int i=0; i<shiftCtrl_regfile.size(); i++) {
+            printf("Addr: 0x%02X\t", (unsigned int) i);
             std::cout << "Shift: " << shiftCtrl_regfile[i].l1pa_shift << ",\t"
                       << "Delta: " << shiftCtrl_regfile[i].l1pa_delta << ",\t"
                       << "isGtr: " << shiftCtrl_regfile[i].isGtr << std::endl;
@@ -269,7 +269,7 @@ bool shift_control_unit::regfile_read()
     }
 }
 
-bool shift_control_unit::shift_gen(unsigned short rqstID)
+void shift_control_unit::shift_gen(unsigned short rqstID)
 {
     // To load the output of register file onto pipeline registers
     shiftCtrl_pipeline_reg.regfile_page_ff.isGtr = regFile_IF.page_out.isGtr;
@@ -280,7 +280,7 @@ bool shift_control_unit::shift_gen(unsigned short rqstID)
     shiftCtrl_pipeline_reg.shiftDelta_interFF = regFile_IF.page_out.l1pa_delta;
 }
 
-short shift_control_unit::shift_out(unsigned short rqstID)
+void shift_control_unit::shift_out(unsigned short rqstID)
 {
     isGtr_out = shiftCtrl_pipeline_reg.regfile_page_ff.isGtr;
     l1pa_shift_out = shiftCtrl_pipeline_reg.regfile_page_ff.l1pa_shift+shiftCtrl_pipeline_reg.regfile_page_ff.l1pa_delta;
@@ -314,12 +314,13 @@ void shift_control_unit::FSM_PROCESS_TRACE(shiftCtrl_state fsm_state)
     static int i;
    switch(fsm_state) {
         case COL_ADDR_ARRIVAL:
-            for(i=0; i<SHARE_GP_NUM; i++) 
+            for(i=0; i<SHARE_GP_NUM; i++) { 
                 std::cout << "|--------------> Col_addr (for requestor_" 
                           << i << "): " 
                           <<  shiftCtrl_pipeline_reg.col_addr_ff[i] 
                           << std::endl;
-                std::cout << std::endl;
+	    }
+            std::cout << std::endl;
             break;
         case READ_COL_ADDR:
             std::cout << "|--------------> Column addr: ";
