@@ -31,4 +31,4 @@ run:
 	./$(EXE_NAME) 1 3
 
 clean: 
-	rm -f $(REBUILDABLES) log
+	rm -f $(REBUILDABLES) log src/*.o
