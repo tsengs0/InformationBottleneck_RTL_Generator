@@ -96,9 +96,6 @@ bool worst_case_solution::design_rule_check(
     shiftCtrl_state *fsm_state_cur,
     shiftCtrl_state *fsm_state_prev1
 ) {
-
-    // Do not activate the current request if design rule is violated
-
     static int i;
     static bool is_colAddr_arrival_prev1;
     is_colAddr_arrival_prev1 = false;
@@ -138,6 +135,7 @@ bool worst_case_solution::design_rule_check(
 }
 
 void worst_case_solution::arbiter_commit(
+    bool *isDRC_passed,
     shiftCtrl_state *fsm_state_uncommit,
     shiftCtrl_state *fsm_state_commit
 ) {
@@ -157,7 +155,7 @@ void worst_case_solution::arbiter_commit(
         // there is no contention of IDLE state across all active requests
         if(fsm_state_uncommit[i] == IDLE) {
             fsm_state_commit[i] = IDLE;
-        } else if(is_resource_busy[ fsm_state_uncommit[i] ] == false) {
+        } else if(is_resource_busy[ fsm_state_uncommit[i] ] == false && isDRC_passed[i] == true) {
 //            std::cout << "HW_" << i << " (Uncommitted): "; FSM_HEAD_PRINT(fsm_state_uncommit[i], i) std::cout << std::endl;
             fsm_state_commit[i] = fsm_state_uncommit[i];
             is_resource_busy[ fsm_state_uncommit[i] ] = true;

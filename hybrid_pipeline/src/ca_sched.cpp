@@ -130,7 +130,7 @@ void cycle_sched::main_loop()
 {
     int i;
     bool is_rqst_active[RQST_NUM];
-    bool isIncrement_readPtr;
+    bool isDRC_passed[RQST_NUM];
     // To indicate that the 2nd allocation sequence has been completed
     static shiftCtrl_state fsm_state_uncommit[RQST_NUM]; // Temporary FSM states of all active requests 
                                                          // before resource arbitration
@@ -140,9 +140,9 @@ void cycle_sched::main_loop()
     std::memset(fsm_state_uncommit, IDLE, sizeof(fsm_state_uncommit));
     std::memset(fsm_state_prev1, IDLE, sizeof(fsm_state_prev1));
     std::memset(allcSeq_cnt, (unsigned short) 0, sizeof(allcSeq_cnt));
+    std::memset(isDRC_passed, (bool) true, sizeof(isDRC_passed));
     dec_cur_layer = 0;
     msgPass_buf_raddr_iter = 0;
-    isIncrement_readPtr = true;
 
 #ifdef UNIT_TEST_MODE
     for(MSGPASS_BUFFER_RADDR raddr_id=0; raddr_id<MSGPASS_BUFFER_PERM_C2V_PAGE_NUM; raddr_id++)
@@ -160,7 +160,7 @@ void cycle_sched::main_loop()
         //---------------------------------------------------------------
         // Handling the first PIPELINE_STAGE_NUM clock cycles after reset sequence
         for(i=0; i<RQST_NUM; i++) {
-            isIncrement_readPtr = shiftCtrl_sim_wrapper->worst_sol.design_rule_check(
+            isDRC_passed[i] = shiftCtrl_sim_wrapper->worst_sol.design_rule_check(
                 shiftCtrl_sim_wrapper->rqst_id[i],
                 shiftCtrl_sim_wrapper->rqst_fsm,
                 fsm_state_prev1
@@ -178,6 +178,7 @@ void cycle_sched::main_loop()
         //---------------------------------------------------------------
         // Resource arbitration and committing all update of FSM states
         shiftCtrl_sim_wrapper->worst_sol.arbiter_commit(
+            isDRC_passed,
             fsm_state_uncommit, 
             shiftCtrl_sim_wrapper->rqst_fsm
         );
@@ -199,7 +200,7 @@ void cycle_sched::main_loop()
                         
             // To update the read pointer of message-pass buffer for precedent constraint
             if(shiftCtrl_sim_wrapper->rqst_fsm[i] == COL_ADDR_ARRIVAL) {
-                if(shiftCtrl_sim_wrapper->worst_sol.rqst_arrival_cnt==1)
+                //if(shiftCtrl_sim_wrapper->worst_sol.rqst_arrival_cnt==1)
                     shiftCtrl_sim_wrapper->worst_sol.update_read_pointer();
             }
 

@@ -315,7 +315,8 @@ void shift_control_unit::FSM_PROCESS_TRACE(shiftCtrl_state fsm_state)
    switch(fsm_state) {
         case COL_ADDR_ARRIVAL:
             for(i=0; i<SHARE_GP_NUM; i++) { 
-                std::cout << "|--------------> Col_addr (for requestor_" 
+                std::cout << "|--------------> message-pass buffer[" << msgBuffer_raddr_vec[i] << "] = "
+                          << "Col_addr (for requestor_" 
                           << i << "): " 
                           <<  shiftCtrl_pipeline_reg.col_addr_ff[i] 
                           << std::endl;
