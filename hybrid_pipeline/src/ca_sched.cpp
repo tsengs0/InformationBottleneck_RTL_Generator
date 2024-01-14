@@ -200,7 +200,7 @@ void cycle_sched::main_loop()
                         
             // To update the read pointer of message-pass buffer for precedent constraint
             if(shiftCtrl_sim_wrapper->rqst_fsm[i] == COL_ADDR_ARRIVAL) {
-                //if(shiftCtrl_sim_wrapper->worst_sol.rqst_arrival_cnt==1)
+/*Temporarily comment it out #14, Jan., 2024*///if(shiftCtrl_sim_wrapper->worst_sol.rqst_arrival_cnt==1)
                     shiftCtrl_sim_wrapper->worst_sol.update_read_pointer();
             }
 
