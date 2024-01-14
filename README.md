@@ -4,7 +4,7 @@
 
 # Work record - 14, Jan., 2023
 - src/ca_sched.cpp
--- Temporary change of update_read_pointer() revoking condition
+  - Temporary change of update_read_pointer() revoking condition
 ```c++
             // To update the read pointer of message-pass buffer for precedent constraint
             if(shiftCtrl_sim_wrapper->rqst_fsm[i] == COL_ADDR_ARRIVAL) {
