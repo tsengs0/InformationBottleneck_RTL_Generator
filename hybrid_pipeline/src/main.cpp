@@ -23,7 +23,7 @@ int main(int argc, char **argv)
         (CYCLE_UNIT) 0 // Preloaded cycle count=0
     );
 
-    main_sched.sysTick -> set_cycle_watermark(7);
+    main_sched.sysTick -> set_cycle_watermark(11);
     main_sched.main_loop();
 
     

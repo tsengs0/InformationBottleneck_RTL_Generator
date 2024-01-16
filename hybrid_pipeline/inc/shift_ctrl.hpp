@@ -40,7 +40,7 @@ enum {
 //==============================================================
 //
 //==============================================================
-#define FSM_STATE_NUM 5
+#define FSM_STATE_NUM 6
 typedef enum FSM_STATE {
     IDLE = 0,
     COL_ADDR_ARRIVAL = 1,

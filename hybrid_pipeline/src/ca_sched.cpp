@@ -130,7 +130,7 @@ void cycle_sched::main_loop()
 {
     int i;
     bool is_rqst_active[RQST_NUM];
-    bool isDRC_passed[RQST_NUM];
+    bool is_DRC_passed[RQST_NUM];
     // To indicate that the 2nd allocation sequence has been completed
     static shiftCtrl_state fsm_state_uncommit[RQST_NUM]; // Temporary FSM states of all active requests 
                                                          // before resource arbitration
@@ -140,7 +140,7 @@ void cycle_sched::main_loop()
     std::memset(fsm_state_uncommit, IDLE, sizeof(fsm_state_uncommit));
     std::memset(fsm_state_prev1, IDLE, sizeof(fsm_state_prev1));
     std::memset(allcSeq_cnt, (unsigned short) 0, sizeof(allcSeq_cnt));
-    std::memset(isDRC_passed, (bool) true, sizeof(isDRC_passed));
+    std::memset(is_DRC_passed, (bool) true, sizeof(is_DRC_passed));
     dec_cur_layer = 0;
     msgPass_buf_raddr_iter = 0;
 
@@ -160,7 +160,7 @@ void cycle_sched::main_loop()
         //---------------------------------------------------------------
         // Handling the first PIPELINE_STAGE_NUM clock cycles after reset sequence
         for(i=0; i<RQST_NUM; i++) {
-            isDRC_passed[i] = shiftCtrl_sim_wrapper->worst_sol.design_rule_check(
+            is_DRC_passed[i] = shiftCtrl_sim_wrapper->worst_sol.design_rule_check(
                 shiftCtrl_sim_wrapper->rqst_id[i],
                 shiftCtrl_sim_wrapper->rqst_fsm,
                 fsm_state_prev1
@@ -178,7 +178,7 @@ void cycle_sched::main_loop()
         //---------------------------------------------------------------
         // Resource arbitration and committing all update of FSM states
         shiftCtrl_sim_wrapper->worst_sol.arbiter_commit(
-            isDRC_passed,
+            is_DRC_passed,
             fsm_state_uncommit, 
             shiftCtrl_sim_wrapper->rqst_fsm
         );
@@ -229,7 +229,7 @@ void cycle_sched::main_loop()
 
 #ifdef MSGBUF_RD_PTR_DEBUG_EN
         shiftCtrl_sim_wrapper->worst_sol.display_read_ptr();
-        shiftCtrl_sim_wrapper->shiftCtrl->shiftOut_log_read();
+//        shiftCtrl_sim_wrapper->shiftCtrl->shiftOut_log_read();
 #endif // MSGBUF_RD_PTR_DEBUG_EN
         //---------------------------------------------------------------
         // Step ) Incrementing clock cycle and controlling the loop

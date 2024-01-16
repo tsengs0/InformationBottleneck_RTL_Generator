@@ -289,6 +289,9 @@ void shift_control_unit::shift_out(unsigned short rqstID)
     
     // To count the number of allocation seuqences processed so far, for the corresponding requestor
     allcSeq_cnt[rqstID] += 1;
+
+    // To load the interFF value AGAIN to regfile_page_ff.l1pa_delta
+    shiftCtrl_pipeline_reg.regfile_page_ff.l1pa_delta = shiftCtrl_pipeline_reg.shiftDelta_interFF;
 }
 
 void shift_control_unit::shiftOut_export()
@@ -302,7 +305,11 @@ void shift_control_unit::shiftOut_log_read()
     log_num = shiftCtrlUnit_logData.size();
 
     for(i=0; i<log_num; i++)
-        std::cout << "L1PA.shift_ctrl: " << shiftCtrlUnit_logData[i].l1pa_shift << ",\tL1PA.isGtr: " << shiftCtrlUnit_logData[i].isGtr << std::endl;
+        std::cout << "|----------------------------------> ShiftOut.log(" << i << "): " 
+        << "L1PA.shift_ctrl: " << shiftCtrlUnit_logData[i].l1pa_shift 
+        << ",\tL1PA.isGtr: " << shiftCtrlUnit_logData[i].isGtr 
+        << ",\tL1PA.shift_delta: " << shiftCtrl_pipeline_reg.regfile_page_ff.l1pa_delta
+        << std::endl;
 }
 //==============================================================
 // Pipeline stage: N/A

@@ -28,7 +28,7 @@ $(EXE_NAME): $(OBJ)
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 run:
-	./$(EXE_NAME) 1 3
+	./$(EXE_NAME) 1 3 10
 
 clean: 
 	rm -f $(REBUILDABLES) log src/*.o

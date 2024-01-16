@@ -23,7 +23,7 @@ class worst_case_solution {
         );
 
         void arbiter_commit(
-            bool *isDRC_passed,
+            bool *is_DRC_passed,
             shiftCtrl_state *fsm_state_uncommit,
             shiftCtrl_state *fsm_state_commit    
         );
