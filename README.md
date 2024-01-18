@@ -1,5 +1,7 @@
 # A software-based simulation to verify the feasibility of the proposed "Hybrid Pipeline Scheduling" for the shared memory scheme
 
+This branch is to simulate the hybrid pipeline scheduling in which a skid buffer mechanism is inserted.
+
 ![Alt text](https://github.com/tsengs0/InformationBottleneck_RTL_Generator/blob/memShare_hybridPipeline_sim/sim_design_spec_21.Nov.2023.png)
 
 # Work record - 14, Jan., 2023
@@ -15,7 +17,7 @@
 
 # Cheat sheet about Git commands
 <pre>
-> git push -u origin origin/memShare_hybridPipeline_sim # To push the latest commit onto the detached HEAD (but the remote branch is still unchanged)
-> git push origin HEAD:memShare_hybridPipeline_sim # To push the current detached HEAD onto the remote branch
-> git pull origin memShare_hybridPipeline_sim # To pull down all the changes from the remote branch
+> git push -u origin origin/memShare_hybridPipeline_skidBuffer_sim # To push the latest commit onto the detached HEAD (but the remote branch is still unchanged)
+> git push origin HEAD:memShare_hybridPipeline_skidBuffer_sim # To push the current detached HEAD onto the remote branch
+> git pull origin memShare_hybridPipeline_skidBuffer_sim # To pull down all the changes from the remote branch
 </pre>
