@@ -4,7 +4,7 @@ This branch is to simulate the hybrid pipeline scheduling in which a skid buffer
 
 ![Alt text](https://github.com/tsengs0/InformationBottleneck_RTL_Generator/blob/memShare_hybridPipeline_sim/sim_design_spec_21.Nov.2023.png)
 
-# Work record - 14, Jan., 2023
+# Work record - 14, Jan., 2024
 - src/ca_sched.cpp
   - Temporary change of update_read_pointer() revoking condition
 ```c++
@@ -14,6 +14,9 @@ This branch is to simulate the hybrid pipeline scheduling in which a skid buffer
                     shiftCtrl_sim_wrapper->worst_sol.update_read_pointer();
             }
 ```
+# Work record - 20, Jan., 2024
+- commit: daf2c5c4a7db9eee9b7cc5341d291f13ddc8f9a3
+ - To finish the implementation of skid buffer unit with unit test (passed)
 
 # Cheat sheet about Git commands
 <pre>
