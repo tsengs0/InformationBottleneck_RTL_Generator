@@ -14,6 +14,7 @@
 #include <bitset>
 #include <ctime>
 #include <cmath>
+#include <algorithm>
 
 #include "../inc/common.hpp"
 
@@ -50,20 +51,6 @@ typedef enum FSM_STATE {
     SHIFT_OUT_DELTA = 5
 } shiftCtrl_state;
 //==============================================================
-//
-//==============================================================
-typedef struct skid_buffer {
-    // Output port(s)
-    unsigned short buffer_dout_o;
-
-    // Input port(s)
-    unsigned short buffer_din_i;
-    bool isColAddr_skid_i;
-
-    // N-depth buffer
-    unsigned short *col_addr;
-} skid_buffer_t;
-//==============================================================
 // L1PA shift-control register file
 //==============================================================
 typedef unsigned short RQST_FLAG;
@@ -84,6 +71,31 @@ typedef struct shiftCtrlUnit_outputData {
     SHIFT_SIG l1pa_shift;
     bool isGtr;
 } shiftCtrlUnit_outputData_t;
+//==============================================================
+// Skid buffer design
+//==============================================================
+class skidBuffer {
+    private:
+        // Configuration parameter(s)
+        unsigned short word_num; // One addr. value defined as one word
+        int word_id; // Used by the foor loop
+
+        // Registers behaving the input port of the underlying skid buffer
+        RQST_FLAG buffer_inputPort[SHARE_GP_NUM];
+        // Registers behaving the output port of the underlying skid buffer, (SHARE_GP_NUM)th element to store the isColAddr_skid_i value of which controls the current output source
+        RQST_FLAG buffer_outputPort[SHARE_GP_NUM+1];
+        // Registers to implement skid buffer
+        RQST_FLAG buffer_reg[SHARE_GP_NUM];
+
+    public:
+        skidBuffer(unsigned short word_num_in);
+        void buffer_flush();
+        void buffer_receive(RQST_FLAG din[]);
+        void buffer_write(RQST_FLAG din[]);
+        void buffer_read(bool isColAddr_skid_i);
+        void buffer_operate(RQST_FLAG din[], bool isColAddr_skid_i);
+        void buffer_trace();
+};
 //==============================================================
 //
 //==============================================================
@@ -124,6 +136,9 @@ class shift_control_unit {
         // Output of shift control unit (after the last pipeline stage)
         SHIFT_SIG l1pa_shift_out;
         bool isGtr_out;
+
+        // Skid buffer unit
+        skidBuffer *skid_buffer;
 
         pipeline_reg_t shiftCtrl_pipeline_reg; // Pipeline resource
         regFile_IF_t regFile_IF; // I/F of shift ctrl. register file (internal LUT)

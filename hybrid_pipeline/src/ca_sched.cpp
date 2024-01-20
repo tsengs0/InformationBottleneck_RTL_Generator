@@ -145,9 +145,30 @@ void cycle_sched::main_loop()
     msgPass_buf_raddr_iter = 0;
 
 #ifdef UNIT_TEST_MODE
+    shiftCtrl_sim_wrapper->shiftCtrl->skid_buffer->buffer_operate(
+        (RQST_FLAG [SHARE_GP_NUM]) {0, 1, 1, 1, 1},
+        0
+    );
+    std::cout << "-------------------------------------" << std::endl;
+    shiftCtrl_sim_wrapper->shiftCtrl->skid_buffer->buffer_operate(
+        (RQST_FLAG [SHARE_GP_NUM]) {1, 0, 1, 1, 1},
+        1
+    );
+    std::cout << "-------------------------------------" << std::endl;
+    shiftCtrl_sim_wrapper->shiftCtrl->skid_buffer->buffer_operate(
+        (RQST_FLAG [SHARE_GP_NUM]) {1, 1, 0, 1, 1},
+        1
+    );
+    std::cout << "-------------------------------------" << std::endl;
+    shiftCtrl_sim_wrapper->shiftCtrl->skid_buffer->buffer_operate(
+        (RQST_FLAG [SHARE_GP_NUM]) {1, 1, 1, 0, 1},
+        0
+    );
+    exit(0);
+
     for(MSGPASS_BUFFER_RADDR raddr_id=0; raddr_id<MSGPASS_BUFFER_PERM_C2V_PAGE_NUM; raddr_id++)
         unit_test(raddr_id);
-        exit(0);
+    exit(0);
 #endif // UNIT_TEST_MODE
 
     while(isLoop_halt == false) {
@@ -222,7 +243,7 @@ void cycle_sched::main_loop()
             }
         }
 
-                // To check if allcSeq_cnt ought to be reset, and update the is_2nd_shiftOut
+        // To check if allcSeq_cnt ought to be reset, and update the is_2nd_shiftOut
         for(i=0; i<RQST_NUM; i++) {
 
         }

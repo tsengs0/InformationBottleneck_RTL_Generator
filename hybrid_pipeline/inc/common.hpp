@@ -6,7 +6,8 @@
 //#define WORST_SOL_DEBUG_MODE
 #define MSGBUF_RD_PTR_DEBUG_EN // To enable the print of current read pointer of message-pass buffer
 //#define MSGBUF_MEM_DEBUG_EN // To enable the print of entire content inside the message-pass buffer
-//#define UNIT_TEST_MODE
+#define UNIT_TEST_MODE
+#define SKID_BUFFER_DEBUG
 
 //==============================================================
 // Fundamental of decoder configuration

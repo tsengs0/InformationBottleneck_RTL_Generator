@@ -39,7 +39,7 @@ shift_control_unit::shift_control_unit(
     std::string config_filename = (std::string) L1PA_REGFILE_NAME;
     std::string str_buf;
     std::string str_conma_buf;
-    unsigned short line_cnt, text_cnt, page_cnt;
+    unsigned short line_cnt, text_cnt;
     unsigned short patternID, seq_element_id;
     short l1pa_spr, shift_temp0, shift_temp1;
     std::string gp2_rqst_pattern;
@@ -80,7 +80,6 @@ shift_control_unit::shift_control_unit(
             }
             // To load the read contents into the L1PA shift regFile
             if(line_cnt == 1) {
-                page_cnt = 0;
                 shiftCtrl_regfile.push_back({(short) l1pa_spr, (short) 0, false});
             } else if(line_cnt >= 1) {
                 if(seq_element_id != 0) {
@@ -92,7 +91,6 @@ shift_control_unit::shift_control_unit(
                     shiftCtrl_regfile.push_back({(short) l1pa_spr, (short) 0, false});
                 }
             }
-            page_cnt += 1;
             line_cnt += 1;
         }
     }
@@ -104,6 +102,9 @@ shift_control_unit::shift_control_unit(
     fsm_state_header[SHIFT_GEN] = "SHIFT_GEN";
     fsm_state_header[SHIFT_OUT] = "SHIFT_OUT";
     fsm_state_header[SHIFT_OUT_DELTA] = "SHIFT_OUT_DELTA";
+
+    // To instantiate the skid buffer
+    skid_buffer = new skidBuffer(SHARE_GP_NUM);
 }
 //==============================================================
 // Attempt of FSM update for the given request
@@ -354,4 +355,83 @@ void shift_control_unit::FSM_PROCESS_TRACE(shiftCtrl_state fsm_state)
             // IDLE
             break;
     }
+}
+//==============================================================
+// Skid buffer implementation
+//==============================================================
+skidBuffer::skidBuffer(unsigned short word_num_in)
+{
+    word_num = word_num_in;
+    buffer_flush();
+}
+//==============================================================
+// To load the incoming requst flag set on the input port of
+// the skid buffer
+//==============================================================
+void skidBuffer::buffer_receive(RQST_FLAG din[])
+{
+    std::copy(din, din+SHARE_GP_NUM, buffer_inputPort);
+}
+//==============================================================
+// To flush out all the contents inside the skid buffer
+// and initialise all FFs by zero
+//==============================================================
+void skidBuffer::buffer_flush()
+{
+    for(word_id=0; word_id<word_num; word_id++) buffer_reg[word_id] = 0;
+}
+//==============================================================
+// To write a set of words into the skid buffer, i.e. loading 
+// values to FFs
+//==============================================================
+void skidBuffer::buffer_write(RQST_FLAG din[])
+{
+    for(word_id=0; word_id<word_num; word_id++) buffer_reg[word_id] = din[word_id];
+}
+//==============================================================
+// To fetch the date from the skid buffer with a skid control
+//==============================================================
+void skidBuffer::buffer_read(bool isColAddr_skid_i)
+{
+    if(isColAddr_skid_i==true) // To output the values from the skid buffer
+        std::copy(buffer_reg, buffer_reg+word_num, buffer_outputPort);
+    else // To bypass the input port to output port
+        std::copy(buffer_inputPort, buffer_inputPort+word_num, buffer_outputPort);
+
+    // (SHARE_GP_NUM)th element to store the isColAddr_skid_i value of 
+    // which controls the current output source
+    buffer_outputPort[word_num] = isColAddr_skid_i;
+}
+//==============================================================
+// To operate the H/W behaviour of a skid buffer unit
+//==============================================================
+void skidBuffer::buffer_operate(
+    RQST_FLAG din[],  // Values incoming to the input port of the skid buffer
+    bool isColAddr_skid_i // Constrol signal determining to output either the 
+                          //  a) Current values loaded on the input port, i.e. bypassing the input to output
+                          //  b) or the values currently stored in the skid buffer
+) {
+    buffer_receive(din);
+    buffer_read(isColAddr_skid_i);
+#ifdef SKID_BUFFER_DEBUG
+    buffer_trace();
+#endif // SKID_BUFFER_DEBUG
+    buffer_write(din);
+}
+//==============================================================
+// To display all the contents of the skid buffer & input port
+//==============================================================
+void skidBuffer::buffer_trace()
+{
+    std::cout << "Value on the input port[" << word_num-1 << ":0]:" << std::endl;
+    for(word_id=word_num-1; word_id>=0; word_id--) std::cout << buffer_inputPort[word_id];
+    std::cout << std::endl;
+
+    std::cout << "Skid buffer FF[" << word_num-1 << ":0]:" << std::endl;
+    for(word_id=word_num-1; word_id>=0; word_id--) std::cout << buffer_reg[word_id];
+    std::cout << std::endl;
+
+    std::cout << "Output of the skid buffer[" << word_num-1 << ":0] w/ isSkid=" << buffer_outputPort[word_num] << ":" << std::endl;
+    for(word_id=word_num-1; word_id>=0; word_id--) std::cout << buffer_outputPort[word_id];
+    std::cout << std::endl;
 }
