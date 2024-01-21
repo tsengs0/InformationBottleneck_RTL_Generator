@@ -146,22 +146,22 @@ void cycle_sched::main_loop()
 
 #ifdef UNIT_TEST_MODE
     shiftCtrl_sim_wrapper->shiftCtrl->skid_buffer->buffer_operate(
-        (RQST_FLAG [SHARE_GP_NUM]) {0, 1, 1, 1, 1},
+        (RQST_FLAG) 0x07,
         0
     );
     std::cout << "-------------------------------------" << std::endl;
     shiftCtrl_sim_wrapper->shiftCtrl->skid_buffer->buffer_operate(
-        (RQST_FLAG [SHARE_GP_NUM]) {1, 0, 1, 1, 1},
+        (RQST_FLAG) 0x17,
         1
     );
     std::cout << "-------------------------------------" << std::endl;
     shiftCtrl_sim_wrapper->shiftCtrl->skid_buffer->buffer_operate(
-        (RQST_FLAG [SHARE_GP_NUM]) {1, 1, 0, 1, 1},
+        (RQST_FLAG) 0x1B,
         1
     );
     std::cout << "-------------------------------------" << std::endl;
     shiftCtrl_sim_wrapper->shiftCtrl->skid_buffer->buffer_operate(
-        (RQST_FLAG [SHARE_GP_NUM]) {1, 1, 1, 0, 1},
+        (RQST_FLAG) 0x1D,
         0
     );
     exit(0);

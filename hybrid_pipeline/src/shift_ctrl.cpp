@@ -170,7 +170,7 @@ void shift_control_unit::fsm_process(
             break;
         case READ_COL_ADDR:
             rqst_flag_gen(shiftCtrl_pipeline_reg.col_addr_ff);
-            if(regfile_read() == false) exit(1);
+/*Moved to inside of shift_gen()*/ // if(regfile_read() == false) exit(1);
             break;
         case SHIFT_GEN:
             
@@ -225,7 +225,7 @@ void shift_control_unit::msgBuffer_read()
 //==============================================================
 void shift_control_unit::rqst_flag_gen(COL_ADDR *col_addr_in)
 {
-    // Step 1: col_addr-to-R^{gp2} converter
+    // Step 1: col_addr-to-R^{gp2} converter, so as to perform the "rqst_flag_gen().input" presented at *.md
     rqst_gp2 = 0;
     for(int i=0; i<SHARE_GP_NUM; i++) {
         for(int j=0; j<GP2_NUM; j++) {
@@ -236,8 +236,8 @@ void shift_control_unit::rqst_flag_gen(COL_ADDR *col_addr_in)
         }
     }
 
-    // Step 2: R^{gp2}-to-regFile_addr
-    regFile_IF.raddr_i = rqst_gp2;
+    // Step 2: R^{gp2}-to-regFile_addr, so as to perform the "rqst_flag_gen().output" presented at *.md
+    regFile_IF.tentative_raddr_i = rqst_gp2;
 }
 
 void shift_control_unit::show_regfile()
@@ -260,7 +260,7 @@ bool shift_control_unit::regfile_read()
     
     temp = regFile_IF.raddr_i;
     if(temp >= MIN_REGFILE_RADDR && temp <= MAX_REGFILE_RADDR) {
-        regFile_IF.page_out = shiftCtrl_regfile[regFile_IF.raddr_i];
+        regFile_IF.page_out = shiftCtrl_regfile[temp];
         return true;
     } else {
 #ifdef SHIFT_DEBUG_MODE
@@ -272,6 +272,20 @@ bool shift_control_unit::regfile_read()
 
 void shift_control_unit::shift_gen(unsigned short rqstID)
 {
+//--------------------------------------------------------------------------------------
+// 2nd argument: "shift_gen().output.step0" presented at *.md
+    // To input the generated request flags into the skid buffer unit,
+    // so as to perform the "skid_buffer().buffer_operate()" presented at *.md
+    skid_buffer->buffer_operate(
+        regFile_IF.tentative_raddr_i,
+        shiftCtrl_pipeline_reg.regfile_page_ff.isGtr // To load the pipeline_reg.isGtr before it FF update
+    );
+
+    // To perform the "shift_gen().input" present at *.md
+    regFile_IF.raddr_i = skid_buffer->buffer_outputPort[SKID_RQST_FLAG_OUT];
+    if(regfile_read() == false) exit(1);
+//--------------------------------------------------------------------------------------
+// "shfit_gen().output.step1" presented at *.md
     // To load the output of register file onto pipeline registers
     shiftCtrl_pipeline_reg.regfile_page_ff.isGtr = regFile_IF.page_out.isGtr;
     shiftCtrl_pipeline_reg.regfile_page_ff.l1pa_shift = regFile_IF.page_out.l1pa_shift;
@@ -368,9 +382,9 @@ skidBuffer::skidBuffer(unsigned short word_num_in)
 // To load the incoming requst flag set on the input port of
 // the skid buffer
 //==============================================================
-void skidBuffer::buffer_receive(RQST_FLAG din[])
+void skidBuffer::buffer_receive(RQST_FLAG din)
 {
-    std::copy(din, din+SHARE_GP_NUM, buffer_inputPort);
+    buffer_inputPort = din;
 }
 //==============================================================
 // To flush out all the contents inside the skid buffer
@@ -378,35 +392,33 @@ void skidBuffer::buffer_receive(RQST_FLAG din[])
 //==============================================================
 void skidBuffer::buffer_flush()
 {
-    for(word_id=0; word_id<word_num; word_id++) buffer_reg[word_id] = 0;
+    buffer_reg = 0;
 }
 //==============================================================
 // To write a set of words into the skid buffer, i.e. loading 
 // values to FFs
 //==============================================================
-void skidBuffer::buffer_write(RQST_FLAG din[])
+void skidBuffer::buffer_write(RQST_FLAG din)
 {
-    for(word_id=0; word_id<word_num; word_id++) buffer_reg[word_id] = din[word_id];
+    buffer_reg = din;
 }
 //==============================================================
 // To fetch the date from the skid buffer with a skid control
 //==============================================================
 void skidBuffer::buffer_read(bool isColAddr_skid_i)
 {
-    if(isColAddr_skid_i==true) // To output the values from the skid buffer
-        std::copy(buffer_reg, buffer_reg+word_num, buffer_outputPort);
-    else // To bypass the input port to output port
-        std::copy(buffer_inputPort, buffer_inputPort+word_num, buffer_outputPort);
+    buffer_outputPort[SKID_RQST_FLAG_OUT] = (isColAddr_skid_i==true) ? buffer_reg :      // To output the values from the skid buffer
+                                                    buffer_inputPort; // To bypass the input port to output port
 
     // (SHARE_GP_NUM)th element to store the isColAddr_skid_i value of 
     // which controls the current output source
-    buffer_outputPort[word_num] = isColAddr_skid_i;
+    buffer_outputPort[SKID_CTRL_VAL] = isColAddr_skid_i;
 }
 //==============================================================
 // To operate the H/W behaviour of a skid buffer unit
 //==============================================================
 void skidBuffer::buffer_operate(
-    RQST_FLAG din[],  // Values incoming to the input port of the skid buffer
+    RQST_FLAG din,  // Values incoming to the input port of the skid buffer
     bool isColAddr_skid_i // Constrol signal determining to output either the 
                           //  a) Current values loaded on the input port, i.e. bypassing the input to output
                           //  b) or the values currently stored in the skid buffer
@@ -423,15 +435,14 @@ void skidBuffer::buffer_operate(
 //==============================================================
 void skidBuffer::buffer_trace()
 {
-    std::cout << "Value on the input port[" << word_num-1 << ":0]:" << std::endl;
-    for(word_id=word_num-1; word_id>=0; word_id--) std::cout << buffer_inputPort[word_id];
-    std::cout << std::endl;
+    std::cout << "==================================================================" << std::endl;
+    std::cout << "Value on the input port[" << word_num-1 << ":0]:" << std::endl
+              << buffer_inputPort << std::endl;
 
-    std::cout << "Skid buffer FF[" << word_num-1 << ":0]:" << std::endl;
-    for(word_id=word_num-1; word_id>=0; word_id--) std::cout << buffer_reg[word_id];
-    std::cout << std::endl;
+    std::cout << "Skid buffer FF[" << word_num-1 << ":0]:" << std::endl
+              << buffer_reg << std::endl;
 
-    std::cout << "Output of the skid buffer[" << word_num-1 << ":0] w/ isSkid=" << buffer_outputPort[word_num] << ":" << std::endl;
-    for(word_id=word_num-1; word_id>=0; word_id--) std::cout << buffer_outputPort[word_id];
-    std::cout << std::endl;
+    std::cout << "Output of the skid buffer[" << word_num-1 << ":0] w/ isSkid=" << buffer_outputPort[SKID_CTRL_VAL] << ":" << std::endl
+              << buffer_outputPort[SKID_RQST_FLAG_OUT] << std::endl;
+    std::cout << "==================================================================" << std::endl;
 }

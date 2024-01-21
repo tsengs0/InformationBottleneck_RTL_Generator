@@ -74,26 +74,31 @@ typedef struct shiftCtrlUnit_outputData {
 //==============================================================
 // Skid buffer design
 //==============================================================
+enum {
+    SKID_RQST_FLAG_OUT = 0,
+    SKID_CTRL_VAL = 1
+};
 class skidBuffer {
     private:
         // Configuration parameter(s)
         unsigned short word_num; // One addr. value defined as one word
-        int word_id; // Used by the foor loop
 
         // Registers behaving the input port of the underlying skid buffer
-        RQST_FLAG buffer_inputPort[SHARE_GP_NUM];
-        // Registers behaving the output port of the underlying skid buffer, (SHARE_GP_NUM)th element to store the isColAddr_skid_i value of which controls the current output source
-        RQST_FLAG buffer_outputPort[SHARE_GP_NUM+1];
+        RQST_FLAG buffer_inputPort;
+
         // Registers to implement skid buffer
-        RQST_FLAG buffer_reg[SHARE_GP_NUM];
+        RQST_FLAG buffer_reg;
 
     public:
+        // Registers behaving the output port of the underlying skid buffer, 2nd element to store the isColAddr_skid_i value of which controls the current output source
+        RQST_FLAG buffer_outputPort[2];
+            
         skidBuffer(unsigned short word_num_in);
         void buffer_flush();
-        void buffer_receive(RQST_FLAG din[]);
-        void buffer_write(RQST_FLAG din[]);
+        void buffer_receive(RQST_FLAG din);
+        void buffer_write(RQST_FLAG din);
         void buffer_read(bool isColAddr_skid_i);
-        void buffer_operate(RQST_FLAG din[], bool isColAddr_skid_i);
+        void buffer_operate(RQST_FLAG din, bool isColAddr_skid_i);
         void buffer_trace();
 };
 //==============================================================
@@ -105,6 +110,7 @@ typedef struct regfile_inteface {
 
     // Input
     REGFILE_RADDR raddr_i;
+    REGFILE_RADDR tentative_raddr_i;
 } regFile_IF_t;
 //==============================================================
 //
