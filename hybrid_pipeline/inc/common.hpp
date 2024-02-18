@@ -4,6 +4,7 @@
 #define SCHED_DEBUG_MODE
 #define SHIFT_DEBUG_MODE
 //#define WORST_SOL_DEBUG_MODE
+//#define ENSKID_SOL_DEBUG_MODE
 #define MSGBUF_RD_PTR_DEBUG_EN // To enable the print of current read pointer of message-pass buffer
 //#define MSGBUF_MEM_DEBUG_EN // To enable the print of entire content inside the message-pass buffer
 //#define UNIT_TEST_MODE
@@ -41,8 +42,9 @@ typedef unsigned short COL_ADDR;
 typedef struct msgPass_buffer {
     COL_ADDR perm_c2v_mag[MSGPASS_BUFFER_PERM_C2V_PAGE_NUM][SHARE_GP_NUM]; // magnitude of permuted C2V
 } msgPass_buffer_t;
+
 //==============================================================
-//
+// The macros for the "pipeline_sol.cpp"
 //==============================================================
 
 //#define WORST_SOL_0

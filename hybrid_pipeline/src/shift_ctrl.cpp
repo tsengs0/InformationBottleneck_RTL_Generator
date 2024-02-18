@@ -225,7 +225,7 @@ void shift_control_unit::msgBuffer_read()
 //==============================================================
 void shift_control_unit::rqst_flag_gen(COL_ADDR *col_addr_in)
 {
-    // Step 1: col_addr-to-R^{gp2} converter, so as to perform the "rqst_flag_gen().input" presented at *.md
+    // Step 1: col_addr-to-R^{gp2} converter, so as to perform the "rqst_flag_gen().input" presented at note/shift_ctrl.md
     rqst_gp2 = 0;
     for(int i=0; i<SHARE_GP_NUM; i++) {
         for(int j=0; j<GP2_NUM; j++) {
@@ -236,7 +236,7 @@ void shift_control_unit::rqst_flag_gen(COL_ADDR *col_addr_in)
         }
     }
 
-    // Step 2: R^{gp2}-to-regFile_addr, so as to perform the "rqst_flag_gen().output" presented at *.md
+    // Step 2: R^{gp2}-to-regFile_addr, so as to perform the "rqst_flag_gen().output" presented at note/shift_ctrl.md
     regFile_IF.tentative_raddr_i = rqst_gp2;
 }
 
@@ -273,19 +273,19 @@ bool shift_control_unit::regfile_read()
 void shift_control_unit::shift_gen(unsigned short rqstID)
 {
 //--------------------------------------------------------------------------------------
-// 2nd argument: "shift_gen().output.step0" presented at *.md
+// "shift_gen().output.step0"
     // To input the generated request flags into the skid buffer unit,
-    // so as to perform the "skid_buffer().buffer_operate()" presented at *.md
+    // so as to perform the "skid_buffer().buffer_operate()"
     skid_buffer->buffer_operate(
         regFile_IF.tentative_raddr_i,
         shiftCtrl_pipeline_reg.regfile_page_ff.isGtr // To load the pipeline_reg.isGtr before it FF update
     );
 
-    // To perform the "shift_gen().input" present at *.md
+    // To perform the "shift_gen().input" present at note/shift_ctrl.md
     regFile_IF.raddr_i = skid_buffer->buffer_outputPort[SKID_RQST_FLAG_OUT];
     if(regfile_read() == false) exit(1);
 //--------------------------------------------------------------------------------------
-// "shfit_gen().output.step1" presented at *.md
+// "shfit_gen().output.step1" presented at note/shift_ctrl.md
     // To load the output of register file onto pipeline registers
     shiftCtrl_pipeline_reg.regfile_page_ff.isGtr = regFile_IF.page_out.isGtr;
     shiftCtrl_pipeline_reg.regfile_page_ff.l1pa_shift = regFile_IF.page_out.l1pa_shift;

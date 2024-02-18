@@ -181,10 +181,11 @@ void cycle_sched::main_loop()
         //---------------------------------------------------------------
         // Handling the first PIPELINE_STAGE_NUM clock cycles after reset sequence
         for(i=0; i<RQST_NUM; i++) {
-            is_DRC_passed[i] = shiftCtrl_sim_wrapper->worst_sol.design_rule_check(
+            is_DRC_passed[i] = shiftCtrl_sim_wrapper->enh_skid_sol.design_rule_check(
                 shiftCtrl_sim_wrapper->rqst_id[i],
                 shiftCtrl_sim_wrapper->rqst_fsm,
-                fsm_state_prev1
+                fsm_state_prev1,
+                shiftCtrl_sim_wrapper->shiftCtrl->shiftCtrl_pipeline_reg.regfile_page_ff.isGtr
             );
 
             fsm_state_uncommit[i] = shiftCtrl_sim_wrapper->shiftCtrl->fsm_update(
@@ -198,15 +199,15 @@ void cycle_sched::main_loop()
         // Step 2) Update the FSM state of each pipelined (H/W) resource
         //---------------------------------------------------------------
         // Resource arbitration and committing all update of FSM states
-        shiftCtrl_sim_wrapper->worst_sol.arbiter_commit(
+        shiftCtrl_sim_wrapper->enh_skid_sol.arbiter_commit(
             is_DRC_passed,
             fsm_state_uncommit, 
             shiftCtrl_sim_wrapper->rqst_fsm
         );
 
-#ifdef WORST_SOL_DEBUG_MODE
+#ifdef ENSKID_SOL_DEBUG_MODE
         for(int j=0; j<RQST_NUM; j++) {std::cout << "loop (" << is_rqst_active[j]<<") -> "; FSM_HEAD_PRINT(shiftCtrl_sim_wrapper->rqst_fsm[j], j) std::cout << "\n";}std::cout << "\n";
-#endif // WORST_SOL_DEBUG_MODE
+#endif // ENSKID_SOL_DEBUG_MODE
         // To store the current FSM states of all active requests
         for(i=0; i<RQST_NUM; i++) {
 #ifdef SHIFT_DEBUG_MODE
@@ -221,8 +222,8 @@ void cycle_sched::main_loop()
                         
             // To update the read pointer of message-pass buffer for precedent constraint
             if(shiftCtrl_sim_wrapper->rqst_fsm[i] == COL_ADDR_ARRIVAL) {
-/*Temporarily comment it out #14, Jan., 2024*///if(shiftCtrl_sim_wrapper->worst_sol.rqst_arrival_cnt==1)
-                    shiftCtrl_sim_wrapper->worst_sol.update_read_pointer();
+/*Temporarily comment it out #14, Jan., 2024*///if(shiftCtrl_sim_wrapper->enh_skid_sol.rqst_arrival_cnt==1)
+                    shiftCtrl_sim_wrapper->enh_skid_sol.update_read_pointer();
             }
 
             shiftCtrl_sim_wrapper->shiftCtrl->fsm_process(
@@ -249,7 +250,7 @@ void cycle_sched::main_loop()
         }
 
 #ifdef MSGBUF_RD_PTR_DEBUG_EN
-        shiftCtrl_sim_wrapper->worst_sol.display_read_ptr();
+        shiftCtrl_sim_wrapper->enh_skid_sol.display_read_ptr();
 //        shiftCtrl_sim_wrapper->shiftCtrl->shiftOut_log_read();
 #endif // MSGBUF_RD_PTR_DEBUG_EN
         //---------------------------------------------------------------

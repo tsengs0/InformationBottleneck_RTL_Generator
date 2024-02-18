@@ -2,6 +2,9 @@
 
 extern int msgBuffer_read_ptr;
 
+//==============================================================
+// Worst-case Solution (reference)
+//==============================================================
 worst_case_solution::worst_case_solution()
 {
     msgBuffer_read_ptr = -1; // Read pointer must be started from "0"
@@ -10,7 +13,7 @@ worst_case_solution::worst_case_solution()
 
 void worst_case_solution::update_read_pointer()
 {
-    msgBuffer_read_ptr = (msgBuffer_read_ptr == RQST_NUM-1) ? 0 : msgBuffer_read_ptr+1;
+    msgBuffer_read_ptr = (msgBuffer_read_ptr == MSGPASS_BUFFER_PERM_C2V_PAGE_NUM-1) ? 0 : msgBuffer_read_ptr+1;
 }
 
 void worst_case_solution::display_read_ptr()
@@ -25,12 +28,13 @@ bool worst_case_solution::design_rule_check(
     shiftCtrl_state *fsm_state_prev1
 ) {
     static int i;
-    static bool is_colAddr_arrival_prev1;
-    is_colAddr_arrival_prev1 = false;
+    static bool drc_violation;
+    drc_violation = false;
 
 #ifdef WORST_SOL_DEBUG_MODE
     std::cout << std::endl << "RqstID: " << rqst_id << std::endl;
 #endif // WORST_SOL_DEBUG_MODE
+
 
     // Rule 1: to check if any request was at "COL_ADDR_ARRIVAL" state one clock cycle before
     for(i=0; i<PIPELINE_STAGE_NUM; i++) {
@@ -43,7 +47,7 @@ bool worst_case_solution::design_rule_check(
             std::cout << std::endl;
 #endif // WORST_SOL_DEBUG_MODE
             if(fsm_state_prev1[i] == COL_ADDR_ARRIVAL) {
-                is_colAddr_arrival_prev1 = true;
+                drc_violation = true;
                 break;
             }
         }
@@ -53,12 +57,12 @@ bool worst_case_solution::design_rule_check(
     // Once the Nth request completes on allocation sequence, the next launch must not
     // be enabled before the completion of the relative (N-1) request
     if(fsm_state_cur[rqst_id] == SHIFT_OUT) {
-        if(is_colAddr_arrival_prev1 == false && msgBuffer_read_ptr != rqst_id)
-            is_colAddr_arrival_prev1 = true;
+        if(drc_violation == false && msgBuffer_read_ptr != rqst_id)
+            drc_violation = true;
     }
 
     // Do not activate the current request if design rule is violated
-    return (is_colAddr_arrival_prev1 == true) ? false : true;
+    return (drc_violation == true) ? false : true;
 }
 
 void worst_case_solution::arbiter_commit(
@@ -208,3 +212,155 @@ void worst_case_solution::arbiter_commit(
     }
 }
 #endif // WORST_SOL_1
+
+//==============================================================
+// Solution 2 (enhanced): skid buffer insertion
+//==============================================================
+enhanced_skidInsert_sol::enhanced_skidInsert_sol()
+{
+    msgBuffer_read_ptr = -1; // Read pointer must be started from "0"
+    rqst_arrival_cnt = 0;
+
+    for(int rqst_id=0; rqst_id<RQST_NUM; rqst_id++) requestors_2seq[rqst_id] = false;
+}
+
+void enhanced_skidInsert_sol::update_read_pointer()
+{
+    msgBuffer_read_ptr = (msgBuffer_read_ptr == MSGPASS_BUFFER_PERM_C2V_PAGE_NUM-1) ? 0 : msgBuffer_read_ptr+1;
+}
+
+void enhanced_skidInsert_sol::display_read_ptr()
+{
+    std::cout << "|-----> #Read pointer of message-pass buffer: " << msgBuffer_read_ptr << std::endl;
+}
+
+bool enhanced_skidInsert_sol::design_rule_check(
+    unsigned short rqst_id,
+    shiftCtrl_state *fsm_state_cur,
+    shiftCtrl_state *fsm_state_prev1,
+    bool isGtr
+) {
+    static int i;
+    static bool is_dr1_matched, is_dr2_matched, is_dr3_matched; // for design rule 1, 2 and 3
+//    static bool is_precedent_complete;
+    static bool is_DRC_passed; // Conclusion of DRC
+    is_colAddr_arrival_prev1 = false;
+//    is_precedent_complete = true;
+    is_DRC_passed = true;
+
+#ifdef ENSKID_SOL_DEBUG_MODE
+    std::cout << std::endl << "RqstID: " << rqst_id << std::endl;
+#endif // ENSKID_SOL_DEBUG_MODE
+    
+    // Design rule 1: pipeline cancellation
+    if(fsm_state_cur[rqst_id] == SHIFT_GEN && isGtr == true) { // isGtr is known at the end of SHIFT_GEN state
+        pipeline_cancel = true;
+        requestors_2seq[rqst_id] = true;
+        is_dr1_matched = true;
+    } else {
+        pipeline_cancel = false;
+        requestors_2seq[rqst_id] = false;
+        is_dr1_matched = false;
+    }
+
+    // Design rule 2: back-to-back 2seq scenario (2seq-to-2seq)
+    if(is_dr1_matched == true) {
+        if(rqst_id == 0) {
+            is_dr2_matched = (requestors_2seq[RQST_NUM-1] == true) ? true : false;   
+        } else {
+            is_dr2_matched = (equestors_2seq[rqst_id-1] == true) ? true : false;
+        }
+    } else {
+        is_dr2_matched = false;
+    }
+
+    // Design rule 3: no cancellation due to the beginning of the pipeline cycle
+    if(is_dr1_matched == true && fsm_state_cur[ (rqst_id+1) % RQST_NUM ] == COL_ADDR_ARRIVAL) {
+        is_dr3_matched = true;
+    } else {
+        is_dr3_matched = false;
+    }
+
+
+    // Precedent constraint:
+    // Once the Nth request completes its allocation sequence, the next launch must not
+    // be enabled before the completion of the relative (N-1) request
+    if(
+        fsm_state_cur[rqst_id] == SHIFT_OUT || // Next FSM_STATE might be COL_ADDR_ARRIVAL
+        fsm_state_cur[rqst_id] == SHIFT_OUT_DELTA ||// Next FSM_STATE might be COL_ADDR_ARRIVAL
+        fsm_state_cur[rqst_id] == IDLE // Next FSM_STATE might be COL_ADDR_ARRIVAL
+    ) {
+        if(is_colAddr_arrival_prev1 == true) {
+            is_DRC_passed = false;
+        }
+        else if(
+            (unsigned short) ((msgBuffer_read_ptr+1) % RQST_NUM) != rqst_id // Let allocate all the msgPass buffer's pages
+                                                                        // of which the addresses are the multiple of rqst_id value,
+                                                                        // to the rqeustor[rqst_id]
+        ) {
+//          is_precedent_complete = false;
+//          std::cout << "          ## rqst_id: " << rqst_id << ", msgBuffer_read_ptr: " << msgBuffer_read_ptr
+//                    << ", (msgBuffer_read_ptr+1) % RQST_NUM = " << (unsigned short) (msgBuffer_read_ptr+1) % RQST_NUM
+//                    << std::endl;
+            is_DRC_passed = false; 
+        }
+    } else {
+        is_DRC_passed = true;
+    }
+
+#ifdef WORST_SOL_DEBUG_MODE
+    std::cout << "##### rqst_id: " << rqst_id << ", is_colAddr_arrival_prev1: " << is_colAddr_arrival_prev1
+              << ", is_DRC_passed: " << is_DRC_passed << std::endl;
+#endif // WORST_SOL_DEBUG_MODE
+
+    // Do not activate the current request if design rule is violated
+    return is_DRC_passed;
+}
+
+void enhanced_skidInsert_sol::arbiter_commit(
+    bool *is_DRC_passed,
+    shiftCtrl_state *fsm_state_uncommit,
+    shiftCtrl_state *fsm_state_commit
+) {
+// FSM_STATE:
+//  IDLE = 0,
+//  COL_ADDR_ARRIVAL = 1,
+//  READ_COL_ADDR = 2,
+//  SHIFT_GEN = 3,
+//  SHIFT_OUT = 4
+//  SHIFT_OUT_DELTA = 5
+    static int i; 
+    static bool is_resource_busy[FSM_STATE_NUM];
+    for(i=0; i<FSM_STATE_NUM; i++) is_resource_busy[i] = false;
+    
+    // Arbitration policy: smaller the value of reqeust ID, higher the priority
+    for(i=0; i<RQST_NUM; i++) {
+        // Since IDLE state is not actually a resource,
+        // there is no contention of IDLE state across all active requests
+//        std::cout << "HW_" << i << " (Uncommitted): "; FSM_HEAD_PRINT(fsm_state_uncommit[i], i) std::cout << std::endl;
+//        std::cout << "---> " << "is_resource_busy[ fsm_state_uncommit[" << i << "] ]: " << is_resource_busy[ fsm_state_uncommit[i] ] << ", is_DRC_passed[" << i <<"]: " << is_DRC_passed[i] << std::endl;
+        if(fsm_state_uncommit[i] == IDLE) {
+            fsm_state_commit[i] = IDLE;
+        } else if(is_resource_busy[ fsm_state_uncommit[i] ] == false) {
+            if(is_DRC_passed[i] == true) {
+                fsm_state_commit[i] = fsm_state_uncommit[i];
+                is_resource_busy[ fsm_state_uncommit[i] ] = true;
+            } else { // In case that the DRC is not passed
+                if(fsm_state_uncommit[i] == COL_ADDR_ARRIVAL) {
+                    fsm_state_commit[i] = IDLE;
+                } 
+                // Wrong guesss: SHFIT_OUT -> COL_ADDR_ARRIVAL
+                // Reality: SHFIT_OUT -> SHFIT_OUT_DELTA
+                else if(fsm_state_uncommit[i] == SHIFT_OUT_DELTA) {
+                    is_DRC_passed[i] = true;
+                    fsm_state_commit[i] = fsm_state_uncommit[i];
+                    is_resource_busy[ fsm_state_uncommit[i] ] = true;    
+                }
+            }
+        }
+
+        if(fsm_state_commit[i] == COL_ADDR_ARRIVAL) {
+            rqst_arrival_cnt = (rqst_arrival_cnt == 1) ? 0 : 1; // rqst_arrival_cnt+1
+        }
+    }
+}

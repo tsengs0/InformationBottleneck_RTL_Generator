@@ -7,7 +7,7 @@ skid_buffer.buffer_operate() ->
 shift_gen().input -> 
 shift_gen().output
 </pre> 
-has to be implememented as the follows (the design sequence and the actual implementation sequence are different):
+has to be implememented as the follows (the sim sequence and the actual H/W imple sequence are different):
 <pre>
 rqst_flag_gen().input -> 
 rqst_flag_gen().output/*assignment of the tentative regFile_IF.raddr_i */

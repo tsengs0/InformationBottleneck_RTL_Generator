@@ -42,6 +42,7 @@ class shiftCtrlUnit_wrapper {
         shift_control_unit *shiftCtrl;
         msgBuffer_requestor *msgBuffer_rqst;
         worst_case_solution worst_sol;
+        enhanced_skidInsert_sol enh_skid_sol;
 
         shiftCtrl_state rqst_fsm[RQST_NUM];
         unsigned short rqst_id[RQST_NUM];
