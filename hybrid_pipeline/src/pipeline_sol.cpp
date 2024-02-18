@@ -128,7 +128,7 @@ bool worst_case_solution::design_rule_check(
             }
         }
     }
-
+/* Precedent constraint is removed
     // Rule 2: to impose the precedent constraint:
     // Once the Nth request completes its allocation sequence, the next launch must not
     // be enabled before the completion of the relative (N-1) request
@@ -159,9 +159,9 @@ bool worst_case_solution::design_rule_check(
     std::cout << "##### rqst_id: " << rqst_id << ", is_colAddr_arrival_prev1: " << is_colAddr_arrival_prev1
               << ", is_DRC_passed: " << is_DRC_passed << std::endl;
 #endif // WORST_SOL_DEBUG_MODE
-
+*/
     // Do not activate the current request if design rule is violated
-    return is_DRC_passed;
+    return true;//is_DRC_passed;
 }
 
 void worst_case_solution::arbiter_commit(
@@ -169,13 +169,6 @@ void worst_case_solution::arbiter_commit(
     shiftCtrl_state *fsm_state_uncommit,
     shiftCtrl_state *fsm_state_commit
 ) {
-// FSM_STATE:
-//  IDLE = 0,
-//  COL_ADDR_ARRIVAL = 1,
-//  READ_COL_ADDR = 2,
-//  SHIFT_GEN = 3,
-//  SHIFT_OUT = 4
-//  SHIFT_OUT_DELTA = 5
     static int i; 
     static bool is_resource_busy[FSM_STATE_NUM];
     for(i=0; i<FSM_STATE_NUM; i++) is_resource_busy[i] = false;
@@ -224,9 +217,12 @@ enhanced_skidInsert_sol::enhanced_skidInsert_sol()
     for(int rqst_id=0; rqst_id<RQST_NUM; rqst_id++) requestors_2seq[rqst_id] = false;
 }
 
-void enhanced_skidInsert_sol::update_read_pointer()
+void enhanced_skidInsert_sol::update_read_pointer(unsigned short rqst_id)
 {
-    msgBuffer_read_ptr = (msgBuffer_read_ptr == MSGPASS_BUFFER_PERM_C2V_PAGE_NUM-1) ? 0 : msgBuffer_read_ptr+1;
+    if(is_dr1_matched == true)
+        msgBuffer_read_ptr = _2seq_rqst_id+1;
+    else
+        msgBuffer_read_ptr += 1;
 }
 
 void enhanced_skidInsert_sol::display_read_ptr()
@@ -241,10 +237,8 @@ bool enhanced_skidInsert_sol::design_rule_check(
     bool isGtr
 ) {
     static int i;
-    static bool is_dr1_matched, is_dr2_matched, is_dr3_matched; // for design rule 1, 2 and 3
 //    static bool is_precedent_complete;
     static bool is_DRC_passed; // Conclusion of DRC
-    is_colAddr_arrival_prev1 = false;
 //    is_precedent_complete = true;
     is_DRC_passed = true;
 
@@ -257,6 +251,7 @@ bool enhanced_skidInsert_sol::design_rule_check(
         pipeline_cancel = true;
         requestors_2seq[rqst_id] = true;
         is_dr1_matched = true;
+        _2seq_rqst_id = rqst_id;
     } else {
         pipeline_cancel = false;
         requestors_2seq[rqst_id] = false;
@@ -268,7 +263,7 @@ bool enhanced_skidInsert_sol::design_rule_check(
         if(rqst_id == 0) {
             is_dr2_matched = (requestors_2seq[RQST_NUM-1] == true) ? true : false;   
         } else {
-            is_dr2_matched = (equestors_2seq[rqst_id-1] == true) ? true : false;
+            is_dr2_matched = (requestors_2seq[rqst_id-1] == true) ? true : false;
         }
     } else {
         is_dr2_matched = false;
@@ -281,6 +276,11 @@ bool enhanced_skidInsert_sol::design_rule_check(
         is_dr3_matched = false;
     }
 
+    // To drop the Design rule 1 if the design 2 or 3 is satisfied
+    if(is_dr2_matched == true || is_dr3_matched == true) {
+        is_dr1_matched = false;
+        pipeline_cancel = false; // to clear the outcome of the design rule 1
+    }
 
     // Precedent constraint:
     // Once the Nth request completes its allocation sequence, the next launch must not
@@ -290,10 +290,7 @@ bool enhanced_skidInsert_sol::design_rule_check(
         fsm_state_cur[rqst_id] == SHIFT_OUT_DELTA ||// Next FSM_STATE might be COL_ADDR_ARRIVAL
         fsm_state_cur[rqst_id] == IDLE // Next FSM_STATE might be COL_ADDR_ARRIVAL
     ) {
-        if(is_colAddr_arrival_prev1 == true) {
-            is_DRC_passed = false;
-        }
-        else if(
+        if(
             (unsigned short) ((msgBuffer_read_ptr+1) % RQST_NUM) != rqst_id // Let allocate all the msgPass buffer's pages
                                                                         // of which the addresses are the multiple of rqst_id value,
                                                                         // to the rqeustor[rqst_id]
@@ -322,13 +319,6 @@ void enhanced_skidInsert_sol::arbiter_commit(
     shiftCtrl_state *fsm_state_uncommit,
     shiftCtrl_state *fsm_state_commit
 ) {
-// FSM_STATE:
-//  IDLE = 0,
-//  COL_ADDR_ARRIVAL = 1,
-//  READ_COL_ADDR = 2,
-//  SHIFT_GEN = 3,
-//  SHIFT_OUT = 4
-//  SHIFT_OUT_DELTA = 5
     static int i; 
     static bool is_resource_busy[FSM_STATE_NUM];
     for(i=0; i<FSM_STATE_NUM; i++) is_resource_busy[i] = false;

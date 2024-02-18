@@ -17,7 +17,7 @@
 #define DEC_LAYER_NUM 1
 #define GP2_NUM 2
 #define SHARE_GP_NUM 5
-#define RQST_NUM 6
+#define RQST_NUM 5
 #define MAX_ALLOC_SEQ_NUM 2 // constraint of which guanrantees the maximum number of the allocation sequences required in a requestor
 //==============================================================
 // Message-pase buffer
