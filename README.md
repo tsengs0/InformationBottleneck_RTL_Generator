@@ -18,6 +18,12 @@ This branch is to simulate the hybrid pipeline scheduling in which a skid buffer
 - commit: daf2c5c4a7db9eee9b7cc5341d291f13ddc8f9a3
  - To finish the implementation of skid buffer unit with unit test (passed)
 
+# Work record - 18, Feb., 2024
+- commit: 767febdf24385b14549e3e5eb97165eac396da1b
+ - Work summary: first implementation of the design rule 1, 2 and 3 (ongoing)
+ - Concern 1: the isColAddr_skid pin is either SKID or NOSKID, the strategy is no longer just given by the current value of isGtr. Instead, the skid control strategy have to be reconsidered
+ - Concern 2: the reset control of the deltaFF have to be reconsidered 
+
 # Cheat sheet about Git commands
 <pre>
 > git push -u origin origin/memShare_hybridPipeline_skidBuffer_sim # To push the latest commit onto the detached HEAD (but the remote branch is still unchanged)
