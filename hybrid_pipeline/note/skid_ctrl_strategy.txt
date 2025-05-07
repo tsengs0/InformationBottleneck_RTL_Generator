@@ -1,0 +1,5 @@
+Ininitally, the isColAddr_skid is set to NOSKID. Once a 2seq request is detected at "SHIFT_GEN" state, the isColAddr_skid is switched to SKID and this SKID status is kept asserted until certain reset event.
+
+Such reset event of SKID status is triggered by any of the following cases:
+	Case 1) Design rule 3 is met, the SKID status is deasserted one cycle after the occurance timing of the design rule 3.
+	Case 2) Design rule 2 is met, the SKID status is deasserted within the same clock cycle of the occurance timing of the design rule 2.
